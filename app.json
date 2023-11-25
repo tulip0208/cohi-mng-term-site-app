@@ -1,12 +1,11 @@
 {
   "expo": {
-    "name": "IMS-RN",
-    "slug": "IMS-RN",
+    "name": "ims",
+    "slug": "ims",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "scheme": "IMS-RN",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -23,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.andrianucef.IMS-RN"
+      "package": "com.andrianucef.ims"
     },
     "web": {
       "favicon": "./assets/favicon.png"
