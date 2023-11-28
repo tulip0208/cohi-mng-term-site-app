@@ -13,8 +13,8 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   main:{
-    marginRight:50,
-    marginLeft:50,
+    marginRight:30,
+    marginLeft:30,
   },
   middleContent: {
     flex: 1,
@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   //--------------------
   //--------ラベル-------
   labelText: {
-    fontSize: 25,
+    fontSize: 20,
     marginTop: 10,
     marginBottom: 5,
   },

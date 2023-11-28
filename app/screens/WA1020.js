@@ -4,8 +4,8 @@ import Footer from '../components/Footer'; // Footerコンポーネントのイ�
 import { styles } from '../styles/CommonStyle'; // 共通スタイル
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, Alert,BackHandler } from 'react-native';
-import { Camera } from 'expo-camera';
-// import { getRealmInstance } from '../utils/Realm'; // realm.jsから関数をインポート
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import { getRealmInstance } from '../utils/Realm'; // realm.jsから関数をインポート
 
 const QRScanner = ({ onScan, closeModal }) => {
     const [hasPermission, setHasPermission] = useState(null);
@@ -15,11 +15,11 @@ const QRScanner = ({ onScan, closeModal }) => {
 
     useEffect(() => {
       (async () => {
-        const { status } = await Camera.requestCameraPermissionsAsync();
+        const { status } = await BarCodeScanner.requestPermissionsAsync();
         setHasPermission(status === 'granted');
       })();
     }, []);
-  
+
     const handleBarCodeScanned = ({ type, data }) => {
       setScanned(true);
       setData(data);
@@ -35,9 +35,9 @@ const QRScanner = ({ onScan, closeModal }) => {
   
     return (
       <View style={styles.container}>
-        <Camera style={styles.camera} onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}>
+        <BarCodeScanner style={styles.camera} onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}>
           {scanned && <Text onPress={() => setScanned(false)}>タップして再スキャン</Text>}
-        </Camera>
+        </BarCodeScanner>
         {scanned && <Text style={styles.barcodeText}>{data}</Text>}
       </View>
     );
@@ -46,11 +46,11 @@ const QRScanner = ({ onScan, closeModal }) => {
 
 const WA1020 = ({ navigation }) => {
     const [ERROR, setERROR] = useState('');
-    const [usrName, setUsrName] = useState('');
+    const [userName, setUserName] = useState('');
     const [activationCode, setActivationCode] = useState('');
-    const [trmId, setTrmId] = useState(''); // 端末ID
-    const [usrId, setUsrId] = useState(''); 
-    const [isActivateDone, setIsActivateDone] = useState(''); // 端末IDです。
+    const [devId, setDevId] = useState(''); // 端末ID
+    const [comName, setComName] = useState(''); // 事業者名
+    const [actReadFlg, setActReadFlg] = useState(''); // 端末IDです。
     const [showScannerUsr, setShowScannerUsr] = useState(false); // カメラ表示用の状態
     const [showScannerActivate, setShowScannerActivate] = useState(false); // カメラ表示用の状態
     const [isReadyToSend, setIsReadyToSend] = useState(false); // 送信準備完了状態
@@ -60,15 +60,53 @@ const WA1020 = ({ navigation }) => {
 
     // QRコードスキャン後の処理 (ユーザー情報用)
     const handleQRCodeScannedForUser = (scannedData) => {
-        try {
-            // setERROR(null);
-            const data = JSON.parse(scannedData);
-            setUsrInfo(data); // オブジェクト全体をステートに保存
-            setUsrName(data.usrName); // 利用者情報を
+      // 利用者をクリアする
+      setUserName("");
+      const parts = scannedData.split(',');
+      // CSVデータのフォーマットを確認（5つの部分があるか）
+      if (parts.length === 5) {
+        // ID種別が1かどうかを確認
+        const idType = parts[0];
+        if (idType === "1") {
+            const comId = parts[1];
+            const comName = parts[2];
+            const userId = parts[3];
+            const userName = parts[4];
+            
+            // 必要なデータをステートに保存
+            setUsrInfo({
+                comId: comId,
+                comName: comName,
+                userId: userId,
+                userName: userName
+            });
+            // 別途保存しているユーザー名ステートがある場合はその更新も行う
+            setUserName(userName);
+            setComName(comName)
+
             setShowScannerUsr(false);
-        } catch (error) {
-            console.error("QRコードが不適切です", error);
-        }        
+        } else {
+            // ID種別が1ではない場合のエラーハンドリング
+            console.error("不正なID種別です。");
+            // エラーメッセージのステートを設定
+            setERROR("不正なID種別です。");
+        }
+    } else {
+        // CSVデータが正しいフォーマットでない場合のエラーハンドリング
+        console.error("QRコードのフォーマットが不正です。");
+        // エラーメッセージのステートを設定
+        setERROR("QRコードのフォーマットが不正です。");
+    }      
+        // try {
+
+        //     // setERROR(null);
+        //     const data = JSON.parse(scannedData);
+        //     setUsrInfo(data); // オブジェクト全体をステートに保存
+        //     setUserName(data.userName); // 利用者情報を
+        //     setShowScannerUsr(false);
+        // } catch (error) {
+        //     console.error("QRコードが不適切です", error);
+        // }        
     };    
     // QRコードスキャン後の処理 (アクティベーション情報用)
     const handleQRCodeScannedForActivation = (scannedData) => {
@@ -76,28 +114,28 @@ const WA1020 = ({ navigation }) => {
             // setERROR(null);
             const data = JSON.parse(scannedData);
             setActivationInfo(data); // オブジェクト全体をステートに保存
-            setTrmId(data.trmId); // 端末ID設定
-            setIsActivateDone("済")
+            setDevId(data.devId); // 端末ID設定
+            setActReadFlg("済")
             setShowScannerActivate(false);
         } catch (error) {
             console.error("QRコードが不適切です", error);
         }         
     };    
     // ユーザーQRコードスキャンボタン押下時の処理
-    const handleScanQRCodeUser = () => {
+    const btnUserQr = () => {
         setShowScannerUsr(true);
     };
     // アクティベーションQRコードスキャンボタン押下時の処理
-    const handleScanQRCodeActivation = () => {
+    const btnActQr = () => {
         setShowScannerActivate(true);
     };    
 
     // useEffect フックを使用してステートが変更されるたびにチェック
     useEffect(() => {
-        if (usrName !== "" && isActivateDone !== "") {
+        if (userName !== "" && actReadFlg !== "") {
             setIsReadyToSend(true); // 送信ボタンを活性化
         }
-    }, [usrName, isActivateDone]); // 依存配列に usrId と isActivateDone を追加
+    }, [userName, actReadFlg]); // 依存配列に usrId と actReadFlg を追加
 
 
     // 送信ボタンのスタイルを動的に変更するための関数
@@ -106,23 +144,23 @@ const WA1020 = ({ navigation }) => {
     };
 
     const handleActivation = async () => {
-        // const realm = await getRealmInstance();
-        // try {
-        //   realm.write(() => {
-        //     realm.create('Activation', {
-        //       trmId: trmId,
-        //       usrId: usrId,
-        //       activationCode: activationCode,
-        //       isActivated: true,
-        //     });
-        //   });
-        // } catch (error) {
-        //   console.error('アクティベーションに失敗しました', error);
-        // } finally {
-        //   if (realm) {
-        //     realm.close();
-        //   }
-        // }
+        const realm = await getRealmInstance();
+        try {
+          realm.write(() => {
+            realm.create('Activation', {
+              devId: devId,
+              usrId: usrId,
+              activationCode: activationCode,
+              isActivated: true,
+            });
+          });
+        } catch (error) {
+          console.error('アクティベーションに失敗しました', error);
+        } finally {
+          if (realm) {
+            realm.close();
+          }
+        }
       };
 
     // 戻るボタン押下時のポップアップ表示
@@ -157,16 +195,16 @@ const WA1020 = ({ navigation }) => {
 
         {/* 中段 */}
         <View  style={[styles.main,styles.middleContent]}>
-          <Text style={styles.labelText}>利用者：{usrName}</Text>
-          <TouchableOpacity style={[styles.button]} onPress={handleScanQRCodeUser}>
+          <Text style={styles.labelText}>利用者：{userName}</Text>
+          <TouchableOpacity style={[styles.button]} onPress={btnUserQr}>
             <Text style={styles.buttonText}>QRコード読込</Text>
           </TouchableOpacity>
-          <Text style={styles.labelText}>アクティベーションコード読込：{isActivateDone}</Text>
-          <TouchableOpacity style={[styles.button]} onPress={handleScanQRCodeActivation}>
+          <Text style={styles.labelText}>アクティベーションコード読込：{actReadFlg}</Text>
+          <TouchableOpacity style={[styles.button]} onPress={btnActQr}>
             <Text style={styles.buttonText}>QRコード読込</Text>
           </TouchableOpacity>
-          <Text style={styles.labelText}>端末ID：{trmId}</Text>
-          <Text style={styles.labelText}>事業者：{trmId}</Text>
+          <Text style={styles.labelText}>端末ID：{devId}</Text>
+          <Text style={styles.labelText}>事業者：{comName}</Text>
         </View >
   
         {/* 下段 */}

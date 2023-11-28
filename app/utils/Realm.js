@@ -1,23 +1,19 @@
-// // utils/realmConfig.js
+// utils/Realm.js
 
-// import Realm from 'realm';
-// // スキーマ定義などをインポート
+import Realm from 'realm';
+// スキーマ定義などをインポート
 
-// const encryptionKey = new Int8Array(64); // 例としてランダムなキーを生成
+const encryptionKey = new Int8Array(64); // 例としてランダムなキーを生成
 
-// // Realmの設定
-// const realmConfig = {
-//   path: '/data/app.realm',
-//   schema: [/* テーブル定義記載のスキーマを配列で指定 */],
-//   encryptionKey: encryptionKey,
-// };
+// Realmの設定
+const realmConfig = new Realm();
 
-// // インスタンス取得関数
-// export const getInstance = async () => {
-//   return await Realm.open(realmConfig);
-// };
+// インスタンス取得関数
+export const getInstance = async () => {
+  return await Realm.open(realmConfig);
+};
 
-// export default {
-//   getInstance,
-//   encryptionKey,
-// };
+export default {
+  getInstance,
+  encryptionKey,
+};
