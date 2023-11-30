@@ -4,7 +4,9 @@ import * as Keychain from 'react-native-keychain';
 export const checkActivation = async () => {
   try {
     // KeyStoreからアクティベーション情報を取得
-    const credentials = await Keychain.getInternetCredentials('activationInfo');
+    const credentials = await Keychain.getGenericPassword({
+      service: 'activationInfo'
+    });
     if (credentials) {
       // ここでは、パスワードフィールドにアクティベーション情報を保存していると想定しています。
       const activationInfo = JSON.parse(credentials.password);

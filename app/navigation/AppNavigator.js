@@ -4,7 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { checkActivation } from '../utils/KeyStore'; // KeyStoreの確認関数（仮
 import WA1020 from '../screens/WA1020';
-// 他のインポート...
+import { onAppLaunch  } from '../utils/Realm'; // Realmのセットアップ関数をインポート
+
 
 const Stack = createStackNavigator();
 
@@ -12,8 +13,13 @@ const AppNavigator = () => {
   const [initialRoute, setInitialRoute] = useState('Main');
 
   useEffect(() => {
+    // アプリ起動時の処理
+ 
     const initialize = async () => {
+      //起動時の初期処理
+      await onAppLaunch();
       const isActivate = await checkActivation(); // アクティベーション情報の確認
+
       if (isActivate) {
         setInitialRoute('WA1020'); // アクティベーション情報がない場合、ログイン画面に設定
       } else {

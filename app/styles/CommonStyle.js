@@ -103,13 +103,20 @@ export const styles = StyleSheet.create({
 
   //--------フッタ--------
   footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 10,
     backgroundColor: '#000', // フッターの背景色
   },
   footerText: {
-    fontSize: 20,
+    fontSize: 15,
     color: '#fff',
-    textAlign: 'right',
     height: 30,
   },
+  serverNameText: {
+    textAlign: 'left',
+  },
+  copyrightText: {
+    textAlign: 'right',
+  },  
 });
