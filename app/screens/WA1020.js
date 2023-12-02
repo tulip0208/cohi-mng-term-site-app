@@ -4,94 +4,31 @@ import Footer from '../components/Footer'; // Footerコンポーネントのイ�
 import { styles } from '../styles/CommonStyle'; // 共通スタイル
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, Alert,BackHandler } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
 import { getInstance } from '../utils/Realm'; // realm.jsから関数をインポート
 import messages from '../utils/messages';
-import {encryptWithAES256CBC,getEncryptionKeyFromKeystore,saveToKeystore,clearKeyStore,loadFromKeystore} from '../utils/Security';
+import {encryptWithAES256CBC,generateDeviceUniqueKey,decryptWithAES256CBC} from '../utils/Security';
 import Realm from "realm";
-//Realm.flags.THROW_ON_GLOBAL_REALM = true;
+import QRScanner from '../utils/QRScanner';
+import ProcessingModal from '../components/Modal';
+import { getEncryptionKeyFromKeystore,saveToKeystore,clearKeyStore,loadFromKeystore } from '../utils/KeyStore'; 
+import { sendToServer } from '../utils/Api'; 
 
-const useTimeout = (isActive, timeoutDuration, onTimeout) => {
-  useEffect(() => {
-    let timeout;
-
-    if (isActive) {
-      timeout = setTimeout(onTimeout, timeoutDuration);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [isActive, timeoutDuration, onTimeout]);
-};
-
-const QRScanner = ({ onScan, closeModal, isActive }) => {
-    const [camTimeout, setCamTimeout] = useState(null);  // カメラのタイムアウト値を保存する状態
-    const [hasPermission, setHasPermission] = useState(null);
-    const [scanned, setScanned] = useState(false);
-
-    useEffect(() => {
-      // カメラのパーミッション要求
-      const requestPermission = async () => {
-        const { status } = await BarCodeScanner.requestPermissionsAsync();
-        setHasPermission(status === 'granted');
-      };
-      requestPermission();
-
-      // データベースから設定を読み込む
-      const loadSettings = async () => {
-        const realm = await getInstance();
-        const settings = realm.objects('settings')[0];
-        setCamTimeout(settings.camTimeout);  // カメラのタイムアウト値を状態にセット
-      };
-      loadSettings();      
-    }, []);
-
-    // カスタムフックを使用してタイムアウトを管理
-    useTimeout(isActive, camTimeout * 1000, () => {
-      Alert.alert(
-        "",
-        messages.EA5001("利用者QRコード"),
-        [{ text: "OK", onPress: closeModal }]
-      );
-    });
-    
-    const handleBarCodeScanned = ({ type, data }) => {
-      setScanned(true);
-      onScan(data); // スキャンデータを親コンポーネントに渡す
-    };
-  
-    if (hasPermission === null) {
-      return <Text>カメラへのアクセスをリクエスト中...</Text>;
-    }
-    if (hasPermission === false) {
-      return <Text>カメラへのアクセスが許可されていません。</Text>;
-    }
-  
-    return (
-      <View style={styles.container}>
-        <BarCodeScanner style={styles.camera} onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}>
-          
-        </BarCodeScanner>
-        {/*{scanned && <Text style={styles.barcodeText}>{data}</Text>}*/}
-      </View>
-    );
-  };
-  
 
 const WA1020 = ({ navigation,closeModal }) => {
     const [ERROR, setERROR] = useState('');
     const [userName, setUserName] = useState('');
-    const [activationCode, setActivationCode] = useState('');
     const [trmId, setTrmId] = useState(''); // 端末ID
     const [comName, setComName] = useState(''); // 事業者名
     const [actReadFlg, setActReadFlg] = useState(''); // 端末ID
     const [showScannerUsr, setShowScannerUsr] = useState(false); // カメラ表示用の状態
     const [showScannerActivate, setShowScannerActivate] = useState(false); // カメラ表示用の状態
     const [isReadyToSend, setIsReadyToSend] = useState(false); // 送信準備完了状態
+    const [modalVisible, setModalVisible] = useState(false);
 
-    const [usrInfo, setUsrInfo] = useState(null);//ユーザ情報
-    const [activationInfo, setActivationInfo] = useState(null);//アクティベーション情報
-
-    // QRコードスキャン後の処理 (ユーザー情報用)
+    /************************************************
+     * QRコードスキャン後の処理 (ユーザ情報用)
+     * @param {*} scannedData 
+     ************************************************/
     const handleQRCodeScannedForUser = async (scannedData) => {
       // 利用者をクリアする
       setUserName("");
@@ -136,7 +73,7 @@ const WA1020 = ({ navigation,closeModal }) => {
               "",
               messages.EA5002("利用者"),
               [{ text: "OK", onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-          );
+            );
           setShowScannerUsr(false);   
         }
       } else {
@@ -150,7 +87,10 @@ const WA1020 = ({ navigation,closeModal }) => {
       }      
     };
 
-
+    /************************************************
+     * QRコードスキャン後の処理 (アクティベーション情報用)
+     * @param {*} scannedData 
+     ************************************************/
     const handleQRCodeScannedForActivation = async (scannedData) => {
       // 端末IDをクリアする
       setTrmId("");
@@ -180,7 +120,7 @@ const WA1020 = ({ navigation,closeModal }) => {
               apiKey: apiKey256,
               actKey: actKey,
               actExpDt: actExpDt,
-              actFin: "1", // '済' 状態を表す
+              actFin: 0, 
             }));
             // 別途保存しているユーザー名ステートがある場合はその更新も行う
             setTrmId(trmId);
@@ -215,7 +155,7 @@ const WA1020 = ({ navigation,closeModal }) => {
         setShowScannerActivate(false);   
         // CSVデータが正しいフォーマットでない場合のエラーハンドリング
       }      
-    };    
+    };
     // ユーザーQRコードスキャンボタン押下時の処理
     const btnUserQr = () => {
         setShowScannerUsr(true);
@@ -224,22 +164,21 @@ const WA1020 = ({ navigation,closeModal }) => {
     const btnActQr = () => {
         setShowScannerActivate(true);
     };    
-
     // useEffect フックを使用してステートが変更されるたびにチェック
     useEffect(() => {
         if (userName !== "" && actReadFlg !== "") {
             setIsReadyToSend(true); // 送信ボタンを活性化
         }
     }, [userName, actReadFlg]); // 依存配列に usrId と actReadFlg を追加
-
-
     // 送信ボタンのスタイルを動的に変更するための関数
     const getButtonStyle = () => {
         return isReadyToSend ? [styles.button,styles.startButton] : [styles.button,styles.startButton, styles.disabledButton];
     };
 
-    // 戻るボタン押下時のポップアップ表示
-    const confirmExit = () => {
+    /************************************************
+     * 終了ボタン押下時のポップアップ表示
+     ************************************************/
+    const btnAppClose = () => {
         Alert.alert(
             "",
             "終了しますか？",
@@ -258,12 +197,83 @@ const WA1020 = ({ navigation,closeModal }) => {
         );
     };
 
-    // 送信ボタン押下時の処理
-    
+    /************************************************
+     * 送信ボタン押下時の処理
+     ************************************************/
+    const btnSend = async () =>{
+      // モーダル表示
+      setModalVisible(true);
+      const hashedKey = await generateDeviceUniqueKey(); // デバイスIDと現在の日時からユニークなキーを生成し、SHA256でハッシュ化する関数
+      const secretKey = await getEncryptionKeyFromKeystore(); // AES暗号化のための秘密鍵      
+      //const encryptedKey = CryptoJS.AES.encrypt(hashedKey, secretKey).toString(); // AES-256-CBCで暗号化
+      const encryptedKey = encryptWithAES256CBC(hashedKey, secretKey); // AES-256-CBCで暗号化
+      try {
+        // ハッシュ化されたキーをAES-256-CBCで暗号化し、KeyStoreに保存する関数
+        // アクティベーション情報をKeyStoreに保存
+        await saveToKeystore("trmKey",JSON.stringify({
+          trmKey: encryptedKey,
+        }));
+        console.log('Device unique key stored successfully.');
+
+        // KeyStoreからアクティベーション情報を取得
+        const activationInfo = JSON.parse(await loadFromKeystore("activationInfo"));
+
+        const realm = await getInstance()
+        // realmからユーザ情報を取得
+        const userInfo = realm.objects('user')[0]
+        // realmから設定ファイル情報を取得
+        const settingsInfo = realm.objects('settings')[0]
+        console.log("---")
+        // サーバー通信用のデータを準備
+        const requestData = {
+          comId: userInfo.comId,
+          usrId: userInfo.usrId,
+          trmId: activationInfo.trmId,
+          apiKey: decryptWithAES256CBC(activationInfo.apiKey,secretKey), // 復号化
+          actKey: activationInfo.actKey,
+          trmKey: decryptWithAES256CBC(encryptedKey,secretKey), // 復号化
+          appTyp: 1, 
+          appVer: settingsInfo.appVer
+        };
+        console.log("---")
+        // サーバー通信処理（Api.js内の関数を呼び出し）
+        const responseCode = await sendToServer(requestData,"IFA0010");
+        console.log("---")
+        // アクティベーション情報をKeyStoreに保存
+        await saveToKeystore("activationInfo",JSON.stringify({
+          comId: activationInfo.comId,
+          trmId: activationInfo.trmId,
+          apiKey: activationInfo.apiKey256,
+          actKey: activationInfo.actKey,
+          actExpDt: activationInfo.actExpDt,
+          actFin: "1",//アクティベーション済へ変更 
+        }));
+        console.log("---")
+        // 事業者IDをKeyStoreに保存
+        await saveToKeystore("comId",JSON.stringify({comId:userInfo.comId}));
+        // 端末IDをKeyStoreに保存
+        await saveToKeystore("trmId",JSON.stringify({trmId:activationInfo.trmId}));
+        // 端末APIキーをKeyStoreに保存
+        await saveToKeystore("apiKey",JSON.stringify({apiKey:activationInfo.apiKey}));
+        // 端末固有キーをKeyStoreに保存
+        // →前半に実施しているため省略
+
+        // モーダル非表示
+        setModalVisible(false);
+
+        // ログイン画面へ遷移する
+        navigation.navigate('WA1030');
+      } catch (error) {
+        // モーダル非表示
+        setModalVisible(false);
+        console.error('登録に失敗しました。', error);
+      }
+    }
+
     return (
       <View style={styles.container}>
         {/* ヘッダ */}
-        <Header /> 
+        <Header title={"端末登録"}/> 
 
         {/* 上段 */}
         <View style={styles.row}>
@@ -286,13 +296,14 @@ const WA1020 = ({ navigation,closeModal }) => {
   
         {/* 下段 */}
         <View style={styles.bottomSection}>
-          <TouchableOpacity style={[styles.button, styles.endButton]} onPress={confirmExit}>
+          <TouchableOpacity style={[styles.button, styles.endButton]} onPress={btnAppClose}>
             <Text style={styles.endButtonText}>終了</Text>
           </TouchableOpacity>
           <TouchableOpacity 
                     style={getButtonStyle()}
                     //onPress={/* 送信処理 */}
-                    disabled={!isReadyToSend} // 送信準備ができていなければ無効化          
+                    //disabled={!isReadyToSend} // 送信準備ができていなければ無効化          
+                    onPress={btnSend}
           >
             <Text style={styles.startButtonText}>送信</Text>
           </TouchableOpacity>
@@ -301,17 +312,24 @@ const WA1020 = ({ navigation,closeModal }) => {
         {/* フッタ */}
         <Footer /> 
 
+        {/* 処理中モーダル */}
+        <ProcessingModal
+          visible={modalVisible}
+          message={messages.IA5002()}
+          onClose={() => setModalVisible(false)}
+        />
+
         {/* ユーザーID用QRコードスキャナー */}
         {showScannerUsr && (
             <Modal visible={showScannerUsr} onRequestClose={() => setShowScannerUsr(false)}>
-                <QRScanner onScan={handleQRCodeScannedForUser} closeModal={() => setShowScannerUsr(false)} isActive={showScannerUsr}/>
+                <QRScanner onScan={handleQRCodeScannedForUser} closeModal={() => setShowScannerUsr(false)} isActive={showScannerUsr} errMsg={"利用者QRコード"}/>
             </Modal>
         )}
 
         {/* アクティベーションコード用QRコードスキャナー */}
         {showScannerActivate && (
             <Modal visible={showScannerActivate} onRequestClose={() => setShowScannerActivate(false)}>
-                <QRScanner onScan={handleQRCodeScannedForActivation} closeModal={() => setShowScannerActivate(false)} isActive={showScannerActivate}/>
+                <QRScanner onScan={handleQRCodeScannedForActivation} closeModal={() => setShowScannerActivate(false)} isActive={showScannerActivate}  errMsg={"アクティベーションQRコード"}/>
             </Modal>
         )}
 

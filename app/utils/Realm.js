@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import Realm from 'realm';
 import { settingsSchema,loginSchema,userSchema } from './Schemas'; // 仮のスキーマファイル
-import { generateEncryptionKey, getEncryptionKeyFromKeystore, storeEncryptionKeyInKeystore } from './Security'; // 仮のセキュリティ関数
+import { generateEncryptionKey } from './Security'; 
+import { getEncryptionKeyFromKeystore, storeEncryptionKeyInKeystore } from './KeyStore';
 import RNFS from 'react-native-fs';
 const realmPath = `${RNFS.DocumentDirectoryPath}/app.realm`;
 

@@ -1,7 +1,9 @@
 // Schemas.js
 import Realm from 'realm';
 
-// 設定ファイルのスキーマ定義
+/************************************************
+ * 設定ファイルのスキーマ定義
+ ************************************************/
 export const settingsSchema = {
     name: 'settings',
     primaryKey: 'id',
@@ -61,7 +63,9 @@ export const settingsSchema = {
     }
   };
 
-  // ログイン情報のスキーマ定義
+/************************************************
+ * ログイン情報のスキーマ定義
+ ************************************************/
 export const loginSchema = {
     name: 'login',
     primaryKey: 'id',
@@ -76,7 +80,9 @@ export const loginSchema = {
     }
   };
   
-  // ユーザのスキーマ定義
+/************************************************
+ * ユーザのスキーマ定義
+ ************************************************/
 export const userSchema = {
     name: 'user',
     primaryKey: 'id',

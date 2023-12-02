@@ -11,14 +11,21 @@
   <component name="ChangeListManager">
     <list default="true" id="b37edecb-3b64-428d-be86-a45231324e27" name="変更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/Footer.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/Footer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/.react/debuggerWorker.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/CustomButton.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/auth/_layout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/common/ImageViewer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/dashboard.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/navigation/AppNavigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/navigation/AppNavigator.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/screens/WA1020.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1020.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/styles/CommonStyle.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/styles/CommonStyle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/Api.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/Api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/utils/KeyStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/KeyStore.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/utils/Realm.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/Realm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/Schemas.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/Schemas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/Security.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/Security.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/messages.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/messages.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />

@@ -5747,6 +5747,11 @@
   "resolved" "https://registry.npmjs.org/react-native-crypto-js/-/react-native-crypto-js-1.0.0.tgz"
   "version" "1.0.0"
 
+"react-native-device-info@^10.12.0":
+  "integrity" "sha512-gnBkjyZNEqRd+5BNrdzuvmlraHTCH/to2x0Gp9rtDt0O9xWWW1MTYohUVWX9A0Ad2HVYcGanDCIvjWp4ngMZFg=="
+  "resolved" "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-10.12.0.tgz"
+  "version" "10.12.0"
+
 "react-native-element@^1.2.1":
   "integrity" "sha512-fbkzGRNyu2b5vAQEBIAKAmiYoy2RNzf2DqHEJI3W/R+cGMdatDkXFXeQISEMziNdmeMUi5YuURZcf48J+xCb/w=="
   "resolved" "https://registry.npmjs.org/react-native-element/-/react-native-element-1.2.1.tgz"

@@ -1,10 +1,13 @@
 // utils/security.js
-import * as Keychain from 'react-native-keychain';
 import * as Crypto from 'expo-crypto';
 import { Buffer } from 'buffer';
 import CryptoJS from 'react-native-crypto-js';
+import DeviceInfo from 'react-native-device-info';
 
-// ランダムなバイト列を生成する関数
+ /***********************************************
+ * ランダムなバイト列を生成する関数
+ * @returns 
+ ************************************************/
 export const generateEncryptionKey = async () => {
     try {
       const byteString = await Crypto.getRandomBytesAsync(64);
@@ -16,78 +19,11 @@ export const generateEncryptionKey = async () => {
     }
   };
 
-export const storeEncryptionKeyInKeystore = async (key) => {
-  try {
-    // Convert the key to a string to store it
-    const keyString = uint8ArrayToBase64(key);
-    await Keychain.setGenericPassword('encryptionKey', keyString, {
-      service: 'ims.encryption',
-      accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE,
-      accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
-    });
-    console.log('Key stored successfully!');
-  } catch (error) {
-    console.error('Error storing the encryption key', error);
-    throw error;
-  }
-};
-
-//keyStoreからキー取得
-export const getEncryptionKeyFromKeystore = async () => {
-
-  try {
-    const credentials = await Keychain.getGenericPassword({
-      service: 'ims.encryption'
-    });
-    if (credentials) {
-      binary =credentials.password.split(",");
-      const binaryString = base64ToUint8Array(credentials.password);
-      return binaryString;
-    } else {
-      throw 'No key found';
-    }
-  } catch (error) {
-    console.error('Error retrieving the encryption key', error);
-    return null;
-//    throw error;
-  }
-};
-
-// KeyStoreのキーを指定して、そのキー値をクリアするメソッド
-export const clearKeyStore = async (key) => {
-  try {
-    await Keychain.resetGenericPassword({ service: key });
-    console.log("Key value cleared successfully.");
-  } catch (error) {
-    console.error("Error clearing key value: ", error);
-  }
-};
-
-export const saveToKeystore = async (key, data) => {
-  try {
-    await Keychain.setGenericPassword(key, data);
-    console.log('Data saved successfully!');
-  } catch (error) {
-    console.error('Error saving data', error);
-  }
-};
-
-export const loadFromKeystore = async (key) => {
-  try {
-    const credentials = await Keychain.getGenericPassword();
-    if (credentials && credentials.username === key) {
-      console.log('Data loaded successfully!');
-      return credentials.password;
-    } else {
-      console.log('No data found');
-      return null;
-    }
-  } catch (error) {
-    console.error('Error loading data', error);
-  }
-};
-
-// atob関数を実装する（グローバルスコープで定義するか、別のファイルでexportして使用する）
+ /***********************************************
+ * atob関数の実装
+ * @param {*} input 
+ * @returns 
+ ************************************************/
 const atob = (input) => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
   let str = input.replace(/=+$/, '');
@@ -104,7 +40,11 @@ const atob = (input) => {
   return output;
 };
 
-// Base64 文字列をバイナリ文字列に変換する関数
+ /************************************************
+ * Base64 文字列をバイナリ文字列に変換する関数
+ * @param {*} base64 
+ * @returns 
+ ************************************************/
 const base64ToBinaryString = (base64) => {
   const raw = atob(base64);
   const rawLength = raw.length;
@@ -117,7 +57,11 @@ const base64ToBinaryString = (base64) => {
   return array;
 }
 
-// Base64 文字列をバイナリ文字列に変換し、その後 Uint8Array に変換
+ /************************************************
+ * Base64 文字列をバイナリ文字列に変換し、その後 Uint8Array に変換
+ * @param {*} base64 
+ * @returns 
+ ************************************************/
 export const base64ToUint8Array = (base64) => {
   const binaryString = atob(base64);
   const len = binaryString.length;
@@ -128,13 +72,21 @@ export const base64ToUint8Array = (base64) => {
   return bytes;
 }
 
-// Uint8Array を Base64 文字列に変換する関数
-const uint8ArrayToBase64 = (buffer) => {
+ /************************************************
+ * Uint8Array を Base64 文字列に変換する関数
+ * @param {*} buffer 
+ * @returns 
+ ************************************************/
+export const uint8ArrayToBase64 = (buffer) => {
   return Buffer.from(buffer).toString('base64');
 };
 
-
-// 暗号化関数
+ /************************************************
+ * AES256CBC暗号化関数
+ * @param {*} data 
+ * @param {*} secretKey 
+ * @returns 
+ ************************************************/
 export const encryptWithAES256CBC = (data, secretKey) => {
   const key = CryptoJS.enc.Utf8.parse(secretKey);
   const iv = CryptoJS.lib.WordArray.random(16); // 16バイトのIVをランダムに生成
@@ -150,7 +102,12 @@ export const encryptWithAES256CBC = (data, secretKey) => {
   return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(encryptedDataWithIv));
 };
 
-// 復号化関数
+ /************************************************
+ * AES256CBC復号化関数
+ * @param {*} ciphertext 
+ * @param {*} secretKey 
+ * @returns 
+ ************************************************/
 export const decryptWithAES256CBC = (ciphertext, secretKey) => {
   const key = CryptoJS.enc.Utf8.parse(secretKey);
 
@@ -167,4 +124,20 @@ export const decryptWithAES256CBC = (ciphertext, secretKey) => {
   });
 
   return decrypted.toString(CryptoJS.enc.Utf8);
+};
+
+ /************************************************
+ * デバイスIDと現在の日時からユニークなキーを生成し、SHA256でハッシュ化する関数
+ * @returns 
+ ************************************************/
+export const generateDeviceUniqueKey = async () => {
+  const deviceId = await DeviceInfo.getUniqueId(); // デバイスIDの取得
+  console.log('deviceID : ',deviceId )
+  const currentDateTime = new Date().toISOString().replace(/[^0-9]/g, "").slice(0,14); // YYYYMMDDhhmmss形式
+  console.log('currentDateTime : ',currentDateTime )
+  const combinedString = `${deviceId}${currentDateTime}`;
+  //const hashedKey = CryptoJS.SHA256(combinedString).toString(); // SHA256でハッシュ化
+  const hashedKey = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256,combinedString);
+  console.log('sha256(deviceID + sysDate) : ',hashedKey )
+  return hashedKey;
 };

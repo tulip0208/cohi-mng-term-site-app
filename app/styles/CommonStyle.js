@@ -89,8 +89,6 @@ export const styles = StyleSheet.create({
     backgroundColor: '#ccc', // 無効化したときの背景色
     color: '#999', // 無効化したときのテキスト色
   },
-
-
   row: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -101,6 +99,27 @@ export const styles = StyleSheet.create({
   },
 
 
+  //--------モーダル-------
+  modalBackground: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    backgroundColor: '#00000040',
+  },
+  activityIndicatorWrapper: {
+    backgroundColor: '#FFFFFF',
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  modalMessage: {
+    textAlign: 'center',
+  },
+    
   //--------フッタ--------
   footerContainer: {
     flexDirection: 'row',
