@@ -1,3 +1,8 @@
+/**
+ * 各種キー設定・取得
+ * 
+ */
+
 // utils/security.js
 import * as Crypto from 'expo-crypto';
 import { Buffer } from 'buffer';
@@ -133,11 +138,11 @@ export const decryptWithAES256CBC = (ciphertext, secretKey) => {
 export const generateDeviceUniqueKey = async () => {
   const deviceId = await DeviceInfo.getUniqueId(); // デバイスIDの取得
   console.log('deviceID : ',deviceId )
-  const currentDateTime = new Date().toISOString().replace(/[^0-9]/g, "").slice(0,14); // YYYYMMDDhhmmss形式
+  const currentDateTime = new Date().toISOString().replace(/[^0-9]/g, "").slice(0,14); // yyyyMMddhhmmss形式
   console.log('currentDateTime : ',currentDateTime )
   const combinedString = `${deviceId}${currentDateTime}`;
   //const hashedKey = CryptoJS.SHA256(combinedString).toString(); // SHA256でハッシュ化
   const hashedKey = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256,combinedString);
-  console.log('sha256(deviceID + sysDate) : ',hashedKey )
+  //console.log('sha256(deviceID + sysDate) : ',hashedKey )
   return hashedKey;
 };

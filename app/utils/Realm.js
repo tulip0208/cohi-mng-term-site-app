@@ -1,7 +1,12 @@
+/**
+ * DB（realm）のセットアップ・インスタンス取得
+ * 
+ */
+
 // utils/Realm.js
 import React, { useState } from 'react';
 import Realm from 'realm';
-import { settingsSchema,loginSchema,userSchema } from './Schemas'; // 仮のスキーマファイル
+import { settingsSchema,loginSchema,userSchema,temporaryPlacesSchema,storagePlacesSchema,fixedPlacesSchema } from './Schemas'; // 仮のスキーマファイル
 import { generateEncryptionKey } from './Security'; 
 import { getEncryptionKeyFromKeystore, storeEncryptionKeyInKeystore } from './KeyStore';
 import RNFS from 'react-native-fs';
@@ -13,10 +18,11 @@ const bundledSettingsPath = require('../../assets/data/settings.json'); // ア�
 let encryptionKey = null;// 暗号化キーをグローバルで保持
 let realm = null; //realmインスタンス
 let settings = null; //設定ファイル
-let globalServerName = ''; // グローバル変数としてserverNameを定義
 let realmConfig = null;
 // アプリ起動時のRealmの設定を行う関数
 const setupRealm = async () => {
+  
+  global.serverName = "";
   try {
     // keyStoreからkeyを取得する
     encryptionKey=await getEncryptionKeyFromKeystore();
@@ -31,7 +37,7 @@ const setupRealm = async () => {
     // Realmの初期設定
     realmConfig = {
       path: realmPath,//'/data/app.realm',//パーミッションエラーとなる
-      schema: [settingsSchema,loginSchema,userSchema],
+      schema: [settingsSchema,loginSchema,userSchema,temporaryPlacesSchema,storagePlacesSchema,fixedPlacesSchema],
       encryptionKey: encryptionKey
     };
     // Realmインスタンスを開く
@@ -39,6 +45,7 @@ const setupRealm = async () => {
 
     //設定ファイルが0件の場合
     settings = realm.objects('settings'); // 'settings'はスキーマ名
+
     // 設定データがまだ存在しない場合は挿入する
     if (settings.length === 0) {
       console.log('setupRealm settings');
@@ -51,8 +58,7 @@ const setupRealm = async () => {
         });
       });
     }
-    globalServerName = settings[0].serverName; // serverNameをグローバル変数に保存
-
+    global.serverName = settings[0].serverName; // serverNameをグローバル変数に保存
   } catch (error) {
     console.error('Error setting up Realm:', error);
   } finally {
@@ -107,4 +113,7 @@ export default {
 };
 
 export { onAppLaunch };
-export const getGlobalServerName = async () => globalServerName; // グローバル変数からserverNameを取得する関数
+export const getGlobalServerName = async () => {
+  console.log("serverName:", global.serverName);
+  return global.serverName; // 正しく値を返す
+}; // グローバル変数からserverNameを取得する関数

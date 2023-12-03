@@ -1,27 +1,17 @@
+/**
+ * 共通_フッタ
+ * 
+ */
 // app/components/Footer.js
 import React, { useContext,useState,useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { styles } from '../styles/CommonStyle'; // 共通スタイル
 import { getGlobalServerName } from '../utils/Realm';
-
+import { useServerName } from '../hooks/useServerName';
 const Footer = () => {
-  const [serverName, setServerName] = useState('');
+  const serverName = useServerName();
 
   useEffect(() => {
-    let isMounted = true;  // コンポーネントのマウント状態を追跡
-
-    const fetchServerName = async () => {
-      const name = await getGlobalServerName();
-      
-      if (isMounted) {
-        setServerName(name);
-      }
-    };
-
-    fetchServerName();
-    return () => {
-      isMounted = false;  // コンポーネントのアンマウント時に状態を更新しないようにする
-    };
   }, []);
 
   return (

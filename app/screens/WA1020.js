@@ -1,3 +1,7 @@
+/**
+ * A01-0020_アクティベーション
+ * WA1020
+ */
 // app/screens/WA1020.js
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート
@@ -11,12 +15,12 @@ import Realm from "realm";
 import QRScanner from '../utils/QRScanner';
 import ProcessingModal from '../components/Modal';
 import { getEncryptionKeyFromKeystore,saveToKeystore,clearKeyStore,loadFromKeystore } from '../utils/KeyStore'; 
-import { sendToServer } from '../utils/Api'; 
+import { IFA0010 } from '../utils/Api'; 
 
 
 const WA1020 = ({ navigation,closeModal }) => {
     const [ERROR, setERROR] = useState('');
-    const [userName, setUserName] = useState('');
+    const [userName, setUserName] = useState(''); //利用者
     const [trmId, setTrmId] = useState(''); // 端末ID
     const [comName, setComName] = useState(''); // 事業者名
     const [actReadFlg, setActReadFlg] = useState(''); // 端末ID
@@ -58,14 +62,12 @@ const WA1020 = ({ navigation,closeModal }) => {
                 }, Realm.UpdateMode.Modified); // Modified は既存のデータがあれば更新、なければ作成
               });
               console.log('save realm : user => ',realm.objects('user')[0])
+              // 別途保存しているユーザー名ステートがある場合はその更新も行う
+              setUserName(userName);
+              setComName(comName);
             } catch (error) {
-              console.error('アクティベーションに失敗しました', error);
+              console.error('ユーザ設定に失敗しました。', error);
             }
-         
-            // 別途保存しているユーザー名ステートがある場合はその更新も行う
-            setUserName(userName);
-            setComName(comName)
-
             setShowScannerUsr(false);
         } else {
             // ID種別が1ではない場合のエラーハンドリング
@@ -114,14 +116,14 @@ const WA1020 = ({ navigation,closeModal }) => {
 
 
             // アクティベーション情報をKeyStoreに保存
-            await saveToKeystore("activationInfo",JSON.stringify({
+            await saveToKeystore("activationInfo",{
               comId: comId,
               trmId: trmId,
               apiKey: apiKey256,
               actKey: actKey,
               actExpDt: actExpDt,
               actFin: 0, 
-            }));
+            });
             // 別途保存しているユーザー名ステートがある場合はその更新も行う
             setTrmId(trmId);
             setActReadFlg("済")
@@ -156,7 +158,7 @@ const WA1020 = ({ navigation,closeModal }) => {
         // CSVデータが正しいフォーマットでない場合のエラーハンドリング
       }      
     };
-    // ユーザーQRコードスキャンボタン押下時の処理
+    // ユーザQRコードスキャンボタン押下時の処理
     const btnUserQr = () => {
         setShowScannerUsr(true);
     };
@@ -181,7 +183,7 @@ const WA1020 = ({ navigation,closeModal }) => {
     const btnAppClose = () => {
         Alert.alert(
             "",
-            "終了しますか？",
+            messages.IA5001(),
             [
                 {
                     text: "いいえ",
@@ -210,51 +212,31 @@ const WA1020 = ({ navigation,closeModal }) => {
       try {
         // ハッシュ化されたキーをAES-256-CBCで暗号化し、KeyStoreに保存する関数
         // アクティベーション情報をKeyStoreに保存
-        await saveToKeystore("trmKey",JSON.stringify({
+        await saveToKeystore("trmKey",{
           trmKey: encryptedKey,
-        }));
+        });
         console.log('Device unique key stored successfully.');
 
-        // KeyStoreからアクティベーション情報を取得
-        const activationInfo = JSON.parse(await loadFromKeystore("activationInfo"));
+        // 前処理はApi.jsへ移行
 
-        const realm = await getInstance()
-        // realmからユーザ情報を取得
-        const userInfo = realm.objects('user')[0]
-        // realmから設定ファイル情報を取得
-        const settingsInfo = realm.objects('settings')[0]
-        console.log("---")
-        // サーバー通信用のデータを準備
-        const requestData = {
-          comId: userInfo.comId,
-          usrId: userInfo.usrId,
-          trmId: activationInfo.trmId,
-          apiKey: decryptWithAES256CBC(activationInfo.apiKey,secretKey), // 復号化
-          actKey: activationInfo.actKey,
-          trmKey: decryptWithAES256CBC(encryptedKey,secretKey), // 復号化
-          appTyp: 1, 
-          appVer: settingsInfo.appVer
-        };
-        console.log("---")
         // サーバー通信処理（Api.js内の関数を呼び出し）
-        const responseCode = await sendToServer(requestData,"IFA0010");
-        console.log("---")
+        const response = await IFA0010(encryptedKey,secretKey);//sendToServer(requestData,"IFA0010","端末登録");
+        console.log("response :",response)
         // アクティベーション情報をKeyStoreに保存
-        await saveToKeystore("activationInfo",JSON.stringify({
+        await saveToKeystore("activationInfo",{
           comId: activationInfo.comId,
           trmId: activationInfo.trmId,
           apiKey: activationInfo.apiKey256,
           actKey: activationInfo.actKey,
           actExpDt: activationInfo.actExpDt,
-          actFin: "1",//アクティベーション済へ変更 
-        }));
-        console.log("---")
+          actFin: 1,//アクティベーション済へ変更 
+        });
         // 事業者IDをKeyStoreに保存
-        await saveToKeystore("comId",JSON.stringify({comId:userInfo.comId}));
+        await saveToKeystore("comId",{comId:userInfo.comId});
         // 端末IDをKeyStoreに保存
-        await saveToKeystore("trmId",JSON.stringify({trmId:activationInfo.trmId}));
+        await saveToKeystore("trmId",{trmId:activationInfo.trmId});
         // 端末APIキーをKeyStoreに保存
-        await saveToKeystore("apiKey",JSON.stringify({apiKey:activationInfo.apiKey}));
+        await saveToKeystore("apiKey",{apiKey:activationInfo.apiKey});
         // 端末固有キーをKeyStoreに保存
         // →前半に実施しているため省略
 
@@ -319,7 +301,7 @@ const WA1020 = ({ navigation,closeModal }) => {
           onClose={() => setModalVisible(false)}
         />
 
-        {/* ユーザーID用QRコードスキャナー */}
+        {/* ユーザID用QRコードスキャナー */}
         {showScannerUsr && (
             <Modal visible={showScannerUsr} onRequestClose={() => setShowScannerUsr(false)}>
                 <QRScanner onScan={handleQRCodeScannedForUser} closeModal={() => setShowScannerUsr(false)} isActive={showScannerUsr} errMsg={"利用者QRコード"}/>

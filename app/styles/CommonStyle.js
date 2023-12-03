@@ -1,3 +1,8 @@
+/**
+ * 共通_スタイルシート
+ * 
+ */
+//styles/CommonStyle
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -20,6 +25,10 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },  
+  topContent: {
+    flex: 1,
+ //   justifyContent: 'center',
+  }, 
   //--------------------  
   //--------ヘッダ--------
   headerContainer: {

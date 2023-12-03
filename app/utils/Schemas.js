@@ -1,3 +1,7 @@
+/**
+ * DB(realm)のスキーマ定義
+ * 
+ */
 // Schemas.js
 import Realm from 'realm';
 
@@ -95,3 +99,45 @@ export const userSchema = {
     }
   };
   
+/************************************************
+ * 仮置場のスキーマ定義
+ ************************************************/
+  export const temporaryPlacesSchema = {
+    name: 'temporary_places',
+    primaryKey: 'id',
+    properties: {
+      id: 'string', // UUIDで設定
+      tmpPlacId: { type: 'string', indexed: true }, // 仮置場ID
+      tmpPlacNm: 'string', // 仮置場名
+      delSrcTyp: 'int' // 搬出元種別
+    }
+  };
+
+/************************************************
+ * 保管場のスキーマ定義
+ ************************************************/  
+export const storagePlacesSchema = {
+  name: 'storage_places',
+  primaryKey: 'id',
+  properties: {
+    id: 'string', // UUIDで設定
+    storPlacId: { type: 'string', indexed: true }, // 保管場ID
+    storPlacNm: 'string' // 仮置場名
+  }
+};
+
+/************************************************
+ * 定置場のスキーマ定義
+ ************************************************/  
+export const fixedPlacesSchema = {
+  name: 'fixed_places',
+  primaryKey: 'id',
+  properties: {
+    id: 'string', // UUIDで設定
+    storPlacId: { type: 'string', indexed: true }, // 保管場ID
+    fixPlacId: { type: 'string', indexed: true }, // 定置場ID
+    fixPlacNm: 'string', // 定置場名
+    facTyp: 'int', // 施設区分
+    conTyp: 'int' // 濃度区分
+  }
+};

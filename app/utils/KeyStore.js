@@ -1,3 +1,8 @@
+/**
+ * DB(keyStore)設定・取得操作
+ * 
+ */
+
 // utils/keyStore.js
 import * as Keychain from 'react-native-keychain';
 import {base64ToUint8Array,uint8ArrayToBase64} from './Security'
@@ -53,7 +58,7 @@ export const getEncryptionKeyFromKeystore = async () => {
 export const clearKeyStore = async (key) => {
   try {
     await Keychain.resetGenericPassword({ service: key });
-    console.log("Key value cleared successfully.");
+    console.log("Key value cleared successfully. key:",key);
   } catch (error) {
     console.error("Error clearing key value: ", error);
   }
@@ -89,7 +94,7 @@ export const loadFromKeystore = async (key) => {
       console.log('Data loaded successfully! key :',key);
       return data;
     } else {
-      console.log('No data found');
+      console.log('No data found key:',key);
       return null;
     }
   } catch (error) {

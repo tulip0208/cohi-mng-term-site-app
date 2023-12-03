@@ -1,3 +1,8 @@
+/**
+ * QRコードリーダ
+ * 
+ */
+//utils/QRScannner
 import React, { useState, useEffect } from 'react';
 import { View, Text, Alert } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
