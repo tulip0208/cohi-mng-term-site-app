@@ -8,7 +8,6 @@ import * as Crypto from 'expo-crypto';
 import { Buffer } from 'buffer';
 import CryptoJS from 'react-native-crypto-js';
 import DeviceInfo from 'react-native-device-info';
-
  /***********************************************
  * ランダムなバイト列を生成する関数
  * @returns 
@@ -25,11 +24,11 @@ export const generateEncryptionKey = async () => {
   };
 
  /***********************************************
- * atob関数の実装
+ * atob関数の実装(BASE64コード)
  * @param {*} input 
  * @returns 
  ************************************************/
-const atob = (input) => {
+export const atob = (input) => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
   let str = input.replace(/=+$/, '');
   let output = '';
@@ -41,7 +40,6 @@ const atob = (input) => {
       bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0) {
     buffer = chars.indexOf(buffer);
   }
-
   return output;
 };
 
@@ -93,18 +91,9 @@ export const uint8ArrayToBase64 = (buffer) => {
  * @returns 
  ************************************************/
 export const encryptWithAES256CBC = (data, secretKey) => {
-  const key = CryptoJS.enc.Utf8.parse(secretKey);
-  const iv = CryptoJS.lib.WordArray.random(16); // 16バイトのIVをランダムに生成
-
-  const encrypted = CryptoJS.AES.encrypt(data, key, {
-    iv: iv,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7
-  });
-
-  // IVを結果に追加して、それをBase64でエンコードする
-  const encryptedDataWithIv = iv.toString() + encrypted.toString();
-  return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(encryptedDataWithIv));
+  let encJson = CryptoJS.AES.encrypt(JSON.stringify(data), secretKey.toString()).toString()
+  let encData = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(encJson))
+  return encData
 };
 
  /************************************************
@@ -114,21 +103,9 @@ export const encryptWithAES256CBC = (data, secretKey) => {
  * @returns 
  ************************************************/
 export const decryptWithAES256CBC = (ciphertext, secretKey) => {
-  const key = CryptoJS.enc.Utf8.parse(secretKey);
-
-  // Base64デコードとIVの分離
-  const ciphertextBytesWithIv = CryptoJS.enc.Base64.parse(ciphertext);
-  const iv = CryptoJS.lib.WordArray.create(ciphertextBytesWithIv.words.slice(0, 4)); // 先頭4ワード(16バイト)がIV
-  const ciphertextBytes = CryptoJS.lib.WordArray.create(ciphertextBytesWithIv.words.slice(4)); // それ以降が暗号文
-
-  // 暗号文を復号化
-  const decrypted = CryptoJS.AES.decrypt({ ciphertext: ciphertextBytes }, key, {
-    iv: iv,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7
-  });
-
-  return decrypted.toString(CryptoJS.enc.Utf8);
+  let decData = CryptoJS.enc.Base64.parse(ciphertext).toString(CryptoJS.enc.Utf8)
+  let bytes = CryptoJS.AES.decrypt(decData, secretKey.toString()).toString(CryptoJS.enc.Utf8)
+  return JSON.parse(bytes);
 };
 
  /************************************************

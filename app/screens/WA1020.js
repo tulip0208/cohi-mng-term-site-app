@@ -16,6 +16,7 @@ import QRScanner from '../utils/QRScanner';
 import ProcessingModal from '../components/Modal';
 import { getEncryptionKeyFromKeystore,saveToKeystore,clearKeyStore,loadFromKeystore } from '../utils/KeyStore'; 
 import { IFA0010 } from '../utils/Api'; 
+import { initializeLogFile, logUserAction, logCommunication, watchPosition,logScreen  } from '../utils/Log';
 
 
 const WA1020 = ({ navigation,closeModal }) => {
@@ -23,6 +24,7 @@ const WA1020 = ({ navigation,closeModal }) => {
     const [userName, setUserName] = useState(''); //利用者
     const [trmId, setTrmId] = useState(''); // 端末ID
     const [comName, setComName] = useState(''); // 事業者名
+    const [comId, setComId] = useState(''); // 事業者ID
     const [actReadFlg, setActReadFlg] = useState(''); // 端末ID
     const [showScannerUsr, setShowScannerUsr] = useState(false); // カメラ表示用の状態
     const [showScannerActivate, setShowScannerActivate] = useState(false); // カメラ表示用の状態
@@ -47,7 +49,7 @@ const WA1020 = ({ navigation,closeModal }) => {
             const comName = parts[2];
             const userId = parts[3];
             const userName = parts[4];
-
+            
             const realm = await getInstance();
             //realmへ保存
             try {
@@ -61,10 +63,11 @@ const WA1020 = ({ navigation,closeModal }) => {
                   userNm: userName,
                 }, Realm.UpdateMode.Modified); // Modified は既存のデータがあれば更新、なければ作成
               });
-              console.log('save realm : user => ',realm.objects('user')[0])
+              console.log('save realm : user => ', await realm.objects('user')[0])
               // 別途保存しているユーザー名ステートがある場合はその更新も行う
               setUserName(userName);
               setComName(comName);
+              setComId(comId);
             } catch (error) {
               console.error('ユーザ設定に失敗しました。', error);
             }
@@ -109,11 +112,9 @@ const WA1020 = ({ navigation,closeModal }) => {
             const actExpDt = parts[4];//アクティベーション有効期限
 
             //キーを取得
-            const key = getEncryptionKeyFromKeystore();
+            const key = await getEncryptionKeyFromKeystore();
             //端末APIキーのaes-256-cbc暗号化
             const apiKey256 = encryptWithAES256CBC(apiKey, key)
-            console.log(apiKey," : ",apiKey256);
-
 
             // アクティベーション情報をKeyStoreに保存
             await saveToKeystore("activationInfo",{
@@ -159,11 +160,14 @@ const WA1020 = ({ navigation,closeModal }) => {
       }      
     };
     // ユーザQRコードスキャンボタン押下時の処理
-    const btnUserQr = () => {
+    const btnUserQr = async () => {
+        await logUserAction(`ボタン押下: QRコード読込(ユーザ)`);  
+
         setShowScannerUsr(true);
     };
     // アクティベーションQRコードスキャンボタン押下時の処理
-    const btnActQr = () => {
+    const btnActQr = async () => {
+        await logUserAction(`ボタン押下: QRコード読込(アクティベーション)`);
         setShowScannerActivate(true);
     };    
     // useEffect フックを使用してステートが変更されるたびにチェック
@@ -180,7 +184,8 @@ const WA1020 = ({ navigation,closeModal }) => {
     /************************************************
      * 終了ボタン押下時のポップアップ表示
      ************************************************/
-    const btnAppClose = () => {
+    const btnAppClose = async () => {
+        await logUserAction(`ボタン押下: 終了(WA1030)`);      
         Alert.alert(
             "",
             messages.IA5001(),
@@ -203,6 +208,7 @@ const WA1020 = ({ navigation,closeModal }) => {
      * 送信ボタン押下時の処理
      ************************************************/
     const btnSend = async () =>{
+      await logUserAction(`ボタン押下: 送信(WA1020)`);  
       // モーダル表示
       setModalVisible(true);
       const hashedKey = await generateDeviceUniqueKey(); // デバイスIDと現在の日時からユニークなキーを生成し、SHA256でハッシュ化する関数
@@ -221,18 +227,19 @@ const WA1020 = ({ navigation,closeModal }) => {
 
         // サーバー通信処理（Api.js内の関数を呼び出し）
         const response = await IFA0010(encryptedKey,secretKey);//sendToServer(requestData,"IFA0010","端末登録");
-        console.log("response :",response)
+        
+        const activationInfo = await loadFromKeystore("activationInfo");
         // アクティベーション情報をKeyStoreに保存
         await saveToKeystore("activationInfo",{
           comId: activationInfo.comId,
           trmId: activationInfo.trmId,
-          apiKey: activationInfo.apiKey256,
+          apiKey: activationInfo.apiKey,
           actKey: activationInfo.actKey,
           actExpDt: activationInfo.actExpDt,
           actFin: 1,//アクティベーション済へ変更 
         });
         // 事業者IDをKeyStoreに保存
-        await saveToKeystore("comId",{comId:userInfo.comId});
+        await saveToKeystore("comId",{comId:comId});
         // 端末IDをKeyStoreに保存
         await saveToKeystore("trmId",{trmId:activationInfo.trmId});
         // 端末APIキーをKeyStoreに保存
@@ -244,6 +251,7 @@ const WA1020 = ({ navigation,closeModal }) => {
         setModalVisible(false);
 
         // ログイン画面へ遷移する
+        logScreen(`画面遷移: WA1030_ログイン`);
         navigation.navigate('WA1030');
       } catch (error) {
         // モーダル非表示
@@ -263,7 +271,7 @@ const WA1020 = ({ navigation,closeModal }) => {
         </View>
 
         {/* 中段 */}
-        <View  style={[styles.main,styles.middleContent]}>
+        <View  style={[styles.main,styles.topContent]}>
           <Text style={styles.labelText}>利用者：{userName}</Text>
           <TouchableOpacity style={[styles.button]} onPress={btnUserQr}>
             <Text style={styles.buttonText}>QRコード読込</Text>

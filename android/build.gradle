@@ -36,6 +36,12 @@ allprojects {
         google()
         mavenCentral()
         maven { url 'https://www.jitpack.io' }
+        //location取得に必要
+        configurations.all{
+            resolutionStrategy{
+                force "com.google.android.gms:play-services-location:21.0.1"
+            }
+        }        
     }
 }
 // @generated begin expo-camera-import - expo prebuild (DO NOT MODIFY) sync-f244f4f3d8bf7229102e8f992b525b8602c74770

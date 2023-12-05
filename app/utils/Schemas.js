@@ -141,3 +141,32 @@ export const fixedPlacesSchema = {
     conTyp: 'int' // 濃度区分
   }
 };
+
+/************************************************
+ * 位置情報のスキーマ定義
+ ************************************************/  
+export const positionSchema = {
+  name: 'position',
+  primaryKey: 'id',
+  properties: {
+    id: 'string', // UUIDで設定
+    // storPlacId: { type: 'string', indexed: true }, // 保管場ID
+    // fixPlacId: { type: 'string', indexed: true }, // 定置場ID
+    // fixPlacNm: 'string', // 定置場名
+    // facTyp: 'int', // 施設区分
+    // conTyp: 'int' // 濃度区分
+  }
+};
+
+/************************************************
+ * スキーマ定義
+ ************************************************/  
+export const SCHEMAS = {
+  settingsSchema,
+  loginSchema,
+  userSchema,
+  temporaryPlacesSchema,
+  storagePlacesSchema,
+  fixedPlacesSchema,
+  positionSchema
+};

@@ -9,6 +9,7 @@ import { Alert } from 'react-native';
 import axios from 'axios';
 import { checkActivation,loadFromKeystore,getEncryptionKeyFromKeystore } from '../utils/KeyStore'; // KeyStoreの確認関数
 import {encryptWithAES256CBC,generateDeviceUniqueKey,decryptWithAES256CBC} from '../utils/Security';
+import { initializeLogFile, logUserAction, logCommunication, watchPosition, logScreen } from '../utils/Log';
 
 /************************************************
  * IFA0010_アクティベーション
@@ -17,11 +18,13 @@ export const IFA0010 = async (encryptedKey,secretKey) => {
   try {
     // KeyStoreからアクティベーション情報を取得
     const activationInfo = await loadFromKeystore("activationInfo");
+
     const realm = await getInstance()
     // realmからユーザ情報を取得
-    const userInfo = realm.objects('user')[0]
+    const userInfo = await realm.objects('user')[0]
+    
     // realmから設定ファイル情報を取得
-    const settingsInfo = realm.objects('settings')[0]    
+    const settingsInfo = await realm.objects('settings')[0]    
     // サーバー通信用のデータを準備
     const requestData = {
       comId: userInfo.comId,
@@ -48,20 +51,56 @@ export const IFA0030 = async () => {
   try {
     const secretKey = await getEncryptionKeyFromKeystore(); // AES暗号化のための秘密鍵
     const realm = await getInstance()
-    const userInfo = realm.objects('user')[0]
-    const settingsInfo = realm.objects('settings')[0]
+    const userInfo = await realm.objects('user')[0]
+    const settingsInfo = await realm.objects('settings')[0]
+    const comId = await loadFromKeystore("comId")
+    const trmId = await loadFromKeystore("trmId")
+    const apiKey = await loadFromKeystore("apiKey")
+    const trmKey = await loadFromKeystore("trmKey")
     const requestData = {
-      comId: await loadFromKeystore("comId"),
-      usrId: userInfo.usrId,
-      trmId: await loadFromKeystore("trmId"),
-      apiKey: decryptWithAES256CBC(await loadFromKeystore("apiKey"),secretKey), // 復号化
-      trmKey: decryptWithAES256CBC(await loadFromKeystore("trmKey"),secretKey), // 復号化
+      comId: comId.comId,
+      usrId: userInfo.userId,
+      trmId: trmId.trmId,
+      apiKey: decryptWithAES256CBC(apiKey.apiKey,secretKey), // 復号化
+      trmKey: decryptWithAES256CBC(trmKey.trmKey,secretKey), // 復号化
       appTyp: 1, 
       appVer: settingsInfo.appVer,
-      setDt: settingsInfo.settingFileDt
+      setdt: settingsInfo.settingFileDt
     };
+
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const responseCode = await sendToServer(requestData,"IFA0030","端末チェック");
+    return responseCode;
+  }catch(error){
+    throw new Error(`${error}`);
+  }
+};
+
+/************************************************
+ * IFA0040_端末設定ファイル配信
+ ************************************************/
+export const IFA0040 = async () => {
+  try {
+    const secretKey = await getEncryptionKeyFromKeystore(); // AES暗号化のための秘密鍵
+    const realm = await getInstance()
+    const userInfo = await realm.objects('user')[0]
+    const settingsInfo = await realm.objects('settings')[0]
+    const comId = await loadFromKeystore("comId")
+    const trmId = await loadFromKeystore("trmId")
+    const apiKey = await loadFromKeystore("apiKey")
+    const trmKey = await loadFromKeystore("trmKey")
+    const requestData = {
+      comId: comId.comId,
+      usrId: userInfo.userId,
+      trmId: trmId.trmId,
+      apiKey: decryptWithAES256CBC(apiKey.apiKey,secretKey), // 復号化
+      trmKey: decryptWithAES256CBC(trmKey.trmKey,secretKey), // 復号化
+      appTyp: 1, 
+      appVer: settingsInfo.appVer,
+      setdate: settingsInfo.settingFileDt
+    };
+    // サーバー通信処理（Api.js内の関数を呼び出し）
+    const responseCode = await sendToServer(requestData,"IFA0040","端末設定ファイル配信");
     return responseCode;
   }catch(error){
     throw new Error(`${error}`);
@@ -75,14 +114,18 @@ export const IFA0050 = async () => {
   try {
     const secretKey = await getEncryptionKeyFromKeystore(); // AES暗号化のための秘密鍵
     const realm = await getInstance()
-    const userInfo = realm.objects('user')[0]
-    const settingsInfo = realm.objects('settings')[0]
+    const userInfo = await realm.objects('user')[0]
+    const settingsInfo = await realm.objects('settings')[0]
+    const comId = await loadFromKeystore("comId")
+    const trmId = await loadFromKeystore("trmId")
+    const apiKey = await loadFromKeystore("apiKey")
+    const trmKey = await loadFromKeystore("trmKey")    
     const requestData = {
-      comId: await loadFromKeystore("comId"),
-      usrId: userInfo.usrId,
-      trmId: await loadFromKeystore("trmId"),
-      apiKey: decryptWithAES256CBC(await loadFromKeystore("apiKey"),secretKey), // 復号化
-      trmKey: decryptWithAES256CBC(await loadFromKeystore("trmKey"),secretKey), // 復号化
+      comId: comId.comId,
+      usrId: userInfo.userId,
+      trmId: trmId.trmId,
+      apiKey: decryptWithAES256CBC(apiKey.apiKey,secretKey), // 復号化
+      trmKey: decryptWithAES256CBC(trmKey.trmKey,secretKey), // 復号化
       appTyp: 1, 
       appVer: settingsInfo.appVer,
     };
@@ -101,14 +144,18 @@ export const IFA0051 = async () => {
   try {
     const secretKey = await getEncryptionKeyFromKeystore(); // AES暗号化のための秘密鍵
     const realm = await getInstance()
-    const userInfo = realm.objects('user')[0]
-    const settingsInfo = realm.objects('settings')[0]
+    const userInfo = await realm.objects('user')[0]
+    const settingsInfo = await realm.objects('settings')[0]
+    const comId = await loadFromKeystore("comId")
+    const trmId = await loadFromKeystore("trmId")
+    const apiKey = await loadFromKeystore("apiKey")
+    const trmKey = await loadFromKeystore("trmKey")
     const requestData = {
-      comId: await loadFromKeystore("comId"),
-      usrId: userInfo.usrId,
-      trmId: await loadFromKeystore("trmId"),
-      apiKey: decryptWithAES256CBC(await loadFromKeystore("apiKey"),secretKey), // 復号化
-      trmKey: decryptWithAES256CBC(await loadFromKeystore("trmKey"),secretKey), // 復号化
+      comId: comId.comId,
+      usrId: userInfo.userId,
+      trmId: trmId.trmId,
+      apiKey: decryptWithAES256CBC(apiKey.apiKey,secretKey), // 復号化
+      trmKey: decryptWithAES256CBC(trmKey.trmKey,secretKey), // 復号化
       appTyp: 1, 
       appVer: settingsInfo.appVer,
       setDt: settingsInfo.settingFileDt
@@ -128,11 +175,17 @@ export const IFA0051 = async () => {
  * @param {*} msg インターフェース名
  ************************************************/
 export const sendToServer = async (requestData,endpoint,msg) => {
+  let URI = null;// + endpoint;//★エンドポイント使うかわからないので保留
   try {
+
     // 設定ファイルから接続先URLを取得
     const settings = await getSettings();
     const BASEURL = settings.connectionURL;
-    const URI = BASEURL// + endpoint;//★エンドポイント使うかわからないので保留
+    URI = BASEURL;// + endpoint;//★エンドポイント使うかわからないので保留
+
+    // リクエスト送信前にログ記録
+    await logCommunication('SEND', URI, null, JSON.stringify(requestData));
+
     // Axiosリクエストの設定
     const config = {
       method: 'post',
@@ -160,18 +213,23 @@ export const sendToServer = async (requestData,endpoint,msg) => {
       console.error('Server returned status code ', response.status);
       throw new Error(`Server returned status code ${response.status}`);
     //【応答データ】.【ステータスコード】＝"01:異常"　の場合
-    }else if(response.data && response.data.sttCd && response.data == "01"){
+    }else if(response.data && response.data.sttCd && response.data.sttCd == "01"){
       Alert.alert(
         "",messages.EA5005(msg,response.status),
         [{ text: "OK"}]//, onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
       );        
       console.error('Server returned status code ', response.status);
-      throw new Error(`Server returned status code ${response.data}`);
+      throw new Error(`Server returned status code ${response.status}`);
     }
-    console.log(msg, " done")
+
+    // 応答受信後にログ記録
+    await logCommunication('RECV', URI, response.status, JSON.stringify(response.data));
     return response;
 
   } catch (error) {
+    // エラー時にログ記録
+    await logCommunication('ERROR', URI, null, error);
+
     if (error.code === 'ECONNABORTED') {
       // タイムアウト処理
       Alert.alert(

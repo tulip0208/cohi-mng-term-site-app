@@ -6,9 +6,9 @@
 // utils/Realm.js
 import React, { useState } from 'react';
 import Realm from 'realm';
-import { settingsSchema,loginSchema,userSchema,temporaryPlacesSchema,storagePlacesSchema,fixedPlacesSchema } from './Schemas'; // 仮のスキーマファイル
+import { settingsSchema,loginSchema,userSchema,temporaryPlacesSchema,storagePlacesSchema,fixedPlacesSchema,positionSchema } from './Schemas'; // 仮のスキーマファイル
 import { generateEncryptionKey } from './Security'; 
-import { getEncryptionKeyFromKeystore, storeEncryptionKeyInKeystore } from './KeyStore';
+import { getEncryptionKeyFromKeystore, storeEncryptionKeyInKeystore,clearKeyStore } from './KeyStore';
 import RNFS from 'react-native-fs';
 const realmPath = `${RNFS.DocumentDirectoryPath}/app.realm`;
 
@@ -26,6 +26,7 @@ const setupRealm = async () => {
   try {
     // keyStoreからkeyを取得する
     encryptionKey=await getEncryptionKeyFromKeystore();
+
     // 初回起動時の処理
     if (!encryptionKey) {
       console.log('setupRealm firstTime');
@@ -37,12 +38,12 @@ const setupRealm = async () => {
     // Realmの初期設定
     realmConfig = {
       path: realmPath,//'/data/app.realm',//パーミッションエラーとなる
-      schema: [settingsSchema,loginSchema,userSchema,temporaryPlacesSchema,storagePlacesSchema,fixedPlacesSchema],
+      schema: [settingsSchema,loginSchema,userSchema,temporaryPlacesSchema,storagePlacesSchema,fixedPlacesSchema,positionSchema],
       encryptionKey: encryptionKey
     };
     // Realmインスタンスを開く
     realm = await Realm.open(realmConfig);
-
+    
     //設定ファイルが0件の場合
     settings = realm.objects('settings'); // 'settings'はスキーマ名
 
