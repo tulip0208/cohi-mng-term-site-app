@@ -9,6 +9,16 @@ import { checkActivation,loadFromKeystore,saveToKeystore,getEncryptionKeyFromKey
 import WA1020 from '../screens/WA1020';
 import WA1030 from '../screens/WA1030';
 import WA1040 from '../screens/WA1040';
+import WA1050 from '../screens/WA1050';
+import WA1060 from '../screens/WA1060';
+import WA1070 from '../screens/WA1070';
+import WA1080 from '../screens/WA1080';
+import WA1090 from '../screens/WA1090';
+import WA1100 from '../screens/WA1100';
+import WA1110 from '../screens/WA1110';
+import WA1120 from '../screens/WA1120';
+import WA1130 from '../screens/WA1130';
+import WA1140 from '../screens/WA1140';
 import { Text } from 'react-native';
 import { onAppLaunch,getInstance } from '../utils/Realm'; // Realmのセットアップ関数をインポート
 import { sendToServer,IFA0051 } from '../utils/Api'; 
@@ -52,7 +62,7 @@ const AppNavigator = () => {
         const realm = await getInstance();
         const loginInfo = await realm.objects('login')[0]
         const currentDateTime = new Date().toISOString().replace(/[^0-9]/g, "").slice(0,8); // yyyyMMddhhmmss形式
-        console.log(loginInfo)
+
         //console.log('currentDateTime : ',currentDateTime )
         //時分秒を除く日付を突合し確認
         if(loginInfo && loginInfo.loginDt.replace(/[^0-9]/g, "").slice(0,8)==currentDateTime && loginInfo.logoutFlg=="0"){
@@ -96,6 +106,16 @@ const AppNavigator = () => {
         <Stack.Screen name="WA1020" component={WA1020} />
         <Stack.Screen name="WA1030" component={WA1030} />        
         <Stack.Screen name="WA1040" component={WA1040} />
+        <Stack.Screen name="WA1050" component={WA1050} />
+        <Stack.Screen name="WA1060" component={WA1060} />
+        <Stack.Screen name="WA1070" component={WA1070} />
+        <Stack.Screen name="WA1080" component={WA1080} />
+        <Stack.Screen name="WA1090" component={WA1090} />
+        <Stack.Screen name="WA1100" component={WA1100} />
+        <Stack.Screen name="WA1110" component={WA1110} />                                                        
+        <Stack.Screen name="WA1120" component={WA1120} />
+        <Stack.Screen name="WA1130" component={WA1130} />                
+        <Stack.Screen name="WA1140" component={WA1140} />        
         {/*<Stack.Screen name="WA1020" component={WA1020} />*/}
       </Stack.Navigator>
   );

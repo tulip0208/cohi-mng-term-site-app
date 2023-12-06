@@ -56,7 +56,7 @@ const setupRealm = async () => {
         realm.create('settings', {
           id: 1, // プライマリーキーとしてのID
           ...bundledSettings, // スプレッド構文で他のフィールドを展開
-        });
+        },Realm.UpdateMode.Modified);
       });
     }
     global.serverName = settings[0].serverName; // serverNameをグローバル変数に保存

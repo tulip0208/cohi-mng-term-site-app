@@ -297,7 +297,8 @@ const WA1030 = ({navigation,closeModal}) => {
             //★ settingsInfo.xxxx = responseIFA0040dec; //
             realm.write(() => {
               realm.create('settings', {
-                settingsInfo
+                id: 1, // プライマリーキーとしてのID
+                ...settingsInfo, // スプレッド構文で他のフィールドを展開
               }, Realm.UpdateMode.Modified); 
             });
             // IFA0051_バージョンアップ完了報告を呼び出す

@@ -4,6 +4,11 @@
  */
 //styles/CommonStyle
 import { StyleSheet } from 'react-native';
+// 基準サイズ
+const baseSize = 16;
+
+// ピクセルをremに変換する関数
+const rem = (px) => px / baseSize;
 
 export const styles = StyleSheet.create({
   //--------メイン--------
@@ -32,9 +37,9 @@ export const styles = StyleSheet.create({
   //--------------------  
   //--------ヘッダ--------
   headerContainer: {
-    padding: 15,
+    padding: 5,
     backgroundColor: '#1E74BD', // ヘッダの背景色
-    height: 60,
+    height: 40,
   },
   headerText: {
     fontSize: 20,
@@ -54,7 +59,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#548236', // パステルな水色
     padding: 5,
     margin: 5,
-    borderRadius: 20,
+    borderRadius: 15,
     height: 60,
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
@@ -80,13 +85,80 @@ export const styles = StyleSheet.create({
     padding: 5,
     flex: 1, // ボタンの幅を画面いっぱいに広げる
   },
+  endButtonSmall: {
+    backgroundColor: '#F1D2C1', // 淡いグレー
+    padding: 5,
+    height:50,
+    width:"48%"
+  },  
   startButton: {
     backgroundColor: '#70AD47', // 抹茶色（エクセルの淡い黄緑）
     padding: 10,
     flex: 1,
   },
   //--------------------
+  //--------メニュー-------
 
+  //--------メニュー-------
+  menuMain: {
+    flexDirection: 'row', // 子要素を横並びにする
+    flexWrap: 'wrap', // 子要素が親要素の幅を超えたら折り返す
+    justifyContent: 'flex-start', // 子要素を親要素の左端に揃える
+    paddingTop:10,
+    paddingLeft:45,
+    paddingRight:45,
+  },
+  menuButton: {
+    width: '48%', // 画面幅の半分のサイズ
+    height: 80,
+    marginRight: 'auto', // 右のマージンを自動調整
+    marginLeft: 'auto', // 左のマージンを自動調整  },
+    backgroundColor: '#548236', // パステルな水色
+    marginBottom: 5,
+    padding: 15,
+    borderRadius: 15,
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+    marginLeft:2,
+    marginRight:2,
+  },
+  menuButtonText1: {
+    fontSize: 18,
+    color: 'white',
+  }, 
+  menuButtonText2: {
+    fontSize: 18,
+    color: 'black',
+  }, 
+  menuButton1:{
+    backgroundColor: '#6f4b3e', 
+  },
+  menuButton2:{
+    backgroundColor: '#767171', 
+  },
+  menuButton3:{
+    backgroundColor: '#7b4d28', 
+  },
+  menuButton4:{
+    backgroundColor: '#8497b0', 
+  },
+  menuButton5:{
+    backgroundColor: '#c39143', 
+  },
+  menuButton6:{
+    backgroundColor: '#d0cece', 
+  },
+  menuButton7:{
+    backgroundColor: '#4e76ce', 
+  },
+  menuButton8:{
+    backgroundColor: '#2cae2c', 
+  },
+  menuButton9:{
+    backgroundColor: '#ffd966', 
+    color:'black',
+  },                
+  //--------------------
 
   bottomSection: {
     flexDirection: 'row',
@@ -139,7 +211,7 @@ export const styles = StyleSheet.create({
   footerText: {
     fontSize: 15,
     color: '#fff',
-    height: 30,
+    height: 20,
   },
   serverNameText: {
     textAlign: 'left',
