@@ -16,6 +16,7 @@ import QRScanner from '../utils/QRScanner';
 import ProcessingModal from '../components/Modal';
 import { getEncryptionKeyFromKeystore,saveToKeystore,clearKeyStore,loadFromKeystore } from '../utils/KeyStore'; 
 import { sendToServer } from '../utils/Api'; 
+import { initializeLogFile, logUserAction, logCommunication, watchPosition, writeLog,logScreen,calculateTotalLogSize  } from '../utils/Log';
 
 
 const WA1100 = ({closeModal}) => {
@@ -34,7 +35,8 @@ const WA1100 = ({closeModal}) => {
     /************************************************
      * 終了ボタン押下時のポップアップ表示
      ************************************************/
-    const btnAppClose = () => {
+    const btnAppClose = async () => {
+      await logUserAction(`ボタン押下: 終了(WA1100)`);  
       Alert.alert(
           "",
           "終了しますか？",

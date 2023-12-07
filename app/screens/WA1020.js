@@ -251,7 +251,7 @@ const WA1020 = ({ navigation,closeModal }) => {
         setModalVisible(false);
 
         // ログイン画面へ遷移する
-        logScreen(`画面遷移: WA1030_ログイン`);
+        await logScreen(`画面遷移: WA1030_ログイン`);
         navigation.navigate('WA1030');
       } catch (error) {
         // モーダル非表示
