@@ -40,7 +40,7 @@ const WA1060 = ({closeModal}) => {
 
       Alert.alert(
           "",
-          "終了しますか？",
+          messages.IA5001(),
           [
               {
                   text: "いいえ",

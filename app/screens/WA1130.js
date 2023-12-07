@@ -39,7 +39,7 @@ const WA1130 = ({closeModal}) => {
       await logUserAction(`ボタン押下: 終了(WA1130)`);  
       Alert.alert(
           "",
-          "終了しますか？",
+          messages.IA5001(),
           [
               {
                   text: "いいえ",
