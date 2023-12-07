@@ -3,7 +3,7 @@
  * WA1030
  */
 // app/screens/WA1030.js
-import Header from '../components/Header'; // Headerコンポーネントのインポート
+import TapHeader from '../components/TapHeader'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート
 import { styles } from '../styles/CommonStyle'; // 共通スタイル
 import React, { useState, useEffect } from 'react';
@@ -326,7 +326,7 @@ const WA1030 = ({navigation,closeModal}) => {
         setModalVisible(false);
 
         // メニュー画面へ遷移する
-        logScreen(`画面遷移: WA1040_メニュー`);        
+        await logScreen(`画面遷移: WA1040_メニュー`);        
         navigation.navigate('WA1040');
       } catch (error) {
         // モーダル非表示
@@ -337,7 +337,7 @@ const WA1030 = ({navigation,closeModal}) => {
     return (
       <View style={styles.container}>
         {/* ヘッダ */}
-        <Header title={"ログイン"}/>
+        <TapHeader title={"ログイン"} navigation={navigation} sourceScreenId={"WA1030"}/>
 
         {/* 中段 */}
         <View  style={[styles.main,styles.topContent]}>

@@ -11,12 +11,19 @@
   <component name="ChangeListManager">
     <list default="true" id="b37edecb-3b64-428d-be86-a45231324e27" name="変更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/navigation/AppNavigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/navigation/AppNavigator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/.react/debuggerWorker.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/andrianucef/ims/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/andrianucef/ims/MainApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/screens/WA1030.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1030.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/screens/WA1040.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1040.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/screens/WA1050.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1050.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/styles/CommonStyle.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/styles/CommonStyle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/Realm.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/Realm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/data/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/data/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/Api.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/Api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/Log.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/Log.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/Schemas.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/Schemas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/messages.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/messages.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -5834,7 +5834,12 @@
     "react-freeze" "^1.0.0"
     "warn-once" "^0.1.0"
 
-"react-native@*", "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@>=0.40.0", "react-native@>=0.57", "react-native@>=0.68", "react-native@>=0.71.0", "react-native@0.72.5":
+"react-native-zip-archive@^6.1.0":
+  "integrity" "sha512-FEt6O8YD/Is48HGXuHndFktod7S2cUdf0C+B2XRHWeS3zs/gXlzOGo1gcwUxdMyqQwEwnFuAqlYvUK4BNGQsDg=="
+  "resolved" "https://registry.npmjs.org/react-native-zip-archive/-/react-native-zip-archive-6.1.0.tgz"
+  "version" "6.1.0"
+
+"react-native@*", "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@>=0.40.0", "react-native@>=0.57", "react-native@>=0.60.0", "react-native@>=0.68", "react-native@>=0.71.0", "react-native@0.72.5":
   "integrity" "sha512-oIewslu5DBwOmo7x5rdzZlZXCqDIna0R4dUwVpfmVteORYLr4yaZo5wQnMeR+H7x54GaMhmgeqp0ZpULtulJFg=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.72.5.tgz"
   "version" "0.72.5"
@@ -5889,7 +5894,7 @@
     "object-assign" "^4.1.1"
     "react-is" "^16.12.0 || ^17.0.0 || ^18.0.0"
 
-"react@*", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.6.0 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^18.2.0", "react@>=15.4.0", "react@>=16.0", "react@>=16.8", "react@>=17.0.0", "react@>=17.0.2", "react@18.2.0":
+"react@*", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.6.0 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^18.2.0", "react@>=15.4.0", "react@>=16.0", "react@>=16.8", "react@>=16.8.6", "react@>=17.0.0", "react@>=17.0.2", "react@18.2.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"

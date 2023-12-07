@@ -158,15 +158,10 @@ export const positionSchema = {
   }
 };
 
-/************************************************
- * スキーマ定義
- ************************************************/  
-export const SCHEMAS = {
+export const SCHEMA = {
   settingsSchema,
   loginSchema,
   userSchema,
   temporaryPlacesSchema,
   storagePlacesSchema,
-  fixedPlacesSchema,
-  positionSchema
-};
+  positionSchema};

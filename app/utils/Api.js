@@ -45,6 +45,41 @@ export const IFA0010 = async (encryptedKey,secretKey) => {
 };
 
 /************************************************
+ * IFA0020_ログアップロード
+ ************************************************/
+export const IFA0020 = async (filePath) => {
+  try {
+    const secretKey = await getEncryptionKeyFromKeystore(); // AES暗号化のための秘密鍵
+    const realm = await getInstance()
+    const userInfo = await realm.objects('user')[0]
+    let userId = null;
+    if(userInfo){
+      userId = userInfo.userId;
+    }
+    const settingsInfo = await realm.objects('settings')[0]
+    const comId = await loadFromKeystore("comId")
+    const trmId = await loadFromKeystore("trmId")
+    const apiKey = await loadFromKeystore("apiKey")
+    const trmKey = await loadFromKeystore("trmKey")
+    const requestData = {
+      comId: comId.comId,
+      usrId: userId,
+      trmId: trmId.trmId,
+      apiKey: decryptWithAES256CBC(apiKey.apiKey,secretKey), // 復号化
+      trmKey: decryptWithAES256CBC(trmKey.trmKey,secretKey), // 復号化
+      appTyp: 1, 
+      appVer: settingsInfo.appVer,
+    };
+
+    // サーバー通信処理（Api.js内の関数を呼び出し）
+    const responseCode = await sendToServer(requestData,"IFA0020","ログアップロード",filePath);
+    return responseCode;
+  }catch(error){
+    throw new Error(`${error}`);
+  }
+};
+
+/************************************************
  * IFA0030_端末チェック
  ************************************************/
 export const IFA0030 = async () => {
@@ -198,6 +233,96 @@ export const sendToServer = async (requestData,endpoint,msg) => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
         // 'Content-Type': 'multipart/form-data' // ログファイル送信時
+      }
+    };
+
+    // Axiosでサーバー通信を行う
+    const response = await axios(config);
+
+    // HTTPステータスコードが200以外の場合は異常処理
+    if (response.status !== 200) {
+      Alert.alert(
+        "",messages.EA5004(msg,response.status),
+        [{ text: "OK"}]//, onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
+      );        
+      console.error('Server returned status code ', response.status);
+      throw new Error(`Server returned status code ${response.status}`);
+    //【応答データ】.【ステータスコード】＝"01:異常"　の場合
+    }else if(response.data && response.data.sttCd && response.data.sttCd == "01"){
+      Alert.alert(
+        "",messages.EA5005(msg,response.status),
+        [{ text: "OK"}]//, onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
+      );        
+      console.error('Server returned status code ', response.status);
+      throw new Error(`Server returned status code ${response.status}`);
+    }
+
+    // 応答受信後にログ記録
+    await logCommunication('RECV', URI, response.status, JSON.stringify(response.data));
+    return response;
+
+  } catch (error) {
+    // エラー時にログ記録
+    await logCommunication('ERROR', URI, null, error);
+
+    if (error.code === 'ECONNABORTED') {
+      // タイムアウト処理
+      Alert.alert(
+        "",messages.EA5003(""),
+        [{ text: "OK"}]//, onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
+      );      
+      console.error('Communication timed out', error);
+      throw new Error(`Communication timed out ${error}`);
+    } else {
+      // その他の異常処理
+      console.error('An error occurred during communication', error);
+      throw new Error(`An error occurred during communication ${error}`);
+    }
+  }
+};
+
+/************************************************
+ * サーバー通信を行う関数(ファイル送信)
+ * @param {*} request 
+ * @param {*} endpoint エンドポイント
+ * @param {*} msg インターフェース名
+ ************************************************/
+export const sendFileToServer = async (requestData,endpoint,msg,filePath) => {
+  let URI = null;// + endpoint;//★エンドポイント使うかわからないので保留
+  try {
+    const formData = new FormData();
+    formData.append('file', {
+      uri: `file://${filePath}`,
+      type: 'multipart/form-data',
+      name: filePath.split('/').pop(),
+    });
+    // JSONデータをFormDataに追加
+    for (const key in jsonParams) {
+      formData.append(key, jsonParams[key]);
+    }
+
+    const formDataHeaders = formData.getHeaders ? formData.getHeaders() : {};
+    console.log(formDataHeaders)
+    // 設定ファイルから接続先URLを取得
+    const settings = await getSettings();
+    const BASEURL = settings.connectionURL;
+    URI = BASEURL;// + endpoint;//★エンドポイント使うかわからないので保留
+
+    // リクエスト送信前にログ記録
+    await logCommunication('SEND', URI, null, `${JSON.stringify(requestData)} filePath:${filePath}`);
+
+    // Axiosリクエストの設定
+    const config = {
+      method: 'post',
+      url: URI,
+      data: formData, // 通信を行うインターフェース内容
+      timeout: 30000, // タイムアウト時間を30秒で指定
+      validateStatus: function (status) {
+        return status >= 100 && status <= 599; // 全てのHTTPステータスコードを例外としない
+      },
+      headers: {
+        ...formDataHeaders,
+        //'Content-Type': 'multipart/form-data' // ログファイル送信時
       }
     };
 

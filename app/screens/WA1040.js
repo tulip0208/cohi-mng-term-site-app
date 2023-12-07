@@ -3,7 +3,7 @@
  * WA1040
  */
 // app/screens/WA1040.js
-import Header from '../components/Header'; // Headerコンポーネントのインポート
+import TapHeader from '../components/TapHeader'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート
 import { styles } from '../styles/CommonStyle'; // 共通スタイル
 import React, { useState, useEffect } from 'react';
@@ -16,7 +16,7 @@ import QRScanner from '../utils/QRScanner';
 import ProcessingModal from '../components/Modal';
 import { getEncryptionKeyFromKeystore,saveToKeystore,clearKeyStore,loadFromKeystore } from '../utils/KeyStore'; 
 import { sendToServer } from '../utils/Api'; 
-
+import { initializeLogFile, logUserAction, logCommunication, watchPosition, writeLog,logScreen  } from '../utils/Log';
 
 const WA1040 = ({navigation}) => {
     const [userName, setUserName] = useState('');  //利用者
@@ -56,10 +56,11 @@ const WA1040 = ({navigation}) => {
     /************************************************
      * 終了ボタン押下時のポップアップ表示
      ************************************************/
-    const btnAppClose = () => {
+    const btnAppClose = async () => {
+      await logUserAction(`ボタン押下: 終了(WA1040)`);   
       Alert.alert(
           "",
-          "終了しますか？",
+          messages.IA5001(),
           [
               {
                   text: "いいえ",
@@ -75,38 +76,56 @@ const WA1040 = ({navigation}) => {
       );
     };
 
-    const btnNewTagRegSol = () => {
+    const btnNewTagRegSol = async () => {
+      await logUserAction(`ボタン押下:新タグ紐付(土壌)`);
+      await logScreen(`画面遷移: WA1060_新タグ紐付(土壌)`);  
       navigation.navigate('WA1060')
     };
-    const btnNewTagAsh = () => {
+    const btnNewTagAsh = async () => {
+      await logUserAction(`ボタン押下:新タグ紐付(灰)`);
+      await logScreen(`画面遷移:WA1090_新タグ紐付(灰)`);  
       navigation.navigate('WA1090')
     };
-    const btnNewTagRefSol = () => {
+    const btnNewTagRefSol = async () => {
+      await logUserAction(`ボタン押下:新タグID参照(土壌)`);
+      await logScreen(`画面遷移:WA1070_新タグID参照(土壌)`);  
       navigation.navigate('WA1070')
     };
-    const btnNewTagRefAsh = () => {
+    const btnNewTagRefAsh = async () => {
+      await logUserAction(`ボタン押下:新タグID参照(灰)`);
+      await logScreen(`画面遷移:WA1100_新タグID参照(灰)`);  
       navigation.navigate('WA1100')
     };
-    const btnOldTagRefSol = () => {
+    const btnOldTagRefSol = async () => {
+      await logUserAction(`ボタン押下:旧タグ参照(土壌)`);
+      await logScreen(`画面遷移:WA1080_旧タグ参照(土壌)`);  
       navigation.navigate('WA1080')
     };
-    const btnOldTagRefAsh = () => {
+    const btnOldTagRefAsh = async () => {
+      await logUserAction(`ボタン押下: 旧タグID参照(灰)`);
+      await logScreen(`画面遷移:WA1110_旧タグID参照(灰)`);  
       navigation.navigate('WA1110')
     };
-    const btnTrpCrd = () => {
+    const btnTrpCrd = async () => {
+      await logUserAction(`ボタン押下: 輸送カード申請`);
+      await logScreen(`画面遷移:WA1120_輸送カード申請`);  
       navigation.navigate('WA1120')
     };
-    const btnNsReg = () => {
+    const btnNsReg = async () => {
+      await logUserAction(`ボタン押下: 荷下登録`);
+      await logScreen(`画面遷移:WA1130_荷下登録`);  
       navigation.navigate('WA1130')
     };
-    const btnStyReg = () => {
+    const btnStyReg = async () => {
+      await logUserAction(`ボタン押下: 定置登録`);
+      await logScreen(`画面遷移:WA1140_定置登録`);  
       navigation.navigate('WA1140')
     };
 
     return (
       <View style={styles.container}>
         {/* ヘッダ */}
-        <Header title={"メニュー"}/>
+        <TapHeader title={"メニュー"} navigation={navigation} sourceScreenId={"WA1040"}/>
   
         {/* 中段 */}
         <View  style={[styles.menuMain,styles.topContent]}>

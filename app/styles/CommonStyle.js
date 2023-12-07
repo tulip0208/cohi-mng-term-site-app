@@ -98,8 +98,6 @@ export const styles = StyleSheet.create({
   },
   //--------------------
   //--------メニュー-------
-
-  //--------メニュー-------
   menuMain: {
     flexDirection: 'row', // 子要素を横並びにする
     flexWrap: 'wrap', // 子要素が親要素の幅を超えたら折り返す
@@ -156,10 +154,69 @@ export const styles = StyleSheet.create({
   },
   menuButton9:{
     backgroundColor: '#ffd966', 
-    color:'black',
   },                
   //--------------------
-
+  //--------端末設定-------
+  settingMain: {
+    flexDirection: 'row', // 子要素を横並びにする
+    flexWrap: 'wrap', // 子要素が親要素の幅を超えたら折り返す
+    justifyContent: 'flex-start', // 子要素を親要素の左端に揃える
+    paddingTop:10,
+    paddingLeft:10,
+    paddingRight:10,
+  },
+  settingButton: {
+    width: '45%', // 画面幅の半分のサイズ
+    height: 60,
+    marginRight: 'auto', // 右のマージンを自動調整
+    marginLeft: 'auto', // 左のマージンを自動調整  },
+    backgroundColor: '#548236', // パステルな水色
+    marginBottom: 5,
+    padding: 0,
+    borderRadius: 15,
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+  },
+  settingButton1: {
+    backgroundColor: '#fff2cc'
+  },
+  settingButton2: {
+    backgroundColor: '#1e74bd'
+  },
+  settingButton3: {
+    backgroundColor: '#f1d2c1'
+  },
+  settingButtonDisabled: {
+    backgroundColor: '#ccc', // 無効化したときの背景色
+    color: '#999', // 無効化したときのテキスト色
+  },
+  settingButtonText1: {
+    color: 'white',
+  },
+  labelTextSetting: {
+    fontSize: 15,
+    marginTop:1,
+    marginBottom:1,
+  },  
+  labelTextSettingDtl: {
+    marginLeft: 10,
+  }, 
+  scrollContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop:3,
+    marginBottom:3,
+  },
+  scrollViewStyle: {
+    width: '100%', // または必要な幅に設定
+    borderWidth: 1, // 枠線の幅
+    borderColor: '#000', // 枠線の色
+    borderRadius: 5, // 枠の角を丸くする場合
+    paddingLeft:5,
+    paddingRight:5,
+  },  
+  //--------------------  
   bottomSection: {
     flexDirection: 'row',
     justifyContent: 'space-around',
