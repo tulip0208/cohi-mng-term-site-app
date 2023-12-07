@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * DB(keyStore)設定・取得操作
  * 
- */
+ * ---------------------------------------------*/
 
 // utils/keyStore.js
 import * as Keychain from 'react-native-keychain';

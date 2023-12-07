@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * A01-0090_新タグ紐付(灰)
  * WA1090
- */
+ * ---------------------------------------------*/
 // app/screens/WA1090.js
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート

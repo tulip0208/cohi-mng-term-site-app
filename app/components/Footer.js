@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * 共通_フッタ
  * 
- */
+ * ---------------------------------------------*/
 // app/components/Footer.js
 import React, { useContext,useState,useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';

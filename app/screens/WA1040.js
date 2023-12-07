@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * A01-0040_メニュー
  * WA1040
- */
+ * ---------------------------------------------*/
 // app/screens/WA1040.js
 import TapHeader from '../components/TapHeader'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート

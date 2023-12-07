@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * 共通_ヘッダ
  * 
- */
+ * ---------------------------------------------*/
 // app/components/TapHeader.js
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, Text, View  } from 'react-native';

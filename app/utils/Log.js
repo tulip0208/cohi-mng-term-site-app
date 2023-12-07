@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * ログ処理
  * 
- */
+ * ---------------------------------------------*/
 //utils/log
 import RNFS from 'react-native-fs';
 import Geolocation from '@react-native-community/geolocation';

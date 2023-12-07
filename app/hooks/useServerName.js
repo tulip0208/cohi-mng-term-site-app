@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * 接続先名称取得フック
  * 
- */
+ * ---------------------------------------------*/
 // hooks/useServerName.js
 import { useState, useEffect } from 'react';
 import { getGlobalServerName } from '../utils/Realm';

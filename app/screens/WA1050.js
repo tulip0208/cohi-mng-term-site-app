@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * 01-0050_端末設定
  * WA1050
- */
+ * ---------------------------------------------*/
 // app/screens/WA1050.js
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート

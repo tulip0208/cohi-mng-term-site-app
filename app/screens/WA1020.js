@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * A01-0020_アクティベーション
  * WA1020
- */
+ * ---------------------------------------------*/
 // app/screens/WA1020.js
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート

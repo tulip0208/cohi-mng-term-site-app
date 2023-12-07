@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * A01-0140_定置登録
  * WA1140
- */
+ * ---------------------------------------------*/
 // app/screens/WA1140.js
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート

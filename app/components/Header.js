@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * 共通_ヘッダ
  * 
- */
+ * ---------------------------------------------*/
 // app/components/Header.js
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';

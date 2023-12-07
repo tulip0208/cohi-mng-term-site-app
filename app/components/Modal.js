@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * モーダル画面
  * 
- */
+ * ---------------------------------------------*/
 // Modal.js
 import React from 'react';
 import { Modal, View, Text, ActivityIndicator } from 'react-native';

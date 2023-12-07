@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * 画面遷移
  * 
- */
+ * ---------------------------------------------*/
 // app/navigation/AppNavigator.js
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';

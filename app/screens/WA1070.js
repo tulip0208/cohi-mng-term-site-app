@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * A01-0070_新タグID参照(土壌)
  * WA1070
- */
+ * ---------------------------------------------*/
 // app/screens/WA1070.js
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート

@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * A01-0020_輸送カード申請
  * WA1120
- */
+ * ---------------------------------------------*/
 // app/screens/WA1120.js
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート

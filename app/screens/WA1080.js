@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * A01-0080_旧タグ参照(土壌)
  * WA1080
- */
+ * ---------------------------------------------*/
 // app/screens/WA1080.js
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート

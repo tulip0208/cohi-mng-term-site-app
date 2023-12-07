@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * 位置情報管理
  * 
- */
+ * ---------------------------------------------*/
 
 //utils/Position
 import Geolocation from 'react-native-geolocation-service';

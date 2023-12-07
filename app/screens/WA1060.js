@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * 01-0060_新タグ紐付(土壌)
  * WA1060
- */
+ * ---------------------------------------------*/
 // app/screens/WA1060.js
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート

@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * A01-0030_ログイン
  * WA1030
- */
+ * ---------------------------------------------*/
 // app/screens/WA1030.js
 import TapHeader from '../components/TapHeader'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート

@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * A01-0100_新タグID参照(灰)
  * WA1100
- */
+ * ---------------------------------------------*/
 // app/screens/WA1100.js
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート

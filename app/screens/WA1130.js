@@ -1,7 +1,7 @@
-/**
+/**-------------------------------------------
  * A01-0130_荷下登録
  * WA1130
- */
+ * ---------------------------------------------*/
 // app/screens/WA1130.js
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート
