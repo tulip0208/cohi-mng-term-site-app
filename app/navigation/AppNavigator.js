@@ -38,9 +38,15 @@ const AppNavigator = () => {
     const initialize = async () => {
       //起動時の初期処理
       await onAppLaunch();
+
+      //--------WA1020_前処理--------
       // アクティベーション情報の確認
       const activationInfo = await checkActivation(); 
+      
       if (!activationInfo || activationInfo.actFin == 1) {
+        
+        //--------WA1030_前処理--------
+
         //バージョンアップ報告チェック
         const verupRepKeyStore=await loadFromKeystore("verupRep");//★バージョンアップ報告の物理名不明
         //バージョンアップ報告=1:"要"の場合
@@ -57,13 +63,11 @@ const AppNavigator = () => {
         }else{
           console.log("keyStoreにバージョンアップ報告が存在しません。");
         }
-
         //ログイン情報チェック
         const realm = await getInstance();
         const loginInfo = await realm.objects('login')[0]
         const currentDateTime = new Date().toISOString().replace(/[^0-9]/g, "").slice(0,8); // yyyyMMddhhmmss形式
 
-        //console.log('currentDateTime : ',currentDateTime )
         //時分秒を除く日付を突合し確認
         if(loginInfo && loginInfo.loginDt.replace(/[^0-9]/g, "").slice(0,8)==currentDateTime && loginInfo.logoutFlg=="0"){
           const settingsInfo = realm.objects('settings')[0]
@@ -84,7 +88,6 @@ const AppNavigator = () => {
 
           await logScreen(`画面遷移: WA1030_ログイン`);
           setInitialRoute('WA1030'); // アクティベーション情報がない・アクティベージョン済の場合、ログイン画面に設定
-
         }
       } else {
         await logScreen(`画面遷移: WA1020_アクティベーション`);
