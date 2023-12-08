@@ -43,7 +43,7 @@ const AppNavigator = () => {
       // アクティベーション情報の確認
       const activationInfo = await checkActivation(); 
       
-      if (!activationInfo || activationInfo.actFin == 1) {
+      if (activationInfo && activationInfo.actFin == 1) {
         
         //--------WA1030_前処理--------
 
@@ -75,7 +75,7 @@ const AppNavigator = () => {
           //
 
           await logScreen(`画面遷移: WA1040_メニュー`);
-          setInitialRoute('WA1040'); // ログイン済みの場合、メニュー画面起動
+          setInitialRoute('WA1030'); // ログイン済みの場合、メニュー画面起動
         }else{
           // realm-ログイン情報・ユーザクリア
           // 特定のデータを検索する
