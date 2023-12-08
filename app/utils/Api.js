@@ -52,7 +52,7 @@ export const IFA0020 = async (filePath) => {
     const secretKey = await getEncryptionKeyFromKeystore(); // AES暗号化のための秘密鍵
     const realm = await getInstance()
     const userInfo = await realm.objects('user')[0]
-    let userId = null;
+    let userId = null;//★ログインから遷移した際の通信にはナシ
     if(userInfo){
       userId = userInfo.userId;
     }
