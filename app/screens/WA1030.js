@@ -20,6 +20,8 @@ import { initializeLogFile, logUserAction, logCommunication, watchPosition, writ
 import { watchLocation } from '../utils/Position'; 
 import RNFS from 'react-native-fs';
 import RNRestart from 'react-native-restart'; // まずインポートする
+import CustomAlert from '../components/CustomAlert';
+
 
 const WA1030 = ({navigation,closeModal}) => {
     const [userName, setUserName] = useState('');  //利用者
@@ -30,6 +32,9 @@ const WA1030 = ({navigation,closeModal}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [wkplacId, setWkplacId] = useState(''); // 作業場所種別ID
     const [wkplacTyp,setWkplacTyp] = useState('')
+    const { showAlert, CustomAlertComponent } = CustomAlert();
+
+
     /************************************************
      * QRコードスキャン後の処理 (ユーザ情報用)
      * @param {*} scannedData 
@@ -212,22 +217,10 @@ const WA1030 = ({navigation,closeModal}) => {
      ************************************************/
     const btnAppClose = async () => {
       await logUserAction(`ボタン押下: 終了(WA1030)`);      
-      Alert.alert(
-          "",
-          messages.IA5001(),
-          [
-              {
-                  text: "いいえ",
-                  style: "cancel"
-              },
-              {
-                  text: "はい",
-                  //onPress: () => navigation.goBack() // はいを選択したら前の画面に戻る
-                  onPress: () => BackHandler.exitApp() // アプリを終了する
-              }
-          ],
-          { cancelable: false }
-      );
+      const result = await showAlert("確認", messages.IA5001(), true);
+      if (result) {
+        BackHandler.exitApp()
+      }      
     };
 
     /************************************************
@@ -359,7 +352,7 @@ const WA1030 = ({navigation,closeModal}) => {
           <TouchableOpacity 
                     style={getButtonStyle()}
                     //onPress={/* 送信処理 */}
-                    //disabled={!isReadyToSend} // 送信準備ができていなければ無効化          
+                    disabled={!isReadyToSend} // 送信準備ができていなければ無効化          
                     onPress={btnSend}
           >
             <Text style={styles.startButtonText}>利用開始</Text>
@@ -389,6 +382,9 @@ const WA1030 = ({navigation,closeModal}) => {
                 <QRScanner onScan={handleQRCodeScannedForWkplac} closeModal={() => setShowScannerWkplac(false)} isActive={showScannerWkplac}  errMsg={"作業場所QRコード"}/>
             </Modal>
         )}
+
+        {/* アラート */}
+        <CustomAlertComponent />
 
       </View>
 

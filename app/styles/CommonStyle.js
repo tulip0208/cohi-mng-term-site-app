@@ -257,7 +257,68 @@ export const styles = StyleSheet.create({
   modalMessage: {
     textAlign: 'center',
   },
-    
+  //--------------------
+  //--------カスタムアラート-------
+  alertView: {
+    width:'50%',
+    backgroundColor: "#f2f2f2",
+
+  },
+  alertButtonContainer: {
+    borderTopColor:'black',
+    borderTopColor: '#000', // ボーダーの色をグレーに設定
+    borderTopWidth: 1, // ボーダーの太さを1に設定
+    flexDirection: 'row',
+    alignItems: "center",
+  },
+  alertButton: {
+    flex: 1,// ボタンに利用可能なスペースを等分に使用
+    borderRadius: 7,
+    padding: 10,
+    margin:1,
+    marginLeft:2,
+    marginRight:2,
+    width:'45%',
+  },
+  alertButtonCancel: {
+    backgroundColor: "#f1d2c1", // 薄いピンク    
+  },
+  alertButtonConfirm: {
+    backgroundColor: "#007AFF", // 青色    
+  },
+  alertTitleBar: {
+    backgroundColor: '#1e74bd', // 青色
+    height: 40,
+    padding: 10,
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    justifyContent: 'stretch', 
+  },
+  alertTitle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+
+  },
+  alertMessage: {
+    color: "black", // テキストが黒色の場合
+    paddingTop: 5,
+    paddingBottom: 40,
+    fontWeight: "bold",
+    textAlign: "center"
+  },  
+  alertTextConfirm: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },  
+  alertTextCancel: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  //--------------------        
   //--------フッタ--------
   footerContainer: {
     flexDirection: 'row',
@@ -276,4 +337,5 @@ export const styles = StyleSheet.create({
   copyrightText: {
     textAlign: 'right',
   },  
+  //--------------------    
 });
