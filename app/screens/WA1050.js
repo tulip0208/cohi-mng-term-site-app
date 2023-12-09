@@ -74,12 +74,6 @@ const WA1050 = ({closeModal,route,navigation }) => {
       contentsViews();      
     }, []);
 
-    /************************************************
-     * Log.deleteLogs 用 通知コールバック関数
-     ************************************************/    
-    const handleDeleteLogs = () => {
-      deleteLogs((title, message, showCancel) => showAlert(title, message, showCancel));
-    };
 
     /************************************************
      * ログ消去ボタン
@@ -89,6 +83,7 @@ const WA1050 = ({closeModal,route,navigation }) => {
       const IA5010_choise = await showAlert("確認", messages.IA5010(), true);
       // ユーザーの選択に応じた処理
       if (IA5010_choise) {
+        //util内ではレンダリング処理ができないため、コールバックによりカスタム通知を実現
         await deleteLogs((title, message, showCancel) => showAlert(title, message, showCancel));
         const logSize = await calculateTotalLogSize();
         setLogCap(logSize);

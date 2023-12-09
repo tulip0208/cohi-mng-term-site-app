@@ -41,7 +41,7 @@ export const IFA0010 = async (encryptedKey,secretKey) => {
     const response = await sendToServer(requestData,"IFA0010",);
     return { success: true, data: response };
   } catch (error) {
-    return { success: false, error: error.message, ifa:"端末登録"};
+    return { success: false, error: error.message , code:error.code , api:error.api};
   }
 };
 

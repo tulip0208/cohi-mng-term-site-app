@@ -1,14 +1,18 @@
-// AlertContext.js
+/**-------------------------------------------
+ * カスタム通知プロバイダ
+ * react内で呼べるようにトップ層でレンダリング処理
+ * ---------------------------------------------*/
+// app/components/AlertContext.js
 import React, { createContext, useState, useContext } from 'react';
 import CustomAlertComponent from './CustomAlert'; // ここでUIコンポーネントをインポート
-
 const AlertContext = createContext();
-
 export const useAlert = () => useContext(AlertContext);
-
 export const AlertProvider = ({ children }) => {
     const [alert, setAlert] = useState({ visible: false, title: '', message: '', resolve: null, showCancelButton: true });
-  
+
+    /************************************************
+     * カスタム通知呼び出し関数
+     ************************************************/
     const showAlert = (title, message, showCancelButton) => {
       return new Promise((resolve) => {
         setAlert({ visible: true, title, message, resolve, showCancelButton });

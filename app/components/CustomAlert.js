@@ -1,8 +1,12 @@
+/**-------------------------------------------
+ * 共通_カスタム通知・確認アラート
+ * 
+ * ---------------------------------------------*/
+// app/components/CustomAlert.js
 import React, { useState } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { styles } from '../styles/CommonStyle'; // 共通スタイル
 
-// Alertを表示するためのHook
 const CustomAlert = ({ title, message, onConfirm, onCancel, showCancelButton }) => {
   return(  
     <Modal
