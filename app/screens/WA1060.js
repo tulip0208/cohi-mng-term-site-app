@@ -57,10 +57,7 @@ const WA1060 = ({closeModal}) => {
         </View>
       
         {/* フッタ */}
-        <Footer />
-
-        {/* アラート */}
-        <CustomAlertComponent />        
+        <Footer />    
       </View>
 
     );

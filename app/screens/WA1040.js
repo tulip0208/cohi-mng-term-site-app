@@ -183,9 +183,6 @@ const WA1040 = ({navigation}) => {
       
         {/* フッタ */}
         <Footer />
-
-        {/* アラート */}
-        <CustomAlertComponent />        
       </View>
 
     );

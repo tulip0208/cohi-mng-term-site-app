@@ -10,28 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b37edecb-3b64-428d-be86-a45231324e27" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/.vscode/.react/debuggerWorker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/AlertContext.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/hooks/AlertEvent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/CustomAlert.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/CustomAlert.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/navigation/AppNavigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/navigation/AppNavigator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/screens/WA1020.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1020.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/screens/WA1030.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1030.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/screens/WA1040.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1040.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/screens/WA1050.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1050.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/screens/WA1060.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1060.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/screens/WA1070.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1070.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/screens/WA1080.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1080.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/screens/WA1090.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1090.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/screens/WA1100.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1100.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/screens/WA1110.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1110.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/screens/WA1120.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1120.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/screens/WA1130.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1130.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/screens/WA1140.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/screens/WA1140.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/Api.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/Api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/Log.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/Log.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/QRScanner.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/QRScanner.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
