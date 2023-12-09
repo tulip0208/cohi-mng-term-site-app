@@ -47,6 +47,38 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   //--------------------
+  //--------機能ヘッダ--------
+  functionHeaderContainer: {
+    padding: 5,
+    flexDirection: 'row',
+    flexWrap: 'wrap', // 子要素が親要素の幅を超えたら折り返す
+//    justifyContent: 'flex-start', // 子要素を親要素の左端に揃える
+    justifyContent: 'space-between',  
+    alignItems: 'center',      
+    backgroundColor: '#1E74BD', // ヘッダの背景色
+    height: 40,
+  },
+  functionHeaderLeft: {
+    fontSize: 20,
+    marginLeft: 10, // 適切な余白を設定
+    color: 'white',
+    fontWeight: 'bold',
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+  },
+  functionHeaderMiddle: {
+    fontSize: 20,
+    alignSelf: 'center',
+    color: 'white',
+    fontWeight: 'bold',
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+  },
+  functionHeaderRight: {
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold',
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+  },
+  //--------------------  
   //--------ラベル-------
   labelText: {
     fontSize: 15,
@@ -81,18 +113,18 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   endButton: {
-    backgroundColor: '#F1D2C1', // 淡いグレー
+    backgroundColor: '#F1D2C1',
     padding: 5,
-    flex: 1, // ボタンの幅を画面いっぱいに広げる
+    flex: 1,
   },
   endButtonSmall: {
-    backgroundColor: '#F1D2C1', // 淡いグレー
+    backgroundColor: '#F1D2C1',
     padding: 5,
     height:50,
     width:"48%"
   },  
   startButton: {
-    backgroundColor: '#70AD47', // 抹茶色（エクセルの淡い黄緑）
+    backgroundColor: '#1e74bd', 
     padding: 10,
     flex: 1,
   },
