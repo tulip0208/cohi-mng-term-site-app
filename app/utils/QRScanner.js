@@ -75,9 +75,9 @@ const QRScanner = ({ onScan, closeModal, isActive, errMsg }) => {
 
         <BarCodeScanner style={styles.camera} onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}>
         <View style={styles.overlay}>
-  <View style={styles.crosshair} />
-  <View style={styles.crosshairHorizontal} />
-</View>
+          <View style={styles.crosshair} />
+          <View style={styles.crosshairHorizontal} />
+        </View>
 
         </BarCodeScanner>
         {/*{scanned && <Text style={styles.barcodeText}>{data}</Text>}*/}
