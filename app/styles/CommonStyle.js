@@ -97,6 +97,29 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   //--------------------
+  //--------カメラ(十字)-------
+
+  overlay: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  crosshair: {
+    position: 'absolute',
+    width: 2,
+    height: '30%',
+    backgroundColor: 'white',
+    opacity: 0.5, //透明度50%
+  },
+  crosshairHorizontal: {
+    position: 'absolute',
+    width: '40%',
+    height: 2,
+    backgroundColor: 'white',
+    opacity: 0.5, //透明度50%
+  },
+  //--------------------  
   //--------メニュー-------
   menuMain: {
     flexDirection: 'row', // 子要素を横並びにする

@@ -4,24 +4,13 @@
  * ---------------------------------------------*/
 //utils/QRScannner
 import React, { useState, useEffect } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, TouchableOpacity } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { styles } from '../styles/CommonStyle'; // 適切なパスに修正してください
 import messages from '../utils/messages'; // 適切なパスに修正してください
 import { getInstance } from '../utils/Realm'; // 適切なパスに修正してください
 import { useAlert } from '../components/AlertContext';
-
-const useTimeout = (isActive, timeoutDuration, onTimeout) => {
-  useEffect(() => {
-    let timeout;
-
-    if (isActive) {
-      timeout = setTimeout(onTimeout, timeoutDuration);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [isActive, timeoutDuration, onTimeout]);
-};
+import Header from '../components/Header'; // Headerコンポーネントのインポート
 
 const QRScanner = ({ onScan, closeModal, isActive, errMsg }) => {
     const [camTimeout, setCamTimeout] = useState(null);  // カメラのタイムアウト値を保存する状態
@@ -71,12 +60,34 @@ const QRScanner = ({ onScan, closeModal, isActive, errMsg }) => {
       return <Text>カメラへのアクセスが許可されていません。</Text>;
     }
   
+    /************************************************
+     * 終了ボタン押下時のポップアップ表示
+     ************************************************/
+    const btnAppClose = async () => {
+      await logUserAction(`ボタン押下: 中断(QRScanner)`);  
+      BackHandler.exitApp()
+    };
+
     return (
       <View style={styles.container}>
+        {/* ヘッダ */}
+        <Header title={"QR/バーコード読込"}/>
+
         <BarCodeScanner style={styles.camera} onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}>
-          
+        <View style={styles.overlay}>
+  <View style={styles.crosshair} />
+  <View style={styles.crosshairHorizontal} />
+</View>
+
         </BarCodeScanner>
         {/*{scanned && <Text style={styles.barcodeText}>{data}</Text>}*/}
+
+        {/* 下段 */}
+        <View style={styles.bottomSection}>
+          <TouchableOpacity style={[styles.button, styles.endButtonSmall]} onPress={closeModal}>
+            <Text style={styles.endButtonText}>中断</Text>
+          </TouchableOpacity>
+        </View>        
       </View>
     );
   };
