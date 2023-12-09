@@ -38,7 +38,7 @@ export const IFA0010 = async (encryptedKey,secretKey) => {
       appVer: settingsInfo.appVer
     };
     // サーバー通信処理（Api.js内の関数を呼び出し）
-    const response = await sendToServer(requestData,"IFA0010",);
+    const response = await sendToServer(requestData,"IFA0010","端末登録");
     return { success: true, data: response };
   } catch (error) {
     return { success: false, error: error.message , code:error.code , api:error.api};

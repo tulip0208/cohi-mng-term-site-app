@@ -234,6 +234,32 @@ const WA1020 = ({ navigation,closeModal }) => {
       }
     }
 
+    /************************************************
+     * API通信処理エラー有無確認・エラーハンドリング
+     * @param {*} response 
+     * @returns 
+     ************************************************/
+    const apiIsError = async (response)=>{
+      if (!response.success) {
+        switch(response.error){
+          case 'codeHttp200':
+            await showAlert("通知", messages.EA5004(response.api,response.code), false);
+            break;
+          case 'codeRsps01':
+            await showAlert("通知", messages.EA5005(msg,response.status), false); 
+            break;
+          case 'timeout':
+            await showAlert("通知", messages.EA5003(""), false);
+            break;
+        }
+        // モーダル非表示
+        setModalVisible(false);          
+        return true ;
+      }else{
+        return false;
+      }
+    }
+        
     return (
       <View style={styles.container}>
         {/* ヘッダ */}
