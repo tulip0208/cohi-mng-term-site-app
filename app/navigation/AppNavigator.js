@@ -23,7 +23,7 @@ import { Text } from 'react-native';
 import { onAppLaunch,getInstance } from '../utils/Realm'; // Realmのセットアップ関数をインポート
 import { sendToServer,IFA0051 } from '../utils/Api'; 
 import { initializeLogFile, logUserAction, logCommunication, watchPosition, logScreen } from '../utils/Log';
-import {encryptWithAES256CBC,generateDeviceUniqueKey,decryptWithAES256CBC} from '../utils/Security';
+import { AlertProvider } from '../components/AlertContext';
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
@@ -53,7 +53,9 @@ const AppNavigator = () => {
         if(verupRepKeyStore && verupRepKeyStore.verupRep==="1"){
           // サーバー通信処理（Api.js内の関数を呼び出し）
           try{
-            const response = await IFA0051();
+            const responseIFA0051 = await IFA0051();
+            if(await apiIsError(responseIFA0051)) return;
+
             await saveToKeystore("verupRep",{
               verupRep: "0",
             });//★バージョンアップ報告の物理名不明
@@ -105,6 +107,7 @@ const AppNavigator = () => {
     return null;
   }
   return (
+    <AlertProvider>
       <Stack.Navigator   screenOptions={{headerShown: false}}initialRouteName={initialRoute}>
         <Stack.Screen name="WA1020" component={WA1020} />
         <Stack.Screen name="WA1030" component={WA1030} />        
@@ -121,6 +124,7 @@ const AppNavigator = () => {
         <Stack.Screen name="WA1140" component={WA1140} />        
         {/*<Stack.Screen name="WA1020" component={WA1020} />*/}
       </Stack.Navigator>
+    </AlertProvider>
   );
 };
 

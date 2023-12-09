@@ -17,7 +17,7 @@ import ProcessingModal from '../components/Modal';
 import { getEncryptionKeyFromKeystore,saveToKeystore,clearKeyStore,loadFromKeystore } from '../utils/KeyStore'; 
 import { IFA0010 } from '../utils/Api'; 
 import { initializeLogFile, logUserAction, logCommunication, watchPosition,logScreen  } from '../utils/Log';
-
+import { useAlert } from '../components/AlertContext';
 
 const WA1020 = ({ navigation,closeModal }) => {
     const [ERROR, setERROR] = useState('');
@@ -30,6 +30,7 @@ const WA1020 = ({ navigation,closeModal }) => {
     const [showScannerActivate, setShowScannerActivate] = useState(false); // カメラ表示用の状態
     const [isReadyToSend, setIsReadyToSend] = useState(false); // 送信準備完了状態
     const [modalVisible, setModalVisible] = useState(false);
+    const { showAlert } = useAlert();
 
     /************************************************
      * QRコードスキャン後の処理 (ユーザ情報用)
@@ -73,20 +74,12 @@ const WA1020 = ({ navigation,closeModal }) => {
             }
             setShowScannerUsr(false);
         } else {
-            // ID種別が1ではない場合のエラーハンドリング
-            Alert.alert(
-              "",
-              messages.EA5002("利用者"),
-              [{ text: "OK", onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-            );
+          // ID種別が1ではない場合のエラーハンドリング
+          const result = await showAlert("通知", messages.EA5002("利用者"), false);
           setShowScannerUsr(false);   
         }
       } else {
-        Alert.alert(
-            "",
-            messages.EA5002("利用者"),
-            [{ text: "OK", onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-        );
+        const result = await showAlert("通知", messages.EA5002("利用者"), false);
         setShowScannerUsr(false);   
         // CSVデータが正しいフォーマットでない場合のエラーハンドリング
       }      
@@ -131,12 +124,8 @@ const WA1020 = ({ navigation,closeModal }) => {
 
             setShowScannerActivate(false);
         } else {
-            // ID種別が1ではない場合のエラーハンドリング
-            Alert.alert(
-              "",
-              messages.EA5002("アクティベーション"),
-              [{ text: "OK", onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-          );
+          // ID種別が1ではない場合のエラーハンドリング
+          const result = await showAlert("通知", messages.EA5002("アクティベーション"), false);
           setActReadFlg("未")
           //アクティベーション情報のクリア
           if(await loadFromKeystore("activationInfo")){
@@ -145,11 +134,7 @@ const WA1020 = ({ navigation,closeModal }) => {
           setShowScannerActivate(false);   
         }
       } else {
-        Alert.alert(
-            "",
-            messages.EA5002("アクティベーション"),
-            [{ text: "OK", onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-        );
+        const result = await showAlert("通知", messages.EA5002("アクティベーション"), false);
         setActReadFlg("未")
         //アクティベーション情報のクリア
         if(await loadFromKeystore("activationInfo")){
@@ -185,23 +170,11 @@ const WA1020 = ({ navigation,closeModal }) => {
      * 終了ボタン押下時のポップアップ表示
      ************************************************/
     const btnAppClose = async () => {
-        await logUserAction(`ボタン押下: 終了(WA1030)`);      
-        Alert.alert(
-            "",
-            messages.IA5001(),
-            [
-                {
-                    text: "いいえ",
-                    style: "cancel"
-                },
-                {
-                    text: "はい",
-                    //onPress: () => navigation.goBack() // はいを選択したら前の画面に戻る
-                    onPress: () => BackHandler.exitApp() // アプリを終了する
-                }
-            ],
-            { cancelable: false }
-        );
+      await logUserAction(`ボタン押下: 終了(WA1030)`);      
+      const result = await showAlert("確認", messages.IA5001(), true);
+      if (result) {
+        BackHandler.exitApp()
+      }
     };
 
     /************************************************
@@ -226,8 +199,9 @@ const WA1020 = ({ navigation,closeModal }) => {
         // 前処理はApi.jsへ移行
 
         // サーバー通信処理（Api.js内の関数を呼び出し）
-        const response = await IFA0010(encryptedKey,secretKey);//sendToServer(requestData,"IFA0010","端末登録");
-        
+        const responseIFA0010 = await IFA0010(encryptedKey,secretKey);//sendToServer(requestData,"IFA0010","端末登録");
+        if(await apiIsError(responseIFA0010)) return;
+
         const activationInfo = await loadFromKeystore("activationInfo");
         // アクティベーション情報をKeyStoreに保存
         await saveToKeystore("activationInfo",{
@@ -323,7 +297,7 @@ const WA1020 = ({ navigation,closeModal }) => {
             </Modal>
         )}
 
-      </View>
+              </View>
     );
 };
 

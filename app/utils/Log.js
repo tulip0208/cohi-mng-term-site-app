@@ -10,6 +10,7 @@ export const logDirectory = `${RNFS.DocumentDirectoryPath}/logs`;
 import messages from '../utils/messages';
 import { zip } from 'react-native-zip-archive';
 import { loadFromKeystore } from '../utils/KeyStore'; 
+import { useAlert } from '../components/AlertContext';
 
 /************************************************
  * 指定したログファイルを削除する関数
@@ -68,7 +69,7 @@ export const checkLogFile = async () => {
 /************************************************
  * ログファイルを削除する関数
  ************************************************/
-export const deleteLogs = async () => {
+export const deleteLogs = async (showAlertCallback) => {
   try {
     const files = await RNFS.readDir(logDirectory);
     for (const file of files) {
@@ -76,8 +77,7 @@ export const deleteLogs = async () => {
         await RNFS.unlink(file.path);
       }
     }
-
-    Alert.alert('', messages.IA5005('ログの削除'), [{ text: 'はい' }]);
+    const result = await showAlertCallback("通知", messages.IA5005('ログの削除'), false);
 
     // ステップ2.4: 削除操作のログを記録
     initializeLogFile()

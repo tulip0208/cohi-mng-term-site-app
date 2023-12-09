@@ -9,6 +9,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { styles } from '../styles/CommonStyle'; // 適切なパスに修正してください
 import messages from '../utils/messages'; // 適切なパスに修正してください
 import { getInstance } from '../utils/Realm'; // 適切なパスに修正してください
+import { useAlert } from '../components/AlertContext';
 
 const useTimeout = (isActive, timeoutDuration, onTimeout) => {
   useEffect(() => {
@@ -26,8 +27,11 @@ const QRScanner = ({ onScan, closeModal, isActive, errMsg }) => {
     const [camTimeout, setCamTimeout] = useState(null);  // カメラのタイムアウト値を保存する状態
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+    const { showAlert } = useAlert();
 
     useEffect(() => {
+      let timeout;
+
       // カメラのパーミッション要求
       const requestPermission = async () => {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -42,17 +46,19 @@ const QRScanner = ({ onScan, closeModal, isActive, errMsg }) => {
         setCamTimeout(settings.camTimeout);  // カメラのタイムアウト値を状態にセット
       };
       loadSettings();      
-    }, []);
 
-    // カスタムフックを使用してタイムアウトを管理
-    useTimeout(isActive, camTimeout * 1000, () => {
-      Alert.alert(
-        "",
-        messages.EA5001(errMsg),
-        [{ text: "OK", onPress: closeModal }]
-      );
-    });
-    
+      if (isActive && camTimeout) {
+        timeout = setTimeout(async () => {
+          await showAlert("通知", messages.EA5001(errMsg), false);
+          closeModal(); // カメラを閉じる処理
+        }, camTimeout * 1000);
+      }
+      return () => {
+        if (timeout) clearTimeout(timeout);
+      };      
+    }, [isActive, camTimeout, errMsg, showAlert, closeModal]);
+
+
     const handleBarCodeScanned = ({ type, data }) => {
       setScanned(true);
       onScan(data); // スキャンデータを親コンポーネントに渡す

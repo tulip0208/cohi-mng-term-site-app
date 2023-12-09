@@ -10,9 +10,10 @@ import axios from 'axios';
 import { checkActivation,loadFromKeystore,getEncryptionKeyFromKeystore } from '../utils/KeyStore'; // KeyStoreの確認関数
 import {encryptWithAES256CBC,generateDeviceUniqueKey,decryptWithAES256CBC} from '../utils/Security';
 import { initializeLogFile, logUserAction, logCommunication, watchPosition, logScreen } from '../utils/Log';
+import { useAlert } from '../components/AlertContext';
 
 /************************************************
- * IFA0010_アクティベーション
+ * IFA0010_アクティベーション(端末登録)
  ************************************************/
 export const IFA0010 = async (encryptedKey,secretKey) => {
   try {
@@ -37,10 +38,10 @@ export const IFA0010 = async (encryptedKey,secretKey) => {
       appVer: settingsInfo.appVer
     };
     // サーバー通信処理（Api.js内の関数を呼び出し）
-    const responseCode = await sendToServer(requestData,"IFA0010","端末登録");
-    return responseCode;
-  }catch(error){
-    throw new Error(`${error}`);
+    const response = await sendToServer(requestData,"IFA0010",);
+    return { success: true, data: response };
+  } catch (error) {
+    return { success: false, error: error.message, ifa:"端末登録"};
   }
 };
 
@@ -72,10 +73,10 @@ export const IFA0020 = async (filePath) => {
     };
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
-    const responseCode = await sendToServer(requestData,"IFA0020","ログアップロード",filePath);
-    return responseCode;
-  }catch(error){
-    throw new Error(`${error}`);
+    const response = await sendFileToServer(requestData,"IFA0020","ログアップロード",filePath);
+    return { success: true, data: response };
+  } catch (error) {
+    return { success: false, error: error.message , code:error.code , api:error.api};
   }
 };
 
@@ -104,10 +105,10 @@ export const IFA0030 = async () => {
     };
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
-    const responseCode = await sendToServer(requestData,"IFA0030","端末チェック");
-    return responseCode;
-  }catch(error){
-    throw new Error(`${error}`);
+    const response = await sendToServer(requestData,"IFA0030","端末チェック");
+    return { success: true, data: response };
+  } catch (error) {
+    return { success: false, error: error.message , code:error.code , api:error.api};
   }
 };
 
@@ -135,10 +136,10 @@ export const IFA0040 = async () => {
       setdate: settingsInfo.settingFileDt
     };
     // サーバー通信処理（Api.js内の関数を呼び出し）
-    const responseCode = await sendToServer(requestData,"IFA0040","端末設定ファイル配信");
-    return responseCode;
-  }catch(error){
-    throw new Error(`${error}`);
+    const response = await sendToServer(requestData,"IFA0040","端末設定ファイル配信");
+    return { success: true, data: response };
+  } catch (error) {
+    return { success: false, error: error.message , code:error.code , api:error.api};
   }
 };
 
@@ -165,10 +166,10 @@ export const IFA0050 = async () => {
       appVer: settingsInfo.appVer,
     };
     // サーバー通信処理（Api.js内の関数を呼び出し）
-    const responseCode = await sendToServer(requestData,"IFA0050","更新ファイル配信");
-    return responseCode;
-  }catch(error){
-    throw new Error(`${error}`);
+    const response = await sendToServer(requestData,"IFA0050","更新ファイル配信");
+    return { success: true, data: response };
+  } catch (error) {
+    return { success: false, error: error.message , code:error.code , api:error.api};
   }
 };
 
@@ -196,10 +197,10 @@ export const IFA0051 = async () => {
       setDt: settingsInfo.settingFileDt
     };
     // サーバー通信処理（Api.js内の関数を呼び出し）
-    const responseCode = await sendToServer(requestData,"IFA0051","バージョンアップ完了報告");
-    return responseCode;
-  }catch(error){
-    throw new Error(`${error}`);
+    const response = await sendToServer(requestData,"IFA0051","バージョンアップ完了報告");
+    return { success: true, data: response };
+  } catch (error) {
+    return { success: false, error: error.message , code:error.code , api:error.api};
   }
 };
 
@@ -211,74 +212,61 @@ export const IFA0051 = async () => {
  ************************************************/
 export const sendToServer = async (requestData,endpoint,msg) => {
   let URI = null;// + endpoint;//★エンドポイント使うかわからないので保留
-  try {
+  // 設定ファイルから接続先URLを取得
+  const settings = await getSettings();
+  const BASEURL = settings.connectionURL;
+  URI = BASEURL;// + endpoint;//★エンドポイント使うかわからないので保留
 
-    // 設定ファイルから接続先URLを取得
-    const settings = await getSettings();
-    const BASEURL = settings.connectionURL;
-    URI = BASEURL;// + endpoint;//★エンドポイント使うかわからないので保留
+  // リクエスト送信前にログ記録
+  await logCommunication('SEND', URI, null, JSON.stringify(requestData));
 
-    // リクエスト送信前にログ記録
-    await logCommunication('SEND', URI, null, JSON.stringify(requestData));
-
-    // Axiosリクエストの設定
-    const config = {
-      method: 'post',
-      url: URI,
-      data: JSON.stringify(requestData), // 通信を行うインターフェース内容
-      timeout: 30000, // タイムアウト時間を30秒で指定
-      validateStatus: function (status) {
-        return status >= 100 && status <= 599; // 全てのHTTPステータスコードを例外としない
-      },
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-        // 'Content-Type': 'multipart/form-data' // ログファイル送信時
-      }
-    };
-
-    // Axiosでサーバー通信を行う
-    const response = await axios(config);
-
-    // HTTPステータスコードが200以外の場合は異常処理
-    if (response.status !== 200) {
-      Alert.alert(
-        "",messages.EA5004(msg,response.status),
-        [{ text: "OK"}]//, onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-      );        
-      console.error('Server returned status code ', response.status);
-      throw new Error(`Server returned status code ${response.status}`);
-    //【応答データ】.【ステータスコード】＝"01:異常"　の場合
-    }else if(response.data && response.data.sttCd && response.data.sttCd == "01"){
-      Alert.alert(
-        "",messages.EA5005(msg,response.status),
-        [{ text: "OK"}]//, onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-      );        
-      console.error('Server returned status code ', response.status);
-      throw new Error(`Server returned status code ${response.status}`);
+  // Axiosリクエストの設定
+  const config = {
+    method: 'post',
+    url: URI,
+    data: JSON.stringify(requestData), // 通信を行うインターフェース内容
+    timeout: 30000, // タイムアウト時間を30秒で指定
+    validateStatus: function (status) {
+      return status >= 100 && status <= 599; // 全てのHTTPステータスコードを例外としない
+    },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+      // 'Content-Type': 'multipart/form-data' // ログファイル送信時
     }
+  };
 
-    // 応答受信後にログ記録
-    await logCommunication('RECV', URI, response.status, JSON.stringify(response.data));
-    return response;
-
-  } catch (error) {
+  // Axiosでサーバー通信を行う
+  let response = null;
+  try{
+    response = await axios(config);
+  }   catch (error) {
     // エラー時にログ記録
     await logCommunication('ERROR', URI, null, error);
-
     if (error.code === 'ECONNABORTED') {
       // タイムアウト処理
-      Alert.alert(
-        "",messages.EA5003(""),
-        [{ text: "OK"}]//, onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-      );      
       console.error('Communication timed out', error);
-      throw new Error(`Communication timed out ${error}`);
+      throw new CustomError('timeout','',msg);
     } else {
       // その他の異常処理
       console.error('An error occurred during communication', error);
-      throw new Error(`An error occurred during communication ${error}`);
+      throw new CustomError('error','',msg);
     }
   }
+  // HTTPステータスコードが200以外の場合は異常処理
+  if (response.status !== 200) {
+    //const result = await showAlert("通知", messages.EA5004(msg,response.status), false);
+    console.error('Server returned status code ', response.status);
+    throw new CustomError('codeHttp200',response.status,msg);
+  //【応答データ】.【ステータスコード】＝"01:異常"　の場合
+  }else if(response.data && response.data.sttCd && response.data.sttCd == "01"){
+    //const result = await showAlert("通知", messages.EA5005(msg,response.status), false);      
+    console.error('Server returned status code ', response.status);
+    throw new CustomError('codeRsps01',response.status,msg);
+  }
+
+  // 応答受信後にログ記録
+  await logCommunication('RECV', URI, response.status, JSON.stringify(response.data));
+  return response;
 };
 
 /************************************************
@@ -289,87 +277,74 @@ export const sendToServer = async (requestData,endpoint,msg) => {
  ************************************************/
 export const sendFileToServer = async (requestData,endpoint,msg,filePath) => {
   let URI = null;// + endpoint;//★エンドポイント使うかわからないので保留
-  try {
-    const formData = new FormData();
-    formData.append('file', {
-      uri: `file://${filePath}`,
-      type: 'multipart/form-data',
-      name: filePath.split('/').pop(),
-    });
-    // JSONデータをFormDataに追加
-    for (const key in jsonParams) {
-      formData.append(key, jsonParams[key]);
-    }
+  const formData = new FormData();
+  formData.append('file', {
+    uri: `file://${filePath}`,
+    type: 'multipart/form-data',
+    name: filePath.split('/').pop(),
+  });
+  // JSONデータをFormDataに追加
+  for (const key in requestData) {
+    formData.append(key, requestData[key]);
+  }
+  // 設定ファイルから接続先URLを取得
+  const settings = await getSettings();
+  const BASEURL = settings.connectionURL;
+  URI = BASEURL;// + endpoint;//★エンドポイント使うかわからないので保留
 
-    const formDataHeaders = formData.getHeaders ? formData.getHeaders() : {};
-    console.log(formDataHeaders)
-    // 設定ファイルから接続先URLを取得
-    const settings = await getSettings();
-    const BASEURL = settings.connectionURL;
-    URI = BASEURL;// + endpoint;//★エンドポイント使うかわからないので保留
-
-    // リクエスト送信前にログ記録
-    await logCommunication('SEND', URI, null, `${JSON.stringify(requestData)} filePath:${filePath}`);
+  // リクエスト送信前にログ記録
+  await logCommunication('SEND', URI, null, `${JSON.stringify(requestData)} filePath:${filePath}`);
 
     // Axiosリクエストの設定
-    const config = {
-      method: 'post',
-      url: URI,
-      data: formData, // 通信を行うインターフェース内容
-      timeout: 30000, // タイムアウト時間を30秒で指定
-      validateStatus: function (status) {
-        return status >= 100 && status <= 599; // 全てのHTTPステータスコードを例外としない
-      },
-      headers: {
-        ...formDataHeaders,
-        //'Content-Type': 'multipart/form-data' // ログファイル送信時
-      }
-    };
-
-    // Axiosでサーバー通信を行う
-    const response = await axios(config);
-
-    // HTTPステータスコードが200以外の場合は異常処理
-    if (response.status !== 200) {
-      Alert.alert(
-        "",messages.EA5004(msg,response.status),
-        [{ text: "OK"}]//, onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-      );        
-      console.error('Server returned status code ', response.status);
-      throw new Error(`Server returned status code ${response.status}`);
-    //【応答データ】.【ステータスコード】＝"01:異常"　の場合
-    }else if(response.data && response.data.sttCd && response.data.sttCd == "01"){
-      Alert.alert(
-        "",messages.EA5005(msg,response.status),
-        [{ text: "OK"}]//, onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-      );        
-      console.error('Server returned status code ', response.status);
-      throw new Error(`Server returned status code ${response.status}`);
+  const config = {
+    method: 'post',
+    url: URI,
+    data: formData, // 通信を行うインターフェース内容
+    timeout: 30000, // タイムアウト時間を30秒で指定
+    validateStatus: function (status) {
+      return status >= 100 && status <= 599; // 全てのHTTPステータスコードを例外としない
+    },
+    headers: {
+      'Content-Type': 'multipart/form-data' // ログファイル送信時
     }
+  };
 
-    // 応答受信後にログ記録
-    await logCommunication('RECV', URI, response.status, JSON.stringify(response.data));
-    return response;
-
-  } catch (error) {
+  // Axiosでサーバー通信を行う
+  let response = null
+  try {
+    response = await axios(config);
+  }catch(error){
     // エラー時にログ記録
     await logCommunication('ERROR', URI, null, error);
-
     if (error.code === 'ECONNABORTED') {
       // タイムアウト処理
-      Alert.alert(
-        "",messages.EA5003(""),
-        [{ text: "OK"}]//, onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-      );      
+      //const result = await showAlert("通知", messages.EA5003(""), false);
       console.error('Communication timed out', error);
-      throw new Error(`Communication timed out ${error}`);
+      throw new CustomError('timeout','',msg);
     } else {
       // その他の異常処理
       console.error('An error occurred during communication', error);
-      throw new Error(`An error occurred during communication ${error}`);
+      throw new Error(error);
     }
   }
+  // HTTPステータスコードが200以外の場合は異常処理
+  if (response.status !== 200) {
+    //const result = await showAlert("通知", messages.EA5004(msg,response.status), false);      
+    console.error('Server returned status code ', response.status);
+    throw new CustomError('codeHttp200',response.status,msg);
+  //【応答データ】.【ステータスコード】＝"01:異常"　の場合
+  }else if(response.data && response.data.sttCd && response.data.sttCd == "01"){
+    //const result = await showAlert("通知", messages.EA5005(msg,response.status), false);       
+    console.error('Server returned status code ', response.status);
+    throw new CustomError('codeRsps01',response.status,msg);
+  }
+
+  // 応答受信後にログ記録
+  await logCommunication('RECV', URI, response.status, JSON.stringify(response.data));
+  return response;
+
 };
+
 
 /************************************************
  * 設定ファイルの読み込み関数
@@ -385,3 +360,14 @@ const getSettings = async () => {
   };
 };
 
+/************************************************
+ * カスタムエラークラス
+ * @returns 
+ ************************************************/
+class CustomError extends Error {
+  constructor(message, code, api) {
+    super(message);
+    this.code = code;
+    this.api = api;
+  }
+}

@@ -20,7 +20,7 @@ import { initializeLogFile, logUserAction, logCommunication, watchPosition, writ
 import { watchLocation } from '../utils/Position'; 
 import RNFS from 'react-native-fs';
 import RNRestart from 'react-native-restart'; // まずインポートする
-import CustomAlert from '../components/CustomAlert';
+import { useAlert } from '../components/AlertContext';
 
 
 const WA1030 = ({navigation,closeModal}) => {
@@ -32,7 +32,7 @@ const WA1030 = ({navigation,closeModal}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [wkplacId, setWkplacId] = useState(''); // 作業場所種別ID
     const [wkplacTyp,setWkplacTyp] = useState('')
-    const { showAlert, CustomAlertComponent } = CustomAlert();
+    const { showAlert } = useAlert();
 
 
     /************************************************
@@ -57,11 +57,7 @@ const WA1030 = ({navigation,closeModal}) => {
             if(comIdKeyStore.comId != comId){
               console.log(comIdKeyStore.comId , comId)
               // ID種別が1ではない場合のエラーハンドリング
-              Alert.alert(
-                "",
-                messages.EA5006("利用者"),
-                [{ text: "OK", onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-              );
+              const result = await showAlert("通知", messages.EA5006("利用者"), false);
               setShowScannerUsr(false);                 
             }else{
               const realm = await getInstance();
@@ -87,20 +83,12 @@ const WA1030 = ({navigation,closeModal}) => {
               setShowScannerUsr(false);  
             }
         } else {
-            // ID種別が1ではない場合のエラーハンドリング
-            Alert.alert(
-              "",
-              messages.EA5002("利用者"),
-              [{ text: "OK", onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-            );
+          // ID種別が1ではない場合のエラーハンドリング
+          const result = await showAlert("通知", messages.EA5002("利用者"), false);
           setShowScannerUsr(false);   
         }
       } else {
-        Alert.alert(
-            "",
-            messages.EA5002("利用者"),
-            [{ text: "OK", onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-        );
+        const result = await showAlert("通知", messages.EA5002("利用者"), false);
         setShowScannerUsr(false);   
         // CSVデータが正しいフォーマットでない場合のエラーハンドリング
       }      
@@ -172,20 +160,12 @@ const WA1030 = ({navigation,closeModal}) => {
 
               setShowScannerWkplac(false);  
         } else {
-            // ID種別が1ではない場合のエラーハンドリング
-            Alert.alert(
-              "",
-              messages.EA5002("作業場所"),
-              [{ text: "OK", onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-            );
+          // ID種別が1ではない場合のエラーハンドリング
+          const result = await showAlert("通知", messages.EA5002("作業場所"), false);
           setShowScannerWkplac(false);   
         }
       } else {
-        Alert.alert(
-            "",
-            messages.EA5002("作業場所"),
-            [{ text: "OK", onPress: closeModal }] // closeModalはQRScannerコンポーネントのprops
-        );
+        const result = await showAlert("通知", messages.EA5002("作業場所"), false);
         setShowScannerWkplac(false);   
         // CSVデータが正しいフォーマットでない場合のエラーハンドリング
       }      
@@ -233,20 +213,18 @@ const WA1030 = ({navigation,closeModal}) => {
       setModalVisible(true);
       try{
         const responseIFA0030 = await IFA0030();
+        if(await apiIsError(responseIFA0030)) return;
+        
         const realm = await getInstance()
         //【アプリ更新】＝"1"
         if(responseIFA0030.data && responseIFA0030.data.isAppUpd && responseIFA0030.data.isAppUpd == "1"){
-          const IA5004_choise = await new Promise((resolve) => {Alert.alert(
-              "",messages.IA5004(),
-              [
-                {text: "いいえ",style: "cancel",onPress: () => resolve('no')}, // 「いいえ」を選んだ場合、resolveを呼ぶ
-                {text: "はい",onPress: () => resolve('yes') }// 「はい」を選んだ場合、resolveを呼ぶ
-              ],{ cancelable: false });});
-
+          const IA5004_choise = await showAlert("確認", messages.IA5004(), true);
           // ユーザーの選択に応じた処理
-          if (IA5004_choise === 'yes') {
+          if (IA5004_choise) {
             // ユーザーが「はい」を選んだ場合、IFA0050を呼び出す
             const responseIFA0050 = await IFA0050();
+            if(await apiIsError(responseIFA0050)) return;
+
             // バイナリーデータのBASE64デコード
             const responseIFA0050dec=atob(responseIFA0050.data)
             // apkファイルとして保存する  
@@ -260,11 +238,10 @@ const WA1030 = ({navigation,closeModal}) => {
               });
             // バージョンアップ報告を要で更新
             await saveToKeystore("verupRep",{verupRep: "1",});//★バージョンアップ報告の物理名不明
-            Alert.alert(
-              "",messages.IA5008(),[
-                {text: "はい",onPress: () => {RNRestart.Restart();}}//アプリ再起動
-              ],{ cancelable: false }
-            );
+            const result = await showAlert("通知", messages.IA5008(), false);
+            if(result){
+              RNRestart.Restart();
+            }
           } else {
             console.log('利用開始を中止しました。');
             setModalVisible(false); // モーダルを非表示にする
@@ -273,16 +250,13 @@ const WA1030 = ({navigation,closeModal}) => {
 
         //【設定ファイル更新】＝"1"　
         }else if(responseIFA0030.data && responseIFA0030.data.isSetUpd && responseIFA0030.data.isSetUpd == "1"){
-          const IA5009_choise = await new Promise((resolve) => {Alert.alert(
-            "",messages.IA5009(),
-            [
-              {text: "いいえ",style: "cancel",onPress: () => resolve('no')}, // 「いいえ」を選んだ場合、resolveを呼ぶ
-              {text: "はい",onPress: () => resolve('yes') }// 「はい」を選んだ場合、resolveを呼ぶ
-            ],{ cancelable: false });});
+          const IA5009_choise = await showAlert("確認", messages.IA5009(), true);
             // ユーザーの選択に応じた処理
-          if (IA5009_choise === 'yes') {
+          if (IA5009_choise) {
             // ユーザーが「はい」を選んだ場合、FA0040_端末設定ファイル配信を呼び出す
             const responseIFA0040 = await IFA0040();
+            if(await apiIsError(responseIFA0040)) return;
+
             // バイナリーデータのBASE64デコード
             const responseIFA0040dec=atob(responseIFA0040.data)
             // realmの設定ファイルへ保存する ★どこに保存するか要確認
@@ -296,6 +270,7 @@ const WA1030 = ({navigation,closeModal}) => {
             });
             // IFA0051_バージョンアップ完了報告を呼び出す
             const responseIFA0050 = await IFA0050();
+            if(await apiIsError(responseIFA0050)) return;         
           }
         }
         // [位置情報取得間隔]の間隔で位置情報の取得を開始する。
@@ -327,6 +302,33 @@ const WA1030 = ({navigation,closeModal}) => {
         console.error('利用開始に失敗しました。', error);
       }
     }
+
+    /************************************************
+     * API通信処理エラー有無確認・エラーハンドリング
+     * @param {*} response 
+     * @returns 
+     ************************************************/
+    const apiIsError = async (response)=>{
+      if (!response.success) {
+        switch(response.error){
+          case 'codeHttp200':
+            await showAlert("通知", messages.EA5004(response.api,response.code), false);
+            break;
+          case 'codeRsps01':
+            await showAlert("通知", messages.EA5005(msg,response.status), false); 
+            break;
+          case 'timeout':
+            await showAlert("通知", messages.EA5003(""), false);
+            break;
+        }
+        // モーダル非表示
+        setModalVisible(false);          
+        return true ;
+      }else{
+        return false;
+      }
+    }
+
     return (
       <View style={styles.container}>
         {/* ヘッダ */}
@@ -382,9 +384,6 @@ const WA1030 = ({navigation,closeModal}) => {
                 <QRScanner onScan={handleQRCodeScannedForWkplac} closeModal={() => setShowScannerWkplac(false)} isActive={showScannerWkplac}  errMsg={"作業場所QRコード"}/>
             </Modal>
         )}
-
-        {/* アラート */}
-        <CustomAlertComponent />
 
       </View>
 

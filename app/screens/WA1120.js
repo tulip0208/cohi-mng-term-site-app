@@ -17,7 +17,7 @@ import ProcessingModal from '../components/Modal';
 import { getEncryptionKeyFromKeystore,saveToKeystore,clearKeyStore,loadFromKeystore } from '../utils/KeyStore'; 
 import { sendToServer } from '../utils/Api'; 
 import { initializeLogFile, logUserAction, logCommunication, watchPosition, writeLog,logScreen,calculateTotalLogSize  } from '../utils/Log';
-
+import { useAlert } from '../components/AlertContext';
 
 const WA1120 = ({closeModal}) => {
     const [userName, setUserName] = useState('');  //利用者
@@ -27,6 +27,7 @@ const WA1120 = ({closeModal}) => {
     const [showScannerUsr, setShowScannerUsr] = useState(false); // カメラ表示用の状態
     const [showScannerWkplac, setShowScannerWkplac] = useState(false); // カメラ表示用の状態
     const [modalVisible, setModalVisible] = useState(false);
+    const { showAlert } = useAlert();
 
     // useEffect フックを使用してステートが変更されるたびにチェック
     useEffect(() => {
@@ -37,22 +38,10 @@ const WA1120 = ({closeModal}) => {
      ************************************************/
     const btnAppClose = async () => {
       await logUserAction(`ボタン押下: 終了(WA1120)`);  
-      Alert.alert(
-          "",
-          messages.IA5001(),
-          [
-              {
-                  text: "いいえ",
-                  style: "cancel"
-              },
-              {
-                  text: "はい",
-                  //onPress: () => navigation.goBack() // はいを選択したら前の画面に戻る
-                  onPress: () => BackHandler.exitApp() // アプリを終了する
-              }
-          ],
-          { cancelable: false }
-      );
+      const result = await showAlert("確認", messages.IA5001(), true);
+      if (result) {
+        BackHandler.exitApp()
+      }
     };
 
     return (
@@ -68,7 +57,7 @@ const WA1120 = ({closeModal}) => {
         </View>
       
         {/* フッタ */}
-        <Footer />       
+        <Footer />
       </View>
 
     );

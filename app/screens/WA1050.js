@@ -22,6 +22,7 @@ import RNFS from 'react-native-fs';
 import Geolocation from '@react-native-community/geolocation';
 import { logUserAction, checkLogFile,logScreen,calculateTotalLogSize,deleteLogs,compressLogFiles,deleteLogFile } from '../utils/Log';
 import { clearLocation } from '../utils/Position'; 
+import { useAlert } from '../components/AlertContext';
 
 const logDirectory = `${RNFS.DocumentDirectoryPath}/logs`;
 const {SignalStrengthModule} = NativeModules;
@@ -38,6 +39,7 @@ const WA1050 = ({closeModal,route,navigation }) => {
     const [settings, setSettings] = useState('');
     const [isDisabled, setIsDisabled] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
+    const { showAlert } = useAlert();
 
     /************************************************
      * 初期表示設定
@@ -73,19 +75,21 @@ const WA1050 = ({closeModal,route,navigation }) => {
     }, []);
 
     /************************************************
+     * Log.deleteLogs 用 通知コールバック関数
+     ************************************************/    
+    const handleDeleteLogs = () => {
+      deleteLogs((title, message, showCancel) => showAlert(title, message, showCancel));
+    };
+
+    /************************************************
      * ログ消去ボタン
      ************************************************/    
     const btnDelLog = async () => {
       await logUserAction(`ボタン押下:ログ消去`);
-      const IA5010_choise = await new Promise((resolve) => {Alert.alert(
-        "",messages.IA5010(),
-        [
-          {text: "いいえ",onPress: () => resolve('no')},
-          {text: "はい",onPress: () => resolve('yes') }
-        ],{ cancelable: false });});
+      const IA5010_choise = await showAlert("確認", messages.IA5010(), true);
       // ユーザーの選択に応じた処理
-      if (IA5010_choise === 'yes') {
-        await deleteLogs();
+      if (IA5010_choise) {
+        await deleteLogs((title, message, showCancel) => showAlert(title, message, showCancel));
         const logSize = await calculateTotalLogSize();
         setLogCap(logSize);
       }
@@ -96,14 +100,9 @@ const WA1050 = ({closeModal,route,navigation }) => {
      ************************************************/    
     const btnUpLog = async () => {
       await logUserAction(`ボタン押下:ログ送信`);
-      const IA5006_choise = await new Promise((resolve) => {Alert.alert(
-        "",messages.IA5006(),
-        [
-          {text: "いいえ",onPress: () => resolve('no')},
-          {text: "はい",onPress: () => resolve('yes') }
-        ],{ cancelable: false });});
+      const IA5006_choise = await showAlert("確認", messages.IA5006(), true);
       // ユーザーの選択に応じた処理
-      if (IA5006_choise === 'yes') {
+      if (IA5006_choise) {
         // モーダル表示
         setModalVisible(true);
         // 位置情報取得を停止
@@ -111,13 +110,11 @@ const WA1050 = ({closeModal,route,navigation }) => {
         // ログファイルを圧縮してファイルパスを取得
         const filePath = await compressLogFiles();
         // ログファイルアップロード通信を実施
-        await IFA0020(filePath);
+        const responseIFA0020 = await IFA0020(filePath);
+        if(await apiIsError(responseIFA0020)) return;
+        
         // 実施完了メッセージ
-        const IA5005_choise = await new Promise((resolve) => {Alert.alert(
-          "",messages.IA5005("ログのアップロード"),
-          [
-            {text: "はい",onPress: () => resolve('yes') }
-          ],{ cancelable: false });});        
+        const IA5005_choise = await showAlert("通知", messages.IA5005("ログのアップロード"), false);
         // アップロード用zipファイルの削除
         await deleteLogFile(filePath)
         // モーダル非表示
@@ -147,6 +144,32 @@ const WA1050 = ({closeModal,route,navigation }) => {
     const getTextStyle = () => {
       return (isDisabled) ? [styles.endButtonText,styles.settingButtonText1] : [styles.endButtonText];
     };
+
+    /************************************************
+     * API通信処理エラー有無確認・エラーハンドリング
+     * @param {*} response 
+     * @returns 
+     ************************************************/
+    const apiIsError = async (response)=>{
+      if (!response.success) {
+        switch(response.error){
+          case 'codeHttp200':
+            await showAlert("通知", messages.EA5004(response.api,response.code), false);
+            break;
+          case 'codeRsps01':
+            await showAlert("通知", messages.EA5005(msg,response.status), false); 
+            break;
+          case 'timeout':
+            await showAlert("通知", messages.EA5003(""), false);
+            break;
+        }
+        // モーダル非表示
+        setModalVisible(false);          
+        return true ;
+      }else{
+        return false;
+      }
+    }
 
     return (
       <View style={styles.container}>
@@ -243,7 +266,8 @@ const WA1050 = ({closeModal,route,navigation }) => {
         />
 
         {/* フッタ */}
-        <Footer />       
+        <Footer /> 
+
       </View>
 
     );

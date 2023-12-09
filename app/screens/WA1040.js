@@ -17,6 +17,7 @@ import ProcessingModal from '../components/Modal';
 import { getEncryptionKeyFromKeystore,saveToKeystore,clearKeyStore,loadFromKeystore } from '../utils/KeyStore'; 
 import { sendToServer } from '../utils/Api'; 
 import { initializeLogFile, logUserAction, logCommunication, watchPosition, writeLog,logScreen  } from '../utils/Log';
+import { useAlert } from '../components/AlertContext';
 
 const WA1040 = ({navigation}) => {
     const [userName, setUserName] = useState('');  //利用者
@@ -27,6 +28,7 @@ const WA1040 = ({navigation}) => {
     const [showScannerWkplac, setShowScannerWkplac] = useState(false); // カメラ表示用の状態
     const [modalVisible, setModalVisible] = useState(false);
     const [isButtonView, setIsButtonView] = useState({});
+    const { showAlert } = useAlert();
 
     // useEffect フックを使用してステートが変更されるたびにチェック
     useEffect(() => {
@@ -57,23 +59,11 @@ const WA1040 = ({navigation}) => {
      * 終了ボタン押下時のポップアップ表示
      ************************************************/
     const btnAppClose = async () => {
-      await logUserAction(`ボタン押下: 終了(WA1040)`);   
-      Alert.alert(
-          "",
-          messages.IA5001(),
-          [
-              {
-                  text: "いいえ",
-                  style: "cancel"
-              },
-              {
-                  text: "はい",
-                  //onPress: () => navigation.goBack() // はいを選択したら前の画面に戻る
-                  onPress: () => BackHandler.exitApp() // アプリを終了する
-              }
-          ],
-          { cancelable: false }
-      );
+      await logUserAction(`ボタン押下: 終了(WA1040)`);  
+      const result = await showAlert("確認", messages.IA5001(), true);
+      if (result) {
+        BackHandler.exitApp()
+      }
     };
 
     const btnNewTagRegSol = async () => {
@@ -192,7 +182,10 @@ const WA1040 = ({navigation}) => {
         </View>
       
         {/* フッタ */}
-        <Footer />       
+        <Footer />
+
+        {/* アラート */}
+        <CustomAlertComponent />        
       </View>
 
     );
