@@ -17,6 +17,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between', // 3つのセクションを縦に均等に配置
     backgroundColor: '#fff', // 背景色は白
   },
+  containerWithKeybord: {
+    justifyContent: 'center' ,
+    backgroundColor: '#fff', // 背景色は白
+  },  
   errorText: {
     color: 'red',
     textAlign: 'center',
@@ -34,6 +38,9 @@ export const styles = StyleSheet.create({
     flex: 1,
  //   justifyContent: 'center',
   }, 
+  center:{
+    alignItems: 'center',
+  },
   //--------------------  
   //--------ヘッダ--------
   headerContainer: {
@@ -59,7 +66,7 @@ export const styles = StyleSheet.create({
     height: 40,
   },
   functionHeaderLeft: {
-    fontSize: 20,
+    fontSize: 16,
     marginLeft: 10, // 適切な余白を設定
     color: 'white',
     fontWeight: 'bold',
@@ -73,7 +80,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
   },
   functionHeaderRight: {
-    fontSize: 20,
+    fontSize: 16,
     color: 'white',
     fontWeight: 'bold',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
@@ -85,7 +92,36 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 5,
   },
+  labelTextPlace: {
+    marginLeft: 75,
+  },  
   //--------------------
+  //--------テキストボックス-------
+  inputContainer: {
+    padding: 10,
+    alignItems: 'center',
+    flexDirection: 'row', // 子要素を横並びにする
+    justifyContent: 'center', // 子要素を親要素の左端に揃える
+    position:'absolute',
+    top:20,
+  },
+  inputWithText: {
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+  },  
+  input: {
+    borderWidth: 1, // 枠線の幅
+    borderColor: 'black', // 枠線の色
+    padding: 10,
+    height: 40, 
+    minWidth: 200, // テキストボックスの最小幅
+    textAlign: 'center',
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+  },
+
+
+
   //--------ボタン-------
   button: {
     backgroundColor: '#548236', // パステルな水色
@@ -96,10 +132,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
   },
+  buttonSmall: {
+    marginRight:'20%',
+    marginLeft:'20%',
+  },  
   buttonText: {
     fontSize: 20,
     color: 'white',
   },  
+  centerButton:{
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+    margin: 20,
+  },
   startButtonText: {
     fontSize: 20,
     color: 'white',
@@ -263,6 +307,7 @@ export const styles = StyleSheet.create({
     marginTop:3,
     marginBottom:3,
   },
+
   scrollViewStyle: {
     width: '100%', // または必要な幅に設定
     borderWidth: 1, // 枠線の幅
