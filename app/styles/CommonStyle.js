@@ -312,15 +312,19 @@ export const styles = StyleSheet.create({
     marginTop:3,
     marginBottom:3,
   },
-
   scrollViewStyle: {
-    width: '100%', // または必要な幅に設定
+    width: 'auto', // または必要な幅に設定
+    maxWidth:'100%',
+    minWidth: '90%', // または必要な幅に設定
     borderWidth: 1, // 枠線の幅
     borderColor: '#000', // 枠線の色
     borderRadius: 5, // 枠の角を丸くする場合
     paddingLeft:5,
     paddingRight:5,
   },  
+  innerScrollViewStyle: {
+    width: "100%", // または必要な幅に設定
+  },    
   //--------------------  
   bottomSection: {
     flexDirection: 'row',

@@ -185,56 +185,62 @@ const WA1050 = ({closeModal,route,navigation }) => {
                 style={styles.scrollViewStyle}
                 showsVerticalScrollIndicator={true}
                 showsHorizontalScrollIndicator={true}
+                horizontal={true}
             >
-              <Text>接続名称：{settings.serverName}</Text>
-              <Text>接続先：{settings.serverUrl}</Text>
-              <Text>ログ保持期間(日)：{settings.logTerm}</Text>
-              <Text>ログファイル分割(MB)：{settings.logCapacity}</Text>
-              <Text>位置情報取得間隔(秒)：{settings.locGetTerm}</Text>
-              <Text>カメラタイムアウト時間(秒)：{settings.camTimeout}</Text>
-              <Text>新タグ紐付(土壌)：{settings.btnNewTagSoil}</Text>
-              <Text>新タグ参照(土壌)：{settings.btnRefNewTagSoil}</Text>                                          
-              <Text>旧タグ参照(土壌)：{settings.btnRefOldTagSoil}</Text>
-              <Text>新タグ紐付(灰)：{settings.btnNewTagAsh}</Text>
-              <Text>新タグ参照(灰)：{settings.btnRefNewTagAsh}</Text>
-              <Text>旧タグ参照(灰)：{settings.btnRefOldTagAsg}</Text>
-              <Text>輸送カード申請：{settings.btnTrnCard}</Text>
-              <Text>荷下登録：{settings.btnUnload}</Text>
-              <Text>定置登録：{settings.btnStat}</Text>
-              <Text>旧タグ由来情報理由：{settings.reasonListOldTag}</Text>
-              <Text>内袋の利用方法(初期)：{settings.useMethodInnerBag}</Text>
-              <Text>荷姿種別(初期)：{settings.packTyp}</Text>
-              <Text>放射能濃度換算係数：{settings.radioConvFact}</Text>
-              <Text>施設到着予定時間(分)：{settings.facArriveTerm}</Text>
-              <Text>段数―･―･―･―･―･―･―･</Text>
-              <Text>草木類</Text>
-              <Text>  選択 {settings.selTiersPlants}  閾値 {settings.thresTiersPlants}</Text>
-              <Text>可燃廃棄物</Text>
-              <Text>  選択 {settings.selTiersCombust}  閾値 {settings.thresTiersCombust}</Text>
-              <Text>土壌等</Text>
-              <Text>  選択 {settings.selTiersSoil}  閾値 {settings.thresTiersSoil}</Text>
-              <Text>コン殻等</Text>
-              <Text>  選択 {settings.selTiersConcrete}  閾値 {settings.thresTiersConcrete}</Text>
-              <Text>アス混</Text>
-              <Text>  選択 {settings.selTiersAsphalt}  閾値 {settings.thresTiersAsphalt}</Text>
-              <Text>不燃物・混合物</Text>
-              <Text>  選択 {settings.selTiersNoncombustMix}  閾値 {settings.thresTiersNoncombustMix}</Text>
-              <Text>石綿含有建材</Text>
-              <Text>  選択 {settings.selTiersAsbestos}  閾値 {settings.thresTiersAsbestos}</Text>
-              <Text>石膏ボード</Text>
-              <Text>  選択 {settings.selTiersPlasterboard}  閾値 {settings.thresTiersPlasterboard}</Text>
-              <Text>危険物・有害物</Text>
-              <Text>  選択 {settings.selTiersHazard}  閾値 {settings.thresTiersHazard}</Text>
-              <Text>屋外残置_可燃</Text>
-              <Text>  選択 {settings.selTiersOutCombust}  閾値 {settings.thresTiersOutCombust}</Text>
-              <Text>屋外残置_不燃</Text>
-              <Text>  選択 {settings.selTiersOutNoncombust}  閾値 {settings.thresTiersOutNoncombust}</Text>
-              <Text>仮置場解体_可燃</Text>
-              <Text>  選択 {settings.selTiersTmpCombust}  閾値 {settings.thresTiersTmpCombust}</Text>
-              <Text>仮置場解体_不燃</Text>
-              <Text>  選択 {settings.selTiersTmpNoncombust}  閾値 {settings.thresTiersTmpCNoncombust}</Text>
-              <Text>焼却灰</Text>
-              <Text>  選択 {settings.selTiersAsh}  閾値 {settings.thresTiersAsh}</Text>
+              <ScrollView>
+                <View style={styles.innerScrollViewStyle}>
+                  <Text>appVer：{settings.appVer}</Text>
+                  <Text>settingFileDt：{settings.settingFileDt}</Text>
+                  <Text>serverName：{settings.serverName}</Text>
+                  <Text>serverUrl：{settings.serverUrl}</Text>
+                  <Text>logTerm：{settings.logTerm}</Text>
+                  <Text>logCapacity：{settings.logCapacity}</Text>
+                  <Text>locGetTerm：{settings.locGetTerm}</Text>
+                  <Text>camTimeout：{settings.camTimeout}</Text>
+                  <Text>btnNewTagSoil：{settings.btnNewTagSoil}</Text>
+                  <Text>btnRefNewTagSoil：{settings.btnRefNewTagSoil}</Text>
+                  <Text>btnRefOldTagSoil：{settings.btnRefOldTagSoil}</Text>
+                  <Text>btnNewTagAsh：{settings.btnNewTagAsh}</Text>
+                  <Text>btnRefNewTagAsh：{settings.btnRefNewTagAsh}</Text>
+                  <Text>btnRefOldTagAsg：{settings.btnRefOldTagAsg}</Text>
+                  <Text>btnTrnCard：{settings.btnTrnCard}</Text>
+                  <Text>btnUnload：{settings.btnUnload}</Text>
+                  <Text>btnStat：{settings.btnStat}</Text>
+                  <Text>reasonListOldTag：{settings.reasonListOldTag}</Text>
+                  <Text>useMethodInnerBag：{settings.useMethodInnerBag}</Text>
+                  <Text>packTyp：{settings.packTyp}</Text>
+                  <Text>radioConvFact：{settings.radioConvFact}</Text>
+                  <Text>facArriveTerm：{settings.facArriveTerm}</Text>
+                  <Text>selTiersPlants：{settings.selTiersPlants}</Text>
+                  <Text>thresTiersPlants：{settings.thresTiersPlants}</Text>
+                  <Text>selTiersCombust：{settings.selTiersCombust}</Text>
+                  <Text>thresTiersCombust：{settings.thresTiersCombust}</Text>
+                  <Text>selTiersSoil：{settings.selTiersSoil}</Text>
+                  <Text>thresTiersSoil：{settings.thresTiersSoil}</Text>
+                  <Text>selTiersConcrete：{settings.selTiersConcrete}</Text>
+                  <Text>thresTiersConcrete：{settings.thresTiersConcrete}</Text>
+                  <Text>selTiersAsphalt：{settings.selTiersAsphalt}</Text>
+                  <Text>thresTiersAsphalt：{settings.thresTiersAsphalt}</Text>
+                  <Text>selTiersNoncombustMix：{settings.selTiersNoncombustMix}</Text>
+                  <Text>thresTiersNoncombustMix：{settings.thresTiersNoncombustMix}</Text>
+                  <Text>selTiersAsbestos：{settings.selTiersAsbestos}</Text>
+                  <Text>thresTiersAsbestos：{settings.thresTiersAsbestos}</Text>
+                  <Text>selTiersPlasterboard：{settings.selTiersPlasterboard}</Text>
+                  <Text>thresTiersPlasterboard：{settings.thresTiersPlasterboard}</Text>
+                  <Text>selTiersHazard：{settings.selTiersHazard}</Text>
+                  <Text>thresTiersHazard：{settings.thresTiersHazard}</Text>
+                  <Text>selTiersOutCombust：{settings.selTiersOutCombust}</Text>
+                  <Text>thresTiersOutCombust：{settings.thresTiersOutCombust}</Text>
+                  <Text>selTiersOutNoncombust：{settings.selTiersOutNoncombust}</Text>
+                  <Text>thresTiersOutNoncombust：{settings.thresTiersOutNoncombust}</Text>
+                  <Text>selTiersTmpCombust：{settings.selTiersTmpCombust}</Text>
+                  <Text>thresTiersTmpCombust：{settings.thresTiersTmpCombust}</Text>
+                  <Text>selTiersTmpNoncombust：{settings.selTiersTmpNoncombust}</Text>
+                  <Text>thresTiersTmpCNoncombust：{settings.thresTiersTmpCNoncombust}</Text>
+                  <Text>selTiersAsh：{settings.selTiersAsh}</Text>
+                  <Text>thresTiersAsh：{settings.thresTiersAsh}</Text>
+                </View>
+              </ScrollView>
             </ScrollView>          
           </View>
           <Text style={styles.labelTextSetting}>[ログ]  {logCap}MB</Text>

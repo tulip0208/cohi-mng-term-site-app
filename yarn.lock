@@ -3523,6 +3523,11 @@
     "pretty-format" "^26.5.2"
     "uuid" "^3.4.0"
 
+"fast-base64-decode@^1.0.0":
+  "integrity" "sha512-qwaScUgUGBYeDNRnbc/KyllVU88Jk1pRHPStuF/lO7B0/RTRLj7U0lkdTAutlBblY08rwZDff6tNU9cjv6j//Q=="
+  "resolved" "https://registry.npmjs.org/fast-base64-decode/-/fast-base64-decode-1.0.0.tgz"
+  "version" "1.0.0"
+
 "fast-deep-equal@^3.1.1", "fast-deep-equal@^3.1.3":
   "integrity" "sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q=="
   "resolved" "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz"
@@ -5801,6 +5806,13 @@
     "lodash" "^4.17.21"
     "prop-types" "^15.7.2"
 
+"react-native-get-random-values@^1.10.0":
+  "integrity" "sha512-gZ1zbXhbb8+Jy9qYTV8c4Nf45/VB4g1jmXuavY5rPfUn7x3ok9Vl3FTl0dnE92Z4FFtfbUNNwtSfcmomdtWg+A=="
+  "resolved" "https://registry.npmjs.org/react-native-get-random-values/-/react-native-get-random-values-1.10.0.tgz"
+  "version" "1.10.0"
+  dependencies:
+    "fast-base64-decode" "^1.0.0"
+
 "react-native-keychain@^8.1.2":
   "integrity" "sha512-bhHEui+yMp3Us41NMoRGtnWEJiBE0g8tw5VFpq4mpmXAx6XJYahuM6K3WN5CsUeUl83hYysSL9oFZNKSTPSvYw=="
   "resolved" "https://registry.npmjs.org/react-native-keychain/-/react-native-keychain-8.1.2.tgz"
@@ -5839,7 +5851,7 @@
   "resolved" "https://registry.npmjs.org/react-native-zip-archive/-/react-native-zip-archive-6.1.0.tgz"
   "version" "6.1.0"
 
-"react-native@*", "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@>=0.40.0", "react-native@>=0.57", "react-native@>=0.60.0", "react-native@>=0.68", "react-native@>=0.71.0", "react-native@0.72.5":
+"react-native@*", "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@>=0.40.0", "react-native@>=0.56", "react-native@>=0.57", "react-native@>=0.60.0", "react-native@>=0.68", "react-native@>=0.71.0", "react-native@0.72.5":
   "integrity" "sha512-oIewslu5DBwOmo7x5rdzZlZXCqDIna0R4dUwVpfmVteORYLr4yaZo5wQnMeR+H7x54GaMhmgeqp0ZpULtulJFg=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.72.5.tgz"
   "version" "0.72.5"
@@ -6977,7 +6989,12 @@
   "resolved" "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz"
   "version" "1.0.1"
 
-"uuid@^3.3.2", "uuid@^3.4.0":
+"uuid@^3.3.2":
+  "integrity" "sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A=="
+  "resolved" "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz"
+  "version" "3.4.0"
+
+"uuid@^3.4.0":
   "integrity" "sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A=="
   "resolved" "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz"
   "version" "3.4.0"
@@ -6996,6 +7013,11 @@
   "integrity" "sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg=="
   "resolved" "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
   "version" "8.3.2"
+
+"uuid@^9.0.1":
+  "integrity" "sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA=="
+  "resolved" "https://registry.npmjs.org/uuid/-/uuid-9.0.1.tgz"
+  "version" "9.0.1"
 
 "valid-url@~1.0.9":
   "integrity" "sha512-QQDsV8OnSf5Uc30CKSwG9lnhMPe6exHtTXLRYX8uMwKENy640pU+2BgBL0LRbDh/eYRahNCS7aewCx0wf3NYVA=="

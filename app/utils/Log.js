@@ -103,7 +103,7 @@ export const calculateTotalLogSize = async () => {
     }
 
     // バイトをMBに変換し、小数点1位以下を切り上げ
-    const totalSizeMB = Math.ceil((totalSize / (1024 * 1024)) * 10) / 10;
+    const totalSizeMB = Math.max(1, Math.ceil(totalSize / (1024 * 1024)));
     
     return totalSizeMB; // 合計サイズをMB単位で返す
   } catch (error) {

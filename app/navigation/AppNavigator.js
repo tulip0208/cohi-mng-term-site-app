@@ -24,6 +24,7 @@ import { onAppLaunch,getInstance } from '../utils/Realm'; // Realmのセット�
 import { sendToServer,IFA0051 } from '../utils/Api'; 
 import { initializeLogFile, logUserAction, logCommunication, watchPosition, logScreen } from '../utils/Log';
 import { AlertProvider } from '../components/AlertContext';
+import { watchLocation } from '../utils/Position'; 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
@@ -74,8 +75,8 @@ const AppNavigator = () => {
         if(loginInfo && loginInfo.loginDt.replace(/[^0-9]/g, "").slice(0,8)==currentDateTime && loginInfo.logoutFlg=="0"){
           const settingsInfo = realm.objects('settings')[0]
           // ★位置情報取得し、設定ファイルへ？1040前処理(Position.js処理にて。要確認)
-          //
-
+          // [位置情報取得間隔]の間隔で位置情報の取得を開始する。
+          await watchLocation();
           await logScreen(`画面遷移: WA1040_メニュー`);
           setInitialRoute('WA1040'); // ログイン済みの場合、メニュー画面起動
         }else{

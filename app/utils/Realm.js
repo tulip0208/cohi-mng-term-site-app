@@ -33,7 +33,6 @@ const setupRealm = async () => {
       encryptionKey = await generateEncryptionKey();
       await storeEncryptionKeyInKeystore(encryptionKey);
     }
-    //console.log('key length:', encryptionKey.length , '  key: ',encryptionKey);
 
     // Realmの初期設定
     realmConfig = {

@@ -3,7 +3,7 @@
  * WA1030
  * ---------------------------------------------*/
 // app/screens/WA1030.js
-import TapHeader from '../components/TapHeader'; // Headerコンポーネントのインポート
+import TapFunctionHeader from '../components/TapFunctionHeader'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート
 import { styles } from '../styles/CommonStyle'; // 共通スタイル
 import React, { useState, useEffect } from 'react';
@@ -21,7 +21,8 @@ import { watchLocation } from '../utils/Position';
 import RNFS from 'react-native-fs';
 import RNRestart from 'react-native-restart'; // まずインポートする
 import { useAlert } from '../components/AlertContext';
-
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 const WA1030 = ({navigation,closeModal}) => {
     const [userName, setUserName] = useState('');  //利用者
@@ -33,7 +34,6 @@ const WA1030 = ({navigation,closeModal}) => {
     const [wkplacId, setWkplacId] = useState(''); // 作業場所種別ID
     const [wkplacTyp,setWkplacTyp] = useState('')
     const { showAlert } = useAlert();
-
 
     /************************************************
      * QRコードスキャン後の処理 (ユーザ情報用)
@@ -116,7 +116,7 @@ const WA1030 = ({navigation,closeModal}) => {
             if (typ == "4"){
               schema = "temporary_places";
               db = {
-                id: "1",//★一旦保留
+                id: uuidv4(),
                 tmpPlacId: id,
                 tmpPlacNm: name,
                 delSrcTyp: 0,//★一旦保留
@@ -125,7 +125,7 @@ const WA1030 = ({navigation,closeModal}) => {
             }else if(typ == "5"){
               schema = "storage_places";
               db = {
-                id: "1",//★一旦保留
+                id: uuidv4(),
                 storPlacId: id,
                 storPlacNm: name,
               }
@@ -133,7 +133,7 @@ const WA1030 = ({navigation,closeModal}) => {
             }else{
               schema = "fixed_places";
               db = {
-                id: "1",//★一旦保留
+                id: uuidv4(),
                 storPlacId: null,
                 fixPlacId: id,
                 fixPlacNm: name,
@@ -332,7 +332,7 @@ const WA1030 = ({navigation,closeModal}) => {
     return (
       <View style={styles.container}>
         {/* ヘッダ */}
-        <TapHeader title={"ログイン"} navigation={navigation} sourceScreenId={"WA1030"}/>
+        <TapFunctionHeader appType={"現"} viewTitle={"ログイン"} functionTitle={""} navigation={navigation} sourceScreenId={"WA1030"}/>
 
         {/* 中段 */}
         <View  style={[styles.main,styles.topContent]}>

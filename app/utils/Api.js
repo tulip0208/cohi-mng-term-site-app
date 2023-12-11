@@ -39,7 +39,7 @@ export const IFA0010 = async (encryptedKey,secretKey) => {
     };
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const response = await sendToServer(requestData,"IFA0010","端末登録");
-    return { success: true, data: response };
+    return { success: true, data: response.data };
   } catch (error) {
     return { success: false, error: error.message , code:error.code , api:error.api};
   }
@@ -74,7 +74,7 @@ export const IFA0020 = async (filePath) => {
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const response = await sendFileToServer(requestData,"IFA0020","ログアップロード",filePath);
-    return { success: true, data: response };
+    return { success: true, data: response.data };
   } catch (error) {
     return { success: false, error: error.message , code:error.code , api:error.api};
   }
@@ -106,7 +106,7 @@ export const IFA0030 = async () => {
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const response = await sendToServer(requestData,"IFA0030","端末チェック");
-    return { success: true, data: response };
+    return { success: true, data: response.data };
   } catch (error) {
     return { success: false, error: error.message , code:error.code , api:error.api};
   }
@@ -137,7 +137,7 @@ export const IFA0040 = async () => {
     };
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const response = await sendToServer(requestData,"IFA0040","端末設定ファイル配信");
-    return { success: true, data: response };
+    return { success: true, data: response.data };
   } catch (error) {
     return { success: false, error: error.message , code:error.code , api:error.api};
   }
@@ -167,7 +167,7 @@ export const IFA0050 = async () => {
     };
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const response = await sendToServer(requestData,"IFA0050","更新ファイル配信");
-    return { success: true, data: response };
+    return { success: true, data: response.data };
   } catch (error) {
     return { success: false, error: error.message , code:error.code , api:error.api};
   }
@@ -198,7 +198,30 @@ export const IFA0051 = async () => {
     };
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const response = await sendToServer(requestData,"IFA0051","バージョンアップ完了報告");
-    return { success: true, data: response };
+    return { success: true, data: response.data };
+  } catch (error) {
+    return { success: false, error: error.message , code:error.code , api:error.api};
+  }
+};
+
+/************************************************
+ * IFA0330_新タグ情報照会(除去土壌等) 
+ ************************************************/
+export const IFA0330 = async (txtNewTagId) => {
+  try {
+    const realm = await getInstance()
+    const loginInfo = await realm.objects('login')[0]
+    const requestData = {
+      comId: loginInfo.comId,
+      dtl: {oldTagId:txtNewTagId
+        },
+    };
+    // サーバー通信処理（Api.js内の関数を呼び出し）
+    const response = await sendToServer(requestData,"IFA0330","新タグ情報照会(除去土壌等)");
+    if (response.data && response.data.sttCd && response.data.cnt == "0"){
+      return { success: false, error: "zero" };
+    }
+    return { success: true, data: response.data };
   } catch (error) {
     return { success: false, error: error.message , code:error.code , api:error.api};
   }
@@ -213,7 +236,8 @@ export const IFA0051 = async () => {
 export const sendToServer = async (requestData,endpoint,msg) => {
   let URI = null;// + endpoint;//★エンドポイント使うかわからないので保留
   // 設定ファイルから接続先URLを取得
-  const settings = await getSettings();
+//  const settings = await getSettings();
+  const settings = await getSettings(endpoint);//★スタブ用
   const BASEURL = settings.connectionURL;
   URI = BASEURL;// + endpoint;//★エンドポイント使うかわからないので保留
 
@@ -350,14 +374,30 @@ export const sendFileToServer = async (requestData,endpoint,msg,filePath) => {
  * 設定ファイルの読み込み関数
  * @returns 
  ************************************************/
-const getSettings = async () => {
+//const getSettings = async () => {
+const getSettings = async (endpoint) => {//★スタブ用
   const realm = await getInstance()
   const settingsInfo = realm.objects('settings')[0]
+  
+  //★スタブここから
+  if(endpoint==="IFA0330"){
+    return {
+      connectionURL: 'https://script.google.com/macros/s/AKfycbyCG4ubbVKiFRzDwYvV89gcJqizu64vXgULcnrnPEH_SKcvRPyX1jOnnhHLRsrXWQUdcQ/exec'
+    }
+  }else if(endpoint===""){
+    return {
+      connectionURL: 'https://script.google.com/macros/s/AKfycbyCG4ubbVKiFRzDwYvV89gcJqizu64vXgULcnrnPEH_SKcvRPyX1jOnnhHLRsrXWQUdcQ/exec'
+    }
+  }else{
+    return {
+      connectionURL: 'https://script.google.com/macros/s/AKfycbyCG4ubbVKiFRzDwYvV89gcJqizu64vXgULcnrnPEH_SKcvRPyX1jOnnhHLRsrXWQUdcQ/exec'
+    }
+  }
+  //★スタブここまで
 
-  return {
-    //connectionURL: settingsInfo.serverUrl,
-    connectionURL: 'https://script.google.com/macros/s/AKfycbyCG4ubbVKiFRzDwYvV89gcJqizu64vXgULcnrnPEH_SKcvRPyX1jOnnhHLRsrXWQUdcQ/exec'//★スタブ
-  };
+  // return {
+  //   connectionURL: settingsInfo.serverUrl,
+  // };
 };
 
 /************************************************

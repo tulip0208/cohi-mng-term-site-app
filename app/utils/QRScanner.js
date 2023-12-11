@@ -50,7 +50,7 @@ const QRScanner = ({ onScan, closeModal, isActive, errMsg }) => {
 
     const handleBarCodeScanned = ({ type, data }) => {
       setScanned(true);
-      onScan(data); // スキャンデータを親コンポーネントに渡す
+      onScan(data,type); // スキャンデータを親コンポーネントに渡す
     };
   
     if (hasPermission === null) {

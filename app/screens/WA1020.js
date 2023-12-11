@@ -3,7 +3,7 @@
  * WA1020
  * ---------------------------------------------*/
 // app/screens/WA1020.js
-import Header from '../components/Header'; // Headerコンポーネントのインポート
+import FunctionHeader from '../components/FunctionHeader'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート
 import { styles } from '../styles/CommonStyle'; // 共通スタイル
 import React, { useState, useEffect } from 'react';
@@ -116,7 +116,7 @@ const WA1020 = ({ navigation,closeModal }) => {
               apiKey: apiKey256,
               actKey: actKey,
               actExpDt: actExpDt,
-              actFin: 0, 
+              actFin: 0, //未
             });
             // 別途保存しているユーザー名ステートがある場合はその更新も行う
             setTrmId(trmId);
@@ -210,7 +210,7 @@ const WA1020 = ({ navigation,closeModal }) => {
           apiKey: activationInfo.apiKey,
           actKey: activationInfo.actKey,
           actExpDt: activationInfo.actExpDt,
-          actFin: 1,//アクティベーション済へ変更 
+          actFin: 1,//済へ変更
         });
         // 事業者IDをKeyStoreに保存
         await saveToKeystore("comId",{comId:comId});
@@ -259,11 +259,11 @@ const WA1020 = ({ navigation,closeModal }) => {
         return false;
       }
     }
-        
+
     return (
       <View style={styles.container}>
         {/* ヘッダ */}
-        <Header title={"端末登録"}/> 
+        <FunctionHeader appType={"現"} viewTitle={"端末登録"} functionTitle={""}/>
 
         {/* 上段 */}
         <View style={styles.row}>
@@ -323,7 +323,7 @@ const WA1020 = ({ navigation,closeModal }) => {
             </Modal>
         )}
 
-              </View>
+      </View>
     );
 };
 
