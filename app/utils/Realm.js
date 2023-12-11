@@ -114,6 +114,6 @@ export default {
 
 export { onAppLaunch };
 export const getGlobalServerName = async () => {
-  console.log("serverName:", global.serverName);
+  //console.log("serverName:", global.serverName);
   return global.serverName; // 正しく値を返す
 }; // グローバル変数からserverNameを取得する関数

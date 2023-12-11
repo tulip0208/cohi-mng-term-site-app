@@ -11,6 +11,7 @@ import messages from '../utils/messages';
 import { zip } from 'react-native-zip-archive';
 import { loadFromKeystore } from '../utils/KeyStore'; 
 import { useAlert } from '../components/AlertContext';
+import { getInstance } from '../utils/Realm'; // realm.jsから関数をインポート
 
 /************************************************
  * 指定したログファイルを削除する関数
@@ -137,6 +138,7 @@ export const initializeLogFile = async () => {
  * @param {*} logData 
  ************************************************/
 export const writeLog = async (logData) => {
+  await rotateLogFile();
   const logFilePath = `${logDirectory}/${getCurrentLogFileName()}`;
   console.log(logData)
   await RNFS.appendFile(logFilePath, `${logData}\n`, 'utf8');
@@ -145,9 +147,62 @@ export const writeLog = async (logData) => {
 /************************************************
  * 現在のログファイル名の取得
  ************************************************/
-export const getCurrentLogFileName = () => {
-  // 現在の日付と連番を使ってログファイル名を決定するロジックをここに実装
+export const getCurrentLogFileName = async () => {
+  // ファイル一覧を取得して最新の連番を決定するロジックを実装する
+  const files = await RNFS.readDir(logDirectory);
+  const datePrefix = new Date().toISOString().split('T')[0].replace(/-/g, '');
+  let maxSeq = 0;
+
+  files.forEach(file => {
+    const match = file.name.match(new RegExp(`^${datePrefix}_(\\d{3})\\.log$`));
+    if (match && parseInt(match[1], 10) > maxSeq) {
+      maxSeq = parseInt(match[1], 10);
+    }
+  });
+
+  const seq = (maxSeq + 1).toString().padStart(3, '0');
+  return `${datePrefix}_${seq}.log`;
 };
+
+/************************************************
+ * ログファイルのローテーション
+ ************************************************/
+export const rotateLogFile = async () => {
+  try {
+    const currentLogFileName = await getCurrentLogFileName();
+    const currentLogFilePath = `${logDirectory}/${currentLogFileName}`;
+    
+    // ファイルの存在を確認
+    const fileExists = await RNFS.exists(currentLogFilePath);
+    if (!fileExists) {
+      await initializeLogFile();
+      return;
+    }
+
+    const fileStats = await RNFS.stat(currentLogFilePath);
+    const realm = await getInstance();
+    const settingsInfo = realm.objects('settings')[0];
+    const maxLogFileSize = settingsInfo.logCapacity * 1024 * 1024;
+
+    if (fileStats.size >= maxLogFileSize || new Date().getDate() !== new Date(fileStats.ctime).getDate()) {
+      await initializeLogFile();
+    }
+
+    const retentionPeriod = settingsInfo.logTerm;
+    const expiredDate = new Date();
+    expiredDate.setDate(expiredDate.getDate() - retentionPeriod);
+
+    const files = await RNFS.readDir(logDirectory); // ディレクトリ内のファイル一覧を取得
+    for (const file of files) {
+      const fileDate = new Date(file.ctime);
+      if (fileDate < expiredDate) {
+        await RNFS.unlink(file.path);
+      }
+    }
+  } catch (error) {
+    console.error('Error rotating log files:', error);
+  }
+}
 
 /************************************************
  * 画面遷移ログの書き込み
@@ -202,4 +257,14 @@ export const logPosition = (position,flg,error) => {
         const logEntry = `"LC", "${new Date().toISOString()}", "失敗", "${error.message}"`;
         writeLog(logEntry);  
     }
+};
+export const logPosition2 = (position, flg, error) => {
+  let logEntry;
+  if (flg === "get" || flg === "stop" || flg === "reGet") {
+      const { latitude, longitude } = position.coords;
+      logEntry = `"LC", "${new Date().toISOString()}", "${flg === "get" ? "取得" : flg === "stop" ? "停止" : "再開"}", "${latitude}", "${longitude}"`;
+  } else {
+      logEntry = `"LC", "${new Date().toISOString()}", "失敗", "${error.message}"`;
+  }
+  writeLog(logEntry);
 };
