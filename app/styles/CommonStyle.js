@@ -59,7 +59,6 @@ export const styles = StyleSheet.create({
     padding: 5,
     flexDirection: 'row',
     flexWrap: 'wrap', // 子要素が親要素の幅を超えたら折り返す
-//    justifyContent: 'flex-start', // 子要素を親要素の左端に揃える
     justifyContent: 'space-between',  
     alignItems: 'center',      
     backgroundColor: '#1E74BD', // ヘッダの背景色
@@ -71,6 +70,8 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    flex: 1, // この行を追加
+    textAlign: 'left', // 左寄せ
   },
   functionHeaderMiddle: {
     fontSize: 20,
@@ -78,12 +79,16 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    flex: 1, // この行を追加
+    textAlign: 'center', // 中央寄せ    
   },
   functionHeaderRight: {
     fontSize: 16,
     color: 'white',
     fontWeight: 'bold',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    flex: 1, // この行を追加
+    textAlign: 'right', // 右寄せ
   },
   //--------------------  
   //--------ラベル-------
