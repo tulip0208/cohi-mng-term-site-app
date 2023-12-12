@@ -19,6 +19,7 @@ import { sendToServer } from '../utils/Api';
 import { initializeLogFile, logUserAction, logCommunication, watchPosition, writeLog,logScreen,calculateTotalLogSize  } from '../utils/Log';
 import { useAlert } from '../components/AlertContext';
 import { Keyboard } from 'react-native';
+import { IFA0330 } from '../utils/Api'; 
 const WA1070 = ({navigation,closeModal}) => {
 
     const [userName, setUserName] = useState('');  //利用者
@@ -33,6 +34,8 @@ const WA1070 = ({navigation,closeModal}) => {
     const [wkplcTyp, setWkplcTyp] = useState('');
     const [wkplc, setWkplc] = useState('');
     const [inputVisible, setInputVisible] = useState(false);
+    const [tempInfo, setTempInfo] = useState('');
+    const [isNextDisabled, setIsNextDisabled] = useState(false); // 送信準備完了状態
 
     /************************************************
      * 初期表示設定
@@ -67,34 +70,89 @@ const WA1070 = ({navigation,closeModal}) => {
     const handleLongPress = () => {  
       setTimeout(() => {
         setInputVisible(true);
+        setIsNextDisabled(true);
       }, 100); // 10秒 = 10000ミリ秒
     };
   
     /************************************************
-     * QRコードスキャン後の処理 (タグ用)
+     * コードスキャン後の処理 (タグ用)
      * @param {*} scannedData 
      ************************************************/
-    const handleQRCodeScannedForTag = async (scannedData) => {
+    const handleCodeScannedForTag = async (scannedData,type) => {
       const parts = scannedData.split(',');
-      if(parts.length === 1 || parts[0] !== "CM" ){
+      setShowScannerTag(false);
+      let code = '';
+      if (type !== BarCodeScanner.Constants.BarCodeType.qr && type !== BarCodeScanner.Constants.BarCodeType.codabar) {
+        await showAlert("通知", messages.EA5001("タグ"), false);
+        return;
+      }else if(parts.length === 1 || parts[0] !== "CM" ){
         await showAlert("通知", messages.EA5009(""), false);
         return;
+      }else if(parts[0] === "CM"){
+        // --QRコード--
+        // 新タグID参照処理実施(csvデータ2カラム目 新タグID)
+        code = parts[1];
+      }else{
+        // --バーコード--
+        // フォーマットチェック
+        if(!checkFormat(scannedData)){
+          await showAlert("通知", messages.EA5017(scannedData), false);
+          return;
+        }else if(scannedData.charAt(0) === '6' ||
+                 scannedData.charAt(0) === '8'){
+          await showAlert("通知", messages.EA5022("土壌","新タグ参照(灰)",scannedData), false);
+          return;
+        }
+        code = "a"+scannedData+"a"
       }
-      setShowScannerTag(false);   
+
       // モーダル表示
       setModalVisible(true);
-
-
-
-
-       // モーダル非表示
-       setModalVisible(false);
+      // 新タグID参照処理実施
+      procNewTagId(code);
+      // モーダル非表示
+      setModalVisible(false);
+      await logScreen(`画面遷移:WA1071_新タグ参照(土壌)`);  
+      navigation.navigate('WA1071')
     }
     // ユーザQRコードスキャンボタン押下時の処理
     const btnTagQr = async () => {
       await logUserAction(`ボタン押下: タグ読込`);
       setShowScannerTag(true);
-    };    
+    }; 
+
+    /************************************************
+     * フォーマットチェック
+     ************************************************/
+    const checkFormat = async (data) => {
+      const pattern = /^[0-9][2-5][0-9]0[0-9]{11}$/;
+      return pattern.test(str);
+    };
+
+    /************************************************
+     * 新タグID参照処理
+     ************************************************/
+    const procNewTagId = async (txtNewTagId) => {
+      // ログファイルアップロード通信を実施
+      const responseIFA0330 = await IFA0330(txtNewTagId);
+      if(await apiIsError(responseIFA0330)) return;
+      const data = responseIFA0330.data[0];
+      setTempInfo({
+        newTagID: data.newTagId,
+        rmSolTyp: data.rmSolTyp,
+        pkTyp: data.pkTyp,
+        splFac: data.splFac,
+        tsuInd: data.tsuInd,
+        usgInnBg: data.usgInnBg,
+        usgAluBg: data.usgAluBg,
+        yesNoOP: data.yesNoOP,
+        caLgSdBgWt: data.caLgSdBgWt,
+        caLgSdBgDs: data.caLgSdBgDs,
+        estRa: data.xxxxx,//★ IFA0330に無し。要確認
+        lnkNewTagDatMem: data.lnkNewTagDatMem,
+      });
+    };
+    
     /************************************************
      * 戻るボタン処理
      ************************************************/
@@ -102,15 +160,42 @@ const WA1070 = ({navigation,closeModal}) => {
       await logUserAction(`ボタン押下: 戻る(WA1070)`);  
       navigation.navigate('WA1040');
     };
-  // キーボードの高さに基づいたオフセットを設定 (例: 20)
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 20 : 0;
+
+    /************************************************
+     * API通信処理エラー有無確認・エラーハンドリング
+     * @param {*} response 
+     * @returns 
+     ************************************************/
+    const apiIsError = async (response)=>{
+      if (!response.success) {
+        switch(response.error){
+          case 'codeHttp200':
+            await showAlert("通知", messages.EA5004(response.api,response.code), false);
+            break;
+          case 'codeRsps01':
+            await showAlert("通知", messages.EA5005(msg,response.status), false); 
+            break;
+          case 'timeout':
+            await showAlert("通知", messages.EA5003(""), false);
+            break;
+          case 'zero'://取得件数0件の場合
+            await showAlert("通知", messages.IA5015(""), false);
+            break;            
+        }
+        // モーダル非表示
+        setModalVisible(false);          
+        return true ;
+      }else{
+        return false;
+      }
+    }
 
     return (
 
       <KeyboardAvoidingView 
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={"height"}
         style={{ flex: 1 }} // KeyboardAvoidingView に flex: 1 を追加
-        keyboardVerticalOffset={keyboardVerticalOffset}
+        keyboardVerticalOffset={0}
       >
       <ScrollView  contentContainerStyle={[styles.containerWithKeybord, { flexGrow: 1 }]}>
         {/* ヘッダ */}
@@ -149,7 +234,11 @@ const WA1070 = ({navigation,closeModal}) => {
           <TouchableOpacity style={[styles.button, styles.endButton]} onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button,styles.startButton]} onPress={""}>
+          <TouchableOpacity 
+              style={[styles.button,styles.startButton]}
+              onPress={""}
+              disabled={!isNextDisabled}
+          >
             <Text style={styles.startButtonText}>次へ</Text>
           </TouchableOpacity>          
         </View>
@@ -167,7 +256,7 @@ const WA1070 = ({navigation,closeModal}) => {
         {/* タグ用QRコードスキャナー */}
         {showScannerTag && (
             <Modal visible={showScannerTag} onRequestClose={() => setShowScannerTag(false)}>
-                <QRScanner onScan={handleQRCodeScannedForTag} closeModal={() => setShowScannerTag(false)} isActive={showScannerTag} errMsg={"タグ"}/>
+                <QRScanner onScan={handleCodeScannedForTag} closeModal={() => setShowScannerTag(false)} isActive={showScannerTag} errMsg={"タグ"}/>
             </Modal>
         )}
 

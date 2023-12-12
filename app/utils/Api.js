@@ -52,11 +52,11 @@ export const IFA0020 = async (filePath) => {
   try {
     const secretKey = await getEncryptionKeyFromKeystore(); // AES暗号化のための秘密鍵
     const realm = await getInstance()
-    const userInfo = await realm.objects('user')[0]
-    let userId = null;//★ログインから遷移した際の通信にはナシ
-    if(userInfo){
-      userId = userInfo.userId;
-    }
+    // const userInfo = await realm.objects('user')[0]
+    // let userId = null;//★ログインから遷移した際の通信にはナシ
+    // if(userInfo){
+    //   userId = userInfo.userId;
+    // }
     const settingsInfo = await realm.objects('settings')[0]
     const comId = await loadFromKeystore("comId")
     const trmId = await loadFromKeystore("trmId")
@@ -64,7 +64,7 @@ export const IFA0020 = async (filePath) => {
     const trmKey = await loadFromKeystore("trmKey")
     const requestData = {
       comId: comId.comId,
-      usrId: userId,
+      //usrId: userId,
       trmId: trmId.trmId,
       apiKey: decryptWithAES256CBC(apiKey.apiKey,secretKey), // 復号化
       trmKey: decryptWithAES256CBC(trmKey.trmKey,secretKey), // 復号化
@@ -234,12 +234,12 @@ export const IFA0330 = async (txtNewTagId) => {
  * @param {*} msg インターフェース名
  ************************************************/
 export const sendToServer = async (requestData,endpoint,msg) => {
-  let URI = null;// + endpoint;//★エンドポイント使うかわからないので保留
+  let URI = null;
   // 設定ファイルから接続先URLを取得
 //  const settings = await getSettings();
   const settings = await getSettings(endpoint);//★スタブ用
   const BASEURL = settings.connectionURL;
-  URI = BASEURL;// + endpoint;//★エンドポイント使うかわからないので保留
+  URI = BASEURL;
 
   // リクエスト送信前にログ記録
   await logCommunication('SEND', URI, null, JSON.stringify(requestData));
@@ -300,7 +300,7 @@ export const sendToServer = async (requestData,endpoint,msg) => {
  * @param {*} msg インターフェース名
  ************************************************/
 export const sendFileToServer = async (requestData,endpoint,msg,filePath) => {
-  let URI = null;// + endpoint;//★エンドポイント使うかわからないので保留
+  let URI = null;
   const formData = new FormData();
   formData.append('file', {
     uri: `file://${filePath}`,
@@ -314,7 +314,7 @@ export const sendFileToServer = async (requestData,endpoint,msg,filePath) => {
   // 設定ファイルから接続先URLを取得
   const settings = await getSettings();
   const BASEURL = settings.connectionURL;
-  URI = BASEURL;// + endpoint;//★エンドポイント使うかわからないので保留
+  URI = BASEURL;
 
   // リクエスト送信前にログ記録
   await logCommunication('SEND', URI, null, `${JSON.stringify(requestData)} filePath:${filePath}`);
@@ -382,7 +382,7 @@ const getSettings = async (endpoint) => {//★スタブ用
   //★スタブここから
   if(endpoint==="IFA0330"){
     return {
-      connectionURL: 'https://script.google.com/macros/s/AKfycbyCG4ubbVKiFRzDwYvV89gcJqizu64vXgULcnrnPEH_SKcvRPyX1jOnnhHLRsrXWQUdcQ/exec'
+      connectionURL: 'https://script.google.com/macros/s/AKfycbyUWY3kButqFcIJmLnWoCjq1PKApfD_K9qYZw5Pc5UNSKbOFzcFEDjqhWhPlawNp3PT/exec'
     }
   }else if(endpoint===""){
     return {

@@ -162,6 +162,7 @@ const WA1030 = ({navigation,closeModal}) => {
         } else {
           // ID種別が1ではない場合のエラーハンドリング
           const result = await showAlert("通知", messages.EA5002("作業場所"), false);
+          // ★クリア処理
           setShowScannerWkplac(false);   
         }
       } else {
