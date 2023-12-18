@@ -5,13 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Expo",
+            "name": "Attach to Hermes application",
             "cwd": "${workspaceFolder}",
-            "type": "reactnative",
+            "type": "reactnativedirect",
             "request": "attach",
-//            "platform": "android",
-            "sourceMaps": true,
-            "port": 8081 // Expo のデフォルトポート            
+            // "sourceMaps": true,
+            "skipFiles":["<node_modules>/**","require.js","**/<node_modules>/**","**/node_modules/**","node_modules/**"]
         }
     ]
 }
