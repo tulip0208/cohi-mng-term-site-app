@@ -174,18 +174,29 @@ export interface FileEntry {
  * screens
  ******************/
 export interface WA1070Const{
-    newTagId: string;
-    rmSolTyp: number;
-    pkTyp: number;
-    splFac: number;
-    tsuInd: number;
-    usgInnBg: number;
-    usgAluBg: number;
-    yesNoOP: number;
-    caLgSdBgWt: number;
-    caLgSdBgDs: number;
-    estRa: number;
-    lnkNewTagDatMem?: string;
+    head:{
+        wkplcTyp: string;
+        wkplc: string;
+        newTagId: string;
+      }    
+    data:{
+        newTagId: string;
+        rmSolTyp: number;
+        pkTyp: number;
+        splFac: number;
+        tsuInd: number;
+        usgInnBg: number;
+        usgAluBg: number;
+        yesNoOP: number;
+        caLgSdBgWt: number;
+        caLgSdBgDs: number;
+        estRa: number;
+        lnkNewTagDatMem?: string;
+    };
+    oldTag:{
+        oldTagId:number;
+        oldTagIdList:string[];        
+    }
 }
 
 /******************

@@ -1,8 +1,8 @@
 /**-------------------------------------------
  * A01-0070_新タグID参照(土壌)
  * WA1070
+ * screens/WA1070.tsx
  * ---------------------------------------------*/
-// app/screens/WA1070.js
 import FunctionHeader from '../components/FunctionHeader.tsx'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer.tsx'; // Footerコンポーネントのインポート
 import { styles } from '../styles/CommonStyle.tsx'; // 共通スタイル
@@ -19,7 +19,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RNCamera } from 'react-native-camera';
 import { RootList } from '../navigation/AppNavigator';
 import { ApiResponse, IFA0330Response,IFA0330ResponseDtl,WA1070Const } from '../types/type';
-// WA1070 用の navigation 型
+import { useRecoilState } from "recoil";
+import { WA1070DataState } from "../atom/atom.tsx";
+// WA1071 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1070'>;
 interface Props {
   navigation: NavigationProp;
@@ -29,6 +31,7 @@ const WA1070 = ({navigation}:Props) => {
     const [showScannerTag, setShowScannerTag] = useState<boolean>(false); // カメラ表示用の状態    
     const [wkplcTyp, setWkplcTyp] = useState<string>('');
     const [wkplc, setWkplc] = useState<string>('');
+    const [ WA1070Data, setWA1070Data ] = useRecoilState(WA1070DataState);
     const [tempInfo, setTempInfo] = useState<WA1070Const>();
     const [inputVisible, setInputVisible] = useState<boolean>(false);
     const [isNextDisabled, setIsNextDisabled] = useState<boolean>(false); // 送信準備完了状態
@@ -68,7 +71,7 @@ const WA1070 = ({navigation}:Props) => {
       setTimeout(() => {
         setInputVisible(true);
         setIsNextDisabled(true);
-      }, 100); // 10秒 = 10000ミリ秒
+      }, 10000); // 10秒 = 10000ミリ秒
     };
     // 送信ボタンのスタイルを動的に変更するための関数
     const getButtonStyle = () => {
@@ -80,12 +83,15 @@ const WA1070 = ({navigation}:Props) => {
     };
     // 入力がフォーカスアウトされたときのハンドラー
     const handleInputBlur = async () => {
-      setIsNextDisabled(inputValue !== ''); // 入力値が空かどうかによってブール値ステートを更新
+      // 入力値が空かどうかによってブール値ステートを更新
+      setIsNextDisabled(inputValue !== '');
+      // 正規表現チェック
       if(!checkFormat(inputValue)){
         await showAlert("通知", messages.EA5017(inputValue), false);
         setIsNextDisabled(false);
         return 
       }
+      // 一桁目チェック
       if (inputValue.startsWith('6') || inputValue.startsWith('8')) {
         await showAlert("通知", messages.EA5022("土壌","新タグ参照(灰)",inputValue), false);
         setIsNextDisabled(false);
@@ -164,19 +170,36 @@ const WA1070 = ({navigation}:Props) => {
       if(await apiIsError(responseIFA0330)) return false;
       const data = responseIFA0330.data as IFA0330Response;
       const dataDtl = data.dtl[0] as IFA0330ResponseDtl;
-      setTempInfo({
-        newTagId: dataDtl.newTagId,
-        rmSolTyp: dataDtl.rmSolTyp,
-        pkTyp: dataDtl.pkTyp,
-        splFac: dataDtl.splFac,
-        tsuInd: dataDtl.tsuInd,
-        usgInnBg: dataDtl.usgInnBg,
-        usgAluBg: dataDtl.usgAluBg,
-        yesNoOP: dataDtl.yesNoOP,
-        caLgSdBgWt: dataDtl.caLgSdBgWt,
-        caLgSdBgDs: dataDtl.caLgSdBgDs,
-        estRa: dataDtl.estRa,
-        lnkNewTagDatMem: dataDtl.lnkNewTagDatMem,
+      
+      // oldTagId の値だけを抽出して新しい配列に格納する
+      const oldTagIds = data.dtl.map(item => item.oldTagId);
+
+      // 一時データ格納する
+      setWA1070Data({
+        head:{
+          wkplcTyp:wkplcTyp,
+          wkplc:wkplc,
+          newTagId:txtNewTagId,
+        },
+        data:{
+          newTagId: dataDtl.newTagId,
+          rmSolTyp: dataDtl.rmSolTyp,
+          pkTyp: dataDtl.pkTyp,
+          splFac: dataDtl.splFac,
+          tsuInd: dataDtl.tsuInd,
+          usgInnBg: dataDtl.usgInnBg,
+          usgAluBg: dataDtl.usgAluBg,
+          yesNoOP: dataDtl.yesNoOP,
+          caLgSdBgWt: dataDtl.caLgSdBgWt,
+          caLgSdBgDs: dataDtl.caLgSdBgDs,
+          estRa: dataDtl.estRa,
+          lnkNewTagDatMem: dataDtl.lnkNewTagDatMem,  
+        },
+        oldTag:{
+          //---旧タグ---
+          oldTagId:oldTagIds.length,
+          oldTagIdList:oldTagIds as string[],
+        }
       });
       return true;
     };

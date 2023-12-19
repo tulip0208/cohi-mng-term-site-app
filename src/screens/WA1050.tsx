@@ -21,7 +21,7 @@
   import { StackNavigationProp } from '@react-navigation/stack';
   import { RootList } from '../navigation/AppNavigator'; 
   import { RouteProp } from '@react-navigation/native';
-  import { Settings, TrmId, ApiResponse } from '../types/type';
+  import { TrmId, ApiResponse } from '../types/type';
 
   const {SignalStrengthModule} = NativeModules;
   // WA1050 用の navigation 型
@@ -41,12 +41,11 @@
       const [revision,setRvision] = useState<string>('');
       const [sttCom, setSttCom] = useState<string>('');
       const [logCap, setLogCap] = useState<number>(0);
-      // const [settings, setSettings] = useState<RealmObject<DefaultObject, never> & DefaultObject | null>(null);
 
       const [isDisabled, setIsDisabled] = useState<boolean>(true);
       const [modalVisible, setModalVisible] = useState<boolean>(false);
       const { showAlert } = useAlert();
-      let settings:Settings;
+
       /************************************************
        * 初期表示設定
        ************************************************/   

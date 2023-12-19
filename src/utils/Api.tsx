@@ -5,9 +5,9 @@
 import { getInstance } from './Realm'; // realm.jsから関数をインポート
 import axios,{ AxiosError }  from 'axios';
 import { loadFromKeystore,getEncryptionKeyFromKeystore } from './KeyStore'; // KeyStoreの確認関数
-import { decryptWithAES256CBC,encodeStringToBase64Binary} from './Security';
+import { decryptWithAES256CBC } from './Security';
 import { logCommunication} from './Log';
-import { AxiosResponse,ApiResponse,IFA0030Response,IFA0330Response, ActivationInfo, Settings, ComId, TrmId, ApiKey, TrmKey, User, Login } from '../types/type';
+import { AxiosResponse,ApiResponse,IFA0030Response,IFA0330Response, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, } from '../types/type';
 import { Buffer } from 'buffer';
 /************************************************
  * IFA0010_アクティベーション(端末登録)
@@ -438,7 +438,7 @@ const getSettings = async (endpoint:string) => {//★スタブ用
   //★スタブここから
   if(endpoint=='IFA0330'){
     return {
-      connectionURL: 'https://script.google.com/macros/s/AKfycbxiP1DblU3h75dtf_PU8gSgUpocasWJ4rBxiUUmlMY3M3evePMG-HINhxV10-1GW7FP/exec'
+      connectionURL: 'https://script.google.com/macros/s/AKfycbwzCdDfRXtdUdFgTtlmyhSgmg36C9R7kEAyYjpUV2qteY-JyOfVSAeIAFo7Ur4oaKbc/exec'
     }
   }else if(endpoint == 'IFA0040' || endpoint == 'IF0050'){
     return {

@@ -28,6 +28,13 @@ export const styles = StyleSheet.create({
     marginRight:30,
     marginLeft:30,
   },
+  textareaContainer:{
+    marginRight:10,
+    marginLeft:10,
+  },
+  textareaContainerSecond:{
+    maxHeight:"10%"
+  },  
   middleContent: {
     flex: 1,
     justifyContent: 'center',
@@ -338,6 +345,9 @@ export const styles = StyleSheet.create({
     marginTop:3,
     marginBottom:3,
   },
+  scrollContainerSecond: {
+    maxHeight:"30%"
+  },  
   scrollViewStyle: {
     width: 'auto', // または必要な幅に設定
     maxWidth:'100%',
@@ -347,6 +357,11 @@ export const styles = StyleSheet.create({
     borderRadius: 5, // 枠の角を丸くする場合
     paddingLeft:5,
     paddingRight:5,
+  },  
+  scrollViewStyleSecond: {
+    height:"30%"
+  },    
+  scrollViewStyleTop: {
   },  
   innerScrollViewStyle: {
     width: "100%", // または必要な幅に設定
@@ -367,7 +382,21 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-
+  //--------------------    
+  //--------テーブル-------
+  tableMain: {
+    width: '100%', // テーブルの幅を指定
+    // 他のスタイル
+  },
+  tableRow: {
+    flexDirection: 'row', // 行のスタイル
+    // 他のスタイル
+  },
+  tableCell: {
+    flex: 1, // セルのスタイル
+    // 他のスタイル
+  },
+  //--------------------    
   //--------モーダル-------
   modalBackground: {
     flex: 1,

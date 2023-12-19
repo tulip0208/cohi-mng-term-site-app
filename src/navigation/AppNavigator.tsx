@@ -12,7 +12,7 @@ import WA1040 from '../screens/WA1040';
 import WA1050 from '../screens/WA1050';
 // import WA1060 from '../screens/WA1060';
 import WA1070 from '../screens/WA1070';
-// import WA1070 from '../screens/WA1071';
+import WA1071 from '../screens/WA1071';
 // import WA1080 from '../screens/WA1080';
 // import WA1090 from '../screens/WA1090';
 // import WA1100 from '../screens/WA1100';
@@ -52,6 +52,7 @@ const AppNavigator = () => {
   const [initialRoute, setInitialRoute] = useState<keyof RootList>();
   const [isLoading, setIsLoading] = useState<boolean>(true); // ローディング状態の追加
   const { showAlert } = useAlert();
+  
   useEffect(() => {
     // アプリ起動時の処理
     // ログファイル初期化
@@ -70,12 +71,12 @@ const AppNavigator = () => {
         
         //--------WA1030_前処理--------
         //バージョンアップ報告チェック
-        await clearKeyStore("verupRep");
+        await clearKeyStore("verUpRep");
         const verUpRepKeyStore=await loadFromKeystore("verUpRep") as verUpRep;
         //バージョンアップ報告=1:"要"の場合
         console.log(verUpRepKeyStore)
         if(verUpRepKeyStore && verUpRepKeyStore.verUpRep==1){
-          // サーバー通信処理（Api.js内の関数を呼び出し）
+          // サーバー通信処理（Api.js内の関数を呼び出し
           try{
             const responseIFA0051 = await IFA0051();
             if(await apiIsError(responseIFA0051)) return;
@@ -166,7 +167,7 @@ const AppNavigator = () => {
           <Stack.Screen name="WA1050" component={WA1050} />
           {/* <Stack.Screen name="WA1060" component={WA1060} /> */}
           <Stack.Screen name="WA1070" component={WA1070} />
-          {/* <Stack.Screen name="WA1071" component={WA1071} /> */}
+          <Stack.Screen name="WA1071" component={WA1071} />
           {/* <Stack.Screen name="WA1080" component={WA1080} />
           <Stack.Screen name="WA1090" component={WA1090} />
           <Stack.Screen name="WA1100" component={WA1100} />

@@ -18,6 +18,7 @@
     "deprecated-react-native-prop-types": "^5.0.0",
     "or": "^0.2.0",
     "react": "18.2.0",
+    "react-bootstrap": "^2.9.1",
     "react-native": "0.73.0",
     "react-native-aes-crypto": "^3.0.1",
     "react-native-base64": "^0.2.1",
@@ -34,6 +35,7 @@
     "react-native-sha256": "^1.4.9",
     "react-native-zip-archive": "^6.1.0",
     "realm": "^12.4.0",
+    "recoil": "^0.7.7",
     "uuid": "^9.0.1",
     "yarn": "^1.22.21"
   },
