@@ -25,6 +25,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootList } from '../navigation/AppNavigator';
 import { ComId,TemporaryPlaces,StoragePlaces,FixedPlaces,ApiResponse, Settings } from '../types/type';
 import Crypto from 'react-native-aes-crypto';
+import { Buffer } from 'buffer';
 // WA1030 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1030'>;
 interface Props {
@@ -262,18 +263,17 @@ const WA1030 = ({navigation}:Props) => {
             // ユーザーが「はい」を選んだ場合、IFA0050を呼び出す
             const responseIFA0050 = await IFA0050();
             if(await apiIsError(responseIFA0050)) return;
-            console.log("responseIFA0050.data :",responseIFA0050.data)
-            // バイナリーデータのBASE64デコード
-            const responseIFA0050dec=decodeBase64BinaryToStringArrayBuffer(responseIFA0050.data as ArrayBuffer)
-            // apkファイルとして保存する  
-            const filePath = RNFS.DocumentDirectoryPath + '/IFA0050_BinaryData.apk';
-            RNFS.writeFile(filePath, responseIFA0050dec, 'base64')
-              .then(() => {
-                console.log('File written to', filePath);
-              })
-              .catch(error => {
-                console.error(error);
-              });
+            // console.log("responseIFA0050.data :",responseIFA0050.data)
+            // バイナリーデータを変換する
+            if(responseIFA0050.data){
+              const arrayBuffer = Buffer.from(responseIFA0050.data);
+              const text = arrayBuffer.toString('base64');
+              console.log(text)
+              // apkファイルとして保存する  
+              const filePath = RNFS.DocumentDirectoryPath + '/IFA0050_BinaryData.apk';
+              await RNFS.writeFile(filePath, text, 'base64')
+            }
+
             // バージョンアップ報告を要で更新
             await saveToKeystore("verUpRep",{verUpRep: 1,});
             const result = await showAlert("通知", messages.IA5008(), false);
@@ -285,6 +285,7 @@ const WA1030 = ({navigation}:Props) => {
                 index: 0,
                 routes: [{ name: 'WA1030' }], // 'Home'は最初の画面のルート名に置き換えてください
               });
+              return;
             }
           } else {
             console.log('利用開始を中止しました。');
@@ -300,18 +301,20 @@ const WA1030 = ({navigation}:Props) => {
             // ユーザーが「はい」を選んだ場合、FA0040_端末設定ファイル配信を呼び出す
             const responseIFA0040 = await IFA0040();
             if(await apiIsError(responseIFA0040)) return;
-            // バイナリーデータのBASE64デコード
-            const responseIFA0040dec=decodeBase64BinaryToStringArrayBuffer(responseIFA0040.data as ArrayBuffer)
-
-            // realmの設定ファイルへ保存する
-            const settingsInfo = realm.objects("settings")[0]//★スタブ
-            //const settingsInfo = JSON.parse(responseIFA0040dec) as Settings
-
-            realm.write(() => {
-              realm.create('settings', {
-                ...settingsInfo, // スプレッド構文で他のフィールドを展開
-              }, Realm.UpdateMode.Modified); 
-            });
+            // バイナリーデータを変換する
+            // Bufferを使用してデータをデコード
+            if(responseIFA0040.data){
+              const arrayBuffer = Buffer.from(responseIFA0040.data);
+              const text = arrayBuffer.toString();
+              console.log(text)
+              // realmの設定ファイルへ保存する
+              const settingsInfo = JSON.parse(text) as Settings
+              realm.write(() => {
+                realm.create('settings', {
+                  ...settingsInfo, // スプレッド構文で他のフィールドを展開
+                }, Realm.UpdateMode.Modified); 
+              });
+            }
             // IFA0051_バージョンアップ完了報告を呼び出す
             const responseIFA0050 = await IFA0050();
             if(await apiIsError(responseIFA0050)) return;         
