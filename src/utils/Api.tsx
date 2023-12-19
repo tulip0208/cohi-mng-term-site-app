@@ -8,7 +8,7 @@ import { loadFromKeystore,getEncryptionKeyFromKeystore } from './KeyStore'; // K
 import { decryptWithAES256CBC,encodeStringToBase64Binary} from './Security';
 import { logCommunication} from './Log';
 import { AxiosResponse,ApiResponse,IFA0030Response,IFA0330Response, ActivationInfo, Settings, ComId, TrmId, ApiKey, TrmKey, User, Login } from '../types/type';
-
+import { Buffer } from 'buffer';
 /************************************************
  * IFA0010_アクティベーション(端末登録)
  ************************************************/
@@ -262,6 +262,8 @@ export const IFA0330 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0330R
     return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
   }
 };
+import RNFS from 'react-native-fs';
+const filePath = RNFS.DocumentDirectoryPath + '/file.ext'; // ファイルパス
 
 /************************************************
  * サーバー通信を行う関数
@@ -298,10 +300,21 @@ export const sendToServer = async <TRequest, TResponse>(requestData:TRequest,end
   let response = null;
   try{
     response = await axios(config);
-    // ★スタブ(GASではバイナリ返却が難しいためローカル返却)
-    if(endpoint == 'IFA0040' || endpoint == 'IFA0050'){
-      response.data = encodeStringToBase64Binary("{id:1,appVer:'1.0.0',settingFileDt:'2024/01/0100:00:00',serverName:'開発',serverUrl:'https://api.myservice.com',logTerm:30,logCapacity:10000,locGetTerm:60,camTimeout:30,btnNewTagSoil:1,btnRefNewTagSoil:1,btnRefOldTagSoil:1,btnNewTagAsh:1,btnRefNewTagAsh:1,btnRefOldTagAsg:1,btnTrnCard:1,btnUnload:1,btnStat:1,reasonListOldTag:'updated,deprecated',useMethodInnerBag:2,packTyp:3,kgThresSoil:500,kgThresAsh:1000,radioThres:30,ldpRadioThres:10,ldpRadioThresMax:100,estRadioThres:20,radioConvFact:15,facArriveTerm:120,selPlants:2,thresPlants:50,selCombust:3,thresCombust:75,selSoil:4,thresSoil:100,selConcrete:5,thresConcrete:125,selAsphalt:6,thresAsphalt:150,selNoncombustMix:7,thresNoncombustMix:175,selAsbestos:8,thresAsbestos:200,selPlasterboard:9,thresPlasterboard:225,selHazard:10,thresHazard:250,selOutCombust:11,thresOutCombust:275,selOutNoncombust:12,thresOutNoncombust:300,selTmpCombust:13,thresTmpCombust:325,selTmpNoncombust:14,thresTmpCNoncombust:350,selAsh:15,thresAsh:375}")
-      //response.data = 'eyJpZCI6IDEsICJhcHBWZXIiOiAiMS4wLjAiLCAic2V0dGluZ0ZpbGVEdCI6ICIyMDI0LzAxLzAxIDAwOjAwOjAwIiwgInNlcnZlck5hbWUiOiAiXHU5NThiXHU3NjdhIiwgInNlcnZlclVybCI6ICJodHRwczovL2FwaS5teXNlcnZpY2UuY29tIiwgImxvZ1Rlcm0iOiAzMCwgImxvZ0NhcGFjaXR5IjogMTAwMDAsICJsb2NHZXRUZXJtIjogNjAsICJjYW1UaW1lb3V0IjogMzAsICJidG5OZXdUYWdTb2lsIjogMSwgImJ0blJlZk5ld1RhZ1NvaWwiOiAxLCAiYnRuUmVmT2xkVGFnU29pbCI6IDEsICJidG5OZXdUYWdBc2giOiAxLCAiYnRuUmVmTmV3VGFnQXNoIjogMSwgImJ0blJlZk9sZFRhZ0FzZyI6IDEsICJidG5Ucm5DYXJkIjogMSwgImJ0blVubG9hZCI6IDEsICJidG5TdGF0IjogMSwgInJlYXNvbkxpc3RPbGRUYWciOiAidXBkYXRlZCxkZXByZWNhdGVkIiwgInVzZU1ldGhvZElubmVyQmFnIjogMiwgInBhY2tUeXAiOiAzLCAia2dUaHJlc1NvaWwiOiA1MDAsICJrZ1RocmVzQXNoIjogMTAwMCwgInJhZGlvVGhyZXMiOiAzMCwgImxkcFJhZGlvVGhyZXMiOiAxMCwgImxkcFJhZGlvVGhyZXNNYXgiOiAxMDAsICJlc3RSYWRpb1RocmVzIjogMjAsICJyYWRpb0NvbnZGYWN0IjogMTUsICJmYWNBcnJpdmVUZXJtIjogMTIwLCAic2VsUGxhbnRzIjogMiwgInRocmVzUGxhbnRzIjogNTAsICJzZWxDb21idXN0IjogMywgInRocmVzQ29tYnVzdCI6IDc1LCAic2VsU29pbCI6IDQsICJ0aHJlc1NvaWwiOiAxMDAsICJzZWxDb25jcmV0ZSI6IDUsICJ0aHJlc0NvbmNyZXRlIjogMTI1LCAic2VsQXNwaGFsdCI6IDYsICJ0aHJlc0FzcGhhbHQiOiAxNTAsICJzZWxOb25jb21idXN0TWl4IjogNywgInRocmVzTm9uY29tYnVzdE1peCI6IDE3NSwgInNlbEFzYmVzdG9zIjogOCwgInRocmVzQXNiZXN0b3MiOiAyMDAsICJzZWxQbGFzdGVyYm9hcmQiOiA5LCAidGhyZXNQbGFzdGVyYm9hcmQiOiAyMjUsICJzZWxIYXphcmQiOiAxMCwgInRocmVzSGF6YXJkIjogMjUwLCAic2VsT3V0Q29tYnVzdCI6IDExLCAidGhyZXNPdXRDb21idXN0IjogMjc1LCAic2VsT3V0Tm9uY29tYnVzdCI6IDEyLCAidGhyZXNPdXROb25jb21idXN0IjogMzAwLCAic2VsVG1wQ29tYnVzdCI6IDEzLCAidGhyZXNUbXBDb21idXN0IjogMzI1LCAic2VsVG1wTm9uY29tYnVzdCI6IDE0LCAidGhyZXNUbXBDTm9uY29tYnVzdCI6IDM1MCwgInNlbEFzaCI6IDE1LCAidGhyZXNBc2giOiAzNzV9'
+    if(endpoint == "IFA0040"||endpoint == "IFA0050"){
+      // TextEncoderを使用してテキストをUint8Arrayにエンコード
+      // Bufferを使用してテキストをバイナリデータに変換
+      const jsonString = `{"id":1,"appVer":"1.0.0","settingFileDt":"2024/01/0100:00:00","serverName":"開発","serverUrl":"https://api.myservice.com","logTerm":30,"logCapacity":10000,"locGetTerm":60,"camTimeout":30,"btnNewTagSoil":1,"btnRefNewTagSoil":1,"btnRefOldTagSoil":1,"btnNewTagAsh":1,"btnRefNewTagAsh":1,"btnRefOldTagAsg":1,"btnTrnCard":1,"btnUnload":1,"btnStat":1,"reasonListOldTag":"updated,deprecated","useMethodInnerBag":2,"packTyp":3,"kgThresSoil":500,"kgThresAsh":1000,"radioThres":30,"ldpRadioThres":10,"ldpRadioThresMax":100,"estRadioThres":20,"radioConvFact":15,"facArriveTerm":120,"selPlants":2,"thresPlants":50,"selCombust":3,"thresCombust":75,"selSoil":4,"thresSoil":100,"selConcrete":5,"thresConcrete":125,"selAsphalt":6,"thresAsphalt":150,"selNoncombustMix":7,"thresNoncombustMix":175,"selAsbestos":8,"thresAsbestos":200,"selPlasterboard":9,"thresPlasterboard":225,"selHazard":10,"thresHazard":250,"selOutCombust":11,"thresOutCombust":275,"selOutNoncombust":12,"thresOutNoncombust":300,"selTmpCombust":13,"thresTmpCombust":325,"selTmpNoncombust":14,"thresTmpCNoncombust":350,"selAsh":15,"thresAsh":375}`;
+      const bufferData = Buffer.from(jsonString);
+
+      // 新しい ArrayBuffer を作成
+      const arrayBufferData = new ArrayBuffer(bufferData.length);
+      
+      // 新しい Uint8Array を作成し、BufferData の内容をコピー
+      const view = new Uint8Array(arrayBufferData);
+      for (let i = 0; i < bufferData.length; ++i) {
+          view[i] = bufferData[i];
+      }
+      response.data = view.buffer;
     }
   }catch(e){
     const error = e as AxiosError
@@ -429,10 +442,11 @@ const getSettings = async (endpoint:string) => {//★スタブ用
     }
   }else if(endpoint == 'IFA0040' || endpoint == 'IF0050'){
     return {
-      connectionURL: 'https://script.google.com/macros/s/AKfycbyV9aPbDSTp05XQOTmZmOUI41Qos3HxxeqYkZvbWHNRLWKR-fiaYaz78K_08Qum3m7_/exec'
+      connectionURL: 'https://script.google.com/macros/s/AKfycbwepLJEO6HV2Hn1-ykRyFCLze5bSfp5gDnsNiL54bdbe7vIHR07ivOuF6d6FlKwoVn6/exec'
     }
   }else if(endpoint=='IFA0030'){//1,1
     return {
+      // connectionURL: 'https://script.google.com/macros/s/AKfycbzpdPH8AHwRAWPGXJieNecal8OeGVO4AHtGeKZr31gz_edledxDk35ZZ4yNyXQeqEwg_w/exec'
       connectionURL: 'https://script.google.com/macros/s/AKfycbwFul0A7PHmend-smjoO5y8Rahugea53bdH9-nKasEX4tferFnHq4GDtm4jzRxFJZNELw/exec'
     }
   }else if(endpoint===""){
