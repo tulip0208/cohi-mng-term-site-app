@@ -38,7 +38,7 @@ const WA1030 = ({navigation}:Props) => {
     const [showScannerWkplac, setShowScannerWkplac] = useState<boolean>(false); // カメラ表示用の状態
     const [modalVisible, setModalVisible] = useState(false);
     const [wkplacId, setWkplacId] = useState<string>(''); // 作業場所種別ID
-    const [wkplacTyp,setWkplacTyp] = useState<string>('')
+    const [wkplacTyp,setWkplacTyp] = useState<number>()
     const [fixPlacId,setFixPlacId] = useState<string|null>(null)
     const { showAlert } = useAlert();
 
@@ -114,8 +114,8 @@ const WA1030 = ({navigation}:Props) => {
       // CSVデータのフォーマットを確認（5つの部分があるか）
       if (parts.length === 3) {
         // ID種別が4~6かどうかを確認
-        const typ = parts[0];//ID
-        if (typ == "4" || typ == "5" || typ == "6") {
+        const typ = Number(parts[0]);//ID
+        if (typ == 4 || typ == 5 || typ == 6) {
             const id = parts[1];//場所ID
             const name = parts[2];//名前
             
@@ -124,38 +124,44 @@ const WA1030 = ({navigation}:Props) => {
             let uuid = await Crypto.randomUuid();
             switch(typ){
               //仮置場
-              case "4":
+              case 4:
                 schema = "temporary_places";
                 db = {
                   id: uuid,
-                  tmpPlacId: id,
-                  tmpPlacNm: name,
-                  delSrcTyp: null,
+                  tmpPlacId: parts[1],//場所ID
+                  tmpPlacNm: parts[2],//名前
+                  delSrcTyp: Number(parts[3]),
                 }
+                setWkplacId(parts[1]);                
+                setWkplac(parts[2]);
                 break;
 
               //保管場
-              case "5":
+              case 5:
                 schema = "storage_places";
                 db = {
                   id: uuid,
-                  storPlacId: id,
-                  storPlacNm: name,
+                  storPlacId: parts[2],//場所ID
+                  storPlacNm: parts[1],//名前
                 }
+                setWkplacId(parts[2]);                
+                setWkplac(parts[1]);                
                 break;
   
               //定置場
-              case "6":
+              case 6:
                 schema = "fixed_places";
                 db = {
                   id: uuid,
-                  storPlacId: null,
-                  fixPlacId: id,
-                  fixPlacNm: name,
-                  facTyp: null,
-                  conTyp: null,
+                  storPlacId: parts[2],//名前
+                  fixPlacId: parts[1],//場所ID
+                  fixPlacNm: parts[3],
+                  facTyp: Number(parts[4]),
+                  conTyp: Number(parts[5]),
                 }
-                setFixPlacId(id);
+                setWkplacId(parts[1]);                
+                setWkplac(parts[2]);                
+                setFixPlacId(parts[1]);
                 break;
               }
               const realm = getInstance();
@@ -167,9 +173,6 @@ const WA1030 = ({navigation}:Props) => {
                 });
                 console.log('save realm : ',schema, ' => ', realm.objects(schema)[0])
 
-                // 別途保存しているユーザー名ステートがある場合はその更新も行う
-                setWkplac(name);
-                setWkplacId(id);
                 setWkplacTyp(typ);
               } catch (error) {
                 console.error('作業場所に失敗しました。', error);
@@ -286,8 +289,8 @@ const WA1030 = ({navigation}:Props) => {
             const responseIFA0040dec=decodeBase64BinaryToStringArrayBuffer(responseIFA0040.data as ArrayBuffer)
 
             // realmの設定ファイルへ保存する
-            const settingsInfo = realm.objects("settings")[0]
-            //const settingsInfo = JSON.parse(responseIFA0040dec) as Settings//★スタブ
+            const settingsInfo = realm.objects("settings")[0]//★スタブ
+            //const settingsInfo = JSON.parse(responseIFA0040dec) as Settings
 
             realm.write(() => {
               realm.create('settings', {
@@ -310,7 +313,7 @@ const WA1030 = ({navigation}:Props) => {
             loginDt: new Date().toISOString().replace(/[^0-9]/g, "").slice(0,14),
             comId: userInfo.comId,
             userId: userInfo.userId,
-            wkplacTyp: Number(wkplacTyp),
+            wkplacTyp: wkplacTyp,
             wkplacId: wkplacId,
             fixPlacId: fixPlacId,
             logoutFlg: 0,
