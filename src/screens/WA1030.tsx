@@ -112,80 +112,91 @@ const WA1030 = ({navigation}:Props) => {
       setWkplac("");
       const parts = scannedData.split(',');
       // CSVデータのフォーマットを確認（5つの部分があるか）
-      if (parts.length === 3) {
-        // ID種別が4~6かどうかを確認
-        const typ = Number(parts[0]);//ID
-        if (typ == 4 || typ == 5 || typ == 6) {
-            const id = parts[1];//場所ID
-            const name = parts[2];//名前
-            
-            let db:Partial<TemporaryPlaces|StoragePlaces|FixedPlaces>;
-            let schema="";
-            let uuid = await Crypto.randomUuid();
-            switch(typ){
-              //仮置場
-              case 4:
-                schema = "temporary_places";
-                db = {
-                  id: uuid,
-                  tmpPlacId: parts[1],//場所ID
-                  tmpPlacNm: parts[2],//名前
-                  delSrcTyp: Number(parts[3]),
-                }
-                setWkplacId(parts[1]);                
-                setWkplac(parts[2]);
-                break;
+      if (parts.length !== 0) {
+        try{
+          // ID種別が4~6かどうかを確認
+          const typ = Number(parts[0]);//ID
+          if (typ == 4 || typ == 5 || typ == 6) {
+              const id = parts[1];//場所ID
+              const name = parts[2];//名前
+              
+              let db:Partial<TemporaryPlaces|StoragePlaces|FixedPlaces>;
+              let schema="";
+              let uuid = await Crypto.randomUuid();
+              switch(typ){
+                //仮置場
+                case 4:
+                  schema = "temporary_places";
+                  db = {
+                    id: uuid,
+                    tmpPlacId: parts[1],//場所ID
+                    tmpPlacNm: parts[2],//名前
+                    delSrcTyp: Number(parts[3]),
+                  }
+                  setWkplacId(parts[1]);                
+                  setWkplac(parts[2]);
+                  break;
 
-              //保管場
-              case 5:
-                schema = "storage_places";
-                db = {
-                  id: uuid,
-                  storPlacId: parts[2],//場所ID
-                  storPlacNm: parts[1],//名前
+                //保管場
+                case 5:
+                  schema = "storage_places";
+                  db = {
+                    id: uuid,
+                    storPlacId: parts[2],//場所ID
+                    storPlacNm: parts[1],//名前
+                  }
+                  setWkplacId(parts[2]);                
+                  setWkplac(parts[1]);                
+                  break;
+    
+                //定置場
+                case 6:
+                  schema = "fixed_places";
+                  db = {
+                    id: uuid,
+                    storPlacId: parts[2],//名前
+                    fixPlacId: parts[1],//場所ID
+                    fixPlacNm: parts[3],
+                    facTyp: Number(parts[4]),
+                    conTyp: Number(parts[5]),
+                  }
+                  setWkplacId(parts[1]);                
+                  setWkplac(parts[2]);                
+                  setFixPlacId(parts[1]);
+                  break;
                 }
-                setWkplacId(parts[2]);                
-                setWkplac(parts[1]);                
-                break;
-  
-              //定置場
-              case 6:
-                schema = "fixed_places";
-                db = {
-                  id: uuid,
-                  storPlacId: parts[2],//名前
-                  fixPlacId: parts[1],//場所ID
-                  fixPlacNm: parts[3],
-                  facTyp: Number(parts[4]),
-                  conTyp: Number(parts[5]),
+                const realm = getInstance();
+                //realmへ保存
+                try {
+                  realm.write(() => {
+                    // 既に同じIDのデータがあれば上書き、なければ新規作成
+                    realm.create(schema, db, Realm.UpdateMode.Modified); // Modified は既存のデータがあれば更新、なければ作成
+                  });
+                  console.log('save realm : ',schema, ' => ', realm.objects(schema)[0])
+
+                  setWkplacTyp(typ);
+                } catch (error) {
+                  console.error('作業場所に失敗しました。', error);
                 }
-                setWkplacId(parts[1]);                
-                setWkplac(parts[2]);                
-                setFixPlacId(parts[1]);
-                break;
-              }
-              const realm = getInstance();
-              //realmへ保存
-              try {
-                realm.write(() => {
-                  // 既に同じIDのデータがあれば上書き、なければ新規作成
-                  realm.create(schema, db, Realm.UpdateMode.Modified); // Modified は既存のデータがあれば更新、なければ作成
-                });
-                console.log('save realm : ',schema, ' => ', realm.objects(schema)[0])
 
-                setWkplacTyp(typ);
-              } catch (error) {
-                console.error('作業場所に失敗しました。', error);
-              }
+                setShowScannerWkplac(false);  
+          } else {
+            // ID種別が1ではない場合のエラーハンドリング
+            const result = await showAlert("通知", messages.EA5002("作業場所"), false);
+            await deleteRealm("temporary_places")
+            await deleteRealm("storage_places")
+            await deleteRealm("fixed_places")
+            setShowScannerWkplac(false);   
+          }
 
-              setShowScannerWkplac(false);  
-        } else {
-          // ID種別が1ではない場合のエラーハンドリング
+        }catch(error){
+          // CSVデータが正しいフォーマットでない場合のエラーハンドリング
           const result = await showAlert("通知", messages.EA5002("作業場所"), false);
           await deleteRealm("temporary_places")
           await deleteRealm("storage_places")
           await deleteRealm("fixed_places")
           setShowScannerWkplac(false);   
+
         }
       } else {
         // CSVデータが正しいフォーマットでない場合のエラーハンドリング
@@ -267,9 +278,13 @@ const WA1030 = ({navigation}:Props) => {
             await saveToKeystore("verUpRep",{verUpRep: 1,});
             const result = await showAlert("通知", messages.IA5008(), false);
             if(result){
-              //アプリ再起動 //★このあとどう動くのが想定？
+              //アプリ再起動 
               setModalVisible(false); // モーダルを非表示にする
-              RNRestart.Restart();
+              // ナビゲーションスタックをリセットして、初期画面に移動する
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'WA1030' }], // 'Home'は最初の画面のルート名に置き換えてください
+              });
             }
           } else {
             console.log('利用開始を中止しました。');
