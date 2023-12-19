@@ -242,7 +242,7 @@ export const IFA0330 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0330R
     const loginInfo = realm.objects('login')[0]
     const requestDataDtl = {
       comId: loginInfo.comId,
-      dtl: {oldTagId:txtNewTagId
+      dtl: {newTagId:txtNewTagId
         },
     };
 
