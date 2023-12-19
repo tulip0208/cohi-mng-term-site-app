@@ -21,7 +21,7 @@ import { RootList } from '../navigation/AppNavigator';
 import { ApiResponse, IFA0330Response,IFA0330ResponseDtl,WA1070Const } from '../types/type';
 import { useRecoilState } from "recoil";
 import { WA1070DataState } from "../atom/atom.tsx";
-// WA1071 用の navigation 型
+// WA1070 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1070'>;
 interface Props {
   navigation: NavigationProp;
