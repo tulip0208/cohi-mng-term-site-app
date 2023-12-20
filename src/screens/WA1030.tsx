@@ -10,7 +10,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal,BackHandler } from 'react-native';
 import { getInstance,deleteRealm } from '../utils/Realm';
 import messages from '../utils/messages';
-import {decodeBase64BinaryToStringArrayBuffer} from '../utils/Security';
 import Realm from "realm";
 import QRScanner from '../utils/QRScanner';
 import ProcessingModal from '../components/Modal';
@@ -19,13 +18,13 @@ import { IFA0030,IFA0040,IFA0050 } from '../utils/Api';
 import { initializeLogFile, logUserAction, logScreen  } from '../utils/Log';
 import { watchLocation } from '../utils/Location'; 
 import RNFS from 'react-native-fs';
-import RNRestart from 'react-native-restart'; 
 import { useAlert } from '../components/AlertContext';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootList } from '../navigation/AppNavigator';
 import { ComId,TemporaryPlaces,StoragePlaces,FixedPlaces,ApiResponse, Settings } from '../types/type';
 import Crypto from 'react-native-aes-crypto';
 import { Buffer } from 'buffer';
+import {getCurrentDateTime} from '../utils/common';
 // WA1030 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1030'>;
 interface Props {
@@ -312,6 +311,7 @@ const WA1030 = ({navigation}:Props) => {
               realm.write(() => {
                 realm.create('settings', {
                   ...settingsInfo, // スプレッド構文で他のフィールドを展開
+                  settingFileDt:getCurrentDateTime(),  //取得日時が含まれないため追加設定
                 }, Realm.UpdateMode.Modified); 
               });
             }
