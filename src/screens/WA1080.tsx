@@ -80,7 +80,7 @@ const WA1080 = ({navigation}:Props) => {
         setIsNext(false);
         setIsCannotRead(true);
         setIsViewNextButton(true);
-      }, 10); // 10秒 = 10000ミリ秒
+      }, 10000); // 10秒 = 10000ミリ秒
     };
     // 次へボタンのスタイルを動的に変更するための関数
     const getNextButtonStyle = () => {
