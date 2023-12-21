@@ -33,8 +33,10 @@ const WA1070 = ({navigation}:Props) => {
     const [wkplc, setWkplc] = useState<string>('');
     const [ WA1070Data, setWA1070Data ] = useRecoilState(WA1070DataState);
     const [inputVisible, setInputVisible] = useState<boolean>(false);
-    const [isNextDisabled, setIsNextDisabled] = useState<boolean>(false); // 送信準備完了状態
+    const [isNext, setIsNext] = useState<boolean>(false); // 送信準備完了状態
     const [inputValue, setInputValue] = useState<string>('');
+    const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false);
+    const [isCannotRead, setIsCannotRead] = useState<boolean>(false);
     const { showAlert } = useAlert();
     /************************************************
      * 初期表示設定
@@ -70,13 +72,19 @@ const WA1070 = ({navigation}:Props) => {
     const handleLongPress = () => {  
       setTimeout(() => {
         setInputVisible(true);
-        setIsNextDisabled(true);
+        setIsNext(false);
+        setIsCannotRead(true);
+        setIsViewNextButton(true);
       }, 10000); // 10秒 = 10000ミリ秒
     };
     // 送信ボタンのスタイルを動的に変更するための関数
     const getButtonStyle = () => {
-      return isNextDisabled ? [styles.button,styles.startButton] : [styles.button,styles.startButton, styles.disabledButton];
+      return isNext ? [styles.button,styles.startButton] : [styles.button,styles.startButton, styles.disabledButton];
     };
+    // 新タグID読み取りメッセージ
+    const getInfoMsg = () =>{
+      return isCannotRead ? "新タグIDが読み込めない場合：" : "新タグIDが読み込めない場合はここを長押しして下さい。";
+    }    
     // 入力値が変更されたときのハンドラー
     const handleInputChange = (text:string) => {
       setInputValue(text); 
@@ -84,17 +92,17 @@ const WA1070 = ({navigation}:Props) => {
     // 入力がフォーカスアウトされたときのハンドラー
     const handleInputBlur = async () => {
       // 入力値が空かどうかによってブール値ステートを更新
-      setIsNextDisabled(inputValue !== '');
+      setIsNext(inputValue !== '');
       // 正規表現チェック
       if(!checkFormat(inputValue)){
         await showAlert("通知", messages.EA5017(inputValue), false);
-        setIsNextDisabled(false);
+        setIsNext(false);
         return 
       }
       // 一桁目チェック
       if (inputValue.startsWith('6') || inputValue.startsWith('8')) {
         await showAlert("通知", messages.EA5022("土壌","新タグ参照(灰)",inputValue), false);
-        setIsNextDisabled(false);
+        setIsNext(false);
         return 
       }
     };
@@ -292,7 +300,7 @@ const WA1070 = ({navigation}:Props) => {
         {/* 中段2 */}
         <View  style={[styles.main,styles.topContent,styles.center]}>
           <TouchableWithoutFeedback onLongPress={handleLongPress}>
-            <Text style={styles.labelText}>新タグIDが読み込めない場合：</Text>
+            <Text style={styles.labelText}>{getInfoMsg()}</Text>
           </TouchableWithoutFeedback>
           {inputVisible && 
             <View style={[styles.inputContainer]}>
@@ -301,7 +309,7 @@ const WA1070 = ({navigation}:Props) => {
                 style={styles.input}
                 onChangeText={handleInputChange}
                 onBlur={handleInputBlur}
-                value={inputValue}
+                value={inputValue}   
               />
               <Text style={styles.inputWithText}>a</Text>
             </View>
@@ -313,13 +321,15 @@ const WA1070 = ({navigation}:Props) => {
           <TouchableOpacity style={[styles.button, styles.endButton]} onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
           </TouchableOpacity>
-          <TouchableOpacity 
-              style={getButtonStyle()}
-              onPress={btnAppNext}
-              disabled={!isNextDisabled}
-          >
-            <Text style={styles.startButtonText}>次へ</Text>
-          </TouchableOpacity>          
+          {isViewNextButton && 
+            <TouchableOpacity 
+                style={getButtonStyle()}
+                onPress={btnAppNext}
+                disabled={!isNext}
+            >
+              <Text style={styles.startButtonText}>次へ</Text>
+            </TouchableOpacity>  
+          }         
         </View>
       
         {/* フッタ */}

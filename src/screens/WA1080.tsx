@@ -34,10 +34,12 @@ const WA1080 = ({navigation}:Props) => {
     const [wkplc, setWkplc] = useState<string>('');
     const [ WA1080Data, setWA1080Data ] = useRecoilState(WA1080DataState);
     const [inputVisible, setInputVisible] = useState<boolean>(false);
-    const [isNextDisabled, setIsNextDisabled] = useState<boolean>(false); // 送信準備完了状態
+    const [isNext, setIsNext] = useState<boolean>(false); // 送信準備完了状態
     const [inputValue, setInputValue] = useState<string>('');
-
-    const [isWkPlcDisabled, setWkPlcReadDisabled] = useState<boolean>(false); // タグ読込
+    const [isTagRead, setIsTagRead] = useState<boolean>(false); // 送信準備完了状態
+    const [isWkPlcRead, setIsWkPlcRead] = useState<boolean>(false); // タグ読込
+    const [isCannotRead, setIsCannotRead] = useState<boolean>(false);
+    const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false);
     const [idTyp,setIdTyp] = useState<string>();
     const [wkPlacId,setWkPlcId] = useState<string>();
     const [delSrcTyp,setDelSrcTyp] = useState<number>();
@@ -58,11 +60,11 @@ const WA1080 = ({navigation}:Props) => {
             setWkPlcId(place.tmpPlacId as string);
             setWkplc(place.tmpPlacNm as string);
             setDelSrcTyp(place.delSrcTyp as number);
-            setWkPlcReadDisabled(true);
+            setIsTagRead(true);
             break;
           case 5:
           case 6:
-            setWkPlcReadDisabled(true);
+            setIsTagRead(false);
             await showAlert("通知", messages.WA5001(), false);
             break;
         }    
@@ -75,18 +77,27 @@ const WA1080 = ({navigation}:Props) => {
     const handleLongPress = () => {  
       setTimeout(() => {
         setInputVisible(true);
-        setIsNextDisabled(true);
+        setIsNext(false);
+        setIsCannotRead(true);
+        setIsViewNextButton(true);
       }, 10); // 10秒 = 10000ミリ秒
     };
-    // 送信ボタンのスタイルを動的に変更するための関数
+    // 次へボタンのスタイルを動的に変更するための関数
     const getNextButtonStyle = () => {
-      return isNextDisabled ? [styles.button,styles.startButton] : [styles.button,styles.startButton, styles.disabledButton];
+      return isNext ? [styles.button,styles.startButton] : [styles.button,styles.startButton, styles.disabledButton];
     };
-    // 作業場所読込ボタンのスタイルを動的に変更するための関数
-    const getIsWkPlcButtonStyle = () => {
-      return isWkPlcDisabled ? [styles.button,styles.buttonSmall,styles.centerButton] : [styles.button,styles.buttonSmall,styles.centerButton,styles.disabledButton];
+    // タグ読込ボタンのスタイルを動的に変更するための関数
+    const getTagReadButtonStyle = () =>{
+      return isTagRead ? [styles.button,styles.buttonSmall,styles.centerButton] : [styles.button,styles.buttonSmall,styles.centerButton,styles.disabledButton];
     };
-
+    // テキストボックスのスタイルを動的に変更するための関数
+    const getTextInputStyle = () =>{
+      return isWkPlcRead ? styles.input : [styles.input,styles.inputDisabled];
+    }
+    // 旧タグID読み取りメッセージ
+    const getInfoMsg = () =>{
+      return isCannotRead ? "旧タグIDが読み込めない場合：" : "旧タグIDが読み込めない場合はここを長押しして下さい。";
+    }
     // 入力値が変更されたときのハンドラー
     const handleInputChange = (text:string) => {
       setInputValue(text); 
@@ -94,7 +105,7 @@ const WA1080 = ({navigation}:Props) => {
     // 入力がフォーカスアウトされたときのハンドラー
     const handleInputBlur = async () => {
       // 入力値が空かどうかによってブール値ステートを更新
-      setIsNextDisabled(inputValue !== '');
+      setIsNext(inputValue !== '');
     };
 
     /************************************************
@@ -114,7 +125,8 @@ const WA1080 = ({navigation}:Props) => {
       setWkplc(parts[2]);
       setDelSrcTyp(Number(parts[3]));
       setWkplcTyp("仮置場");
-      setWkPlcReadDisabled(true);
+      setIsTagRead(true);
+      setIsWkPlcRead(true);
     };
     // 作業場所Rコードスキャンボタン押下時の処理
     const btnWkPlcQr = async () => {
@@ -300,7 +312,7 @@ const WA1080 = ({navigation}:Props) => {
         <View  style={[styles.main,styles.topContent]}>
           <Text style={[styles.labelText]}>作業場所：{wkplcTyp}</Text>
           <Text style={[styles.labelText,styles.labelTextPlace]}>{wkplc}</Text>
-          <TouchableOpacity style={getIsWkPlcButtonStyle()} onPress={btnWkPlcQr}>
+          <TouchableOpacity style={[styles.button,styles.buttonSmall,styles.centerButton]} onPress={btnWkPlcQr}>
             <Text style={styles.buttonText}>作業場所読込</Text>
           </TouchableOpacity>             
         </View>
@@ -308,7 +320,7 @@ const WA1080 = ({navigation}:Props) => {
         {/* 中段1 */}
         <View  style={[styles.main,styles.middleContent]}>
           <Text style={styles.labelText}>下記ボタンを押してフレコンに取り付けられたタグを読み込んで下さい。</Text>
-          <TouchableOpacity style={[styles.button,styles.buttonSmall,styles.centerButton]} onPress={btnTagQr}>
+          <TouchableOpacity style={getTagReadButtonStyle()} disabled={!isTagRead} onPress={btnTagQr}>
             <Text style={styles.buttonText}>タグ読込</Text>
           </TouchableOpacity>          
         </View>
@@ -316,15 +328,16 @@ const WA1080 = ({navigation}:Props) => {
         {/* 中段2 */}
         <View  style={[styles.main,styles.topContent,styles.center]}>
           <TouchableWithoutFeedback onLongPress={handleLongPress}>
-            <Text style={styles.labelText}>旧タグIDが読み込めない場合：</Text>
+            <Text style={styles.labelText}>{getInfoMsg()}</Text>
           </TouchableWithoutFeedback>
           {inputVisible && 
             <View style={[styles.inputContainer]}>
               <TextInput 
-                style={styles.input}
+                style={getTextInputStyle()}
                 onChangeText={handleInputChange}
                 onBlur={handleInputBlur}
                 value={inputValue}
+                editable={isWkPlcRead}
               />
             </View>
           }
@@ -335,13 +348,15 @@ const WA1080 = ({navigation}:Props) => {
           <TouchableOpacity style={[styles.button, styles.endButton]} onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
           </TouchableOpacity>
-          <TouchableOpacity 
-              style={getNextButtonStyle()}
-              onPress={btnAppNext}
-              disabled={!isNextDisabled}
-          >
-            <Text style={styles.startButtonText}>次へ</Text>
-          </TouchableOpacity>          
+          {isViewNextButton && 
+            <TouchableOpacity 
+                style={getNextButtonStyle()}
+                onPress={btnAppNext}
+                disabled={!isNext}
+            >
+              <Text style={styles.startButtonText}>次へ</Text>
+            </TouchableOpacity>          
+          }
         </View>
       
         {/* フッタ */}
