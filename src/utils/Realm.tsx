@@ -13,12 +13,13 @@ const realmPath = `${RNFS.DocumentDirectoryPath}/app.realm`;
 import bundledSettingsPath from '../../assets/data/settings.json';
 export let encryptionKey: Uint8Array;// 暗号化キーをグローバルで保持
 
+
+
 /************************************************
  * アプリ起動時のRealmの設定を行う関数
  ************************************************/
-const setupRealm = async (): Promise<void> => {
-  await deleteAllRealm() //debug用
-  global.serverName = "";
+const setupRealm = async (): Promise<string> => {
+  //await deleteAllRealm() //debug用
   try {
     // keyStoreからkeyを取得する
     encryptionKey=await getEncryptionKeyFromKeystore();
@@ -62,18 +63,11 @@ const setupRealm = async (): Promise<void> => {
         },Realm.UpdateMode.Modified);
       });
     }
-    
-    global.serverName = settings[0].serverName as string; // serverNameをグローバル変数に保存
+    return settings[0].serverName as string;
   } catch (error) {
     console.error('Error setting up Realm:', error);
+    return "";
   }
-};
-
-/************************************************
- * グローバル変数からserverNameを取得する関数
- ************************************************/
-export const getGlobalServerName = (): string | null => {
-  return global.serverName;
 };
 
 /************************************************

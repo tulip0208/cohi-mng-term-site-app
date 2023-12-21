@@ -19,3 +19,17 @@ export const getCurrentDateTime = ():string => {
   
     return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
 };
+
+/************************************************
+ * フォーマット日付文字列取得
+ * yyyy/MM/dd
+ ************************************************/
+export const getCurrentDate = ():string => {
+    const now = new Date();
+  
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+  
+    return `${year}/${month}/${day}`;
+};

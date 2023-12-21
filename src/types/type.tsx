@@ -173,6 +173,7 @@ export interface FileEntry {
 /******************
  * screens
  ******************/
+//WA1070
 export interface WA1070Const{
     head:{
         wkplcTyp: string;
@@ -197,6 +198,33 @@ export interface WA1070Const{
         oldTagId:number;
         oldTagIdList:string[];        
     }
+}
+
+//WA1080
+export interface WA1080Const{
+    head:{
+        wkplcTyp: string;
+        wkplc: string;
+        oldTagId: string;
+      }    
+    data:{
+        rmSolTyp:number;
+        weight?:string;
+        airDsRt:number;
+        rcvDt:string;
+        splFac:number;
+        tsuInd:number;
+        pkTyp:number;
+        usgInnBg:number;
+        usgAluBg:number;
+        vol:number;
+        arNm:string;
+        ocLndCla:number;
+        ocLndUseknd:string;
+        ocloc:string;
+        rmSolInf:string;
+        lnkNewTagDatMem:string;
+    };
 }
 
 /******************
@@ -228,6 +256,35 @@ export interface IFA0030Response {
 export interface IFA0050Response {
 
 }
+
+export interface IFA0310Response {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
+    cnt: number;
+    dtl: IFA0310ResponseDtl[]; // Detail型の配列
+}
+export interface IFA0310ResponseDtl {
+    oldTagId: string;
+    tmpLocId: string;
+    tmpLocNm?: string | null;
+    arNm: string;
+    tsuInd: string;
+    splFac: string;
+    rmSolTyp?: string | null;
+    ocLndCla: string;
+    pkTyp: string;
+    usgInnBg?: string | null;
+    usgInnBgNm: string;
+    usgAluBg?: string | null;
+    vol?: number | null;
+    airDsRt?: number | null;
+    ocLndUseknd?: string | null;
+    ocloc?: string | null;
+    rmSolInf?: string | null;
+    lnkNewTagDatMem?: string | null;    
+}
+
 export interface IFA0330Response {
     sttCd: string;
     errCd?: string | null; // オプショナルでnullも許容
@@ -262,4 +319,4 @@ export interface IFA0330ResponseDtl {
     rmSolInf?: string | null; // オプショナルでnullも許容
     lnkNewTagDatMem?: string;
     sndId: string;
-  }
+}

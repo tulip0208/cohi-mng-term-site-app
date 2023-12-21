@@ -13,7 +13,8 @@ import WA1050 from '../screens/WA1050';
 // import WA1060 from '../screens/WA1060';
 import WA1070 from '../screens/WA1070';
 import WA1071 from '../screens/WA1071';
-// import WA1080 from '../screens/WA1080';
+import WA1080 from '../screens/WA1080';
+import WA1081 from '../screens/WA1081';
 // import WA1090 from '../screens/WA1090';
 // import WA1100 from '../screens/WA1100';
 // import WA1110 from '../screens/WA1110';
@@ -28,7 +29,8 @@ import { watchLocation } from '../utils/Location';
 import { useAlert } from '../components/AlertContext';
 import messages from '../utils/messages';
 import { ApiResponse,verUpRep } from '../types/type';
-
+import { useRecoilState } from "recoil";
+import { serverNameState } from "../atom/atom.tsx";
 
 export type RootList = {
   WA1020: undefined;
@@ -39,6 +41,7 @@ export type RootList = {
   WA1070: undefined;
   WA1071: undefined;
   WA1080: undefined;
+  WA1081: undefined;
   WA1090: undefined;
   WA1100: undefined;
   WA1110: undefined;
@@ -51,6 +54,7 @@ const Stack = createStackNavigator<RootList>();
 const AppNavigator = () => {
   const [initialRoute, setInitialRoute] = useState<keyof RootList>();
   const [isLoading, setIsLoading] = useState<boolean>(true); // ローディング状態の追加
+  const [ serverName, setServerName ] = useRecoilState(serverNameState);
   const { showAlert } = useAlert();
   
   useEffect(() => {
@@ -59,10 +63,10 @@ const AppNavigator = () => {
     initializeLogFile();
 
     const initialize = async () => {
-      watchId = null;
       //起動時の初期処理
-      await setupRealm();
-
+      const ret = await setupRealm();
+      //サーバ名の設定
+      setServerName(ret as string);
       //--------WA1020_前処理--------
       // アクティベーション情報の確認
       const activationInfo = await checkActivation(); 
@@ -98,8 +102,6 @@ const AppNavigator = () => {
 
         //時分秒を除く日付を突合し確認
         if(loginInfo && (loginInfo.loginDt as string ).replace(/[^0-9]/g, "").slice(0,8)==currentDateTime && loginInfo.logoutFlg=="0"){
-          const settingsInfo = realm.objects('settings')[0]
-          // ★位置情報取得し、設定ファイルへ？1040前処理(Position.js処理にて。要確認)
           // [位置情報取得間隔]の間隔で位置情報の取得を開始する。
           await watchLocation();
           await logScreen(`画面遷移: WA1040_メニュー`);
@@ -168,8 +170,9 @@ const AppNavigator = () => {
           {/* <Stack.Screen name="WA1060" component={WA1060} /> */}
           <Stack.Screen name="WA1070" component={WA1070} />
           <Stack.Screen name="WA1071" component={WA1071} />
-          {/* <Stack.Screen name="WA1080" component={WA1080} />
-          <Stack.Screen name="WA1090" component={WA1090} />
+          <Stack.Screen name="WA1080" component={WA1080} />
+          <Stack.Screen name="WA1081" component={WA1081} />
+          {/* <Stack.Screen name="WA1090" component={WA1090} />
           <Stack.Screen name="WA1100" component={WA1100} />
           <Stack.Screen name="WA1110" component={WA1110} />                                                        
           <Stack.Screen name="WA1120" component={WA1120} />

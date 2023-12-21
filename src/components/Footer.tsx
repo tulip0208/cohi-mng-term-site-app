@@ -5,11 +5,10 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { styles } from '../styles/CommonStyle'; // 共通スタイル
-import { useServerName } from '../hooks/useServerName';
-
+import { useRecoilValue } from 'recoil';
+import { serverNameState } from "../atom/atom.tsx";
 const Footer = () => {
-  const serverName = useServerName();
-
+  const serverName = useRecoilValue(serverNameState);
   useEffect(() => {
   }, []);
 

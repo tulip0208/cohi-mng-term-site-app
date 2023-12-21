@@ -7,7 +7,7 @@ import axios,{ AxiosError }  from 'axios';
 import { loadFromKeystore,getEncryptionKeyFromKeystore } from './KeyStore'; // KeyStoreの確認関数
 import { decryptWithAES256CBC } from './Security';
 import { logCommunication} from './Log';
-import { AxiosResponse,ApiResponse,IFA0030Response,IFA0330Response, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, } from '../types/type';
+import { AxiosResponse,ApiResponse,IFA0030Response,IFA0310Response,IFA0330Response, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, } from '../types/type';
 import { Buffer } from 'buffer';
 /************************************************
  * IFA0010_アクティベーション(端末登録)
@@ -234,7 +234,39 @@ const setIFA0110RequestData = async <T,>(interFaceName:string,dataDtl:T) => {
 }
 
 /************************************************
- * IFA0330_新タグ情報照会(除去土壌等) 
+ * IFA0310_旧タグ情報照会(除染土壌) 
+ ************************************************/
+export const IFA0310 = async (txtOldTagId:string,wkPlacId:string) : Promise<ApiResponse<IFA0310Response>> => {
+  try {
+    const realm = getInstance()
+    const loginInfo = realm.objects('login')[0]
+    const requestDataDtl = {
+      comId: loginInfo.comId,
+      dtl: {
+        tmpLocId:wkPlacId,
+        oldTagId:txtOldTagId,
+        },
+    };
+
+    const requestData = await setIFA0110RequestData("IFA0310",requestDataDtl);
+
+    // サーバー通信処理（Api.js内の関数を呼び出し）
+    const res = await sendToServer(requestData,"IFA0310","旧タグ情報照会(除去土壌)");
+    const response = res as AxiosResponse<IFA0310Response>;
+
+    if (response.data && response.data.sttCd && response.data.cnt == 0){
+      //0件の場合
+      return { success: false, error: "zero", status:null, code:null, api:null, data:null};
+    }
+    return { success: true, data: response.data };
+  } catch (error) {
+    const e = error as CustomError;
+    return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
+  }
+};
+
+/************************************************
+ * IFA0330_新タグ情報照会(除去土壌) 
  ************************************************/
 export const IFA0330 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0330Response>> => {
   try {
@@ -249,7 +281,7 @@ export const IFA0330 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0330R
     const requestData = await setIFA0110RequestData("IFA0330",requestDataDtl);
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
-    const res = await sendToServer(requestData,"IFA0330","新タグ情報照会(除去土壌等)");    
+    const res = await sendToServer(requestData,"IFA0330","新タグ情報照会(除去土壌)");    
     const response = res as AxiosResponse<IFA0330Response>;
 
     if (response.data && response.data.sttCd && response.data.cnt == 0){
@@ -262,8 +294,6 @@ export const IFA0330 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0330R
     return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
   }
 };
-import RNFS from 'react-native-fs';
-const filePath = RNFS.DocumentDirectoryPath + '/file.ext'; // ファイルパス
 
 /************************************************
  * サーバー通信を行う関数
@@ -436,7 +466,11 @@ const getSettings = async (endpoint:string) => {//★スタブ用
   const settingsInfo = realm.objects('settings')[0]
   
   //★スタブここから
-  if(endpoint=='IFA0330'){
+  if(endpoint=='IFA0310'){
+    return {
+      connectionURL: 'https://script.google.com/macros/s/AKfycbzIXMW-_dLoHqZ1qdG4pF8QMVzDNaY5a_jl9ueDDAsuRVuQ0dJh-C4e5qj9pVbaAJyU2A/exec'
+    }
+  }else if(endpoint=='IFA0330'){
     return {
       connectionURL: 'https://script.google.com/macros/s/AKfycbwzCdDfRXtdUdFgTtlmyhSgmg36C9R7kEAyYjpUV2qteY-JyOfVSAeIAFo7Ur4oaKbc/exec'
     }

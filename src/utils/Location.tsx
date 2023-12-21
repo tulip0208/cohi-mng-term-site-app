@@ -8,6 +8,7 @@ import { logPosition } from './Log';
 import { getInstance } from './Realm'; // realm.jsから関数をインポート
 import { Position } from '../types/type';
 import Crypto from 'react-native-aes-crypto';
+
 /************************************************
  * 位置情報取得の権限を要求する関数（Androidのみ）
  * @returns 

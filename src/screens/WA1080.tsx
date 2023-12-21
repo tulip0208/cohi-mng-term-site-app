@@ -1,7 +1,7 @@
 /**-------------------------------------------
- * A01-0070_新タグID参照(土壌)
- * WA1070
- * screens/WA1070.tsx
+ * A01-0080_旧タグID参照(土壌)
+ * WA1080
+ * screens/WA1080.tsx
  * ---------------------------------------------*/
 import FunctionHeader from '../components/FunctionHeader.tsx'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer.tsx'; // Footerコンポーネントのインポート
@@ -14,27 +14,33 @@ import QRScanner from '../utils/QRScanner.tsx';
 import ProcessingModal from '../components/Modal.tsx';
 import { logUserAction, logScreen  } from '../utils/Log.tsx';
 import { useAlert } from '../components/AlertContext.tsx';
-import { IFA0330 } from '../utils/Api.tsx'; 
+import { IFA0310 } from '../utils/Api.tsx'; 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RNCamera } from 'react-native-camera';
-import { RootList } from '../navigation/AppNavigator';
-import { ApiResponse, IFA0330Response,IFA0330ResponseDtl } from '../types/type';
+import { RootList } from '../navigation/AppNavigator.tsx';
+import { ApiResponse, IFA0310Response,IFA0310ResponseDtl,WA1080Const } from '../types/type.tsx';
 import { useRecoilState } from "recoil";
-import { WA1070DataState } from "../atom/atom.tsx";
-// WA1070 用の navigation 型
-type NavigationProp = StackNavigationProp<RootList, 'WA1070'>;
+import { WA1080DataState } from "../atom/atom.tsx";
+// WA1080 用の navigation 型
+type NavigationProp = StackNavigationProp<RootList, 'WA1080'>;
 interface Props {
   navigation: NavigationProp;
 };
-const WA1070 = ({navigation}:Props) => {
+const WA1080 = ({navigation}:Props) => {
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [showScannerTag, setShowScannerTag] = useState<boolean>(false); // カメラ表示用の状態    
+    const [showScannerWkPlc, setShowScannerWkPlc] = useState<boolean>(false); // カメラ表示用の状態
     const [wkplcTyp, setWkplcTyp] = useState<string>('');
     const [wkplc, setWkplc] = useState<string>('');
-    const [ WA1070Data, setWA1070Data ] = useRecoilState(WA1070DataState);
+    const [ WA1080Data, setWA1080Data ] = useRecoilState(WA1080DataState);
     const [inputVisible, setInputVisible] = useState<boolean>(false);
     const [isNextDisabled, setIsNextDisabled] = useState<boolean>(false); // 送信準備完了状態
     const [inputValue, setInputValue] = useState<string>('');
+
+    const [isWkPlcDisabled, setWkPlcReadDisabled] = useState<boolean>(false); // タグ読込
+    const [idTyp,setIdTyp] = useState<string>();
+    const [wkPlacId,setWkPlcId] = useState<string>();
+    const [delSrcTyp,setDelSrcTyp] = useState<number>();
     const { showAlert } = useAlert();
     /************************************************
      * 初期表示設定
@@ -46,23 +52,22 @@ const WA1070 = ({navigation}:Props) => {
         let place;
         switch(loginInfo.wkplacTyp){
           case 4:
-            setWkplcTyp("仮置場");    
+            setIdTyp(String(loginInfo.wkplacTyp));
             place = realm.objects('temporary_places')[0]
-            setWkplc(place.tmpPlacNm as string);   
+            setWkplcTyp("仮置場");    
+            setWkPlcId(place.tmpPlacId as string);
+            setWkplc(place.tmpPlacNm as string);
+            setDelSrcTyp(place.delSrcTyp as number);
+            setWkPlcReadDisabled(true);
             break;
           case 5:
-            setWkplcTyp("保管場");    
-            place = realm.objects('storage_places')[0]
-            setWkplc(place.storPlacNm as string);   
-            break;
           case 6:
-            setWkplcTyp("定置場");    
-            place = realm.objects('fixed_places')[0]
-            setWkplc(place.fixPlacNm as string);   
+            setWkPlcReadDisabled(true);
+            await showAlert("通知", messages.WA5001(), false);
             break;
         }    
       } 
-      setWA1070Data(null);
+      setWA1080Data(null);
       contentsViews();
     }, []);
 
@@ -71,12 +76,17 @@ const WA1070 = ({navigation}:Props) => {
       setTimeout(() => {
         setInputVisible(true);
         setIsNextDisabled(true);
-      }, 10000); // 10秒 = 10000ミリ秒
+      }, 10); // 10秒 = 10000ミリ秒
     };
     // 送信ボタンのスタイルを動的に変更するための関数
-    const getButtonStyle = () => {
+    const getNextButtonStyle = () => {
       return isNextDisabled ? [styles.button,styles.startButton] : [styles.button,styles.startButton, styles.disabledButton];
     };
+    // 作業場所読込ボタンのスタイルを動的に変更するための関数
+    const getIsWkPlcButtonStyle = () => {
+      return isWkPlcDisabled ? [styles.button,styles.buttonSmall,styles.centerButton] : [styles.button,styles.buttonSmall,styles.centerButton,styles.disabledButton];
+    };
+
     // 入力値が変更されたときのハンドラー
     const handleInputChange = (text:string) => {
       setInputValue(text); 
@@ -85,28 +95,33 @@ const WA1070 = ({navigation}:Props) => {
     const handleInputBlur = async () => {
       // 入力値が空かどうかによってブール値ステートを更新
       setIsNextDisabled(inputValue !== '');
-      // 正規表現チェック
-      if(!checkFormat(inputValue)){
-        await showAlert("通知", messages.EA5017(inputValue), false);
-        setIsNextDisabled(false);
-        return 
-      }
-      // 一桁目チェック
-      if (inputValue.startsWith('6') || inputValue.startsWith('8')) {
-        await showAlert("通知", messages.EA5022("土壌","新タグ参照(灰)",inputValue), false);
-        setIsNextDisabled(false);
-        return 
-      }
     };
 
     /************************************************
-     * フォーマットチェック
+     * コードスキャン後の処理 (作業場所用)
+     * @param param0 
+     * @returns 
      ************************************************/
-    const checkFormat = (data:string) => {
-      const pattern = /^[0-9][2-5][0-9]0[0-9]{11}$/;
-      return pattern.test(data);
+    const handleCodeScannedForWkPlc = async (data:string) => {
+      const parts = data.split(',');
+      setShowScannerWkPlc(false);
+      if(parts[0]!=="4"){
+        await showAlert("通知", messages.EA5007(), false);
+        return;
+      }
+      setIdTyp(parts[0]);
+      setWkPlcId(parts[1]);
+      setWkplc(parts[2]);
+      setDelSrcTyp(Number(parts[3]));
+      setWkplcTyp("仮置場");
+      setWkPlcReadDisabled(true);
     };
-
+    // 作業場所Rコードスキャンボタン押下時の処理
+    const btnWkPlcQr = async () => {
+      await logUserAction(`ボタン押下: 作業場所読込`);
+      setShowScannerWkPlc(true);
+    }; 
+    
     /************************************************
      * コードスキャン後の処理 (タグ用)
      * @param param0 
@@ -119,43 +134,53 @@ const WA1070 = ({navigation}:Props) => {
       if (type !== RNCamera.Constants.BarCodeType.qr && type !== RNCamera.Constants.BarCodeType.code39) {
         await showAlert("通知", messages.EA5008(), false);
         return;
-      }else if(parts.length === 1 || parts[0] !== "CM" ){
-        await showAlert("通知", messages.EA5009(), false);
-        return;
-      }else if(parts[0] === "CM"){
-        // --QRコード--
-        // 新タグID参照処理実施(csvデータ2カラム目 新タグID)
+      }else if(parts.length !== 1 && parts[0] === "CM"){
+        // --QRコード(CM)--
+        // 一時データ格納する
+        setWA1080Data({
+          head:{
+            wkplcTyp:wkplcTyp,
+            wkplc:wkplc,
+            oldTagId:parts[2],
+          },
+          data:{
+            rmSolTyp:Number(parts[8]),
+            weight:parts[16],
+            airDsRt:Number(parts[17]),
+            rcvDt:parts[15],
+            splFac:Number(parts[7]),
+            tsuInd:Number(parts[6]),
+            pkTyp:Number(parts[10]),
+            usgInnBg:Number(parts[11]),
+            usgAluBg:Number(parts[12]),
+            vol:Number(parts[13]),
+            arNm:parts[4],
+            ocLndCla:Number(parts[9]),
+            ocLndUseknd:"",
+            ocloc:parts[5],
+            rmSolInf:parts[18],
+            lnkNewTagDatMem:"",
+          },
+        });
+        await logScreen(`画面遷移:WA1081_旧タグ参照(土壌)`);          
+        navigation.navigate('WA1081');
+
+      }else if(parts.length !== 1 && parts[0] !== "CM"){
+        // --QRコード(CM以外)--
         // モーダル表示
-        setModalVisible(true);        
-        code = parts[1];
-      }else{
-        // --バーコード--
-        // フォーマットチェック
-        if(!checkFormat(data)){
-          await showAlert("通知", messages.EA5017(data), false);
-          return;
-        }else if(data.charAt(0) === '6' ||
-                 data.charAt(0) === '8'){
-          await showAlert("通知", messages.EA5022("土壌","新タグ参照(灰)",data), false);
+        setModalVisible(true);
+        // IFA0310処理
+        procOldTagId(data);
+        // 旧タグID参照処理実施
+        if(!await procOldTagId(code)) {
+        // モーダル非表示
+        setModalVisible(false);          
+          setShowScannerTag(false);
           return;
         }
-        // モーダル表示
-        setModalVisible(true);        
-        code = "a"+data+"a"
+        await logScreen(`画面遷移:WA1081_旧タグ参照(土壌)`);          
+        navigation.navigate('WA1081');
       }
-
-      // 新タグID参照処理実施
-      if(!await procNewTagId(code)) {
-        // モーダル非表示
-        setModalVisible(false);        
-        setShowScannerTag(false);
-        return;
-      }
-
-      // モーダル非表示
-      setModalVisible(false);
-      await logScreen(`画面遷移:WA1071_新タグ参照(土壌)`);  
-      navigation.navigate('WA1071')
     }
     // タグコードスキャンボタン押下時の処理
     const btnTagQr = async () => {
@@ -164,47 +189,43 @@ const WA1070 = ({navigation}:Props) => {
     }; 
 
     /************************************************
-     * 新タグID参照処理
+     * 旧タグID参照処理
      ************************************************/
-    const procNewTagId = async (txtNewTagId:string):Promise<boolean> => {
+    const procOldTagId = async (txtOldTagId:string):Promise<boolean> => {
       // ログファイルアップロード通信を実施
-      const responseIFA0330 = await IFA0330(txtNewTagId);
-      if(await apiIsError(responseIFA0330)) {
+      const responseIFA0310 = await IFA0310(txtOldTagId,wkPlacId as string);
+      if(await apiIsError(responseIFA0310)){
 
         return false;
-      }
-      const data = responseIFA0330.data as IFA0330Response;
-      const dataDtl = data.dtl[0] as IFA0330ResponseDtl;
+      } 
+      const data = responseIFA0310.data as IFA0310Response;
+      const dataDtl = data.dtl[0] as IFA0310ResponseDtl;
       
-      // oldTagId の値だけを抽出して新しい配列に格納する
-      const oldTagIds = data.dtl.map(item => item.oldTagId);
-
       // 一時データ格納する
-      setWA1070Data({
+      setWA1080Data({
         head:{
           wkplcTyp:wkplcTyp,
           wkplc:wkplc,
-          newTagId:txtNewTagId,
+          oldTagId:txtOldTagId,
         },
         data:{
-          newTagId: dataDtl.newTagId,
-          rmSolTyp: dataDtl.rmSolTyp,
-          pkTyp: dataDtl.pkTyp,
-          splFac: dataDtl.splFac,
-          tsuInd: dataDtl.tsuInd,
-          usgInnBg: dataDtl.usgInnBg,
-          usgAluBg: dataDtl.usgAluBg,
-          yesNoOP: dataDtl.yesNoOP,
-          caLgSdBgWt: dataDtl.caLgSdBgWt,
-          caLgSdBgDs: dataDtl.caLgSdBgDs,
-          estRa: dataDtl.estRa,
-          lnkNewTagDatMem: dataDtl.lnkNewTagDatMem,  
+          rmSolTyp:Number(dataDtl.rmSolTyp),
+          weight:"",
+          airDsRt:dataDtl.airDsRt as number,
+          rcvDt:"",
+          splFac:Number(dataDtl.splFac),
+          tsuInd:Number(dataDtl.tsuInd),
+          pkTyp:Number(dataDtl.pkTyp),
+          usgInnBg:Number(dataDtl.usgInnBg),
+          usgAluBg:Number(dataDtl.usgAluBg),
+          vol:dataDtl.vol as number,
+          arNm:dataDtl.arNm,
+          ocLndCla:Number(dataDtl.ocLndCla),
+          ocLndUseknd:dataDtl.ocLndUseknd as string,
+          ocloc:dataDtl.ocloc as string,
+          rmSolInf:dataDtl.rmSolInf as string,
+          lnkNewTagDatMem:dataDtl.lnkNewTagDatMem as string,
         },
-        oldTag:{
-          //---旧タグ---
-          oldTagId:oldTagIds.length,
-          oldTagIdList:oldTagIds as string[],
-        }
       });
       return true;
     };
@@ -213,7 +234,7 @@ const WA1070 = ({navigation}:Props) => {
      * 戻るボタン処理
      ************************************************/
     const btnAppBack = async () => {
-      await logUserAction(`ボタン押下: 戻る(WA1070)`);  
+      await logUserAction(`ボタン押下: 戻る(WA1080)`);  
       navigation.navigate('WA1040');
     };
 
@@ -221,20 +242,20 @@ const WA1070 = ({navigation}:Props) => {
      * 次へボタン処理
      ************************************************/
     const btnAppNext = async () => {
-      await logUserAction(`ボタン押下: 次へ(WA1070)`);  
+      await logUserAction(`ボタン押下: 次へ(WA1080)`);  
       // モーダル表示
       setModalVisible(true);
-      // 新タグID参照処理実施
-      if(!await procNewTagId('a' + inputValue + 'a')) {
+      // 旧タグID参照処理実施
+      if(!await procOldTagId(inputValue)) {
         // モーダル非表示
         setModalVisible(false);        
         setShowScannerTag(false);
         return;
-      }      
+      }    
       // モーダル非表示
       setModalVisible(false);
-      await logScreen(`画面遷移:WA1071_新タグ参照(土壌)`);  
-      navigation.navigate('WA1071');
+      await logScreen(`画面遷移:WA1081_旧タグ参照(土壌)`);  
+      navigation.navigate('WA1081');
     };
 
     /************************************************
@@ -273,12 +294,15 @@ const WA1070 = ({navigation}:Props) => {
       >
       <ScrollView  contentContainerStyle={[styles.containerWithKeybord, { flexGrow: 1 }]}>
         {/* ヘッダ */}
-        <FunctionHeader appType={"現"} viewTitle={"新タグ読込"} functionTitle={"参照(土)"}/>
+        <FunctionHeader appType={"現"} viewTitle={"旧タグ読込"} functionTitle={"参照(土)"}/>
   
         {/* 上段 */}
         <View  style={[styles.main,styles.topContent]}>
           <Text style={[styles.labelText]}>作業場所：{wkplcTyp}</Text>
           <Text style={[styles.labelText,styles.labelTextPlace]}>{wkplc}</Text>
+          <TouchableOpacity style={getIsWkPlcButtonStyle()} onPress={btnWkPlcQr}>
+            <Text style={styles.buttonText}>作業場所読込</Text>
+          </TouchableOpacity>             
         </View>
 
         {/* 中段1 */}
@@ -292,18 +316,16 @@ const WA1070 = ({navigation}:Props) => {
         {/* 中段2 */}
         <View  style={[styles.main,styles.topContent,styles.center]}>
           <TouchableWithoutFeedback onLongPress={handleLongPress}>
-            <Text style={styles.labelText}>新タグIDが読み込めない場合：</Text>
+            <Text style={styles.labelText}>旧タグIDが読み込めない場合：</Text>
           </TouchableWithoutFeedback>
           {inputVisible && 
             <View style={[styles.inputContainer]}>
-              <Text style={styles.inputWithText}>a</Text>
               <TextInput 
                 style={styles.input}
                 onChangeText={handleInputChange}
                 onBlur={handleInputBlur}
                 value={inputValue}
               />
-              <Text style={styles.inputWithText}>a</Text>
             </View>
           }
         </View>
@@ -314,7 +336,7 @@ const WA1070 = ({navigation}:Props) => {
             <Text style={styles.endButtonText}>戻る</Text>
           </TouchableOpacity>
           <TouchableOpacity 
-              style={getButtonStyle()}
+              style={getNextButtonStyle()}
               onPress={btnAppNext}
               disabled={!isNextDisabled}
           >
@@ -332,6 +354,13 @@ const WA1070 = ({navigation}:Props) => {
           onClose={() => setModalVisible(false)}
         />
 
+        {/* 作業場所用QRコードスキャナー */}
+        {showScannerWkPlc && (
+            <Modal visible={showScannerWkPlc} onRequestClose={() => setShowScannerWkPlc(false)}>
+                <QRScanner onScan={handleCodeScannedForWkPlc} closeModal={() => setShowScannerWkPlc(false)} isActive={showScannerTag} errMsg={"作業場所QRコード"}/>
+            </Modal>
+        )}
+
         {/* タグ用QRコードスキャナー */}
         {showScannerTag && (
             <Modal visible={showScannerTag} onRequestClose={() => setShowScannerTag(false)}>
@@ -344,4 +373,4 @@ const WA1070 = ({navigation}:Props) => {
     );
     
 };
-export default WA1070;
+export default WA1080;
