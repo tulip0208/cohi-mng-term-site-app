@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     marginLeft:10,
   },
   textareaContainerSecond:{
-    maxHeight:"10%"
+    maxHeight:"20%"
   },  
   middleContent: {
     flex: 1,
@@ -114,6 +114,9 @@ export const styles = StyleSheet.create({
   labelTextPlace: {
     marginLeft: 75,
     fontFamily:"ipaexg",
+  },
+  alignRight: {
+    textAlign:"right",
   },  
   //--------------------
   //--------テキストボックス-------
@@ -137,6 +140,9 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
+  },
+  inputDisabled: {
+    backgroundColor: '#ccc', // 無効化したときの背景色
   },
 
 
@@ -185,6 +191,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#F1D2C1',
     padding: 5,
     flex: 1,
+    maxWidth:"50%",
   },
   endButtonSmall: {
     backgroundColor: '#F1D2C1',

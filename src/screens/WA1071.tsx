@@ -11,8 +11,8 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { logUserAction, logScreen  } from '../utils/Log.tsx';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootList } from '../navigation/AppNavigator.tsx';
-import { useRecoilValue } from "recoil";
-import { WA1070DataState } from "../atom/atom.tsx";
+import { useRecoilValue,useSetRecoilState } from "recoil";
+import { WA1070DataState,WA1071BackState } from "../atom/atom.tsx";
 import { CT0007,CT0006,CT0005,CT0009,CT0010,CT0011,CT0042} from "../enum/enums.tsx";
 
 // WA1071 用の navigation 型
@@ -22,7 +22,7 @@ interface Props {
 };
 const WA1071 = ({navigation}:Props) => {
     const WA1070Data = useRecoilValue(WA1070DataState);
-
+    const setBack = useSetRecoilState(WA1071BackState);
     /************************************************
      * 初期表示設定
      ************************************************/   
@@ -101,7 +101,8 @@ const WA1071 = ({navigation}:Props) => {
      * 戻るボタン処理
      ************************************************/
     const btnAppBack = async () => {
-      await logUserAction(`ボタン押下: 戻る(WA1071)`);  
+      await logUserAction(`ボタン押下: 戻る(WA1071)`);
+      setBack(true);      
       await logScreen(`画面遷移:WA1070_新タグ参照(土壌)`);  
       navigation.navigate('WA1070');
     };

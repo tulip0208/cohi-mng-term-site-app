@@ -11,8 +11,8 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { logUserAction, logScreen  } from '../utils/Log.tsx';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootList } from '../navigation/AppNavigator.tsx';
-import { useRecoilValue } from "recoil";
-import { WA1080DataState } from "../atom/atom.tsx";
+import { useRecoilValue,useSetRecoilState } from "recoil";
+import { WA1080DataState,WA1111BackState } from "../atom/atom.tsx";
 import { CT0007,CT0006,CT0005,CT0009,CT0010,CT0011,CT0008} from "../enum/enums.tsx";
 
 // WA1081 用の navigation 型
@@ -22,7 +22,7 @@ interface Props {
 };
 const WA1081 = ({navigation}:Props) => {
     const WA1080Data = useRecoilValue(WA1080DataState);
-
+    const setBack = useSetRecoilState(WA1111BackState);
     /************************************************
      * 初期表示設定
      ************************************************/   
@@ -111,7 +111,8 @@ const WA1081 = ({navigation}:Props) => {
      * 戻るボタン処理
      ************************************************/
     const btnAppBack = async () => {
-      await logUserAction(`ボタン押下: 戻る(WA1081)`);  
+      await logUserAction(`ボタン押下: 戻る(WA1081)`);
+      setBack(true);      
       await logScreen(`画面遷移:WA1080_旧タグ参照(土壌)`);  
       navigation.navigate('WA1080');
     };

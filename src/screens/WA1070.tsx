@@ -18,9 +18,9 @@ import { IFA0330 } from '../utils/Api.tsx';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RNCamera } from 'react-native-camera';
 import { RootList } from '../navigation/AppNavigator';
-import { ApiResponse, IFA0330Response,IFA0330ResponseDtl } from '../types/type';
+import { ApiResponse, IFA0110Response,IFA0330ResponseDtl } from '../types/type';
 import { useRecoilState } from "recoil";
-import { WA1070DataState } from "../atom/atom.tsx";
+import { WA1070DataState,WA1071BackState } from "../atom/atom.tsx";
 // WA1070 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1070'>;
 interface Props {
@@ -37,10 +37,20 @@ const WA1070 = ({navigation}:Props) => {
     const [inputValue, setInputValue] = useState<string>('');
     const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false);
     const [isCannotRead, setIsCannotRead] = useState<boolean>(false);
+    const [WA1071back,setWa1071Back] = useRecoilState(WA1071BackState);       
     const { showAlert } = useAlert();
     /************************************************
      * 初期表示設定
-     ************************************************/   
+     ************************************************/
+    //WA1071帰還処理
+    useEffect(() => {
+      if (WA1071back) {
+        reset();
+        // 遷移状態をリセット
+        setWa1071Back(false);
+      }
+    }, [WA1071back]);    
+
     useEffect(() => {
       const contentsViews = async () => {
         const realm = getInstance();
@@ -68,6 +78,14 @@ const WA1070 = ({navigation}:Props) => {
       contentsViews();
     }, []);
 
+    // 値の初期化
+    const reset = () =>{
+      setWA1070Data(null);
+      setIsCannotRead(false);
+      setInputVisible(false);
+      setInputValue(""); 
+      setIsViewNextButton(false);
+    };
     // 10秒以上の長押しを検出
     const handleLongPress = () => {  
       setTimeout(() => {
@@ -181,7 +199,7 @@ const WA1070 = ({navigation}:Props) => {
 
         return false;
       }
-      const data = responseIFA0330.data as IFA0330Response;
+      const data = responseIFA0330.data as IFA0110Response<IFA0330ResponseDtl>;
       const dataDtl = data.dtl[0] as IFA0330ResponseDtl;
       
       // oldTagId の値だけを抽出して新しい配列に格納する
@@ -221,7 +239,8 @@ const WA1070 = ({navigation}:Props) => {
      * 戻るボタン処理
      ************************************************/
     const btnAppBack = async () => {
-      await logUserAction(`ボタン押下: 戻る(WA1070)`);  
+      await logUserAction(`ボタン押下: 戻る(WA1070)`);
+      await logScreen(`画面遷移:WA1040_メニュー`);  
       navigation.navigate('WA1040');
     };
 

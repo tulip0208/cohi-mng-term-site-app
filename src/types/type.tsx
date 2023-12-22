@@ -227,6 +227,22 @@ export interface WA1080Const{
     };
 }
 
+//WA1110
+export interface WA1110Const{
+    head:{
+        wkplcTyp: string;
+        wkplc: string;
+        oldTagId: string;
+      }    
+    data:{
+        ashTyp: number;  // 焼却灰種別、半角英数字
+        meaRa: number;  // 測定濃度（焼却時）、半角数値
+        conRa?: number;  // 換算濃度（焼却時）、半角数値
+        surDsRt: number | null;  // 表面線量率（焼却時）、半角数値（オプショナル）
+        surDsDt?: string | null;  // 表面線量率測定日（焼却時）、日付（オプショナル）
+        surDsWt: number | null;  // 表面線量率測定時重量（焼却時）、半角数値（オプショナル）
+    };
+}
 /******************
  * Api
  ******************/
@@ -253,16 +269,12 @@ export interface IFA0030Response {
     isAppUpd: number;
     isSetUpd: number;
 }
-export interface IFA0050Response {
-
-}
-
-export interface IFA0310Response {
+export interface IFA0110Response<T> {
     sttCd: string;
     errCd?: string | null; // オプショナルでnullも許容
     rcvDt: string;
     cnt: number;
-    dtl: IFA0310ResponseDtl[]; // Detail型の配列
+    dtl: T[]; // Detail型の配列
 }
 export interface IFA0310ResponseDtl {
     oldTagId: string;
@@ -284,13 +296,16 @@ export interface IFA0310ResponseDtl {
     rmSolInf?: string | null;
     lnkNewTagDatMem?: string | null;    
 }
-
-export interface IFA0330Response {
-    sttCd: string;
-    errCd?: string | null; // オプショナルでnullも許容
-    rcvDt: string;
-    cnt: number;
-    dtl: IFA0330ResponseDtl[]; // Detail型の配列
+export interface IFA0320ResponseDtl {
+    oldTagId: string;  // 旧タグID、全角混在が可能
+    tmpLocId: string;  // 仮置場ID、半角英数字
+    tmpLocNm?: string | null;  // 仮置場名、全角混在が可能（オプショナル）
+    ashTyp: number;  // 焼却灰種別、半角英数字
+    meaRa: number;  // 測定濃度（焼却時）、半角数値
+    conRa?: number;  // 換算濃度（焼却時）、半角数値
+    surDsRt: number | null;  // 表面線量率（焼却時）、半角数値（オプショナル）
+    surDsDt?: string | null;  // 表面線量率測定日（焼却時）、日付（オプショナル）
+    surDsWt: number | null;  // 表面線量率測定時重量（焼却時）、半角数値（オプショナル）
 }
 export interface IFA0330ResponseDtl {
     newTagId: string;
