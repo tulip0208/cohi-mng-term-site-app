@@ -1,7 +1,7 @@
 /**-------------------------------------------
- * A01-0110_旧タグID参照(灰)
- * WA1111
- * screens/WA1111.tsx
+ * A01-0100_新タグID参照(灰)
+ * WA1101
+ * screens/WA1101.tsx
  * ---------------------------------------------*/
 import FunctionHeader from '../components/FunctionHeader.tsx'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer.tsx'; // Footerコンポーネントのインポート
@@ -12,17 +12,16 @@ import { logUserAction, logScreen  } from '../utils/Log.tsx';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootList } from '../navigation/AppNavigator.tsx';
 import { useRecoilValue,useSetRecoilState } from "recoil";
-import { WA1110DataState,WA1111BackState } from "../atom/atom.tsx";
-import { CT0054 } from "../enum/enums.tsx";
+import { WA1100DataState,WA1101BackState } from "../atom/atom.tsx";
 
-// WA1111 用の navigation 型
-type NavigationProp = StackNavigationProp<RootList, 'WA1111'>;
+// WA1101 用の navigation 型
+type NavigationProp = StackNavigationProp<RootList, 'WA1101'>;
 interface Props {
   navigation: NavigationProp;
 };
-const WA1111 = ({navigation}:Props) => {
-    const WA1110Data = useRecoilValue(WA1110DataState);
-    const setBack = useSetRecoilState(WA1111BackState);
+const WA1101 = ({navigation}:Props) => {
+    const WA1100Data = useRecoilValue(WA1100DataState);
+    const setBack = useSetRecoilState(WA1101BackState);
     /************************************************
      * 初期表示設定
      ************************************************/   
@@ -33,17 +32,17 @@ const WA1111 = ({navigation}:Props) => {
      * 戻るボタン処理
      ************************************************/
     const btnAppBack = async () => {
-      await logUserAction(`ボタン押下: 戻る(WA1111)`);
-      setBack(true);
-      await logScreen(`画面遷移:WA1110_旧タグ参照(灰)`);
-      navigation.navigate('WA1110');
+      await logUserAction(`ボタン押下: 戻る(WA1101)`);
+      setBack(true);      
+      await logScreen(`画面遷移:WA1100_新タグ参照(土壌)`);  
+      navigation.navigate('WA1100');
     };
 
     /************************************************
      * メニューボタン処理
      ************************************************/
     const btnMenu = async () => {
-      await logUserAction(`ボタン押下: メニュー(WA1111)`);  
+      await logUserAction(`ボタン押下: メニュー(WA1101)`);  
       await logScreen(`画面遷移:WA1040_メニュー`);  
       navigation.navigate('WA1040');
     };
@@ -51,30 +50,47 @@ const WA1111 = ({navigation}:Props) => {
     return (
       <View style={styles.container}>
         {/* ヘッダ */}
-        <FunctionHeader appType={"現"} viewTitle={"旧タグ参照"} functionTitle={"参照(灰)"}/>
+        <FunctionHeader appType={"現"} viewTitle={"新タグ参照"} functionTitle={"参照(灰)"}/>
     
         {/* 上段 */}
         <View  style={[styles.main]}>
-          <Text style={[styles.labelText]}>作業場所：{WA1110Data?.head.wkplcTyp}</Text>
-          <Text style={[styles.labelText,styles.labelTextPlace]}>{WA1110Data?.head.wkplc}</Text>
-          <Text style={[styles.labelText]}>旧タグID：{WA1110Data?.head.oldTagId}</Text>
+          <Text style={[styles.labelText]}>仮置場：{WA1100Data?.data.tmpLocNm}</Text>
+          <Text style={[styles.labelText]}>新タグID：{WA1100Data?.head.newTagId}</Text>
+          <Text style={[styles.labelText]}>旧タグID：{WA1100Data?.data.oldTagId}</Text>
         </View>
 
-        {/* 中段 */}
-        <View  style={[styles.textareaContainer,styles.topContent]}>
+        {/* 中段2 */}
+        <View  style={[styles.textareaContainer,styles.middleContent]}>
           <View style={styles.tableMain}>
             <View style={styles.tableRow}>
-              <View style={styles.tableCell}><Text style={[styles.labelText,styles.alignRight]}>焼却灰種別：</Text></View>
-              <View style={styles.tableCell}><Text style={styles.labelText}>{CT0054[WA1110Data?.data.ashTyp as number]}</Text></View>
+              <View style={styles.tableCell}><Text style={[styles.labelText,styles.alignRight]}>重量(Kg)：</Text></View>
+              <View style={styles.tableCell}><Text style={styles.labelText}>{WA1100Data?.data.surDsWt}</Text></View>
+            </View>
+            <View style={styles.tableRow}>
+              <View style={styles.tableCell}><Text style={[styles.labelText,styles.alignRight]}>線量(μSv/h)：</Text></View>
+              <View style={styles.tableCell}><Text style={styles.labelText}>{WA1100Data?.data.surDsRt}</Text></View>
             </View>
             <View style={styles.tableRow}>
               <View style={styles.tableCell}><Text style={[styles.labelText,styles.alignRight]}>測定放射能濃度：</Text></View>
-              <View style={styles.tableCell}><Text style={styles.labelText}>{WA1110Data?.data.meaRa}</Text></View>
+              <View style={styles.tableCell}><Text style={styles.labelText}>{WA1100Data?.data.meaRa}</Text></View>
             </View>
             <View style={styles.tableRow}>
               <View style={styles.tableCell}><Text style={[styles.labelText,styles.alignRight]}>(Bq/Kg)　</Text></View>
               <View style={styles.tableCell}><Text style={styles.labelText}></Text></View>
             </View>
+          </View>
+        </View>
+
+        {/* 中段2 */}
+        <Text style={[styles.labelText,styles.main]}>メモ：</Text>
+        <View  style={[styles.textareaContainer,styles.middleContent]}>
+          <View style={[styles.scrollContainer]}>
+              <ScrollView
+                style={[styles.scrollViewStyle]}
+                showsVerticalScrollIndicator={true}
+              >
+                <Text style={styles.labelText}>{WA1100Data?.data.lnkNewTagDatMem}</Text>
+              </ScrollView>   
           </View>
         </View>
 
@@ -95,4 +111,4 @@ const WA1111 = ({navigation}:Props) => {
     );
     
 };
-export default WA1111;
+export default WA1101;

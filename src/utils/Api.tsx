@@ -7,7 +7,7 @@ import axios,{ AxiosError }  from 'axios';
 import { loadFromKeystore,getEncryptionKeyFromKeystore } from './KeyStore'; // KeyStoreの確認関数
 import { decryptWithAES256CBC } from './Security';
 import { logCommunication} from './Log';
-import { AxiosResponse,ApiResponse,IFA0030Response,IFA0110Response,IFA0310ResponseDtl,IFA0320ResponseDtl,IFA0330ResponseDtl, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, } from '../types/type';
+import { AxiosResponse,ApiResponse,IFA0030Response,IFA0110Response,IFA0310ResponseDtl,IFA0320ResponseDtl,IFA0330ResponseDtl,IFA0340ResponseDtl, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, } from '../types/type';
 import { Buffer } from 'buffer';
 /************************************************
  * IFA0010_アクティベーション(端末登録)
@@ -328,6 +328,36 @@ export const IFA0330 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0110R
 };
 
 /************************************************
+ * IFA0340_新タグ情報照会(焼却灰)
+ ************************************************/
+export const IFA0340 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0110Response<IFA0340ResponseDtl>>> => {
+  try {
+    const realm = getInstance()
+    const loginInfo = realm.objects('login')[0]
+    const requestDataDtl = {
+      comId: loginInfo.comId,
+      dtl: {newTagId:txtNewTagId
+        },
+    };
+
+    const requestData = await setIFA0110RequestData("IFA0340",requestDataDtl);
+
+    // サーバー通信処理（Api.js内の関数を呼び出し）
+    const res = await sendToServer(requestData,"IFA0340","新タグ情報照会(焼却灰)");
+    const response = res as AxiosResponse<IFA0110Response<IFA0340ResponseDtl>>;
+
+    if (response.data && response.data.sttCd && response.data.cnt == 0){
+      //0件の場合
+      return { success: false, error: "zero", status:null, code:null, api:null, data:null};
+    }
+    return { success: true, data: response.data };
+  } catch (error) {
+    const e = error as CustomError;
+    return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
+  }
+};
+
+/************************************************
  * サーバー通信を行う関数
  * @param {*} requestData 
  * @param {*} endpoint エンドポイント
@@ -509,6 +539,10 @@ const getSettings = async (endpoint:string) => {//★スタブ用
   }else if(endpoint=='IFA0330'){
     return {
       connectionURL: 'https://script.google.com/macros/s/AKfycbwzCdDfRXtdUdFgTtlmyhSgmg36C9R7kEAyYjpUV2qteY-JyOfVSAeIAFo7Ur4oaKbc/exec'
+    }
+  }else if(endpoint=='IFA0340'){
+    return {
+      connectionURL: 'https://script.google.com/macros/s/AKfycbzsfsGskv77tWYufMXpjws_BBnIIQmn-0mN6gMiB1rbvl6hjKrl4UWsCMvF4ekumIiqUQ/exec'
     }
   }else if(endpoint == 'IFA0040' || endpoint == 'IF0050'){
     return {

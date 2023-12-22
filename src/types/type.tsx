@@ -199,7 +199,6 @@ export interface WA1070Const{
         oldTagIdList:string[];        
     }
 }
-
 //WA1080
 export interface WA1080Const{
     head:{
@@ -226,7 +225,28 @@ export interface WA1080Const{
         lnkNewTagDatMem:string;
     };
 }
-
+//WA1100
+export interface WA1100Const{
+    head:{
+        wkplcTyp: string;
+        wkplc: string;
+        newTagId: string;
+      }    
+    data:{
+        newTagId: string;
+        oldTagId: string;
+        tmpLocId: string;
+        tmpLocNm: string;
+        tyRegDt: string;
+        lnkNewTagDatMem?: string;
+        ashTyp: number;
+        meaRa: number;
+        surDsRt: number;
+        surDsDt?: string | null;
+        surDsWt: number;
+        sndId?: string | null;
+    }
+}
 //WA1110
 export interface WA1110Const{
     head:{
@@ -334,4 +354,18 @@ export interface IFA0330ResponseDtl {
     rmSolInf?: string | null; // オプショナルでnullも許容
     lnkNewTagDatMem?: string;
     sndId: string;
+}
+export interface IFA0340ResponseDtl {
+    newTagId: string;
+    oldTagId: string;
+    tmpLocId: string;
+    tmpLocNm: string;
+    tyRegDt: string;
+    lnkNewTagDatMem?: string;
+    ashTyp: number;
+    meaRa: number;
+    surDsRt: number;
+    surDsDt?: string | null;
+    surDsWt: number;
+    sndId?: string | null;
 }

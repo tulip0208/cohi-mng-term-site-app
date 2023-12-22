@@ -1,7 +1,7 @@
 /**-------------------------------------------
- * A01-0070_新タグID参照(土壌)
- * WA1070
- * screens/WA1070.tsx
+ * A01-0100_新タグID参照(灰)
+ * WA1100
+ * screens/WA1100.tsx
  * ---------------------------------------------*/
 import FunctionHeader from '../components/FunctionHeader.tsx'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer.tsx'; // Footerコンポーネントのインポート
@@ -14,30 +14,30 @@ import QRScanner from '../utils/QRScanner.tsx';
 import ProcessingModal from '../components/Modal.tsx';
 import { logUserAction, logScreen  } from '../utils/Log.tsx';
 import { useAlert } from '../components/AlertContext.tsx';
-import { IFA0330 } from '../utils/Api.tsx'; 
+import { IFA0340 } from '../utils/Api.tsx'; 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RNCamera } from 'react-native-camera';
-import { RootList } from '../navigation/AppNavigator';
-import { ApiResponse, IFA0110Response,IFA0330ResponseDtl } from '../types/type';
+import { RootList } from '../navigation/AppNavigator.tsx';
+import { ApiResponse, IFA0110Response,IFA0340ResponseDtl } from '../types/type.tsx';
 import { useRecoilState } from "recoil";
-import { WA1070DataState,WA1071BackState } from "../atom/atom.tsx";
-// WA1070 用の navigation 型
-type NavigationProp = StackNavigationProp<RootList, 'WA1070'>;
+import { WA1100DataState,WA1101BackState } from "../atom/atom.tsx";
+// WA1100 用の navigation 型
+type NavigationProp = StackNavigationProp<RootList, 'WA1100'>;
 interface Props {
   navigation: NavigationProp;
 };
-const WA1070 = ({navigation}:Props) => {
+const WA1100 = ({navigation}:Props) => {
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [showScannerTag, setShowScannerTag] = useState<boolean>(false); // カメラ表示用の状態    
     const [wkplcTyp, setWkplcTyp] = useState<string>('');
     const [wkplc, setWkplc] = useState<string>('');
-    const [ WA1070Data, setWA1070Data ] = useRecoilState(WA1070DataState);
+    const [ WA1100Data, setWA1100Data ] = useRecoilState(WA1100DataState);
     const [inputVisible, setInputVisible] = useState<boolean>(false);
     const [isNext, setIsNext] = useState<boolean>(false); // 送信準備完了状態
     const [inputValue, setInputValue] = useState<string>('');
     const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false);
     const [isCannotRead, setIsCannotRead] = useState<boolean>(false);
-    const [WA1071back,setWa1071Back] = useRecoilState(WA1071BackState);       
+    const [WA1101back,setWa1101Back] = useRecoilState(WA1101BackState);       
     const { showAlert } = useAlert();
     /************************************************
      * 初期表示設定
@@ -47,15 +47,15 @@ const WA1070 = ({navigation}:Props) => {
       reset();
       contentsViews();
     }, []);
-    //WA1071帰還処理
+    //WA1101帰還処理
     useEffect(() => {
-      if (WA1071back) {
+      if (WA1101back) {
         reset();
         // 遷移状態をリセット
-        setWa1071Back(false);
+        setWa1101Back(false);
         contentsViews();        
       }
-    }, [WA1071back]);    
+    }, [WA1101back]);    
     const contentsViews = async () => {
       const realm = getInstance();
       const loginInfo = realm.objects('login')[0];
@@ -80,7 +80,7 @@ const WA1070 = ({navigation}:Props) => {
     } 
     // 値の初期化
     const reset = () =>{
-      setWA1070Data(null);
+      setWA1100Data(null);
       setIsCannotRead(false);
       setInputVisible(false);
       setInputValue(""); 
@@ -144,19 +144,10 @@ const WA1070 = ({navigation}:Props) => {
       const parts = data.split(',');
       setShowScannerTag(false);
       let code = '';
-      if (type !== RNCamera.Constants.BarCodeType.qr && type !== RNCamera.Constants.BarCodeType.code39) {
-        await showAlert("通知", messages.EA5008(), false);
+      if (type !== RNCamera.Constants.BarCodeType.code39) {
+        await showAlert("通知", messages.EA5011(), false);
         return;
-      }else if(type === RNCamera.Constants.BarCodeType.qr && (parts.length === 1 || parts[0] !== "CM" )){
-        await showAlert("通知", messages.EA5009(), false);
-        return;
-      }else if(type === RNCamera.Constants.BarCodeType.qr && (parts[0] === "CM")){
-        // --QRコード--
-        // 新タグID参照処理実施(csvデータ2カラム目 新タグID)
-        // モーダル表示
-        setModalVisible(true);        
-        code = parts[1];
-      }else if(type === RNCamera.Constants.BarCodeType.code39){
+      }else{
         // --バーコード--
         // フォーマットチェック
         if(!checkFormat(data)){
@@ -170,11 +161,6 @@ const WA1070 = ({navigation}:Props) => {
         // モーダル表示
         setModalVisible(true);        
         code = "a"+data+"a"
-      }else{
-        //CMから始まるバーコード
-        //1カラム目は非CMの複数カラムデータ
-        await showAlert("通知", messages.EA5008(), false);
-        return;
       }
 
       // 新タグID参照処理実施
@@ -201,19 +187,19 @@ const WA1070 = ({navigation}:Props) => {
      ************************************************/
     const procNewTagId = async (txtNewTagId:string):Promise<boolean> => {
       // ログファイルアップロード通信を実施
-      const responseIFA0330 = await IFA0330(txtNewTagId);
-      if(await apiIsError(responseIFA0330)) {
+      const responseIFA0340 = await IFA0340(txtNewTagId);
+      if(await apiIsError(responseIFA0340)) {
 
         return false;
       }
-      const data = responseIFA0330.data as IFA0110Response<IFA0330ResponseDtl>;
-      const dataDtl = data.dtl[0] as IFA0330ResponseDtl;
+      const data = responseIFA0340.data as IFA0110Response<IFA0340ResponseDtl>;
+      const dataDtl = data.dtl[0] as IFA0340ResponseDtl;
       
       // oldTagId の値だけを抽出して新しい配列に格納する
       const oldTagIds = data.dtl.map(item => item.oldTagId);
 
       // 一時データ格納する
-      setWA1070Data({
+      setWA1100Data({
         head:{
           wkplcTyp:wkplcTyp,
           wkplc:wkplc,
@@ -221,23 +207,18 @@ const WA1070 = ({navigation}:Props) => {
         },
         data:{
           newTagId: dataDtl.newTagId,
-          rmSolTyp: dataDtl.rmSolTyp,
-          pkTyp: dataDtl.pkTyp,
-          splFac: dataDtl.splFac,
-          tsuInd: dataDtl.tsuInd,
-          usgInnBg: dataDtl.usgInnBg,
-          usgAluBg: dataDtl.usgAluBg,
-          yesNoOP: dataDtl.yesNoOP,
-          caLgSdBgWt: dataDtl.caLgSdBgWt,
-          caLgSdBgDs: dataDtl.caLgSdBgDs,
-          estRa: dataDtl.estRa,
-          lnkNewTagDatMem: dataDtl.lnkNewTagDatMem,  
+          oldTagId: dataDtl.oldTagId,
+          tmpLocId: dataDtl.tmpLocId,
+          tmpLocNm: dataDtl.tmpLocNm,
+          tyRegDt: dataDtl.tyRegDt,
+          lnkNewTagDatMem: dataDtl.lnkNewTagDatMem,
+          ashTyp: dataDtl.ashTyp,
+          meaRa: dataDtl.meaRa,
+          surDsRt: dataDtl.surDsRt,
+          surDsDt: dataDtl.surDsDt,
+          surDsWt: dataDtl.surDsWt,
+          sndId: dataDtl.sndId
         },
-        oldTag:{
-          //---旧タグ---
-          oldTagId:oldTagIds.length,
-          oldTagIdList:oldTagIds as string[],
-        }
       });
       return true;
     };
@@ -246,7 +227,7 @@ const WA1070 = ({navigation}:Props) => {
      * 戻るボタン処理
      ************************************************/
     const btnAppBack = async () => {
-      await logUserAction(`ボタン押下: 戻る(WA1070)`);
+      await logUserAction(`ボタン押下: 戻る(WA1100)`);
       await logScreen(`画面遷移:WA1040_メニュー`);  
       navigation.navigate('WA1040');
     };
@@ -255,7 +236,7 @@ const WA1070 = ({navigation}:Props) => {
      * 次へボタン処理
      ************************************************/
     const btnAppNext = async () => {
-      await logUserAction(`ボタン押下: 次へ(WA1070)`);  
+      await logUserAction(`ボタン押下: 次へ(WA1100)`);  
       // モーダル表示
       setModalVisible(true);
       // 新タグID参照処理実施
@@ -267,8 +248,8 @@ const WA1070 = ({navigation}:Props) => {
       }      
       // モーダル非表示
       setModalVisible(false);
-      await logScreen(`画面遷移:WA1071_新タグ参照(土壌)`);  
-      navigation.navigate('WA1071');
+      await logScreen(`画面遷移:WA1101_新タグ参照(土壌)`);  
+      navigation.navigate('WA1101');
     };
 
     /************************************************
@@ -307,7 +288,7 @@ const WA1070 = ({navigation}:Props) => {
       >
       <ScrollView  contentContainerStyle={[styles.containerWithKeybord, { flexGrow: 1 }]}>
         {/* ヘッダ */}
-        <FunctionHeader appType={"現"} viewTitle={"新タグ読込"} functionTitle={"参照(土)"}/>
+        <FunctionHeader appType={"現"} viewTitle={"新タグ読込"} functionTitle={"参照(灰)"}/>
   
         {/* 上段 */}
         <View  style={[styles.main,styles.topContent]}>
@@ -380,4 +361,4 @@ const WA1070 = ({navigation}:Props) => {
     );
     
 };
-export default WA1070;
+export default WA1100;

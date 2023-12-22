@@ -144,6 +144,15 @@ export const styles = StyleSheet.create({
   inputDisabled: {
     backgroundColor: '#ccc', // 無効化したときの背景色
   },
+  textArea: {
+    // テキストエリアのスタイル
+    height: 100, // 高さを設定
+    width: '100%', // 幅を親要素に合わせて設定
+    borderColor: 'black', // 枠線の色
+    borderWidth: 1, // 枠線の太さ
+    padding: 5, // 内側の余白
+    textAlignVertical: 'top', // Androidの場合はテキストを上に揃えます
+  },
 
 
 

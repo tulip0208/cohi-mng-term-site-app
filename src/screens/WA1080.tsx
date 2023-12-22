@@ -48,42 +48,41 @@ const WA1080 = ({navigation}:Props) => {
     /************************************************
      * 初期表示設定
      ************************************************/
+    //初期処理    
+    useEffect(() => {
+      reset();      
+      contentsViews();
+    }, []);
     //WA1081帰還処理
     useEffect(() => {
       if (WA1081back) {
         reset();
         // 遷移状態をリセット
         setWa1081Back(false);
+        contentsViews();        
       }
     }, [WA1081back]);    
-
-    //初期処理    
-    useEffect(() => {
-      const contentsViews = async () => {
-        const realm = getInstance();
-        const loginInfo = realm.objects('login')[0];
-        let place;
-        switch(loginInfo.wkplacTyp){
-          case 4:
-            setIdTyp(String(loginInfo.wkplacTyp));
-            place = realm.objects('temporary_places')[0]
-            setWkplcTyp("仮置場");    
-            setWkPlcId(place.tmpPlacId as string);
-            setWkplc(place.tmpPlacNm as string);
-            setDelSrcTyp(place.delSrcTyp as number);
-            setIsTagRead(true);
-            break;
-          case 5:
-          case 6:
-            setIsTagRead(false);
-            await showAlert("通知", messages.WA5001(), false);
-            break;
-        }    
-      } 
-      
-      contentsViews();
-    }, []);
-
+    const contentsViews = async () => {
+      const realm = getInstance();
+      const loginInfo = realm.objects('login')[0];
+      let place;
+      switch(loginInfo.wkplacTyp){
+        case 4:
+          setIdTyp(String(loginInfo.wkplacTyp));
+          place = realm.objects('temporary_places')[0]
+          setWkplcTyp("仮置場");    
+          setWkPlcId(place.tmpPlacId as string);
+          setWkplc(place.tmpPlacNm as string);
+          setDelSrcTyp(place.delSrcTyp as number);
+          setIsTagRead(true);
+          break;
+        case 5:
+        case 6:
+          setIsTagRead(false);
+          await showAlert("通知", messages.WA5001(), false);
+          break;
+      }    
+    } 
     // 値の初期化
     const reset = () =>{
       setWA1080Data(null);
@@ -93,6 +92,8 @@ const WA1080 = ({navigation}:Props) => {
       setIdTyp("");
       setWkPlcId("");
       setDelSrcTyp(null);
+      setWkplc("");
+      setWkplcTyp("");      
     };
     // 10秒以上の長押しを検出
     const handleLongPress = () => {  

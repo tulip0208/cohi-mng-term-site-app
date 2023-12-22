@@ -1,5 +1,5 @@
 /**-------------------------------------------
- * A01-0080_旧タグID参照(土壌)
+ * A01-0110_旧タグID参照(灰)
  * WA1110
  * screens/WA1110.tsx
  * ---------------------------------------------*/
@@ -43,39 +43,38 @@ const WA1110 = ({navigation}:Props) => {
     /************************************************
      * 初期表示設定
      ************************************************/   
-    //WA1111帰還処理
+    //初期処理
+    useEffect(() => {
+      reset();
+      contentsViews();
+   }, []);    //WA1111帰還処理
     useEffect(() => {
       if (WA1111back) {
         reset();
         // 遷移状態をリセット
         setWa1111Back(false);
+        contentsViews();
       }
     }, [WA1111back]);
-
-    //初期処理
-    useEffect(() => {
-      const contentsViews = async () => {
-        const realm = getInstance();
-        const loginInfo = realm.objects('login')[0];
-        let place;
-        switch(loginInfo.wkplacTyp){
-          case 4:
-            setIdTyp(String(loginInfo.wkplacTyp));
-            place = realm.objects('temporary_places')[0]
-            setWkplcTyp("仮置場");    
-            setWkPlcId(place.tmpPlacId as string);
-            setWkplc(place.tmpPlacNm as string);
-            setDelSrcTyp(place.delSrcTyp as number);
-            break;
-          case 5:
-          case 6:
-            await showAlert("通知", messages.WA5001(), false);
-            break;
-        }
-      } 
-
-      contentsViews();
-    }, []);
+    const contentsViews = async () => {
+      const realm = getInstance();
+      const loginInfo = realm.objects('login')[0];
+      let place;
+      switch(loginInfo.wkplacTyp){
+        case 4:
+          setIdTyp(String(loginInfo.wkplacTyp));
+          place = realm.objects('temporary_places')[0]
+          setWkplcTyp("仮置場");    
+          setWkPlcId(place.tmpPlacId as string);
+          setWkplc(place.tmpPlacNm as string);
+          setDelSrcTyp(place.delSrcTyp as number);
+          break;
+        case 5:
+        case 6:
+          await showAlert("通知", messages.WA5001(), false);
+          break;
+      }
+    }
 
     // 作業場所読込・入力値が空かどうかによってブール値ステートを更新
     useEffect(() => {
@@ -90,6 +89,8 @@ const WA1110 = ({navigation}:Props) => {
       setIdTyp("");
       setWkPlcId("");
       setDelSrcTyp(null);
+      setWkplc("");
+      setWkplcTyp("");
     };
     // 次へボタンのスタイルを動的に変更するための関数
     const getNextButtonStyle = () => {

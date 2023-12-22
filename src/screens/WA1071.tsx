@@ -119,7 +119,7 @@ const WA1071 = ({navigation}:Props) => {
     return (
       <View style={styles.container}>
         {/* ヘッダ */}
-        <FunctionHeader appType={"現"} viewTitle={"新タグ読込"} functionTitle={"参照(土)"}/>
+        <FunctionHeader appType={"現"} viewTitle={"新タグ参照"} functionTitle={"参照(土)"}/>
     
         {/* 上段 */}
         <View  style={[styles.main]}>
