@@ -61,7 +61,7 @@ const WA1040 = ({navigation}:Props) => {
 
     const btnNewTagRegSol = async () => {
       await logUserAction(`ボタン押下:新タグ紐付(土壌)`);
-      await logScreen(`画面遷移: WA1060_新タグ紐付(土壌)`);  
+      await logScreen(`画面遷移:WA1060_新タグ紐付(土壌)`);  
       navigation.navigate('WA1060')
     };
     const btnNewTagAsh = async () => {

@@ -173,6 +173,37 @@ export interface FileEntry {
 /******************
  * screens
  ******************/
+//WA1060
+export interface WA1060Const{
+    tyRegDt:string;//紐付登録日時
+    caLgSdBgWt:string;//重量
+    caLgSdBgDs:string;//線量
+    rmSolTyp:string;//去土壌等種別
+    pkTyp:string;//荷姿種別
+    usgInnBg:string;//内袋の利用方法
+    tsuInd:string;//津波浸水域由来
+    splFac:string;//特定施設由来
+    usgAluBg:string;//アルミ内袋の有無
+    yesNoOP:number|null;//オーバーパック有無
+}
+export interface WA1060OldTagInfoConst{
+    oldTag:string;//旧タグID
+    genbaCheck:number|null;//現場確認
+    tsuInd:string;//津波浸水
+    splFac:string;//特定施設由来
+    rmSolTyp:string;//去土壌等種別
+    ocLndCla:string;//発生土地分類
+    pkTyp:string;//荷姿種別
+    usgInnBg:string;//内袋の利用方法
+    usgInnBgNm:string;//内袋の利用方法名
+    usgAluBg:string;//アルミ内袋の有無
+    vol:string;//容積
+    airDsRt:string;//空間線量率
+    ocLndUseknd:string;//発生土地の利用区分
+    ocloc:string;//発生場所
+    rmSolInf:string;//備考(除去土壌情報)
+    lnkNewTagDatMem:string;//除染時データメモ
+}
 //WA1070
 export interface WA1070Const{
     head:{

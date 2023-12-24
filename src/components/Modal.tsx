@@ -14,7 +14,7 @@ interface Props {
 const ProcessingModal = ({ visible, message, onClose }:Props) => {
   return (
     <Modal
-      animationType="none"
+      animationType='fade'
       transparent={true}
       visible={visible}
       onRequestClose={onClose}

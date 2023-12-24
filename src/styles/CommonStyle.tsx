@@ -43,6 +43,10 @@ export const styles = StyleSheet.create({
     flex: 1,
  //   justifyContent: 'center',
   }, 
+  bottomContent: {
+    flex: 1,
+    justifyContent: 'flex-start',
+  },  
   center:{
     alignItems: 'center',
   },
@@ -117,6 +121,13 @@ export const styles = StyleSheet.create({
   },
   alignRight: {
     textAlign:"right",
+  },
+  labelTextNarrow: {
+    fontSize: 15,
+    marginTop: 2,
+    marginBottom: 5,
+    fontFamily:"ipaexg",
+    color:'#000'
   },  
   //--------------------
   //--------テキストボックス-------
@@ -166,6 +177,24 @@ export const styles = StyleSheet.create({
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
   },
+  buttonNarrow: {
+    backgroundColor: '#548236', // パステルな水色
+    padding: 5,
+    margin: 5,
+    borderRadius: 15,
+    height: 60,
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+    width:'45%'
+  },
+  buttonMoreNarrow: {
+    backgroundColor: '#548236', // パステルな水色
+    padding: 1,
+    borderRadius: 5,
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+    width:'35%'
+  },  
   buttonRead: {
     marginRight:'10%',
     marginLeft:'10%',
@@ -173,9 +202,14 @@ export const styles = StyleSheet.create({
   buttonSmall: {
     marginRight:'20%',
     marginLeft:'20%',
-  },  
+  },
   buttonText: {
     fontSize: 20,
+    color: 'white',
+    fontFamily:"ipaexg",
+  },
+  buttonTextNarrow: {
+    fontSize: 15,
     color: 'white',
     fontFamily:"ipaexg",
   },  
@@ -183,11 +217,24 @@ export const styles = StyleSheet.create({
     alignItems: 'center', // 子要素を水平方向に中央揃え
     margin: 20,
   },
+  centerButtonNarrow:{
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+  },  
+  dummyTagButton:{
+    backgroundColor: '#7030a0',
+  },
+  allCancelButton:{
+    // height:"35%",
+    backgroundColor:'#bb8b38',
+    fontSize: 15,
+    padding:5,
+  },
   startButtonText: {
     fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',    
+    fontFamily:"ipaexg",
   },
   endButtonText: {
     fontSize: 20,
@@ -196,12 +243,28 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily:"ipaexg",
   },
+  detailButtonText: {
+    fontSize: 15,
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily:"ipaexg",
+  },
+  settingButtonText: {
+    color: 'white',
+  },  
   endButton: {
     backgroundColor: '#F1D2C1',
     padding: 5,
     flex: 1,
     maxWidth:"50%",
   },
+  destroyButton: {
+    backgroundColor: '#F1D2C1',
+    padding: 5,
+    flex: 1,
+    maxWidth:"15%",
+  },  
   endButtonSmall: {
     backgroundColor: '#F1D2C1',
     padding: 5,
@@ -213,6 +276,25 @@ export const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
   },
+  detailButton: {
+    margin: 5,
+    marginLeft: 20,
+    borderRadius: 10,
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+    //width:'30%',
+    backgroundColor: '#d9d9d9', 
+    padding: 10,
+    flex: 1,
+  },
+  updateButton:{
+    backgroundColor: '#1e74bd', 
+  },
+  popupCloseButton: {
+    height:"10%",
+    backgroundColor: '#1e74bd', 
+    color:"#FFF",
+  },  
   //--------------------
   //--------カメラ-------
   overlay: {
@@ -373,7 +455,8 @@ export const styles = StyleSheet.create({
     borderRadius: 5, // 枠の角を丸くする場合
     paddingLeft:5,
     paddingRight:5,
-  },  
+    flexGrow: 1,
+  },
   scrollViewStyleSecond: {
     height:"30%"
   },    
@@ -389,6 +472,20 @@ export const styles = StyleSheet.create({
     paddingBottom: 5,
     zIndex:1,
   },
+  detailSection: {
+    padding: 5,
+    flexDirection: 'row',
+    // justifyContent: 'space-around',
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+    
+  },  
+  bottomSectionNarrow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+    paddingBottom: 5,
+  },  
   // 送信ボタンが無効の時のスタイル
   disabledButton:{
     backgroundColor: '#ccc', // 無効化したときの背景色
@@ -412,6 +509,14 @@ export const styles = StyleSheet.create({
     flex: 1, // セルのスタイル
     // 他のスタイル
   },
+  tableCell1: {
+    flex: 1, // セルのスタイル
+    // 他のスタイル
+  },
+  tableCell2: {
+    flex: 2, // セルのスタイル
+    // 他のスタイル
+  },    
   //--------------------    
   //--------モーダル-------
   modalBackground: {
@@ -433,7 +538,33 @@ export const styles = StyleSheet.create({
   modalMessage: {
     textAlign: 'center',
   },
-  //--------------------
+  //--------------------    
+  //--------ポップアップ-------  
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 透明度を持たせた黒でオーバーレイ
+  },
+  modalView: {
+    height:"90%",
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,    
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+  },
+  closeButtonText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  closeButtonBottom: {
+    marginTop: 20,
+    padding: 10,
+  },
+  //--------------------    
   //--------カスタムアラート-------
   alertView: {
     width:'50%',

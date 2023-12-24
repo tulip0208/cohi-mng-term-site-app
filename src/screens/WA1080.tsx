@@ -19,7 +19,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RNCamera } from 'react-native-camera';
 import { RootList } from '../navigation/AppNavigator.tsx';
 import { ApiResponse, IFA0110Response,IFA0310ResponseDtl } from '../types/type.tsx';
-import { useRecoilState } from "recoil";
+import { useRecoilState,useResetRecoilState } from "recoil";
 import { WA1080DataState,WA1081BackState } from "../atom/atom.tsx";
 // WA1080 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1080'>;
@@ -43,7 +43,9 @@ const WA1080 = ({navigation}:Props) => {
     const [idTyp,setIdTyp] = useState<string>();
     const [wkPlacId,setWkPlcId] = useState<string>();
     const [delSrcTyp,setDelSrcTyp] = useState<number|null>();
-    const [WA1081back,setWa1081Back] = useRecoilState(WA1081BackState);    
+    const [WA1081back,setWa1081Back] = useRecoilState(WA1081BackState);
+    const resetWA1080Data = useResetRecoilState(WA1080DataState);
+
     const { showAlert } = useAlert();
     /************************************************
      * 初期表示設定
@@ -85,10 +87,11 @@ const WA1080 = ({navigation}:Props) => {
     } 
     // 値の初期化
     const reset = () =>{
-      setWA1080Data(null);
+      resetWA1080Data();
       setIsTagRead(false);
       setIsWkPlcRead(false);
       setInputValue(""); 
+      setIsViewNextButton(false);      
       setIdTyp("");
       setWkPlcId("");
       setDelSrcTyp(null);
@@ -223,10 +226,10 @@ const WA1080 = ({navigation}:Props) => {
     }; 
 
     /************************************************
-     * 旧タグID参照処理
+     * 旧タグ情報照会処理
      ************************************************/
     const procOldTagId = async (txtOldTagId:string):Promise<boolean> => {
-      // ログファイルアップロード通信を実施
+      // 通信を実施
       const responseIFA0310 = await IFA0310(txtOldTagId,wkPlacId as string);
       if(await apiIsError(responseIFA0310)){
 
@@ -332,7 +335,7 @@ const WA1080 = ({navigation}:Props) => {
         <FunctionHeader appType={"現"} viewTitle={"旧タグ読込"} functionTitle={"参照(土)"}/>
   
         {/* 上段 */}
-        <View  style={[styles.main,styles.topContent]}>
+        <View  style={[styles.main]}>
           <Text style={[styles.labelText]}>作業場所：{wkplcTyp}</Text>
           <Text style={[styles.labelText,styles.labelTextPlace]}>{wkplc}</Text>
           <TouchableOpacity style={[styles.button,styles.buttonSmall,styles.centerButton]} onPress={btnWkPlcQr}>
@@ -341,7 +344,7 @@ const WA1080 = ({navigation}:Props) => {
         </View>
 
         {/* 中段1 */}
-        <View  style={[styles.main,styles.middleContent]}>
+        <View  style={[styles.main]}>
           <Text style={styles.labelText}>下記ボタンを押してフレコンに取り付けられたタグを読み込んで下さい。</Text>
           <TouchableOpacity style={getTagReadButtonStyle()} disabled={!isTagRead} onPress={btnTagQr}>
             <Text style={styles.buttonText}>タグ読込</Text>
@@ -349,7 +352,7 @@ const WA1080 = ({navigation}:Props) => {
         </View>
 
         {/* 中段2 */}
-        <View  style={[styles.main,styles.topContent,styles.center]}>
+        <View  style={[styles.main,styles.center]}>
           <TouchableWithoutFeedback onLongPress={handleLongPress}>
             <Text style={styles.labelText}>{getInfoMsg()}</Text>
           </TouchableWithoutFeedback>

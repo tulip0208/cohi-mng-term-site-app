@@ -19,7 +19,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RNCamera } from 'react-native-camera';
 import { RootList } from '../navigation/AppNavigator.tsx';
 import { ApiResponse, IFA0110Response,IFA0340ResponseDtl } from '../types/type.tsx';
-import { useRecoilState } from "recoil";
+import { useRecoilState,useResetRecoilState } from "recoil";
 import { WA1100DataState,WA1101BackState } from "../atom/atom.tsx";
 // WA1100 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1100'>;
@@ -38,6 +38,7 @@ const WA1100 = ({navigation}:Props) => {
     const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false);
     const [isCannotRead, setIsCannotRead] = useState<boolean>(false);
     const [WA1101back,setWa1101Back] = useRecoilState(WA1101BackState);       
+    const resetWA1100Data = useResetRecoilState(WA1100DataState);
     const { showAlert } = useAlert();
     /************************************************
      * 初期表示設定
@@ -80,6 +81,7 @@ const WA1100 = ({navigation}:Props) => {
     } 
     // 値の初期化
     const reset = () =>{
+      resetWA1100Data();
       setWA1100Data(null);
       setIsCannotRead(false);
       setInputVisible(false);
@@ -183,10 +185,10 @@ const WA1100 = ({navigation}:Props) => {
     }; 
 
     /************************************************
-     * 新タグID参照処理
+     * 新タグ情報照会処理
      ************************************************/
     const procNewTagId = async (txtNewTagId:string):Promise<boolean> => {
-      // ログファイルアップロード通信を実施
+      // 通信を実施
       const responseIFA0340 = await IFA0340(txtNewTagId);
       if(await apiIsError(responseIFA0340)) {
 

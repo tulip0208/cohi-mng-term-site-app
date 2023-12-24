@@ -3,7 +3,7 @@
  * atom/atom.tsx
  * ---------------------------------------------*/
 import { atom, atomFamily } from "recoil";
-import {WA1070Const,WA1080Const,WA1100Const,WA1110Const} from "../types/type"
+import {WA1060Const,WA1070Const,WA1080Const,WA1100Const,WA1110Const,WA1060OldTagInfoConst} from "../types/type"
 import Realm from "realm";
 
 //共通 フッタサーバ名用
@@ -17,6 +17,27 @@ export const locationStartedState = atom<boolean>({key: "locationStartedState",d
 export const locationStoppedState = atom<boolean>({key: "locationStoppedState",default: false,});
 export const locationErroredState = atom<boolean>({key: "locationErroredState",default: false,});
 export const watchIdState = atom<number|null>({key: "watchIdState",default: null,});
+
+//WA1060用
+export const WA1060NewTagIdState = atom<string>({key: "WA1060NewTagIdState",default: "",});
+export const WA1060CmnTagFlgState = atom<number|null>({key: "WA1060CmnTagFlgState",default: null,});
+export const WA1060DataState = atom<WA1060Const>({key: "WA1060DataState",default:{
+    tyRegDt: '', 
+    caLgSdBgWt: '',
+    caLgSdBgDs: '',
+    rmSolTyp: '',
+    pkTyp: '',
+    usgInnBg: '', 
+    tsuInd: '',
+    splFac: '',
+    usgAluBg: '',
+    yesNoOP: null,
+  }});
+export const WA1060OldTagInfosState = atom<WA1060OldTagInfoConst[]>({key: "WA1060OldTagInfosState",default:[]});
+export const WA1060PrevScreenId = atom<string>({key: "WA1060PrevScreenId",default: "",});
+export const WA1060WkPlacIdState = atom<string>({key: "WA1060WkPlacIdState",default: "",});
+export const WA1061BackState = atom<boolean>({key: "WA1061BackState",default: false,});
+export const WA1061OldTagIdState = atom<string>({key: "WA1061OldTagIdState",default: "",});
 
 //WA1070用
 export const WA1070DataState = atom<WA1070Const|null>({key: "WA1070DataState",default: null,});

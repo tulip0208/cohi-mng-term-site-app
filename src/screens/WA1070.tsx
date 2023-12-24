@@ -19,7 +19,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RNCamera } from 'react-native-camera';
 import { RootList } from '../navigation/AppNavigator';
 import { ApiResponse, IFA0110Response,IFA0330ResponseDtl } from '../types/type';
-import { useRecoilState } from "recoil";
+import { useRecoilState,useResetRecoilState } from "recoil";
 import { WA1070DataState,WA1071BackState } from "../atom/atom.tsx";
 // WA1070 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1070'>;
@@ -37,7 +37,9 @@ const WA1070 = ({navigation}:Props) => {
     const [inputValue, setInputValue] = useState<string>('');
     const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false);
     const [isCannotRead, setIsCannotRead] = useState<boolean>(false);
-    const [WA1071back,setWa1071Back] = useRecoilState(WA1071BackState);       
+    const [WA1071back,setWA1071Back] = useRecoilState(WA1071BackState);
+    const reseWA1070Data = useResetRecoilState(WA1070DataState);
+
     const { showAlert } = useAlert();
     /************************************************
      * 初期表示設定
@@ -52,7 +54,7 @@ const WA1070 = ({navigation}:Props) => {
       if (WA1071back) {
         reset();
         // 遷移状態をリセット
-        setWa1071Back(false);
+        setWA1071Back(false);
         contentsViews();        
       }
     }, [WA1071back]);    
@@ -77,10 +79,10 @@ const WA1070 = ({navigation}:Props) => {
           setWkplc(place.fixPlacNm as string);   
           break;
       }    
-    } 
+    }
     // 値の初期化
     const reset = () =>{
-      setWA1070Data(null);
+      reseWA1070Data();
       setIsCannotRead(false);
       setInputVisible(false);
       setInputValue(""); 
@@ -126,7 +128,7 @@ const WA1070 = ({navigation}:Props) => {
         return 
       }
     };
-
+    
     /************************************************
      * フォーマットチェック
      ************************************************/
@@ -171,8 +173,9 @@ const WA1070 = ({navigation}:Props) => {
         setModalVisible(true);        
         code = "a"+data+"a"
       }else{
-        //CMから始まるバーコード
-        //1カラム目は非CMの複数カラムデータ
+        //イレギュラー
+        //・CMから始まるバーコードもしくは
+        //・1カラム目は非CMの複数カラムデータ
         await showAlert("通知", messages.EA5008(), false);
         return;
       }
@@ -197,7 +200,7 @@ const WA1070 = ({navigation}:Props) => {
     }; 
 
     /************************************************
-     * 新タグID参照処理
+     * 新タグ情報照会処理
      ************************************************/
     const procNewTagId = async (txtNewTagId:string):Promise<boolean> => {
       // ログファイルアップロード通信を実施
@@ -312,7 +315,7 @@ const WA1070 = ({navigation}:Props) => {
         {/* 上段 */}
         <View  style={[styles.main,styles.topContent]}>
           <Text style={[styles.labelText]}>作業場所：{wkplcTyp}</Text>
-          <Text style={[styles.labelText,styles.labelTextPlace]}>{wkplc}</Text>
+          <Text style={[styles.labelText,styles.labelTextPlace]}>{wkplc}</Text>        
         </View>
 
         {/* 中段1 */}

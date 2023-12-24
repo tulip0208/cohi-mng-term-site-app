@@ -18,7 +18,7 @@ import { IFA0320 } from '../utils/Api.tsx';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootList } from '../navigation/AppNavigator.tsx';
 import { ApiResponse, IFA0110Response,IFA0320ResponseDtl } from '../types/type.tsx';
-import { useRecoilState } from "recoil";
+import { useRecoilState,useResetRecoilState } from "recoil";
 import { WA1110DataState,WA1111BackState } from "../atom/atom.tsx";
 // WA1110 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1110'>;
@@ -39,6 +39,8 @@ const WA1110 = ({navigation}:Props) => {
     const [wkPlacId,setWkPlcId] = useState<string>();
     const [delSrcTyp,setDelSrcTyp] = useState<number|null>();
     const [WA1111back,setWa1111Back] = useRecoilState(WA1111BackState);
+    const resetWA1110Data = useResetRecoilState(WA1110DataState);
+
     const { showAlert } = useAlert();
     /************************************************
      * 初期表示設定
@@ -83,6 +85,7 @@ const WA1110 = ({navigation}:Props) => {
 
     // 値の初期化
     const reset = () =>{
+      resetWA1110Data();
       setWA1110Data(null);
       setIsWkPlcRead(false);
       setInputValue(""); 
@@ -133,10 +136,10 @@ const WA1110 = ({navigation}:Props) => {
     }; 
     
     /************************************************
-     * 旧タグID参照処理
+     * 旧タグ情報照会処理
      ************************************************/
     const procOldTagId = async (txtOldTagId:string):Promise<boolean> => {
-      // ログファイルアップロード通信を実施
+      // 通信を実施
       const responseIFA0320 = await IFA0320(txtOldTagId,wkPlacId as string);
       if(await apiIsError(responseIFA0320)){
 
