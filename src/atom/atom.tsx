@@ -37,7 +37,7 @@ export const WA1060OldTagInfosState = atom<WA1060OldTagInfoConst[]>({key: "WA106
 export const WA1060PrevScreenId = atom<string>({key: "WA1060PrevScreenId",default: "",});
 export const WA1060WkPlacIdState = atom<string>({key: "WA1060WkPlacIdState",default: "",});
 export const WA1061BackState = atom<boolean>({key: "WA1061BackState",default: false,});
-export const WA1061OldTagIdState = atom<string>({key: "WA1061OldTagIdState",default: "",});
+export const WA1061TagIdState = atom<string>({key: "WA1061TagIdState",default: "",});
 
 //WA1070用
 export const WA1070DataState = atom<WA1070Const|null>({key: "WA1070DataState",default: null,});
