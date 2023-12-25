@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { styles, rem } from '../src/styles/CommonStyle.tsx'; // Update the path as necessary
+import { styles, rem } from '../src/styles/CommonStyle.tsx';
 
 describe('CommonStyle スタイルシート', () => {
 
