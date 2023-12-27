@@ -1541,6 +1541,11 @@
   dependencies:
     "@swc/helpers" "^0.5.0"
 
+"@react-native-community/checkbox@^0.5.16":
+  "integrity" "sha512-j4fmWe77EAayGnKJ52BljlN8apLT3xjxG/pJOA6HZ4ew63FiXmnY7VtxTzmvDKgSPrETdQc2lmx5mdXTAufJnw=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/checkbox/-/checkbox-0.5.16.tgz"
+  "version" "0.5.16"
+
 "@react-native-community/cli-clean@12.1.1":
   "integrity" "sha512-lbEQJ9xO8DmNbES7nFcGIQC0Q15e9q1zwKfkN2ty2eM93ZTFqYzOwsddlNoRN9FO7diakMWoWgielhcfcIeIrQ=="
   "resolved" "https://registry.npmjs.org/@react-native-community/cli-clean/-/cli-clean-12.1.1.tgz"
@@ -1698,6 +1703,11 @@
   "integrity" "sha512-Aj76wMeCLz9kczpe7W2IXxSRNj+hRR7sqyfXq9ZaJIWNH23jeJfzMpovclg+e1uM8Vr8jCYEcZyD4rKub6Vc/Q=="
   "resolved" "https://registry.npmjs.org/@react-native-community/geolocation/-/geolocation-3.1.0.tgz"
   "version" "3.1.0"
+
+"@react-native-picker/picker@^2.6.1":
+  "integrity" "sha512-oJftvmLOj6Y6/bF4kPcK6L83yNBALGmqNYugf94BzP0FQGpHBwimVN2ygqkQ2Sn2ZU3pGUZMs0jV6+Gku2GyYg=="
+  "resolved" "https://registry.npmjs.org/@react-native-picker/picker/-/picker-2.6.1.tgz"
+  "version" "2.6.1"
 
 "@react-native/assets-registry@^0.73.1":
   "integrity" "sha512-2FgAbU7uKM5SbbW9QptPPZx8N9Ke2L7bsHb+EhAanZjFZunA9PaYtyjUQ1s7HD+zDVqOQIvjkpXSv7Kejd2tqg=="
@@ -6107,7 +6117,7 @@
   "resolved" "https://registry.npmjs.org/react-native-zip-archive/-/react-native-zip-archive-6.1.0.tgz"
   "version" "6.1.0"
 
-"react-native@*", "react-native@>=0.60.0", "react-native@>=0.71.0", "react-native@0.73.0":
+"react-native@*", "react-native@>= 0.62", "react-native@>=0.57", "react-native@>=0.60.0", "react-native@>=0.71.0", "react-native@0.73.0":
   "integrity" "sha512-ya7wu/L8BeATv2rtXZDToYyD9XuTTDCByi8LvJGr6GKSXcmokkCRMGAiTEZfPkq7+nhVmbasjtoAJDuMRYfudQ=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.73.0.tgz"
   "version" "0.73.0"
@@ -6182,7 +6192,7 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
-"react@*", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0-rc.1 || ^18.0.0", "react@^18.2.0", "react@>=0.14.0", "react@>=15.0.0", "react@>=16.13.1", "react@>=16.14.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@>=16.8.6", "react@>=17.0.0", "react@18.2.0":
+"react@*", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0-rc.1 || ^18.0.0", "react@^18.2.0", "react@>=0.14.0", "react@>=15.0.0", "react@>=16", "react@>=16.13.1", "react@>=16.14.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@>=16.8.6", "react@>=17.0.0", "react@18.2.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
