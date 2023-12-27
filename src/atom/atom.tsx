@@ -25,19 +25,21 @@ export const WA1060DataState = atom<WA1060Const>({key: "WA1060DataState",default
     tyRegDt: '', 
     caLgSdBgWt: '',
     caLgSdBgDs: '',
-    rmSolTyp: '',
-    pkTyp: '',
-    usgInnBg: '', 
-    tsuInd: '',
-    splFac: '',
-    usgAluBg: '',
-    yesNoOP: null,
+    rmSolTyp: '',//除去土壌等種別
+    pkTyp: '',//荷姿種別
+    usgInnBg: '', //内袋の利用方法
+    tsuInd: '',//津波浸水域由来
+    splFac: '',//特定施設由来
+    usgAluBg: '',//アルミ内袋の利用
+    yesNoOP: '',//オーバーパック有無
+    estRa:'',//推定放射能濃度
   }});
 export const WA1060OldTagInfosState = atom<WA1060OldTagInfoConst[]>({key: "WA1060OldTagInfosState",default:[]});
 export const WA1060PrevScreenId = atom<string>({key: "WA1060PrevScreenId",default: "",});
 export const WA1060WkPlacIdState = atom<string>({key: "WA1060WkPlacIdState",default: "",});
 export const WA1061BackState = atom<boolean>({key: "WA1061BackState",default: false,});
-export const WA1061TagIdState = atom<string>({key: "WA1061TagIdState",default: "",});
+export const WA1061TagIdState = atom<[string,string]>({key: "WA1061TagIdState",default: ["",""],});
+export const WA1065MemoAutoState = atom<string>({key: "WA1065MemoAutoState",default: "",});
 
 //WA1070用
 export const WA1070DataState = atom<WA1070Const|null>({key: "WA1070DataState",default: null,});

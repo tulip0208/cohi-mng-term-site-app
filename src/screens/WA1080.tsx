@@ -364,6 +364,7 @@ const WA1080 = ({navigation}:Props) => {
                 onBlur={handleInputBlur}
                 value={inputValue}
                 editable={isWkPlcRead}
+                maxLength={50}
               />
             </View>
           }

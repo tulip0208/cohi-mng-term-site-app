@@ -252,6 +252,7 @@ const WA1110 = ({navigation}:Props) => {
               onChangeText={handleInputChange}
               onBlur={handleInputBlur}
               value={inputValue}
+              maxLength={50}
             />
           </View>
         </View>

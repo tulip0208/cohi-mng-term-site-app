@@ -25,27 +25,26 @@ const WA1040 = ({navigation}:Props) => {
 
     // useEffect フックを使用してステートが変更されるたびにチェック
     useEffect(() => {
-          const buttonViews = async () => {
-            const realm = getInstance();
-            let settings = realm.objects('settings')[0];
-
-            // ボタンの表示設定を確認して、状態を更新する
-            const isButtonView = {
-              button1: settings.btnNewTagSoil === 1,
-              button2: settings.btnRefNewTagSoil === 1,
-              button3: settings.btnRefOldTagSoil === 1,
-              button4: settings.btnNewTagAsh === 1,
-              button5: settings.btnRefNewTagAsh === 1,
-              button6: settings.btnRefOldTagAsg === 1,
-              button7: settings.btnTrnCard === 1,
-              button8: settings.btnUnload === 1,
-              button9: settings.btnStat === 1,
-              // 他のボタンも同様に追加
-            };
-            
-            setIsButtonView(isButtonView);
-          } 
-          buttonViews();
+      const buttonViews = async () => {
+        const realm = getInstance();
+        const settings = realm.objects('settings')[0];
+        // ボタンの表示設定を確認して、状態を更新する
+        const isButtonView = {
+          button1: settings.btnNewTagSoil === 1,
+          button2: settings.btnRefNewTagSoil === 1,
+          button3: settings.btnRefOldTagSoil === 1,
+          button4: settings.btnNewTagAsh === 1,
+          button5: settings.btnRefNewTagAsh === 1,
+          button6: settings.btnRefOldTagAsg === 1,
+          button7: settings.btnTrnCard === 1,
+          button8: settings.btnUnload === 1,
+          button9: settings.btnStat === 1,
+          // 他のボタンも同様に追加
+        };
+         
+        setIsButtonView(isButtonView);
+      } 
+      buttonViews();
     }, []);
 
     /************************************************

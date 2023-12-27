@@ -338,7 +338,8 @@ const WA1070 = ({navigation}:Props) => {
                 style={styles.input}
                 onChangeText={handleInputChange}
                 onBlur={handleInputBlur}
-                value={inputValue}   
+                value={inputValue}
+                maxLength={15}
               />
               <Text style={styles.inputWithText}>a</Text>
             </View>

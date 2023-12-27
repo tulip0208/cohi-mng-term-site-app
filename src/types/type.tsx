@@ -184,7 +184,8 @@ export interface WA1060Const{
     tsuInd:string;//津波浸水域由来
     splFac:string;//特定施設由来
     usgAluBg:string;//アルミ内袋の有無
-    yesNoOP:number|null;//オーバーパック有無
+    yesNoOP:string;//オーバーパック有無
+    estRa:string;//推定放射能濃度
 }
 export interface WA1060OldTagInfoConst{
     oldTag:string;//旧タグID

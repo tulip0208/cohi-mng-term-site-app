@@ -43,12 +43,19 @@ export const styles = StyleSheet.create({
     flex: 1,
  //   justifyContent: 'center',
   }, 
+  centerContent:{
+    textAlign:'center',
+  },  
   bottomContent: {
     flex: 1,
     justifyContent: 'flex-start',
   },  
   center:{
     alignItems: 'center',
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え    
+  },
+  middleContainer:{
+    paddingTop:10,
   },
   //--------------------  
   //--------ヘッダ--------
@@ -122,6 +129,9 @@ export const styles = StyleSheet.create({
   alignRight: {
     textAlign:"right",
   },
+  alignLeft: {
+    textAlign:"left",
+  },  
   labelTextNarrow: {
     fontSize: 15,
     marginTop: 2,
@@ -130,7 +140,7 @@ export const styles = StyleSheet.create({
     color:'#000'
   },  
   //--------------------
-  //--------テキストボックス-------
+  //--------テキスト-------
   inputContainer: {
     alignItems: 'center',
     flexDirection: 'row', // 子要素を横並びにする
@@ -164,9 +174,68 @@ export const styles = StyleSheet.create({
     padding: 5, // 内側の余白
     textAlignVertical: 'top', // Androidの場合はテキストを上に揃えます
   },
+  textAreaInput: {
+    flex: 1,
+    textAlignVertical: 'top',
+    padding: 5,
+    width: '100%', // 幅を親要素に合わせて設定
+    borderColor: 'black', // 枠線の色
+    borderWidth: 1, // 枠線の太さ
+  },
+  inputWt: {
+    borderWidth: 1,
+    borderColor: 'black',
+    height: 40, // テキストサイズに適したサイズに
+    flex: 1, // これにより、各入力が兄弟要素との関係でフレックスします
+    textAlign: 'center',
+    // その他必要に応じたスタイル
+  },
+  // 小数入力と小数点のためのコンテナのスタイル
+  decimalInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // その他必要に応じたスタイル
+  },
 
+  // 小数点のスタイル
+  dotStyle: {
+    fontSize: 15,
+    marginHorizontal: 5,
+  },
 
-
+  // 小数入力のためのスタイルを調整
+  inputDs: {
+    borderWidth: 1,
+    borderColor: 'black',
+    height: 40, // テキストサイズに適したサイズに
+    flex: 1, // これにより、各入力が兄弟要素との関係でフレックスします
+    textAlign: 'center',
+    // その他必要に応じたスタイル
+  },
+  //--------------------
+  //--------テキスト-------
+  inputReasonContainer: {
+    maxHeight: 200, // コンテナの最大高さを設定
+    padding: 10,
+  },
+  inputReasonScrollContainer: {
+    flex: 1,
+    maxHeight: "100%", // ScrollViewの最大高さを設定
+    width: '100%', // スクロールビューの幅を親要素に合わせる
+    padding: 10,
+  },
+  
+  inputReasonScrollViewStyle: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+  },
+  
+  inputReason: {
+    height: 100, // TextInputの高さを固定値に設定
+    textAlignVertical: 'top', // 複数行のテキストを上から表示
+    fontFamily: "ipaexg", // フォントファミリー
+  },
   //--------ボタン-------
   button: {
     backgroundColor: '#548236', // パステルな水色
@@ -455,8 +524,30 @@ export const styles = StyleSheet.create({
     borderRadius: 5, // 枠の角を丸くする場合
     paddingLeft:5,
     paddingRight:5,
-    flexGrow: 1,
+    minHeight: '80%',
   },
+  scrollPushSection: {
+    flex:1,
+    justifyContent: 'flex-start',
+  },
+  scrollPushContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop:3,
+    marginBottom:3,
+    minHeight: 220,
+    maxHeight: 220,
+  },
+  scrollPushViewStyle: {
+    width: 'auto', // または必要な幅に設定
+    maxWidth:'100%',
+    minWidth: '90%', // または必要な幅に設定
+    borderWidth: 1, // 枠線の幅
+    borderColor: '#000', // 枠線の色
+    borderRadius: 5, // 枠の角を丸くする場合
+    paddingLeft:5,
+    paddingRight:5,
+  },  
   scrollViewStyleSecond: {
     height:"30%"
   },    
@@ -476,9 +567,8 @@ export const styles = StyleSheet.create({
     padding: 5,
     flexDirection: 'row',
     // justifyContent: 'space-around',
-    justifyContent: 'center', // 子要素を垂直方向に中央揃え
-    alignItems: 'center', // 子要素を水平方向に中央揃え
-    
+     justifyContent: 'center', // 子要素を垂直方向に中央揃え
+     alignItems: 'center', // 子要素を水平方向に中央揃え
   },  
   bottomSectionNarrow: {
     flexDirection: 'row',
@@ -517,6 +607,58 @@ export const styles = StyleSheet.create({
     flex: 2, // セルのスタイル
     // 他のスタイル
   },    
+  checkBox: {
+    transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] // 1.5倍に拡大
+    // marginLeft: 10, // テキストとチェックボックスの間の余白
+    // alignSelf: '', // チェックボックスを垂直方向に中央揃えにする
+    // marginLeft: 10, // テキストとチェックボックスの間に適切な余白を確保する
+  },
+  //--------------------    
+  //--------PICKER-------
+  pickerContainer:{
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+    flexDirection: 'row', // 子要素を横並びにする
+  },
+  pickerStyle:{
+    borderWidth: 1, // 枠線の幅
+    borderColor: 'black', // 枠線の色
+    //borderRadius: 5, // 枠線の角を丸くする場合
+    // padding: 10, // ピッカーの内側の余白
+    // その他のスタイリング属性
+    height:30,
+    // 枠から項目のテキストを離すための内側の余白を追加
+    // paddingTop: 0,
+    // paddingBottom: 0,
+    // Android 用のスタイル調整
+    marginTop:  -12,
+    marginBottom: -12,
+
+  },
+  pickerLabelText: {
+    //height: 30, // ラベルの高さをピッカーと同じにする
+    //lineHeight: 30, // テキストをラベルの高さの中央に揃える
+    marginEnd: 10, // ピッカーとの間隔を設定    
+    fontSize: 15,
+    marginTop: 10,
+    marginBottom: 5,
+    fontFamily:"ipaexg",
+    color:'#000'
+  },
+  checkboxContainer:{
+    flexDirection: 'row',
+    alignItems: 'center', // 子要素を垂直方向に中央揃えにする
+    justifyContent: 'flex-start', // 子要素を水平方向に左揃えにする
+  },
+  inputLabelText: {
+    //height: 30, // ラベルの高さをピッカーと同じにする
+    //lineHeight: 30, // テキストをラベルの高さの中央に揃える
+    marginEnd: 10, // ピッカーとの間隔を設定    
+    fontSize: 15,
+    marginTop: 10,
+    marginBottom: 5,
+    fontFamily:"ipaexg",
+    color:'#000'
+  },
   //--------------------    
   //--------モーダル-------
   modalBackground: {

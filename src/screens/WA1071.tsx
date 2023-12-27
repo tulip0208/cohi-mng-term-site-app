@@ -142,7 +142,8 @@ const WA1071 = ({navigation}:Props) => {
         <View  style={[styles.main]}>
         <Text style={styles.labelTextSetting}>旧タグ数：{WA1070Data?.oldTag.oldTagId}</Text>
         </View>
-        <View  style={[styles.textareaContainer,styles.middleContent,styles.textareaContainerSecond]}>          <View style={[styles.scrollContainer]}>
+        <View  style={[styles.textareaContainer,styles.middleContent,styles.textareaContainerSecond]}>
+          <View style={[styles.scrollContainer]}>
             <ScrollView 
                 style={[styles.scrollViewStyle]}
                 showsVerticalScrollIndicator={true}
