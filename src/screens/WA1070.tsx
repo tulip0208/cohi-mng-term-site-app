@@ -146,7 +146,7 @@ const WA1070 = ({navigation}:Props) => {
       const parts = data.split(',');
       setShowScannerTag(false);
       let code = '';
-      if (type !== RNCamera.Constants.BarCodeType.qr && type !== RNCamera.Constants.BarCodeType.code39) {
+      if (type !== RNCamera.Constants.BarCodeType.qr && type !== 'CODABAR') {
         await showAlert("通知", messages.EA5008(), false);
         return;
       }else if(type === RNCamera.Constants.BarCodeType.qr && (parts.length === 1 || parts[0] !== "CM" )){
@@ -158,7 +158,7 @@ const WA1070 = ({navigation}:Props) => {
         // モーダル表示
         setModalVisible(true);        
         code = parts[1];
-      }else if(type === RNCamera.Constants.BarCodeType.code39){
+      }else if(type === 'CODABAR'){
         // --バーコード--
         // フォーマットチェック
         if(!checkFormat(data)){

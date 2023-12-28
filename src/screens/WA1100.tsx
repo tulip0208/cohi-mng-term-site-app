@@ -146,7 +146,7 @@ const WA1100 = ({navigation}:Props) => {
       const parts = data.split(',');
       setShowScannerTag(false);
       let code = '';
-      if (type !== RNCamera.Constants.BarCodeType.code39) {
+      if (type !== 'CODABAR') {
         await showAlert("通知", messages.EA5011(), false);
         return;
       }else{

@@ -104,7 +104,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onScan, closeModal, isActive, err
         <RNCamera
           style={styles.camera}
           onBarCodeRead={scanned ? undefined : handleBarCodeRead}
-          barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
+          barCodeTypes={[RNCamera.Constants.BarCodeType.qr,'CODABAR']}
           captureAudio={false}
         >
           <View style={styles.overlay}>

@@ -142,7 +142,6 @@ const WA1110 = ({navigation}:Props) => {
       // 通信を実施
       const responseIFA0320 = await IFA0320(txtOldTagId,wkPlacId as string);
       if(await apiIsError(responseIFA0320)){
-
         return false;
       } 
       const data = responseIFA0320.data as IFA0110Response<IFA0320ResponseDtl>;

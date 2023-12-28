@@ -264,6 +264,27 @@ export interface WA1080Const{
         lnkNewTagDatMem:string;
     };
 }
+//WA1090
+export interface WA1090WkPlacConst{
+    idTyp:string;//ID種別
+    wkplacId:string;//作業場所ID
+    wkplacNm:string;//作業場所名
+    delSrcTyp:string;//搬出元種別
+    wkplac:string;//作業場所
+}
+export interface WA1091OldTagInfoConst{
+    oldTagId:string; //旧タグID
+    ashTyp: string  // 焼却灰種別、半角英数字
+    meaRa: string;  // 測定濃度（焼却時）、半角数値
+    conRa: string;  // 換算濃度（焼却時）、半角数値
+    surDsRt: string;  // 表面線量率（焼却時）、半角数値（オプショナル）
+    surDsDt: string;  // 表面線量率測定日（焼却時）、日付（オプショナル）
+    surDsWt: string;  // 表面線量率測定時重量（焼却時）、半角数値（オプショナル）
+};
+export interface WA1092WtDsConst{
+    caLgSdBgWt:string;//重量
+    caLgSdBgDs:string;//線量
+}
 //WA1100
 export interface WA1100Const{
     head:{

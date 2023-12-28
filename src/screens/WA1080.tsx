@@ -168,7 +168,7 @@ const WA1080 = ({navigation}:Props) => {
       const parts = data.split(',');
       setShowScannerTag(false);
       let code = '';
-      if (type !== RNCamera.Constants.BarCodeType.qr && type !== RNCamera.Constants.BarCodeType.code39) {
+      if (type !== RNCamera.Constants.BarCodeType.qr && type !== 'CODABAR') {
         await showAlert("通知", messages.EA5008(), false);
         return;
       }else if(parts.length !== 1 && parts[0] === "CM"){
@@ -232,7 +232,6 @@ const WA1080 = ({navigation}:Props) => {
       // 通信を実施
       const responseIFA0310 = await IFA0310(txtOldTagId,wkPlacId as string);
       if(await apiIsError(responseIFA0310)){
-
         return false;
       } 
       const data = responseIFA0310.data as IFA0110Response<IFA0310ResponseDtl>;

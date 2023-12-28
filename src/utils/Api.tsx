@@ -7,7 +7,7 @@ import axios,{ AxiosError }  from 'axios';
 import { loadFromKeystore,getEncryptionKeyFromKeystore } from './KeyStore'; // KeyStoreの確認関数
 import { decryptWithAES256CBC } from './Security';
 import { logCommunication} from './Log';
-import { AxiosResponse,ApiResponse,IFA0030Response,IFA0110Response,IFA0310ResponseDtl,IFA0320ResponseDtl,IFA0330ResponseDtl,IFA0340ResponseDtl,IFT0090ResponseDtl, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, WA1060WkPlacConst,WA1060OldTagInfoConst,WA1060Const} from '../types/type';
+import { AxiosResponse,ApiResponse,IFA0030Response,IFA0110Response,IFA0310ResponseDtl,IFA0320ResponseDtl,IFA0330ResponseDtl,IFA0340ResponseDtl,IFT0090ResponseDtl, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, WA1060WkPlacConst,WA1060OldTagInfoConst,WA1060Const,WA1090WkPlacConst,WA1091OldTagInfoConst,WA1092WtDsConst} from '../types/type';
 import { Buffer } from 'buffer';
 
 /************************************************
@@ -398,7 +398,7 @@ export const IFT0090 = async (
       comId: loginInfo.comId,
       tmpLocId: wlPlac.wkplacId,
       dtl: oldTagInfos.map((oldTagInfo,index)=>({
-        chgKnd:'U',//★確認
+        chgKnd:'I',
         sndId:'SH'+trmId.trmId+dateStr.replace(/[^0-9]/g, "").slice(0,14),
         newTagId:newTagId,
         oldTagId:(oldTagInfo.genbaCheck==='1') ? oldTagInfo.oldTag : '',
@@ -428,7 +428,7 @@ export const IFT0090 = async (
     const requestData = await setIFA0110RequestData("IFT0090",requestDataDtl);
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
-    const res = await sendToServer(requestData,"IFT0090","新タグ情報照会(焼却灰)");
+    const res = await sendToServer(requestData,"IFT0090","新タグ紐付データ取込");
     const response = res as AxiosResponse<IFA0110Response<IFT0090ResponseDtl>>;
 
     if (response.data && response.data.sttCd && response.data.cnt == 0){
@@ -440,6 +440,57 @@ export const IFT0090 = async (
     const e = error as CustomError;
     return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
   }
+};
+
+/************************************************
+ * IFT0420_新タグ紐付データ取込（焼却灰）
+ ************************************************/
+export const IFT0420 = async (
+  wlPlac:WA1090WkPlacConst,
+  oldTagInfo:WA1091OldTagInfoConst,
+  dateStr:string,
+  newTagId:string,
+  data:WA1092WtDsConst,
+  memo:string,
+) : Promise<ApiResponse<IFA0110Response<IFT0090ResponseDtl>>> => {
+try {
+  const realm = getInstance()
+  const loginInfo = realm.objects('login')[0]
+  const trmId = await loadFromKeystore("trmId") as TrmId
+  const requestDataDtl = {
+    comId: loginInfo.comId,
+    tmpLocId: wlPlac.wkplacId,
+    dtl: [{
+      chgKnd:'I',//★確認
+      sndId:'SH'+trmId.trmId+dateStr.replace(/[^0-9]/g, "").slice(0,14),
+      newTagId:newTagId,
+      oldTagId:oldTagInfo.oldTagId,
+      tyRegDt:dateStr,//YYYY/MM/DD HH:mm:ss
+      lnkNewTagDatMem:memo,
+      ashTyp:oldTagInfo.ashTyp,
+      meaRa:oldTagInfo.meaRa,
+      conRa:oldTagInfo.conRa,
+      surDsRt:data.caLgSdBgDs,
+      surDsDt:dateStr.slice(0,10),//YYYY/MM/DD
+      surDsWt:data.caLgSdBgWt,
+    }]
+  };
+
+  const requestData = await setIFA0110RequestData("IFT0420",requestDataDtl);
+
+  // サーバー通信処理（Api.js内の関数を呼び出し）
+  const res = await sendToServer(requestData,"IFT0420","新タグ紐付データ取込(焼却灰)");
+  const response = res as AxiosResponse<IFA0110Response<IFT0090ResponseDtl>>;
+
+  if (response.data && response.data.sttCd && response.data.cnt == 0){
+    //0件の場合
+    return { success: false, error: "zero", status:null, code:null, api:null, data:null};
+  }
+  return { success: true, data: response.data };
+} catch (error) {
+  const e = error as CustomError;
+  return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
+}
 };
 
 /************************************************
