@@ -7,8 +7,9 @@ import axios,{ AxiosError }  from 'axios';
 import { loadFromKeystore,getEncryptionKeyFromKeystore } from './KeyStore'; // KeyStoreの確認関数
 import { decryptWithAES256CBC } from './Security';
 import { logCommunication} from './Log';
-import { AxiosResponse,ApiResponse,IFA0030Response,IFA0110Response,IFA0310ResponseDtl,IFA0320ResponseDtl,IFA0330ResponseDtl,IFA0340ResponseDtl, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, } from '../types/type';
+import { AxiosResponse,ApiResponse,IFA0030Response,IFA0110Response,IFA0310ResponseDtl,IFA0320ResponseDtl,IFA0330ResponseDtl,IFA0340ResponseDtl,IFT0090ResponseDtl, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, WA1060WkPlacConst,WA1060OldTagInfoConst,WA1060Const} from '../types/type';
 import { Buffer } from 'buffer';
+
 /************************************************
  * IFA0010_アクティベーション(端末登録)
  ************************************************/
@@ -345,6 +346,90 @@ export const IFA0340 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0110R
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const res = await sendToServer(requestData,"IFA0340","新タグ情報照会(焼却灰)");
     const response = res as AxiosResponse<IFA0110Response<IFA0340ResponseDtl>>;
+
+    if (response.data && response.data.sttCd && response.data.cnt == 0){
+      //0件の場合
+      return { success: false, error: "zero", status:null, code:null, api:null, data:null};
+    }
+    return { success: true, data: response.data };
+  } catch (error) {
+    const e = error as CustomError;
+    return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
+  }
+};
+
+/************************************************
+ * IFT0090_新タグ紐付データ取込
+ ************************************************/
+export const IFT0090 = async (
+    wlPlac:WA1060WkPlacConst,
+    oldTagInfos:WA1060OldTagInfoConst[],
+    dateStr:string,
+    newTagId:string,
+    data:WA1060Const,
+    memo:string,
+  ) : Promise<ApiResponse<IFA0110Response<IFT0090ResponseDtl>>> => {
+  try {
+    const realm = getInstance()
+    const loginInfo = realm.objects('login')[0]
+    const trmId = await loadFromKeystore("trmId") as TrmId
+    let zero = (oldTagInfos.length === 0)
+    if(oldTagInfos.length === 0) {
+      oldTagInfos.push({
+        oldTag:'',
+        genbaCheck:'',
+        tsuInd:'',
+        splFac:'',
+        rmSolTyp:'',
+        ocLndCla:'',
+        pkTyp:'',
+        usgInnBg:'',
+        usgInnBgNm:'',
+        usgAluBg:'',
+        vol:'',
+        airDsRt:'',
+        ocLndUseknd:'',
+        ocloc:'',
+        rmSolInf:'',
+        lnkNewTagDatMem:'',    
+      })
+    }
+    const requestDataDtl = {
+      comId: loginInfo.comId,
+      tmpLocId: wlPlac.wkplacId,
+      dtl: oldTagInfos.map((oldTagInfo,index)=>({
+        chgKnd:'U',//★確認
+        sndId:'SH'+trmId.trmId+dateStr.replace(/[^0-9]/g, "").slice(0,14),
+        newTagId:newTagId,
+        oldTagId:(oldTagInfo.genbaCheck==='1') ? oldTagInfo.oldTag : '',
+        sitTagId:(oldTagInfo.genbaCheck==='2') ? oldTagInfo.oldTag : '',
+        twoOneTrOneBrNum:index,
+        caLgSdBgWt:data.caLgSdBgWt,
+        caLgSdBgDs:data.caLgSdBgDs,
+        tyRegDt:data.tyRegDt,
+        pkTyp:data.pkTyp,
+        yesNoOP:data.yesNoOP,
+        arNm:wlPlac.wkplacNm,
+        tsuInd:data.tsuInd,
+        splFac:data.splFac,
+        rmSolTyp:data.rmSolTyp,
+        ocLndCla:oldTagInfo.ocLndCla,
+        usgInnBg:data.usgInnBg,
+        usgAluBg:data.usgAluBg,
+        vol:oldTagInfo.vol,
+        airDsRt:oldTagInfo.airDsRt,
+        ocLndUseknd:oldTagInfo.ocLndUseknd,
+        ocloc:oldTagInfo.ocloc,
+        rmSolInf:oldTagInfo.rmSolInf,
+        lnkNewTagDatMem:memo,  
+      }))
+    };
+
+    const requestData = await setIFA0110RequestData("IFT0090",requestDataDtl);
+
+    // サーバー通信処理（Api.js内の関数を呼び出し）
+    const res = await sendToServer(requestData,"IFT0090","新タグ情報照会(焼却灰)");
+    const response = res as AxiosResponse<IFA0110Response<IFT0090ResponseDtl>>;
 
     if (response.data && response.data.sttCd && response.data.cnt == 0){
       //0件の場合

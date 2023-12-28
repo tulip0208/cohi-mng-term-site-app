@@ -53,9 +53,9 @@ const QRScanner: React.FC<QRScannerProps> = ({ onScan, closeModal, isActive, err
       requestPermission();
 
       // データベースから設定を読み込む
-      const loadSettings = async () => {
+      const loadSettings = () => {
         const realm = getInstance();
-        const settings = realm.objects('settings')[0];
+        let settings = realm.objects('settings')[0];
         setCamTimeout(settings.camTimeout as number);  // カメラのタイムアウト値を状態にセット
       };
       loadSettings();      

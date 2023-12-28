@@ -236,6 +236,21 @@ export const styles = StyleSheet.create({
     textAlignVertical: 'top', // 複数行のテキストを上から表示
     fontFamily: "ipaexg", // フォントファミリー
   },
+  memoScrollContainer:{
+    borderColor: 'black',
+    borderWidth: 1,
+    padding:1,
+  },
+  memoScroll:{
+    height: 200, 
+    overflow: 'hidden'
+  },
+  memo: {
+    textAlignVertical: 'top',
+    padding: 5,
+  },
+  
+  
   //--------ボタン-------
   button: {
     backgroundColor: '#548236', // パステルな水色
@@ -293,7 +308,6 @@ export const styles = StyleSheet.create({
     backgroundColor: '#7030a0',
   },
   allCancelButton:{
-    // height:"35%",
     backgroundColor:'#bb8b38',
     fontSize: 15,
     padding:5,
@@ -351,7 +365,6 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
-    //width:'30%',
     backgroundColor: '#d9d9d9', 
     padding: 10,
     flex: 1,
@@ -364,6 +377,20 @@ export const styles = StyleSheet.create({
     backgroundColor: '#1e74bd', 
     color:"#FFF",
   },  
+  buttonHalf: {    
+    width:"50%",
+  },
+  buttonMaxHalf: {    
+    maxWidth:"50%",
+  },
+  updownMargin:{
+    marginTop:10,
+    marginBottom:10,
+  },
+  textBlack:{
+    color:'black',
+    fontFamily:"ipaexg",    
+  },
   //--------------------
   //--------カメラ-------
   overlay: {
@@ -609,9 +636,9 @@ export const styles = StyleSheet.create({
   },    
   checkBox: {
     transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] // 1.5倍に拡大
-    // marginLeft: 10, // テキストとチェックボックスの間の余白
-    // alignSelf: '', // チェックボックスを垂直方向に中央揃えにする
-    // marginLeft: 10, // テキストとチェックボックスの間に適切な余白を確保する
+  },
+  disabled: {
+    color: '#ccc', // 無効化したときの背景色
   },
   //--------------------    
   //--------PICKER-------
@@ -622,21 +649,12 @@ export const styles = StyleSheet.create({
   pickerStyle:{
     borderWidth: 1, // 枠線の幅
     borderColor: 'black', // 枠線の色
-    //borderRadius: 5, // 枠線の角を丸くする場合
-    // padding: 10, // ピッカーの内側の余白
-    // その他のスタイリング属性
     height:30,
-    // 枠から項目のテキストを離すための内側の余白を追加
-    // paddingTop: 0,
-    // paddingBottom: 0,
-    // Android 用のスタイル調整
     marginTop:  -12,
     marginBottom: -12,
 
   },
   pickerLabelText: {
-    //height: 30, // ラベルの高さをピッカーと同じにする
-    //lineHeight: 30, // テキストをラベルの高さの中央に揃える
     marginEnd: 10, // ピッカーとの間隔を設定    
     fontSize: 15,
     marginTop: 10,

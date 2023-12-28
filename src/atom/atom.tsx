@@ -3,7 +3,7 @@
  * atom/atom.tsx
  * ---------------------------------------------*/
 import { atom, atomFamily } from "recoil";
-import {WA1060Const,WA1070Const,WA1080Const,WA1100Const,WA1110Const,WA1060OldTagInfoConst} from "../types/type"
+import {WA1060Const,WA1070Const,WA1080Const,WA1100Const,WA1110Const,WA1060WkPlacConst,WA1060OldTagInfoConst} from "../types/type"
 import Realm from "realm";
 
 //共通 フッタサーバ名用
@@ -20,7 +20,7 @@ export const watchIdState = atom<number|null>({key: "watchIdState",default: null
 
 //WA1060用
 export const WA1060NewTagIdState = atom<string>({key: "WA1060NewTagIdState",default: "",});
-export const WA1060CmnTagFlgState = atom<number|null>({key: "WA1060CmnTagFlgState",default: null,});
+export const WA1060CmnTagFlgState = atom<string>({key: "WA1060CmnTagFlgState",default: "",});
 export const WA1060DataState = atom<WA1060Const>({key: "WA1060DataState",default:{
     tyRegDt: '', 
     caLgSdBgWt: '',
@@ -36,10 +36,17 @@ export const WA1060DataState = atom<WA1060Const>({key: "WA1060DataState",default
   }});
 export const WA1060OldTagInfosState = atom<WA1060OldTagInfoConst[]>({key: "WA1060OldTagInfosState",default:[]});
 export const WA1060PrevScreenId = atom<string>({key: "WA1060PrevScreenId",default: "",});
-export const WA1060WkPlacIdState = atom<string>({key: "WA1060WkPlacIdState",default: "",});
+export const WA1060WkPlacState = atom<WA1060WkPlacConst>({key: "WA1060WkPlacState",default: {
+    idTyp:'',//ID種別
+    wkplacId:'',//作業場所ID
+    wkplacNm:'',//作業場所名
+    delSrcTyp:'',//搬出元種別
+    wkplac:'',//作業場所
+  }});
 export const WA1061BackState = atom<boolean>({key: "WA1061BackState",default: false,});
 export const WA1061TagIdState = atom<[string,string]>({key: "WA1061TagIdState",default: ["",""],});
-export const WA1065MemoAutoState = atom<string>({key: "WA1065MemoAutoState",default: "",});
+export const WA1063MemoAutoState = atom<string>({key: "WA1063MemoAutoState",default: "",});
+export const WA1065MemoState = atom<string>({key: "WA1065MemoState",default: "",});
 
 //WA1070用
 export const WA1070DataState = atom<WA1070Const|null>({key: "WA1070DataState",default: null,});

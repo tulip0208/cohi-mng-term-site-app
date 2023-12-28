@@ -27,7 +27,7 @@ const WA1040 = ({navigation}:Props) => {
     useEffect(() => {
       const buttonViews = async () => {
         const realm = getInstance();
-        const settings = realm.objects('settings')[0];
+        let settings = realm.objects('settings')[0];
         // ボタンの表示設定を確認して、状態を更新する
         const isButtonView = {
           button1: settings.btnNewTagSoil === 1,

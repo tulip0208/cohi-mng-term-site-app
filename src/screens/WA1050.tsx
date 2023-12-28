@@ -176,7 +176,7 @@
        ************************************************/   
       const renderSettings = () => {
         const realm = getInstance();
-        let settings = realm.objects('settings')[0];
+        const settings = realm.objects('settings')[0];
         return settings ? Object.entries(settings).map(([key, value]) => (
           <Text key={key} style={styles.fontAndColor}>{`${key}：${value}`}</Text>
         )) : null;

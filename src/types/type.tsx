@@ -174,6 +174,13 @@ export interface FileEntry {
  * screens
  ******************/
 //WA1060
+export interface WA1060WkPlacConst{
+    idTyp:string,//ID種別
+    wkplacId:string,//作業場所ID
+    wkplacNm:string,//作業場所名
+    delSrcTyp:string;//搬出元種別
+    wkplac:string,//作業場所
+}
 export interface WA1060Const{
     tyRegDt:string;//紐付登録日時
     caLgSdBgWt:string;//重量
@@ -189,7 +196,7 @@ export interface WA1060Const{
 }
 export interface WA1060OldTagInfoConst{
     oldTag:string;//旧タグID
-    genbaCheck:number|null;//現場確認
+    genbaCheck:string;//現場確認
     tsuInd:string;//津波浸水
     splFac:string;//特定施設由来
     rmSolTyp:string;//去土壌等種別
@@ -401,3 +408,9 @@ export interface IFA0340ResponseDtl {
     surDsWt: number;
     sndId?: string | null;
 }
+export interface IFT0090ResponseDtl {
+    sndId?: string;
+    datElm?: string;
+    invCd?: number;
+}
+
