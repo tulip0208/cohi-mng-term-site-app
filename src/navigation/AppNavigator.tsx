@@ -10,12 +10,22 @@ import WA1020 from '../screens/WA1020';
 import WA1030 from '../screens/WA1030';
 import WA1040 from '../screens/WA1040';
 import WA1050 from '../screens/WA1050';
-// import WA1060 from '../screens/WA1060';
+import WA1060 from '../screens/WA1060';
+import WA1061 from '../screens/WA1061';
+import WA1062 from '../screens/WA1062';
+import WA1063 from '../screens/WA1063';
+import WA1064 from '../screens/WA1064';
+import WA1065 from '../screens/WA1065';
+import WA1066 from '../screens/WA1066';
 import WA1070 from '../screens/WA1070';
 import WA1071 from '../screens/WA1071';
 import WA1080 from '../screens/WA1080';
 import WA1081 from '../screens/WA1081';
-// import WA1090 from '../screens/WA1090';
+import WA1090 from '../screens/WA1090';
+import WA1091 from '../screens/WA1091';
+import WA1092 from '../screens/WA1092';
+import WA1093 from '../screens/WA1093';
+import WA1094 from '../screens/WA1094';
 import WA1100 from '../screens/WA1100';
 import WA1101 from '../screens/WA1101';
 import WA1110 from '../screens/WA1110';
@@ -40,11 +50,21 @@ export type RootList = {
   WA1040: undefined;
   WA1050: { sourceScreenId: string };
   WA1060: undefined;
+  WA1061: undefined;
+  WA1062: undefined;
+  WA1063: undefined;
+  WA1064: undefined;
+  WA1065: undefined;
+  WA1066: undefined;
   WA1070: undefined;
   WA1071: undefined;
   WA1080: undefined;
   WA1081: undefined;
   WA1090: undefined;
+  WA1091: undefined;
+  WA1092: undefined;
+  WA1093: undefined;
+  WA1094: undefined;
   WA1100: undefined;
   WA1101: undefined;
   WA1110: undefined;
@@ -171,12 +191,22 @@ const AppNavigator = () => {
           <Stack.Screen name="WA1030" component={WA1030} />        
           <Stack.Screen name="WA1040" component={WA1040} />
           <Stack.Screen name="WA1050" component={WA1050} />
-          {/* <Stack.Screen name="WA1060" component={WA1060} /> */}
+          <Stack.Screen name="WA1060" component={WA1060} />
+          <Stack.Screen name="WA1061" component={WA1061} />
+          <Stack.Screen name="WA1062" component={WA1062} />
+          <Stack.Screen name="WA1063" component={WA1063} />
+          <Stack.Screen name="WA1064" component={WA1064} />
+          <Stack.Screen name="WA1065" component={WA1065} />
+          <Stack.Screen name="WA1066" component={WA1066} />
           <Stack.Screen name="WA1070" component={WA1070} />
           <Stack.Screen name="WA1071" component={WA1071} />
           <Stack.Screen name="WA1080" component={WA1080} />
           <Stack.Screen name="WA1081" component={WA1081} />
-          {/* <Stack.Screen name="WA1090" component={WA1090} /> */}
+          <Stack.Screen name="WA1090" component={WA1090} />
+          <Stack.Screen name="WA1091" component={WA1091} />
+          <Stack.Screen name="WA1092" component={WA1092} />
+          <Stack.Screen name="WA1093" component={WA1093} />
+          <Stack.Screen name="WA1094" component={WA1094} />
           <Stack.Screen name="WA1100" component={WA1100} />
           <Stack.Screen name="WA1101" component={WA1101} />
           <Stack.Screen name="WA1110" component={WA1110} />
