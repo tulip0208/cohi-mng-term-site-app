@@ -3,7 +3,7 @@
  * atom/atom.tsx
  * ---------------------------------------------*/
 import { atom, atomFamily } from "recoil";
-import {WA1070Const,WA1080Const,WA1100Const,WA1110Const,WA1060Const,WA1060WkPlacConst,WA1060OldTagInfoConst,WA1092WtDsConst,WA1090WkPlacConst,WA1091OldTagInfoConst} from "../types/type"
+import {WA1070Const,WA1080Const,WA1100Const,WA1140Const,WA1110Const,WA1060Const,WA1060WkPlacConst,WA1060OldTagInfoConst,WA1092WtDsConst,WA1090WkPlacConst,WA1091OldTagInfoConst} from "../types/type"
 import Realm from "realm";
 
 //共通 フッタサーバ名用
@@ -47,23 +47,12 @@ export const WA1061BackState = atom<boolean>({key: "WA1061BackState",default: fa
 export const WA1061TagIdState = atom<[string,string]>({key: "WA1061TagIdState",default: ["",""],});
 export const WA1063MemoAutoState = atom<string>({key: "WA1063MemoAutoState",default: "",});
 export const WA1065MemoState = atom<string>({key: "WA1065MemoState",default: "",});
-
 //WA1070用
 export const WA1070DataState = atom<WA1070Const|null>({key: "WA1070DataState",default: null,});
 export const WA1071BackState = atom<boolean>({key: "WA1071BackState",default: false,});
 //WA1080用
 export const WA1080DataState = atom<WA1080Const|null>({key: "WA1080DataState",default: null,});
 export const WA1081BackState = atom<boolean>({key: "WA1081BackState",default: false,});
-//WA1100用
-export const WA1100DataState = atom<WA1100Const|null>({key: "WA1100DataState",default: null,});
-export const WA1101BackState = atom<boolean>({key: "WA1101BackState",default: false,});
-//WA1110用
-export const WA1110DataState = atom<WA1110Const|null>({key: "WA1110DataState",default: null,});
-export const WA1111BackState = atom<boolean>({key: "WA1111BackState",default: false,});
-
-
-
-
 //WA1090用
 export const WA1090NewTagIdState = atom<string>({key: "WA1090NewTagIdState",default: "",});
 export const WA1091OldTagInfoState = atom<WA1091OldTagInfoConst>({key: "WA1091OldTagInfoState",default: {
@@ -89,3 +78,23 @@ export const WA1090WkPlacState = atom<WA1090WkPlacConst>({key: "WA1090WkPlacStat
   }});
 export const WA1091BackState = atom<boolean>({key: "WA1091BackState",default: false,});
 export const WA1093MemoState = atom<string>({key: "WA1093MemoState",default: "",});
+//WA1100用
+export const WA1100DataState = atom<WA1100Const|null>({key: "WA1100DataState",default: null,});
+export const WA1101BackState = atom<boolean>({key: "WA1101BackState",default: false,});
+//WA1110用
+export const WA1110DataState = atom<WA1110Const|null>({key: "WA1110DataState",default: null,});
+export const WA1111BackState = atom<boolean>({key: "WA1111BackState",default: false,});
+//WA1140用
+export const WA1140DataState = atom<WA1140Const>({key: "WA1140DataState",default: {
+  storPlacId:'',//保管場ID
+  fixPlacId:'',//定置場ID
+  wkplcTyp: '',
+  wkplc: '',
+  newTagId: '',
+  rmSolTyp:'',
+  stySec:'',
+  areNo:'',
+  nos:'',
+},});
+export const WA1140PrevScreenId = atom<string>({key: "WA1140PrevScreenId",default: "",});
+export const WA1141BackState = atom<boolean>({key: "WA1141BackState",default: false,});

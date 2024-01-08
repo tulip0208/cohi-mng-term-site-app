@@ -7,7 +7,7 @@ import axios,{ AxiosError }  from 'axios';
 import { loadFromKeystore,getEncryptionKeyFromKeystore } from './KeyStore'; // KeyStoreの確認関数
 import { decryptWithAES256CBC } from './Security';
 import { logCommunication} from './Log';
-import { AxiosResponse,ApiResponse,IFA0030Response,IFA0110Response,IFA0310ResponseDtl,IFA0320ResponseDtl,IFA0330ResponseDtl,IFA0340ResponseDtl,IFT0090ResponseDtl, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, WA1060WkPlacConst,WA1060OldTagInfoConst,WA1060Const,WA1090WkPlacConst,WA1091OldTagInfoConst,WA1092WtDsConst} from '../types/type';
+import { AxiosResponse,ApiResponse,IFA0030Response,IFA0110Response,IFA0310Response,IFA0310ResponseDtl,IFA0320Response,IFA0320ResponseDtl,IFA0330Response,IFA0330ResponseDtl,IFA0340Response,IFA0340ResponseDtl,IFT0090Response,IFT0090ResponseDtl,IFT0140Response,IFT0140ResponseDtl,IFT0420Response,IFT0420ResponseDtl, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, WA1060WkPlacConst,WA1060OldTagInfoConst,WA1060Const,WA1090WkPlacConst,WA1091OldTagInfoConst,WA1092WtDsConst,WA1140Const} from '../types/type';
 import { Buffer } from 'buffer';
 
 /************************************************
@@ -237,7 +237,7 @@ const setIFA0110RequestData = async <T,>(interFaceName:string,dataDtl:T) => {
 /************************************************
  * IFA0310_旧タグ情報照会(除染土壌) 
  ************************************************/
-export const IFA0310 = async (txtOldTagId:string,wkPlacId:string) : Promise<ApiResponse<IFA0110Response<IFA0310ResponseDtl>>> => {
+export const IFA0310 = async (txtOldTagId:string,wkPlacId:string) : Promise<ApiResponse<IFA0310Response<IFA0310ResponseDtl>>> => {
   try {
     const realm = getInstance()
     const loginInfo = realm.objects('login')[0]
@@ -253,13 +253,14 @@ export const IFA0310 = async (txtOldTagId:string,wkPlacId:string) : Promise<ApiR
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const res = await sendToServer(requestData,"IFA0310","旧タグ情報照会(除去土壌)");
-    const response = res as AxiosResponse<IFA0110Response<IFA0310ResponseDtl>>;
+    const response = res as AxiosResponse<IFA0110Response<IFA0310Response<IFA0310ResponseDtl>>>;
 
-    if (response.data && response.data.sttCd && response.data.cnt == 0){
+    //IFA0110側で判断
+    if (response.data && response.data.sttCd && response.data.gyDt.cnt == 0){
       //0件の場合
       return { success: false, error: "zero", status:null, code:null, api:null, data:null};
     }
-    return { success: true, data: response.data };
+    return { success: true, data: response.data.gyDt };
   } catch (error) {
     const e = error as CustomError;
     return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
@@ -269,7 +270,7 @@ export const IFA0310 = async (txtOldTagId:string,wkPlacId:string) : Promise<ApiR
 /************************************************
  * IFA0320_旧タグ情報照会(焼却灰)
  ************************************************/
-export const IFA0320 = async (txtOldTagId:string,wkPlacId:string) : Promise<ApiResponse<IFA0110Response<IFA0320ResponseDtl>>>=> {
+export const IFA0320 = async (txtOldTagId:string,wkPlacId:string) : Promise<ApiResponse<IFA0320Response<IFA0320ResponseDtl>>>=> {
   try {
     const realm = getInstance()
     const loginInfo = realm.objects('login')[0]
@@ -285,13 +286,14 @@ export const IFA0320 = async (txtOldTagId:string,wkPlacId:string) : Promise<ApiR
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const res = await sendToServer(requestData,"IFA0320","旧タグ情報照会(除去土壌)");
-    const response = res as AxiosResponse<IFA0110Response<IFA0320ResponseDtl>>;
+    const response = res as AxiosResponse<IFA0110Response<IFA0320Response<IFA0320ResponseDtl>>>;
 
-    if (response.data && response.data.sttCd && response.data.cnt == 0){
+    //IFA0110側で判断
+    if (response.data && response.data.sttCd && response.data.gyDt.cnt == 0){
       //0件の場合
       return { success: false, error: "zero", status:null, code:null, api:null, data:null};
     }
-    return { success: true, data: response.data };
+    return { success: true, data: response.data.gyDt };
   } catch (error) {
     const e = error as CustomError;
     return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
@@ -301,7 +303,7 @@ export const IFA0320 = async (txtOldTagId:string,wkPlacId:string) : Promise<ApiR
 /************************************************
  * IFA0330_新タグ情報照会(除去土壌) 
  ************************************************/
-export const IFA0330 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0110Response<IFA0330ResponseDtl>>> => {
+export const IFA0330 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0320Response<IFA0330ResponseDtl>>> => {
   try {
     const realm = getInstance()
     const loginInfo = realm.objects('login')[0]
@@ -315,13 +317,14 @@ export const IFA0330 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0110R
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const res = await sendToServer(requestData,"IFA0330","新タグ情報照会(除去土壌)");    
-    const response = res as AxiosResponse<IFA0110Response<IFA0330ResponseDtl>>;
+    const response = res as AxiosResponse<IFA0110Response<IFA0330Response<IFA0330ResponseDtl>>>;
 
-    if (response.data && response.data.sttCd && response.data.cnt == 0){
+    //IFA0110側で判断
+    if (response.data && response.data.sttCd && response.data.gyDt.cnt == 0){
       //0件の場合
       return { success: false, error: "zero", status:null, code:null, api:null, data:null};
     }
-    return { success: true, data: response.data };
+    return { success: true, data: response.data.gyDt };
   } catch (error) {
     const e = error as CustomError;
     return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
@@ -331,7 +334,7 @@ export const IFA0330 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0110R
 /************************************************
  * IFA0340_新タグ情報照会(焼却灰)
  ************************************************/
-export const IFA0340 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0110Response<IFA0340ResponseDtl>>> => {
+export const IFA0340 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0340Response<IFA0340ResponseDtl>>> => {
   try {
     const realm = getInstance()
     const loginInfo = realm.objects('login')[0]
@@ -345,13 +348,13 @@ export const IFA0340 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0110R
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const res = await sendToServer(requestData,"IFA0340","新タグ情報照会(焼却灰)");
-    const response = res as AxiosResponse<IFA0110Response<IFA0340ResponseDtl>>;
+    const response = res as AxiosResponse<IFA0110Response<IFA0340Response<IFA0340ResponseDtl>>>;
 
-    if (response.data && response.data.sttCd && response.data.cnt == 0){
+    if (response.data && response.data.sttCd && response.data.gyDt.cnt == 0){
       //0件の場合
       return { success: false, error: "zero", status:null, code:null, api:null, data:null};
     }
-    return { success: true, data: response.data };
+    return { success: true, data: response.data.gyDt };
   } catch (error) {
     const e = error as CustomError;
     return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
@@ -368,7 +371,7 @@ export const IFT0090 = async (
     newTagId:string,
     data:WA1060Const,
     memo:string,
-  ) : Promise<ApiResponse<IFA0110Response<IFT0090ResponseDtl>>> => {
+  ) : Promise<ApiResponse<IFT0090Response<IFT0090ResponseDtl>>> => {
   try {
     const realm = getInstance()
     const loginInfo = realm.objects('login')[0]
@@ -429,13 +432,48 @@ export const IFT0090 = async (
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const res = await sendToServer(requestData,"IFT0090","新タグ紐付データ取込");
-    const response = res as AxiosResponse<IFA0110Response<IFT0090ResponseDtl>>;
+    const response = res as AxiosResponse<IFA0110Response<IFT0090Response<IFT0090ResponseDtl>>>;
 
-    if (response.data && response.data.sttCd && response.data.cnt == 0){
-      //0件の場合
-      return { success: false, error: "zero", status:null, code:null, api:null, data:null};
-    }
-    return { success: true, data: response.data };
+    return { success: true, data: response.data.gyDt };
+  } catch (error) {
+    const e = error as CustomError;
+    return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
+  }
+};
+
+/************************************************
+ * IFT0140_定置ステータス更新
+ ************************************************/
+export const IFT0140 = async (
+  WA1140Data:WA1140Const,
+  dateStr:string,
+) : Promise<ApiResponse<IFT0420Response<IFT0420ResponseDtl>>> => {
+  try {
+    const realm = getInstance()
+    const loginInfo = realm.objects('login')[0]
+    const trmId = await loadFromKeystore("trmId") as TrmId
+    const requestDataDtl = {
+      comId: loginInfo.comId,
+      stgLocId:WA1140Data.storPlacId,
+      styDt:dateStr,
+      dtl: [{
+        chgKnd:'I',
+        sndId:'TJ'+trmId.trmId+dateStr.replace(/[^0-9]/g, "").slice(0,14),
+        newTagId:WA1140Data.newTagId,
+        styLocId:WA1140Data.fixPlacId,
+        stySec:WA1140Data.stySec,
+        areNo:WA1140Data.areNo,
+        nos:WA1140Data.nos,
+      }]
+    };
+
+    const requestData = await setIFA0110RequestData("IFT0140",requestDataDtl);
+
+    // サーバー通信処理（Api.js内の関数を呼び出し）
+    const res = await sendToServer(requestData,"IFT0140","定置ステータス更新");
+    const response = res as AxiosResponse<IFA0110Response<IFT0140Response<IFT0140ResponseDtl>>>;
+
+    return { success: true, data: response.data.gyDt };
   } catch (error) {
     const e = error as CustomError;
     return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
@@ -452,45 +490,41 @@ export const IFT0420 = async (
   newTagId:string,
   data:WA1092WtDsConst,
   memo:string,
-) : Promise<ApiResponse<IFA0110Response<IFT0090ResponseDtl>>> => {
-try {
-  const realm = getInstance()
-  const loginInfo = realm.objects('login')[0]
-  const trmId = await loadFromKeystore("trmId") as TrmId
-  const requestDataDtl = {
-    comId: loginInfo.comId,
-    tmpLocId: wlPlac.wkplacId,
-    dtl: [{
-      chgKnd:'I',//★確認
-      sndId:'SH'+trmId.trmId+dateStr.replace(/[^0-9]/g, "").slice(0,14),
-      newTagId:newTagId,
-      oldTagId:oldTagInfo.oldTagId,
-      tyRegDt:dateStr,//YYYY/MM/DD HH:mm:ss
-      lnkNewTagDatMem:memo,
-      ashTyp:oldTagInfo.ashTyp,
-      meaRa:oldTagInfo.meaRa,
-      conRa:oldTagInfo.conRa,
-      surDsRt:data.caLgSdBgDs,
-      surDsDt:dateStr.slice(0,10),//YYYY/MM/DD
-      surDsWt:data.caLgSdBgWt,
-    }]
-  };
+) : Promise<ApiResponse<IFT0420Response<IFT0420ResponseDtl>>> => {
+  try {
+    const realm = getInstance()
+    const loginInfo = realm.objects('login')[0]
+    const trmId = await loadFromKeystore("trmId") as TrmId
+    const requestDataDtl = {
+      comId: loginInfo.comId,
+      tmpLocId: wlPlac.wkplacId,
+      dtl: [{
+        chgKnd:'I',
+        sndId:'SH'+trmId.trmId+dateStr.replace(/[^0-9]/g, "").slice(0,14),
+        newTagId:newTagId,
+        oldTagId:oldTagInfo.oldTagId,
+        tyRegDt:dateStr,//YYYY/MM/DD HH:mm:ss
+        lnkNewTagDatMem:memo,
+        ashTyp:oldTagInfo.ashTyp,
+        meaRa:oldTagInfo.meaRa,
+        conRa:oldTagInfo.conRa,
+        surDsRt:data.caLgSdBgDs,
+        surDsDt:dateStr.slice(0,10),//YYYY/MM/DD
+        surDsWt:data.caLgSdBgWt,
+      }]
+    };
 
-  const requestData = await setIFA0110RequestData("IFT0420",requestDataDtl);
+    const requestData = await setIFA0110RequestData("IFT0420",requestDataDtl);
 
-  // サーバー通信処理（Api.js内の関数を呼び出し）
-  const res = await sendToServer(requestData,"IFT0420","新タグ紐付データ取込(焼却灰)");
-  const response = res as AxiosResponse<IFA0110Response<IFT0090ResponseDtl>>;
+    // サーバー通信処理（Api.js内の関数を呼び出し）
+    const res = await sendToServer(requestData,"IFT0420","新タグ紐付データ取込(焼却灰)");
+    const response = res as AxiosResponse<IFA0110Response<IFT0090Response<IFT0090ResponseDtl>>>;
 
-  if (response.data && response.data.sttCd && response.data.cnt == 0){
-    //0件の場合
-    return { success: false, error: "zero", status:null, code:null, api:null, data:null};
+    return { success: true, data: response.data.gyDt };
+  } catch (error) {
+    const e = error as CustomError;
+    return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
   }
-  return { success: true, data: response.data };
-} catch (error) {
-  const e = error as CustomError;
-  return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
-}
 };
 
 /************************************************
@@ -528,7 +562,7 @@ export const sendToServer = async <TRequest, TResponse>(requestData:TRequest,end
   let response = null;
   try{
     response = await axios(config);
-    if(endpoint == "IFA0040"||endpoint == "IFA0050"){
+    if(endpoint == "IFA0040"||endpoint == "IFA0050"){//★スタブここから
       // TextEncoderを使用してテキストをUint8Arrayにエンコード
       // Bufferを使用してテキストをバイナリデータに変換
       const jsonString = `{"id":1,"appVer":"1.0.0","settingFileDt":"2024/01/0100:00:00","serverName":"開発","serverUrl":"https://api.myservice.com","logTerm":30,"logCapacity":10000,"locGetTerm":60,"camTimeout":30,"btnNewTagSoil":1,"btnRefNewTagSoil":1,"btnRefOldTagSoil":1,"btnNewTagAsh":1,"btnRefNewTagAsh":1,"btnRefOldTagAsg":1,"btnTrnCard":1,"btnUnload":1,"btnStat":1,"reasonListOldTag":"updated,deprecated","useMethodInnerBag":2,"packTyp":3,"kgThresSoil":500,"kgThresAsh":1000,"radioThres":30,"ldpRadioThres":10,"ldpRadioThresMax":100,"estRadioThres":20,"radioConvFact":15,"facArriveTerm":120,"selPlants":2,"thresPlants":50,"selCombust":3,"thresCombust":75,"selSoil":4,"thresSoil":100,"selConcrete":5,"thresConcrete":125,"selAsphalt":6,"thresAsphalt":150,"selNoncombustMix":7,"thresNoncombustMix":175,"selAsbestos":8,"thresAsbestos":200,"selPlasterboard":9,"thresPlasterboard":225,"selHazard":10,"thresHazard":250,"selOutCombust":11,"thresOutCombust":275,"selOutNoncombust":12,"thresOutNoncombust":300,"selTmpCombust":13,"thresTmpCombust":325,"selTmpNoncombust":14,"thresTmpCNoncombust":350,"selAsh":15,"thresAsh":375}`;
@@ -543,7 +577,7 @@ export const sendToServer = async <TRequest, TResponse>(requestData:TRequest,end
           view[i] = bufferData[i];
       }
       response.data = view.buffer;
-    }
+    }//★スタブここまで
   }catch(e){
     const error = e as AxiosError
     const errorMessage = error.response ? `Status: ${error.response.status}, Body: ${JSON.stringify(error.response.data)}` : error.message;
@@ -666,19 +700,19 @@ const getSettings = async (endpoint:string) => {//★スタブ用
   //★スタブここから
   if(endpoint=='IFA0310'){
     return {
-      connectionURL: 'https://script.google.com/macros/s/AKfycbzIXMW-_dLoHqZ1qdG4pF8QMVzDNaY5a_jl9ueDDAsuRVuQ0dJh-C4e5qj9pVbaAJyU2A/exec'
+      connectionURL: 'https://script.google.com/macros/s/AKfycby_Js595MlPtFMmzmk4X1e9nOaDHxVv6IF5TNxjwIaOfD7FZ6jWdcS0Kt-n6eyOEWorcw/exec'
     }
   }else if(endpoint=='IFA0320'){
     return {
-      connectionURL: 'https://script.google.com/macros/s/AKfycbw2hTN66B3szjGtRNP1ajI4rs7b5Ipqc9bx9T_YJZ2-erNMl5KSb-N25Zqb_otKhyJEGg/exec'
+      connectionURL: 'https://script.google.com/macros/s/AKfycbyBmJYwzwyhpSNdSVvkTDdLammyRRqGsPTNkSoMymb-epttVzNhCpqqyc2nAz0H8ZQi/exec'
     }
   }else if(endpoint=='IFA0330'){
     return {
-      connectionURL: 'https://script.google.com/macros/s/AKfycbwzCdDfRXtdUdFgTtlmyhSgmg36C9R7kEAyYjpUV2qteY-JyOfVSAeIAFo7Ur4oaKbc/exec'
+      connectionURL: 'https://script.google.com/macros/s/AKfycbyErGHV-aqxbP9xle4wSrrPOkOoQuVtv8o9gCGYwI4wcvbN0G6gi7OWRQTnak38-KJ_/exec'
     }
   }else if(endpoint=='IFA0340'){
     return {
-      connectionURL: 'https://script.google.com/macros/s/AKfycbzsfsGskv77tWYufMXpjws_BBnIIQmn-0mN6gMiB1rbvl6hjKrl4UWsCMvF4ekumIiqUQ/exec'
+      connectionURL: 'https://script.google.com/macros/s/AKfycbxJv5Kt29jmSPpFF9qFErXfAfNzxQK28oZ_0aPKHyeAzbkzlnj3SqU9nBMeOWace-sPPQ/exec'
     }
   }else if(endpoint == 'IFA0040' || endpoint == 'IF0050'){
     return {

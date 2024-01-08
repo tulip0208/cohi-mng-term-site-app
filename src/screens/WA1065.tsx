@@ -105,7 +105,7 @@ const WA1065 = ({navigation}:Props) => {
      ************************************************/
     const handleInputChange = async (newText: string) => {
       setLnkNewTagDatMem(newText);
-      //setInputLimit(400 - lnkNewTagDatMem.length); //★要確認
+      setInputLimit(400 - lnkNewTagDatMem.length); //残文字数リアルタイム変動
     };
     // 入力がフォーカスアウトされたときのハンドラー
     const filterText = async () => {

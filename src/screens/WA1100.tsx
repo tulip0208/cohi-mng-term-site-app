@@ -18,7 +18,7 @@ import { IFA0340 } from '../utils/Api.tsx';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RNCamera } from 'react-native-camera';
 import { RootList } from '../navigation/AppNavigator.tsx';
-import { ApiResponse, IFA0110Response,IFA0340ResponseDtl } from '../types/type.tsx';
+import { ApiResponse, IFA0340Response,IFA0340ResponseDtl } from '../types/type.tsx';
 import { useRecoilState,useResetRecoilState } from "recoil";
 import { WA1100DataState,WA1101BackState } from "../atom/atom.tsx";
 // WA1100 用の navigation 型
@@ -88,7 +88,8 @@ const WA1100 = ({navigation}:Props) => {
       setInputValue(""); 
       setIsViewNextButton(false);
       setWkplc("");
-      setWkplcTyp("");      
+      setWkplcTyp("");
+      setIsNext(true);
     };
     // 10秒以上の長押しを検出
     const handleLongPress = () => {  
@@ -194,7 +195,7 @@ const WA1100 = ({navigation}:Props) => {
 
         return false;
       }
-      const data = responseIFA0340.data as IFA0110Response<IFA0340ResponseDtl>;
+      const data = responseIFA0340.data as IFA0340Response<IFA0340ResponseDtl>;
       const dataDtl = data.dtl[0] as IFA0340ResponseDtl;
       
       // oldTagId の値だけを抽出して新しい配列に格納する

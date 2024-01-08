@@ -654,6 +654,12 @@ export const styles = StyleSheet.create({
     marginBottom: -12,
 
   },
+  pickerFixStyle:{
+    borderWidth: 1, // 枠線の幅
+    borderColor: 'black', // 枠線の色
+    height:30,
+
+  },  
   pickerLabelText: {
     marginEnd: 10, // ピッカーとの間隔を設定    
     fontSize: 15,

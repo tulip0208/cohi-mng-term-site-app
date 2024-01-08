@@ -18,7 +18,7 @@ import { IFA0330 } from '../utils/Api.tsx';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RNCamera } from 'react-native-camera';
 import { RootList } from '../navigation/AppNavigator';
-import { ApiResponse, IFA0110Response,IFA0330ResponseDtl } from '../types/type.tsx';
+import { ApiResponse, IFA0330Response,IFA0330ResponseDtl } from '../types/type.tsx';
 import { useSetRecoilState, useRecoilState, useRecoilValue, useResetRecoilState  } from "recoil";
 import { WA1060PrevScreenId,WA1060DataState,WA1061BackState,WA1060CmnTagFlgState,WA1060NewTagIdState,WA1060OldTagInfosState,WA1060WkPlacState,WA1063MemoAutoState,WA1065MemoState } from "../atom/atom.tsx";
 import { CT0007} from "../enum/enums.tsx";
@@ -129,6 +129,7 @@ const WA1060 = ({navigation}:Props) => {
       setWkplc("");
       setWkplcTyp("");
       contentsViews()
+      setIsNext(true);
     };
     // 10秒以上の長押しを検出
     const handleLongPress = () => {  
@@ -366,7 +367,7 @@ const WA1060 = ({navigation}:Props) => {
       if(await apiIsError(responseIFA0330)) {
         return ""
       }
-      const data = responseIFA0330.data as IFA0110Response<IFA0330ResponseDtl>;
+      const data = responseIFA0330.data as IFA0330Response<IFA0330ResponseDtl>;
       //レスポンス1件(共通)
       if(data.dtl.length===1){
         const result = await showAlert("確認", messages.IA5017(), true);

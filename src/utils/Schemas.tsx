@@ -149,11 +149,11 @@ export const fixedPlacesSchema: Realm.ObjectSchema = {
  * 定置場情報のスキーマ定義
  ************************************************/  
 export const fixedPlacesInfoSchema: Realm.ObjectSchema = {
-  name: 'position',
+  name: 'fixed_places_info',
   primaryKey: 'id',
   properties: {
     id: 'string',//ID UUID
-    useDt: 'string',//利用日時 YYYY/MM/DD hh:mm:ss
+    useDt: 'date',//利用日時 YYYY/MM/DD hh:mm:ss
     storPlacId: { type: 'string', indexed: true }, // 保管場ID
     fixPlacId: { type: 'string', indexed: true }, // 定置場ID
     stySec: { type: 'string', optional: true},//定置区画ID 

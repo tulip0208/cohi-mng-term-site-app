@@ -64,7 +64,7 @@ const WA1094 = ({navigation}:Props) => {
       await logUserAction(`ボタン押下: 送信(WA1094)`);
       setModalVisible(true);
       const dateStr = getCurrentDateTime();
-      //IFT0090実行
+      //IFT0420実行
       const responseIFA0420 = await IFT0420(
         WA1090WkPlac,
         WA1091OldTagInfo,

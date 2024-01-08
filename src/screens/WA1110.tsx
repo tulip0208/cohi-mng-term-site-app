@@ -17,7 +17,7 @@ import { useAlert } from '../components/AlertContext.tsx';
 import { IFA0320 } from '../utils/Api.tsx'; 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootList } from '../navigation/AppNavigator.tsx';
-import { ApiResponse, IFA0110Response,IFA0320ResponseDtl } from '../types/type.tsx';
+import { ApiResponse, IFA0320Response,IFA0320ResponseDtl } from '../types/type.tsx';
 import { useRecoilState,useResetRecoilState } from "recoil";
 import { WA1110DataState,WA1111BackState } from "../atom/atom.tsx";
 // WA1110 用の navigation 型
@@ -144,7 +144,7 @@ const WA1110 = ({navigation}:Props) => {
       if(await apiIsError(responseIFA0320)){
         return false;
       } 
-      const data = responseIFA0320.data as IFA0110Response<IFA0320ResponseDtl>;
+      const data = responseIFA0320.data as IFA0320Response<IFA0320ResponseDtl>;
       const dataDtl = data.dtl[0] as IFA0320ResponseDtl;
       
       // 一時データ格納する

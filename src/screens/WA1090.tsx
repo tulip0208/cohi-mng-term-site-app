@@ -17,7 +17,7 @@ import { useAlert } from '../components/AlertContext.tsx';
 import { IFA0340 } from '../utils/Api.tsx'; 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootList } from '../navigation/AppNavigator.tsx';
-import { ApiResponse, IFA0110Response,IFA0340ResponseDtl } from '../types/type.tsx';
+import { ApiResponse, IFA0340Response,IFA0340ResponseDtl } from '../types/type.tsx';
 import {  useRecoilState, useResetRecoilState  } from "recoil";
 import { WA1090PrevScreenId,WA1092WtDsState,WA1091BackState,WA1090NewTagIdState,WA1091OldTagInfoState,WA1090WkPlacState,WA1093MemoState } from "../atom/atom.tsx";
 
@@ -117,6 +117,7 @@ const WA1090 = ({navigation}:Props) => {
       setWkplc("");
       setWkplcTyp("");
       contentsViews()
+      setIsNext(true);
     };
     // 10秒以上の長押しを検出
     const handleLongPress = () => {  
@@ -125,7 +126,7 @@ const WA1090 = ({navigation}:Props) => {
         setIsNext(false);
         setIsCannotRead(true);
         setIsViewNextButton(true);
-      }, 10); // 10秒 = 10000ミリ秒★
+      }, 10000); // 10秒 = 10000ミリ秒
     };
     // 次へボタンのスタイルを動的に変更するための関数
     const getNextButtonStyle = () => {
@@ -253,7 +254,7 @@ const WA1090 = ({navigation}:Props) => {
       if(await apiIsError(responseIFA0340)) {
         return ""
       }
-      const data = responseIFA0340.data as IFA0110Response<IFA0340ResponseDtl>;
+      const data = responseIFA0340.data as IFA0340Response<IFA0340ResponseDtl>;
       setNewTagId(txtNewTagId);//★確認
       //レスポンス1件(共通)
       if(data.dtl.length===1){

@@ -323,6 +323,19 @@ export interface WA1110Const{
         surDsWt: number | null;  // 表面線量率測定時重量（焼却時）、半角数値（オプショナル）
     };
 }
+//WA1140
+export interface WA1140Const{
+    newTagId: string;
+    storPlacId:string;//保管場ID
+    fixPlacId:string;//定置場ID
+    wkplcTyp: string;
+    wkplc: string;
+    rmSolTyp:string;
+    stySec:string;
+    areNo:string;
+    nos:string;
+}
+
 /******************
  * Api
  ******************/
@@ -353,6 +366,13 @@ export interface IFA0110Response<T> {
     sttCd: string;
     errCd?: string | null; // オプショナルでnullも許容
     rcvDt: string;
+    itcRstCd: number;
+    gyDt: T; //jsonオブジェクト
+}
+export interface IFA0310Response<T> {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
     cnt: number;
     dtl: T[]; // Detail型の配列
 }
@@ -376,6 +396,13 @@ export interface IFA0310ResponseDtl {
     rmSolInf?: string | null;
     lnkNewTagDatMem?: string | null;    
 }
+export interface IFA0320Response<T> {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
+    cnt: number;
+    dtl: T[]; // Detail型の配列
+}
 export interface IFA0320ResponseDtl {
     oldTagId: string;  // 旧タグID、全角混在が可能
     tmpLocId: string;  // 仮置場ID、半角英数字
@@ -386,6 +413,13 @@ export interface IFA0320ResponseDtl {
     surDsRt: number | null;  // 表面線量率（焼却時）、半角数値（オプショナル）
     surDsDt?: string | null;  // 表面線量率測定日（焼却時）、日付（オプショナル）
     surDsWt: number | null;  // 表面線量率測定時重量（焼却時）、半角数値（オプショナル）
+}
+export interface IFA0330Response<T> {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
+    cnt: number;
+    dtl: T[]; // Detail型の配列
 }
 export interface IFA0330ResponseDtl {
     newTagId: string;
@@ -415,6 +449,13 @@ export interface IFA0330ResponseDtl {
     lnkNewTagDatMem?: string;
     sndId: string;
 }
+export interface IFA0340Response<T> {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
+    cnt: number;
+    dtl: T[]; // Detail型の配列
+}
 export interface IFA0340ResponseDtl {
     newTagId: string;
     oldTagId: string;
@@ -429,7 +470,47 @@ export interface IFA0340ResponseDtl {
     surDsWt: number;
     sndId?: string | null;
 }
+export interface IFT0090Response<T> {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
+    datNum: string;
+    itcRstCd: number;
+    vldCnt: number;
+    invCnt: number;
+    invDatDtl:T[]; // Detail型の配列
+}
 export interface IFT0090ResponseDtl {
+    sndId?: string;
+    datElm?: string;
+    invCd?: number;
+}
+export interface IFT0140Response<T> {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
+    datNum: string;
+    itcRstCd: number;
+    vldCnt: number;
+    invCnt: number;
+    invDatDtl:T[]; // Detail型の配列
+}
+export interface IFT0140ResponseDtl {
+    sndId?: string;
+    datElm?: string;
+    invCd?: number;
+}
+export interface IFT0420Response<T> {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
+    datNum: string;
+    itcRstCd: number;
+    vldCnt: number;
+    invCnt: number;
+    invDatDtl:T[]; // Detail型の配列
+}
+export interface IFT0420ResponseDtl {
     sndId?: string;
     datElm?: string;
     invCd?: number;
