@@ -31,7 +31,8 @@ import WA1101 from '../screens/WA1101';
 import WA1110 from '../screens/WA1110';
 import WA1111 from '../screens/WA1111';
 // import WA1120 from '../screens/WA1120';
-// import WA1130 from '../screens/WA1130';
+import WA1130 from '../screens/WA1130';
+import WA1131 from '../screens/WA1131';
 import WA1140 from '../screens/WA1140';
 import WA1141 from '../screens/WA1141';
 import setupRealm, { getInstance } from '../utils/Realm'; // Realmのセットアップ関数をインポート
@@ -72,6 +73,7 @@ export type RootList = {
   WA1111: undefined;
   WA1120: undefined;
   WA1130: undefined;
+  WA1131: undefined;
   WA1140: undefined;
   WA1141: undefined;
 };
@@ -214,7 +216,8 @@ const AppNavigator = () => {
           <Stack.Screen name="WA1110" component={WA1110} />
           <Stack.Screen name="WA1111" component={WA1111} />
           {/* <Stack.Screen name="WA1120" component={WA1120} /> */}
-          {/* <Stack.Screen name="WA1130" component={WA1130} /> */}
+          <Stack.Screen name="WA1130" component={WA1130} />
+          <Stack.Screen name="WA1131" component={WA1131} />
           <Stack.Screen name="WA1140" component={WA1140} />
           <Stack.Screen name="WA1141" component={WA1141} />
         </Stack.Navigator>

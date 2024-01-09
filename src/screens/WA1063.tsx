@@ -233,7 +233,7 @@ const WA1063 = ({navigation}:Props) => {
           <Picker.Item key="1" label="耐候性大型土のう" value="1" />
           <Picker.Item key="2" label="クロス型大型土のう袋等" value="2" />
           <Picker.Item key="3" label="ランニング型大型土のう袋等_Ⅰ" value="3" />
-          <Picker.Item key="4" label="ランニング型大型土のう袋等_Ⅰ" value="4" />
+          <Picker.Item key="4" label="ランニング型大型土のう袋等_Ⅱ" value="4" />
           <Picker.Item key="5" label="フレキシブルコンテナ耐候性（3年）" value="5" />
           <Picker.Item key="6" label="フレキシブルコンテナ耐水・耐候性（3年）" value="6" />
           <Picker.Item key="7" label="その他" value="7" />

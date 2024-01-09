@@ -176,6 +176,7 @@ const WA1140 = ({navigation}:Props) => {
     const handleCodeScannedForWkPlc = async (data:string) => {
       const parts = data.split(',');
       setShowScannerWkPlc(false);
+      //読み込んだID種別が定置場では または定置場かつ施設区分：定置場でない場合
       if(parts[0]!=="6" || (parts[0]==="6" && parts[4]!=='0')){
         await showAlert("通知", messages.EA5023(), false);
         return;
@@ -192,7 +193,9 @@ const WA1140 = ({navigation}:Props) => {
       setWA1140Data({...WA1140Data,
         storPlacId:storPlacId as string,
         fixPlacId:fixPlacId as string,
-        })
+        wkplc:wkplc,
+        wkplcTyp:wkplcTyp,
+      })
       setIsTagRead(true);
       setIsWkPlcRead(true);
     };
@@ -215,8 +218,8 @@ const WA1140 = ({navigation}:Props) => {
         await showAlert("通知", messages.EA5008(), false);
         return;
       }else if(type !== RNCamera.Constants.BarCodeType.qr &&
-        parts.length !== 1 && parts[0] !== "CM"){
-        // --QRコード(CM以外)--
+        (parts.length === 1 || parts[0] !== "CM")){
+        // --QRコード(CSVでない||CMでない)--
         await showAlert("通知", messages.EA5009(), false);
         return;    
       }else if(type === RNCamera.Constants.BarCodeType.qr && 
@@ -232,8 +235,8 @@ const WA1140 = ({navigation}:Props) => {
         }
       }else if(type === 'CODABAR'){
         // --バーコード--
-        if(checkFormat(data)){
-          await showAlert("通知", messages.EA5017(inputValue), false);
+        if(!checkFormat(data)){
+          await showAlert("通知", messages.EA5017(data), false);
           setIsNext(false);
           return;
         }

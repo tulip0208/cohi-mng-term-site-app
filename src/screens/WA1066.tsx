@@ -77,6 +77,12 @@ const WA1066 = ({navigation}:Props) => {
           tyRegDt:dateStr,//紐付登録日時
         });
       }
+
+      //メモの上限文字数以降カット
+      if (lnkNewTagDatMem.length > 400) {
+        setLnkNewTagDatMem(lnkNewTagDatMem.substring(0, 400))
+      }
+      
       //IFT0090実行
       const responseIFA0310 = await IFT0090(
         WA1060WkPlac,

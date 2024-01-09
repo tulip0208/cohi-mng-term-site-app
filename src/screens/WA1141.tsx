@@ -21,6 +21,7 @@ import messages from '../utils/messages.tsx';
 import ProcessingModal from '../components/Modal.tsx';
 import {getCurrentDateTime} from '../utils/common.tsx'
 import { IFT0140 } from '../utils/Api.tsx'; 
+import { ApiResponse } from '../types/type.tsx';
 // WA1141 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1141'>;
 interface Props {
@@ -136,11 +137,43 @@ const WA1141 = ({navigation}:Props) => {
         WA1140Data,
         dateStr,
       );
+      if(await apiIsError(responseIFA0140)){
+        return;
+      }
+      if(responseIFA0140.data?.itcRstCd===1){
+        await showAlert("通知", messages.EA5025(WA1140Data.newTagId), false);
+        return;
+      }
+      await showAlert("通知", messages.IA5005('定置ステータス更新'), false);
       
       setModalVisible(false);
       await logScreen(`画面遷移:WA1040_メニュー`);  
       navigation.navigate('WA1040');
     };
+
+    /************************************************
+     * API通信処理エラー有無確認・エラーハンドリング
+     * @param {*} response 
+     * @returns 
+     ************************************************/
+    const apiIsError = async <T,>(response:ApiResponse<T>):Promise<boolean>=>{
+      if (!response.success) {
+        switch(response.error){
+          case 'codeHttp200':
+            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            break;
+          case 'codeRsps01':
+            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            break;
+          case 'timeout':
+            await showAlert("通知", messages.EA5003(), false);
+            break;
+        }
+        return true ;
+      }else{
+        return false;
+      }
+    }
 
     /************************************************
      * ボタン表示・非表示判断

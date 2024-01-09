@@ -3,7 +3,7 @@
  * atom/atom.tsx
  * ---------------------------------------------*/
 import { atom, atomFamily } from "recoil";
-import {WA1070Const,WA1080Const,WA1100Const,WA1140Const,WA1110Const,WA1060Const,WA1060WkPlacConst,WA1060OldTagInfoConst,WA1092WtDsConst,WA1090WkPlacConst,WA1091OldTagInfoConst} from "../types/type"
+import {WA1070Const,WA1080Const,WA1100Const,WA1130Const,WA1140Const,WA1110Const,WA1060Const,WA1060WkPlacConst,WA1060OldTagInfoConst,WA1092WtDsConst,WA1090WkPlacConst,WA1091OldTagInfoConst,IFT0640ResponseDtl,IFT0640ResponseDtlDtlCheck} from "../types/type"
 import Realm from "realm";
 
 //共通 フッタサーバ名用
@@ -84,6 +84,21 @@ export const WA1101BackState = atom<boolean>({key: "WA1101BackState",default: fa
 //WA1110用
 export const WA1110DataState = atom<WA1110Const|null>({key: "WA1110DataState",default: null,});
 export const WA1111BackState = atom<boolean>({key: "WA1111BackState",default: false,});
+//WA1130用
+export const WA1130DataState = atom<WA1130Const>({key: "WA1130DataState",default: {
+  facTyp:'',//施設区分
+  trpStatus:'',//輸送ステータス区分
+  storPlacId:'',//保管場ID
+  fixPlacId:'',//定置場ID
+  wkplcTyp: '',
+  wkplc: '',
+  newTagId: '',
+  trpComId: '',
+  trpCrdNo: '',//輸送カード番号
+  listNewTag: [],//新タグID一覧
+},});
+export const WA1130PrevScreenId = atom<string>({key: "WA1130PrevScreenId",default: "",});
+export const WA1131BackState = atom<boolean>({key: "WA1131BackState",default: false,});
 //WA1140用
 export const WA1140DataState = atom<WA1140Const>({key: "WA1140DataState",default: {
   storPlacId:'',//保管場ID
@@ -95,6 +110,26 @@ export const WA1140DataState = atom<WA1140Const>({key: "WA1140DataState",default
   stySec:'',
   areNo:'',
   nos:'',
+},});
+export const IFT0640DataState = atom<IFT0640ResponseDtl<IFT0640ResponseDtlDtlCheck>>({key: "IFT0640DataState",default: {
+  trpComId:'',
+  crdNo:'',
+  tmpLocId:'',
+  vclId:'',
+  vclNum:'',
+  drvId:'',
+  drvName:'',
+  stgLocId:'',
+  acpSrtFctId:'',
+  lgSdBgDtl:[],
+  vclRdtDsFr:'',
+  vclRdtDsRe:'',
+  vclRdtDsLe:'',
+  vclRdtDsRi:'',
+  lctRdtDsFr:'',
+  lctRdtDsRe:'',
+  lctRdtDsLe:'',
+  lctRdtDsRi:'',
 },});
 export const WA1140PrevScreenId = atom<string>({key: "WA1140PrevScreenId",default: "",});
 export const WA1141BackState = atom<boolean>({key: "WA1141BackState",default: false,});

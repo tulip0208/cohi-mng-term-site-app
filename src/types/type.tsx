@@ -323,6 +323,19 @@ export interface WA1110Const{
         surDsWt: number | null;  // 表面線量率測定時重量（焼却時）、半角数値（オプショナル）
     };
 }
+//WA1130
+export interface WA1130Const{
+    facTyp: string;//施設区分
+    trpStatus: string;//輸送ステータス区分
+    newTagId: string;
+    storPlacId:string;//保管場ID
+    fixPlacId:string;//定置場ID
+    wkplcTyp: string;
+    wkplc: string;
+    trpComId: string;//輸送事業者ID
+    trpCrdNo: string;//輸送カード番号
+    listNewTag: string[],//新タグID一覧
+}
 //WA1140
 export interface WA1140Const{
     newTagId: string;
@@ -485,6 +498,28 @@ export interface IFT0090ResponseDtl {
     datElm?: string;
     invCd?: number;
 }
+export interface IFT0120Response<T1,T2> {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
+    datNum: string;
+    yesNoAlt:number;
+    altDatDtl:T1[]; // Detail型の配列
+    itcRstCd: number;
+    vldCnt: number;
+    invCnt: number;
+    invDatDtl:T2[]; // Detail型の配列
+}
+export interface IFT0120ResponseDtl1 {
+    vclId?: string;
+    sndId?: string;
+    altCd?: number;
+}
+export interface IFT0120ResponseDtl2 {
+    sndId?: string;
+    datElm?: string;
+    invCd?: number;
+}
 export interface IFT0140Response<T> {
     sttCd: string;
     errCd?: string | null; // オプショナルでnullも許容
@@ -515,4 +550,49 @@ export interface IFT0420ResponseDtl {
     datElm?: string;
     invCd?: number;
 }
+export interface IFT0640Response<T> {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
+    cnt: number;
+    dtl:T[]; // Detail型の配列
+}
+export interface IFT0640ResponseDtl<T> {
+    trpComId: string;
+    crdNo: string;
+    tmpLocId: string;
+    vclId: string;
+    vclNum: string;
+    drvId: string;
+    drvName: string;
+    stgLocId: string;
+    acpSrtFctId: string;
+    lgSdBgDtl: T[];
+    vclRdtDsFr: string;
+    vclRdtDsRe: string;
+    vclRdtDsLe: string;
+    vclRdtDsRi: string;
+    lctRdtDsFr: string;
+    lctRdtDsRe: string;
+    lctRdtDsLe: string;
+    lctRdtDsRi: string;
+}
+export interface IFT0640ResponseDtlDtl {
+    newTagId: string;
+    tagCol: string;
+    rmSolTyp: string;
+    caLgSdBgWt: string;
+    caLgSdBgDs: string;
+    radCon: string;
+}
+export interface IFT0640ResponseDtlDtlCheck {
+    newTagId: string;
+    tagCol: string;
+    rmSolTyp: string;
+    caLgSdBgWt: string;
+    caLgSdBgDs: string;
+    radCon: string;
+    check:boolean;
+}
+
 

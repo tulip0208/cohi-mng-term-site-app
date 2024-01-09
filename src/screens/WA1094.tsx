@@ -64,6 +64,12 @@ const WA1094 = ({navigation}:Props) => {
       await logUserAction(`ボタン押下: 送信(WA1094)`);
       setModalVisible(true);
       const dateStr = getCurrentDateTime();
+
+      //メモの上限文字数以降カット
+      if (lnkNewTagDatMem.length > 400) {
+        setLnkNewTagDatMem(lnkNewTagDatMem.substring(0, 400))
+      }
+      
       //IFT0420実行
       const responseIFA0420 = await IFT0420(
         WA1090WkPlac,

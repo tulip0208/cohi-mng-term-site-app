@@ -57,6 +57,10 @@ export const styles = StyleSheet.create({
   middleContainer:{
     paddingTop:10,
   },
+  narrow:{
+    marginTop:-20,
+    marginBottom:-20,
+  },  
   //--------------------  
   //--------ヘッダ--------
   headerContainer: {
@@ -161,6 +165,9 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
+  },
+  inputWhite:{
+    backgroundColor: 'white',    
   },
   inputDisabled: {
     backgroundColor: '#ccc', // 無効化したときの背景色
@@ -730,12 +737,18 @@ export const styles = StyleSheet.create({
     marginTop: 20,
     padding: 10,
   },
+  modalInputView: {
+    height:180,
+    width: '80%',
+    backgroundColor: '#f2f2f2',
+    borderRadius: 10,
+    padding: 10,    
+  },  
   //--------------------    
   //--------カスタムアラート-------
   alertView: {
     width:'50%',
     backgroundColor: "#f2f2f2",
-
   },
   alertButtonContainer: {
     borderTopColor: '#000', // ボーダーの色をグレーに設定
@@ -793,6 +806,11 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily:"ipaexg",
   },
+  //--------------------        
+  //--------色--------  
+  bgYellow: {
+    backgroundColor: 'yellow'
+  },  
   //--------------------        
   //--------フッタ--------
   footerContainer: {

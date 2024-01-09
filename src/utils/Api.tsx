@@ -7,7 +7,13 @@ import axios,{ AxiosError }  from 'axios';
 import { loadFromKeystore,getEncryptionKeyFromKeystore } from './KeyStore'; // KeyStoreの確認関数
 import { decryptWithAES256CBC } from './Security';
 import { logCommunication} from './Log';
-import { AxiosResponse,ApiResponse,IFA0030Response,IFA0110Response,IFA0310Response,IFA0310ResponseDtl,IFA0320Response,IFA0320ResponseDtl,IFA0330Response,IFA0330ResponseDtl,IFA0340Response,IFA0340ResponseDtl,IFT0090Response,IFT0090ResponseDtl,IFT0140Response,IFT0140ResponseDtl,IFT0420Response,IFT0420ResponseDtl, ActivationInfo, ComId, TrmId, ApiKey, TrmKey, WA1060WkPlacConst,WA1060OldTagInfoConst,WA1060Const,WA1090WkPlacConst,WA1091OldTagInfoConst,WA1092WtDsConst,WA1140Const} from '../types/type';
+import { AxiosResponse,ApiResponse,IFA0030Response,IFA0110Response,IFA0310Response,IFA0310ResponseDtl,
+  IFA0320Response,IFA0320ResponseDtl,IFA0330Response,IFA0330ResponseDtl,IFA0340Response,IFA0340ResponseDtl,
+  IFT0090Response,IFT0090ResponseDtl,IFT0120Response,IFT0120ResponseDtl1,IFT0120ResponseDtl2,IFT0140Response,IFT0140ResponseDtl,IFT0420Response,IFT0420ResponseDtl,
+  IFT0640Response,IFT0640ResponseDtl,IFT0640ResponseDtlDtl,IFT0640ResponseDtlDtlCheck,
+  ActivationInfo, ComId, TrmId, ApiKey, TrmKey,
+  WA1060WkPlacConst,WA1060OldTagInfoConst,WA1060Const,WA1090WkPlacConst,WA1091OldTagInfoConst,WA1092WtDsConst,
+  WA1130Const,WA1140Const} from '../types/type';
 import { Buffer } from 'buffer';
 
 /************************************************
@@ -82,7 +88,7 @@ export const IFA0030 = async () : Promise<ApiResponse<IFA0030Response>> => {
     const secretKey = await getEncryptionKeyFromKeystore(); // AES暗号化のための秘密鍵
     const realm = getInstance()
     const userInfo = realm.objects('user')[0]
-    const settingsInfo = await realm.objects('settings')[0]
+    const settingsInfo = realm.objects('settings')[0]
     const comId = await loadFromKeystore("comId") as ComId
     const trmId = await loadFromKeystore("trmId") as TrmId
     const apiKey = await loadFromKeystore("apiKey") as ApiKey
@@ -442,6 +448,51 @@ export const IFT0090 = async (
 };
 
 /************************************************
+ * IFT0120_車両ステータス更新（保管場定置の場合）
+ ************************************************/
+export const IFT0120 = async (
+  WA1130Data:WA1130Const,
+  IFT0640Data:IFT0640ResponseDtl<IFT0640ResponseDtlDtlCheck>,
+  dateStr:string,
+) : Promise<ApiResponse<IFT0120Response<IFT0120ResponseDtl1,IFT0120ResponseDtl2>>> => {
+  try {
+    const realm = getInstance()
+    const loginInfo = realm.objects('login')[0]
+    const trmId = await loadFromKeystore("trmId") as TrmId
+    const requestDataDtl = {
+      comId: loginInfo.comId,
+      dtl: [{
+        chgKnd:'I',
+        sndId:'SS'+trmId.trmId+dateStr.replace(/[^0-9]/g, "").slice(0,14),
+        vclId:IFT0640Data.vclId,
+        crdNo:IFT0640Data.crdNo,
+        drvId:IFT0640Data.drvId,
+        trpSttKnd:WA1130Data.trpStatus,
+        trpSttChgDt:dateStr,
+        vclWt:'',
+        unLgSdBgDtl:[  
+          IFT0640Data.lgSdBgDtl.map(item => ({ newTagId: item.newTagId }))
+        ],
+        scMaxDen:'',
+        trpComId:loginInfo.comId,
+        tmpLocId:'',
+      }]
+    };
+
+    const requestData = await setIFA0110RequestData("IFT0120",requestDataDtl);
+
+    // サーバー通信処理（Api.js内の関数を呼び出し）
+    const res = await sendToServer(requestData,"IFT0120","車両ステータス更新（保管場定置の場合）");
+    const response = res as AxiosResponse<IFA0110Response<IFT0120Response<IFT0120ResponseDtl1,IFT0120ResponseDtl2>>>;
+
+    return { success: true, data: response.data.gyDt };
+  } catch (error) {
+    const e = error as CustomError;
+    return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
+  }
+};
+
+/************************************************
  * IFT0140_定置ステータス更新
  ************************************************/
 export const IFT0140 = async (
@@ -481,6 +532,50 @@ export const IFT0140 = async (
 };
 
 /************************************************
+ * IFT0140_定置ステータス更新(荷下登録呼び出し)
+ ************************************************/
+export const IFT0140FromWA1131 = async (
+  WA1130Data:WA1130Const,
+  IFT0640Data:IFT0640ResponseDtl<IFT0640ResponseDtlDtlCheck>,
+  dateStr:string,
+) : Promise<ApiResponse<IFT0420Response<IFT0420ResponseDtl>>> => {
+  try {
+    const realm = getInstance()
+    const loginInfo = realm.objects('login')[0]
+    const trmId = await loadFromKeystore("trmId") as TrmId
+    if (WA1130Data.fixPlacId) {
+      WA1130Data.fixPlacId = "TD" + WA1130Data.fixPlacId.substring(2);
+    }
+    const requestDataDtl = {
+      comId: loginInfo.comId,
+      stgLocId:WA1130Data.storPlacId,
+      styDt:dateStr,
+      dtl: [
+        IFT0640Data.lgSdBgDtl.map(item => ({
+          chgKnd:'I',
+          sndId:'TJ'+trmId.trmId+dateStr.replace(/[^0-9]/g, "").slice(0,14),
+          newTagId: item.newTagId,
+          styLocId:WA1130Data.fixPlacId,
+          stySec:'1',
+          areNo:'1',
+          nos:'1',
+        }))
+       ]
+    };
+
+    const requestData = await setIFA0110RequestData("IFT0140",requestDataDtl);
+
+    // サーバー通信処理（Api.js内の関数を呼び出し）
+    const res = await sendToServer(requestData,"IFT0140","荷下定置ステータス更新");
+    const response = res as AxiosResponse<IFA0110Response<IFT0140Response<IFT0140ResponseDtl>>>;
+
+    return { success: true, data: response.data.gyDt };
+  } catch (error) {
+    const e = error as CustomError;
+    return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
+  }
+};
+/************************************************
  * IFT0420_新タグ紐付データ取込（焼却灰）
  ************************************************/
 export const IFT0420 = async (
@@ -519,6 +614,37 @@ export const IFT0420 = async (
     // サーバー通信処理（Api.js内の関数を呼び出し）
     const res = await sendToServer(requestData,"IFT0420","新タグ紐付データ取込(焼却灰)");
     const response = res as AxiosResponse<IFA0110Response<IFT0090Response<IFT0090ResponseDtl>>>;
+
+    return { success: true, data: response.data.gyDt };
+  } catch (error) {
+    const e = error as CustomError;
+    return { success: false, error: e.message, status:e.status, code:e.code, api:e.api};
+  }
+};
+
+/************************************************
+ * IFT0640_輸送カード情報連携
+ ************************************************/
+export const IFT0640 = async (
+  WA1130Data:WA1130Const,
+) : Promise<ApiResponse<IFT0640Response<IFT0640ResponseDtl<IFT0640ResponseDtlDtl>>>> => {
+  try {
+    const realm = getInstance()
+    const loginInfo = realm.objects('login')[0]
+    const trmId = await loadFromKeystore("trmId") as TrmId
+    const requestDataDtl = {
+      comId: loginInfo.comId,
+      dtl: [{
+        trpComId:WA1130Data.trpComId,
+        crdNo:WA1130Data.trpCrdNo,
+      }]
+    };
+
+    const requestData = await setIFA0110RequestData("IFT0640",requestDataDtl);
+
+    // サーバー通信処理（Api.js内の関数を呼び出し）
+    const res = await sendToServer(requestData,"IFT0640","輸送カード情報連携");
+    const response = res as AxiosResponse<IFA0110Response<IFT0640Response<IFT0640ResponseDtl<IFT0640ResponseDtlDtl>>>>;
 
     return { success: true, data: response.data.gyDt };
   } catch (error) {
@@ -722,6 +848,10 @@ const getSettings = async (endpoint:string) => {//★スタブ用
     return {
       // connectionURL: 'https://script.google.com/macros/s/AKfycbzpdPH8AHwRAWPGXJieNecal8OeGVO4AHtGeKZr31gz_edledxDk35ZZ4yNyXQeqEwg_w/exec'
       connectionURL: 'https://script.google.com/macros/s/AKfycbwFul0A7PHmend-smjoO5y8Rahugea53bdH9-nKasEX4tferFnHq4GDtm4jzRxFJZNELw/exec'
+    }
+  }else if(endpoint=='IFT0640'){
+    return {
+      connectionURL: 'https://script.google.com/macros/s/AKfycbwHuGyYtmNXdCrr2nuM1EbHSKEUVQL_afq70qA8uWA-pIVkabKyowj-Yfx9lpZWHM_t/exec'
     }
   }else if(endpoint===""){
     return {
