@@ -3,11 +3,9 @@
  * styles/CommonStyle.tsx
  * ---------------------------------------------*/
 import { StyleSheet } from 'react-native';
+// import StyleSheet from "react-native-rem-stylesheet";
 // 基準サイズ
 const baseSize = 16;
-
-// ピクセルをremに変換する関数
-const rem = (px:number) => px / baseSize;
 
 export const styles = StyleSheet.create({
   fontAndColor:{
@@ -808,6 +806,14 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,    
   },  
+  //--------------------    
+  //--------カスタムアラート-------
+  block: {
+    width: 10, // 四角形の幅
+    height: 10, // 四角形の高さ
+    borderColor: 'black', // 枠線の色
+    borderWidth: 1, // 枠線の太さ  
+  },
   //--------------------    
   //--------カスタムアラート-------
   alertView: {

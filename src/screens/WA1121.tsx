@@ -757,13 +757,9 @@ const WA1121 = ({navigation}:Props) => {
               </View>
               <View style={[styles.tableCell1]}>
                 <Text style={styles.labelText}>分類
-                  <View style={{
-                    width: 10, // 四角形の幅
-                    height: 10, // 四角形の高さ
-                    backgroundColor: tagColor, // 背景色
-                    borderColor: 'black', // 枠線の色
-                    borderWidth: 1, // 枠線の太さ
-                  }} />
+                  <View style={[{backgroundColor: tagColor,}, // 背景色
+                    styles.block]
+                  } />
                 </Text>
               </View>
             </View>
