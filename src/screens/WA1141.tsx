@@ -75,51 +75,27 @@ const WA1141 = ({navigation}:Props) => {
       await logUserAction(`ボタン押下: 送信(WA1141)`);
       //段数で選択された値が、除去土壌種別ごとの閾値を超える場合
       const settingsInfo = realm.objects('settings')[0]
-      let maxNos = 0;
-      switch(WA1140Data.rmSolTyp){
-        case '1':
-          maxNos = settingsInfo.selPlans as number;
-          break;
-        case '2':
-          maxNos = settingsInfo.selCombust as number;
-          break;
-        case '3':
-          maxNos = settingsInfo.selSoil as number;
-          break;
-        case '4':
-          maxNos = settingsInfo.selConcrete as number;
-          break;
-        case '5':
-          maxNos = settingsInfo.selAsphalt as number;
-          break;
-        case '6':
-          maxNos = settingsInfo.selNoncombustMix as number;
-          break;
-        case '7':
-          maxNos = settingsInfo.selAsbestos as number;
-          break;
-        case '8':
-          maxNos = settingsInfo.selPlasterboard as number;
-          break;
-        case '9':
-          maxNos = settingsInfo.selHazard as number;
-          break;
-        case '10':
-          maxNos = settingsInfo.selOutCombust as number;
-          break;
-        case '11':
-          maxNos = settingsInfo.selOutNoncombust as number;
-          break;
-        case '12':
-          maxNos = settingsInfo.selTmpCombust as number;
-          break;
-        case '13':
-          maxNos = settingsInfo.selTmpNoncombust as number;
-          break;
-        case '14':
-          maxNos = settingsInfo.selAsh as number;
-          break;
-      }
+      // maxNosのマッピングを作成し、適切な型アノテーションを設定
+      const maxNosMapping: { [key: string]: number } = {
+        '1': settingsInfo.selPlans as number,
+        '2': settingsInfo.selCombust as number,
+        '3': settingsInfo.selSoil as number,
+        '4': settingsInfo.selConcrete as number,
+        '5': settingsInfo.selAsphalt as number,
+        '6': settingsInfo.selNoncombustMix as number,
+        '7': settingsInfo.selAsbestos as number,
+        '8': settingsInfo.selPlasterboard as number,
+        '9': settingsInfo.selHazard as number,
+        '10': settingsInfo.selOutCombust as number,
+        '11': settingsInfo.selOutNoncombust as number,
+        '12': settingsInfo.selTmpCombust as number,
+        '13': settingsInfo.selTmpNoncombust as number,
+        '14': settingsInfo.selAsh as number,
+      };
+
+      // rmSolTypに基づいてmaxNosを取得する際には、キーを文字列として扱う
+      const maxNos = maxNosMapping[String(WA1140Data.rmSolTyp)];
+
       if(Number(selectNos) > maxNos){
         await showAlert("通知", messages.EA5024(String(maxNos)), false);
         return;
@@ -140,7 +116,7 @@ const WA1141 = ({navigation}:Props) => {
       if(await apiIsError(responseIFA0140)){
         return;
       }
-      if(responseIFA0140.data?.itcRstCd===1){
+      if(responseIFA0140.data?.itcRstCd===1){//★確認
         await showAlert("通知", messages.EA5025(WA1140Data.newTagId), false);
         return;
       }
@@ -296,51 +272,28 @@ const WA1141 = ({navigation}:Props) => {
     //段数
     const makePickerNos = () => {
       const settingsInfo = realm.objects('settings')[0]
-      let maxNos = 0;
-      switch(WA1140Data.rmSolTyp){
-        case '1':
-          maxNos = settingsInfo.selPlans as number;
-          break;
-        case '2':
-          maxNos = settingsInfo.selCombust as number;
-          break;
-        case '3':
-          maxNos = settingsInfo.selSoil as number;
-          break;
-        case '4':
-          maxNos = settingsInfo.selConcrete as number;
-          break;
-        case '5':
-          maxNos = settingsInfo.selAsphalt as number;
-          break;
-        case '6':
-          maxNos = settingsInfo.selNoncombustMix as number;
-          break;
-        case '7':
-          maxNos = settingsInfo.selAsbestos as number;
-          break;
-        case '8':
-          maxNos = settingsInfo.selPlasterboard as number;
-          break;
-        case '9':
-          maxNos = settingsInfo.selHazard as number;
-          break;
-        case '10':
-          maxNos = settingsInfo.selOutCombust as number;
-          break;
-        case '11':
-          maxNos = settingsInfo.selOutNoncombust as number;
-          break;
-        case '12':
-          maxNos = settingsInfo.selTmpCombust as number;
-          break;
-        case '13':
-          maxNos = settingsInfo.selTmpNoncombust as number;
-          break;
-        case '14':
-          maxNos = settingsInfo.selAsh as number;
-          break;
-      }
+
+      // maxNosのマッピングを作成し、適切な型アノテーションを設定
+      const maxNosMapping: { [key: string]: number } = {
+        '1': settingsInfo.selPlans as number,
+        '2': settingsInfo.selCombust as number,
+        '3': settingsInfo.selSoil as number,
+        '4': settingsInfo.selConcrete as number,
+        '5': settingsInfo.selAsphalt as number,
+        '6': settingsInfo.selNoncombustMix as number,
+        '7': settingsInfo.selAsbestos as number,
+        '8': settingsInfo.selPlasterboard as number,
+        '9': settingsInfo.selHazard as number,
+        '10': settingsInfo.selOutCombust as number,
+        '11': settingsInfo.selOutNoncombust as number,
+        '12': settingsInfo.selTmpCombust as number,
+        '13': settingsInfo.selTmpNoncombust as number,
+        '14': settingsInfo.selAsh as number,
+      };
+
+      // rmSolTypに基づいてmaxNosを取得する際には、キーを文字列として扱う
+      const maxNos = maxNosMapping[String(WA1140Data.rmSolTyp)];
+
       const numberItems = Array.from({ length: maxNos }, (_, index) => index + 1); // 1から始まる数値の配列を生成
 
       return(
@@ -425,7 +378,7 @@ const WA1141 = ({navigation}:Props) => {
           </TouchableOpacity>
           <TouchableOpacity 
            style={getButtonStyle()}
-           disabled={isSendDisabled}           
+           disabled={isSendDisabled}
            onPress={btnAppSend}>
             <Text style={[styles.endButtonText,styles.settingButtonText1]}>送信</Text>
           </TouchableOpacity>                    

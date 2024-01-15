@@ -323,6 +323,82 @@ export interface WA1110Const{
         surDsWt: number | null;  // 表面線量率測定時重量（焼却時）、半角数値（オプショナル）
     };
 }
+//WA1120
+export interface WA1120Const{
+    wkplcTyp: string;
+    wkplc: string;
+}
+export interface WA1120WkPlacConst{//作業場所
+    idTyp:string;//ID種別
+    wkplacId:string;//作業場所ID
+    wkplacNm:string;//作業場所名
+    delSrcTyp:string;//搬出元種別
+    wkplac:string;//作業場所
+}
+export interface WA1120CarConst{//車両
+    idTyp:string;//ID種別
+    carId:string;//車両ID
+    carNm:string;//車両名称
+    carNo:string;//車両番号
+    maxWt:string;//最大積載量
+    carWt:string;//車両重量
+    empCarWt:string;//空車重量
+}
+export interface WA1120DrvConst{//運転手
+    idTyp:string;//ID種別
+    drvId:string;//運転手ID
+    drvNm:string;//運転手名
+}
+export interface WA1120DestConst{//行先
+    idTyp:string;//ID種別
+    storPlacId:string;//保管場ID
+    fixPlacId:string;//定置場ID
+    fixPlacNm:string;//定置場名
+    facTyp:string;//施設区分
+    raKbn:string;//濃度区分
+}
+export interface WA1121NewTagConst{//新タグID情報
+    newTagId:string;//新タグID
+    rmSolTyp:string;//除去土壌等種別
+    ashTyp:string;//焼却灰種別
+    caLgSdBgWt:string;//重量
+    caLgSdBgDs:string;//線量
+    estRa:string;//濃度
+    raKbn:string;//濃度区分
+    class:string;//分類
+    newTagIdRed:boolean;//新タグIDを赤文字にするかどうか
+    caLgSdBgDsRed:boolean;//線量を赤文字にするかどうか
+}
+export interface WA1121DataConst<T>{
+    freJudTyp:string;//フレコン判定種別
+    freJudNen:string;//フレコン判定不燃可燃
+    freJudGai:string;//フレコン判定有害無害
+    freJudNod:string;//フレコン判定濃度
+    freJudWt:string;//フレコン判定重量
+    freTyp:string;//フレコン種別
+    udNoMb:string;//高低濃度混載
+    nenMb:string;//不燃可燃混載
+    haiMb:string;//主灰飛灰混載
+    monoTyp:string;//物品種類
+    gai:string;//有害・無害
+    trpCardTagInfoList:T[];//輸送カード新タグID(配列)
+    flamNm:string;//可燃
+    nonFlamNm:string;//不燃
+    bottomAshNm:string;//主灰
+    flyAshNm:string;//飛灰
+    surDsRt:string;//表面線量率(最大)
+    maxEstRa:string;//放射能濃度(最大)
+    possibleWt:string;//積載可能重量
+    sumWt:string;//累計積載量
+    trpCardApRslt:string;//輸送カード申請結果
+    leftWt:string;//残り積載可能
+}
+export interface caLgSdBgDsInfoConst{//線量情報
+    front:string;//放射線量 前
+    back:string;//放射線量 後
+    right:string;//放射線量 右
+    left:string;//放射線量 左
+}
 //WA1130
 export interface WA1130Const{
     facTyp: string;//施設区分
@@ -494,9 +570,9 @@ export interface IFT0090Response<T> {
     invDatDtl:T[]; // Detail型の配列
 }
 export interface IFT0090ResponseDtl {
-    sndId?: string;
-    datElm?: string;
-    invCd?: number;
+    sndId?: string | null;
+    datElm?: string | null;
+    invCd?: number | null;
 }
 export interface IFT0120Response<T1,T2> {
     sttCd: string;
@@ -511,14 +587,37 @@ export interface IFT0120Response<T1,T2> {
     invDatDtl:T2[]; // Detail型の配列
 }
 export interface IFT0120ResponseDtl1 {
-    vclId?: string;
-    sndId?: string;
-    altCd?: number;
+    vclId?: string | null;
+    sndId?: string | null;
+    altCd?: number | null;
 }
 export interface IFT0120ResponseDtl2 {
-    sndId?: string;
-    datElm?: string;
-    invCd?: number;
+    sndId?: string | null;
+    datElm?: string | null;
+    invCd?: number | null;
+}
+export interface IFT0130Response<T1,T2> {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
+    datNum: string;
+    dtl:T1[];
+    itcRstCd: number;
+    vldCnt: number;
+    invCnt: number;
+    invDatDtl:T2[]; // Detail型の配列
+}
+export interface IFT0130ResponseDtl1 {
+    crdNo:string;
+    sndId:string;
+    trpCdAplRst:number;
+    yesNoAlt:number;
+    altCd?:string | null;
+}
+export interface IFT0130ResponseDtl2 {
+    sndId?: string | null;
+    datElm?: string | null;
+    invCd?: number | null;
 }
 export interface IFT0140Response<T> {
     sttCd: string;
@@ -531,9 +630,20 @@ export interface IFT0140Response<T> {
     invDatDtl:T[]; // Detail型の配列
 }
 export interface IFT0140ResponseDtl {
-    sndId?: string;
-    datElm?: string;
-    invCd?: number;
+    sndId?: string | null;
+    datElm?: string | null;
+    invCd?: number | null;
+}
+export interface IFT0210Response<T> {
+    sttCd: string;
+    errCd?: string | null; // オプショナルでnullも許容
+    rcvDt: string;
+    cnt: string;
+    dtl:T[]; // Detail型の配列
+}
+export interface IFT0210ResponseDtl {
+    crdNo?: string | null;
+    crdIsRlt: number;
 }
 export interface IFT0420Response<T> {
     sttCd: string;
@@ -546,9 +656,9 @@ export interface IFT0420Response<T> {
     invDatDtl:T[]; // Detail型の配列
 }
 export interface IFT0420ResponseDtl {
-    sndId?: string;
-    datElm?: string;
-    invCd?: number;
+    sndId?: string | null;
+    datElm?: string | null;
+    invCd?: number | null;
 }
 export interface IFT0640Response<T> {
     sttCd: string;

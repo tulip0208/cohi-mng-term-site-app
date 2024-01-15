@@ -124,14 +124,6 @@ const WA1130 = ({navigation}:Props) => {
     };
 
     /************************************************
-     * フォーマットチェック
-     ************************************************/
-    const checkFormat = (data:string) => {
-      const pattern = /^[0-9][2-5][0-9]0[0-9]{11}$/;
-      return pattern.test(data);
-    };
-
-    /************************************************
      * コードスキャン後の処理 (作業場所用)
      * @param param0 
      * @returns 
@@ -166,7 +158,7 @@ const WA1130 = ({navigation}:Props) => {
 
       setIsCard(true);
     };
-    // 作業場所Rコードスキャンボタン押下時の処理
+    // 作業場所コードスキャンボタン押下時の処理
     const btnWkPlcQr = async () => {
       await logUserAction(`ボタン押下: 作業場所読込`);
       setShowScannerWkPlc(true);

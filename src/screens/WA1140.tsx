@@ -199,7 +199,7 @@ const WA1140 = ({navigation}:Props) => {
       setIsTagRead(true);
       setIsWkPlcRead(true);
     };
-    // 作業場所Rコードスキャンボタン押下時の処理
+    // 作業場所コードスキャンボタン押下時の処理
     const btnWkPlcQr = async () => {
       await logUserAction(`ボタン押下: 作業場所読込`);
       setShowScannerWkPlc(true);
@@ -268,7 +268,7 @@ const WA1140 = ({navigation}:Props) => {
      ************************************************/
     const procNewTagId = async (txtNewTagId:string):Promise<boolean> => {
       // 新タグIDの2桁目が"6:タグ色黒"もしくは"8:タグ色灰色" を判断
-      if(!(txtNewTagId.charAt(2) === '6' || txtNewTagId.charAt(2) === '8')){
+      if(!(txtNewTagId.charAt(1) === '6' || txtNewTagId.charAt(1) === '8')){
         // 通信を実施
         const responseIFA0330 = await IFA0330(txtNewTagId);
         const data = responseIFA0330.data as IFA0330Response<IFA0330ResponseDtl>;
@@ -291,7 +291,7 @@ const WA1140 = ({navigation}:Props) => {
         // 新タグIDの2桁目が"6:タグ色黒"もしくは"8:タグ色灰色"の場合
         // 6=主灰(1),8=飛灰(2)
         let tmpRmSolTyp = '';
-        if(txtNewTagId.charAt(2) === '6'){
+        if(txtNewTagId.charAt(1) === '6'){
           tmpRmSolTyp = '1';
         }else{
           tmpRmSolTyp = '2';

@@ -81,7 +81,7 @@ const WA1064 = ({navigation}:Props) => {
       }else{
         //線量(μSv/h) ×換算値÷重量(Kg) を 四捨五入して整数にする
         const result = Math.round(
-          Number(caLgSdBgWt) * Number(settings.radioConvFact) / (Number(caLgSdBgDsInt)+Number(caLgSdBgDsDec)))
+          Number(caLgSdBgWt) * Number(settings.radioConvFact) / (Number(caLgSdBgDsInt)+Number('0.'+caLgSdBgDsDec)))
         if(result > Number(settings.estRadioThres)){
           await showAlert("通知", messages.WA5006(String(settings.estRadioThres)), false);
         }
@@ -143,7 +143,7 @@ const WA1064 = ({navigation}:Props) => {
         }
       }
       //線量が閾値を越えるか確認
-      if((Number(caLgSdBgDsInt)+Number(caLgSdBgDsDec)) > Number(settings.radioThres)){
+      if((Number(caLgSdBgDsInt)+Number('0.'+caLgSdBgDsDec)) > Number(settings.radioThres)){
         const result = await showAlert("確認", messages.WA5004(String(settings.radioThres)), true);
         if(!result){
           return;
@@ -152,7 +152,7 @@ const WA1064 = ({navigation}:Props) => {
       // 一時領域に設定する
       setWA1060Data({...WA1060Data,
         caLgSdBgWt:String(caLgSdBgWt ?? ''),//重量
-        caLgSdBgDs:(caLgSdBgDsInt && caLgSdBgDsDec) ? String(Number(caLgSdBgDsInt)+Number(caLgSdBgDsDec)) : '',//線量
+        caLgSdBgDs:(caLgSdBgDsInt && caLgSdBgDsDec) ? String(Number(caLgSdBgDsInt)+Number('0.'+caLgSdBgDsDec)) : '',//線量
         estRa:String(estRa),//推定放射能濃度
       });
       if(prevScreenId==='WA1066') {

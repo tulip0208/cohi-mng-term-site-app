@@ -108,7 +108,7 @@ export const watchLocation = async (): Promise<void> => {
     {
       enableHighAccuracy: true,
       distanceFilter: 100,
-      interval: settingsInfo.locGetTerm as number * 1000, // ここを設定ファイルから取得した値に置き換える ★後程復帰
+      interval: settingsInfo.locGetTerm as number * 1000, // ここを設定ファイルから取得した値に置き換える
       // fastestInterval: 1000, // 車載アプリの場合
     },
   );

@@ -30,7 +30,10 @@ import WA1100 from '../screens/WA1100';
 import WA1101 from '../screens/WA1101';
 import WA1110 from '../screens/WA1110';
 import WA1111 from '../screens/WA1111';
-// import WA1120 from '../screens/WA1120';
+import WA1120 from '../screens/WA1120';
+import WA1121 from '../screens/WA1121';
+import WA1122 from '../screens/WA1122';
+import WA1123 from '../screens/WA1123';
 import WA1130 from '../screens/WA1130';
 import WA1131 from '../screens/WA1131';
 import WA1140 from '../screens/WA1140';
@@ -72,6 +75,9 @@ export type RootList = {
   WA1110: undefined;
   WA1111: undefined;
   WA1120: undefined;
+  WA1121: undefined;
+  WA1122: undefined;
+  WA1123: undefined;
   WA1130: undefined;
   WA1131: undefined;
   WA1140: undefined;
@@ -215,7 +221,10 @@ const AppNavigator = () => {
           <Stack.Screen name="WA1101" component={WA1101} />
           <Stack.Screen name="WA1110" component={WA1110} />
           <Stack.Screen name="WA1111" component={WA1111} />
-          {/* <Stack.Screen name="WA1120" component={WA1120} /> */}
+          <Stack.Screen name="WA1120" component={WA1120} />
+          <Stack.Screen name="WA1121" component={WA1121} />
+          <Stack.Screen name="WA1122" component={WA1122} />
+          <Stack.Screen name="WA1123" component={WA1123} />
           <Stack.Screen name="WA1130" component={WA1130} />
           <Stack.Screen name="WA1131" component={WA1131} />
           <Stack.Screen name="WA1140" component={WA1140} />

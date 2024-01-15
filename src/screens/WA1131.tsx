@@ -184,7 +184,7 @@ const WA1131 = ({navigation}:Props) => {
         if(await apiIsError(responseIFA0120)){
           return;
         }
-        if(responseIFA0140FromWA1131.data?.itcRstCd===1){
+        if(responseIFA0140FromWA1131.data?.itcRstCd===1){//★確認
           // invDatDtlからエラーの詳細を抽出し、string型を保証する
           const errorDetails: [string, string][] = responseIFA0140FromWA1131.data?.invDatDtl.map(dtl => {
             // sndIdとinvCdがundefinedでないことを確認し、stringに変換する（必要であれば）

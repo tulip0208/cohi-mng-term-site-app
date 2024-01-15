@@ -204,7 +204,7 @@ const WA1070 = ({navigation}:Props) => {
      * 新タグ情報照会処理
      ************************************************/
     const procNewTagId = async (txtNewTagId:string):Promise<boolean> => {
-      // ログファイルアップロード通信を実施
+      //通信を実施
       const responseIFA0330 = await IFA0330(txtNewTagId);
       if(await apiIsError(responseIFA0330)) {
 

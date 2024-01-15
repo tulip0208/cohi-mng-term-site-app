@@ -90,8 +90,7 @@ const WA1090 = ({navigation}:Props) => {
           setDelSrcTyp(place.delSrcTyp as number);
           setIsTagRead(true);
           break;
-        case 5:
-        case 6:
+        default:
           setIsTagRead(false);
           await showAlert("通知", messages.WA5001(), false);
           break;
@@ -187,7 +186,7 @@ const WA1090 = ({navigation}:Props) => {
       setIsTagRead(true);
       setIsWkPlcRead(true);
     };
-    // 作業場所Rコードスキャンボタン押下時の処理
+    // 作業場所コードスキャンボタン押下時の処理
     const btnWkPlcQr = async () => {
       await logUserAction(`ボタン押下: 作業場所読込`);
       setShowScannerWkPlc(true);
@@ -255,7 +254,7 @@ const WA1090 = ({navigation}:Props) => {
         return ""
       }
       const data = responseIFA0340.data as IFA0340Response<IFA0340ResponseDtl>;
-      setNewTagId(txtNewTagId);//★確認
+      setNewTagId(txtNewTagId);
       //レスポンス1件(共通)
       if(data.dtl.length===1){
         const result = await showAlert("確認", messages.IA5017(), true);

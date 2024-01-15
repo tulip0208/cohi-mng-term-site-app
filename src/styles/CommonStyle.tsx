@@ -142,6 +142,13 @@ export const styles = StyleSheet.create({
     marginBottom: 5,
     fontFamily:"ipaexg",
     color:'#000'
+  },
+  labelTextNarrowMore: {
+    fontSize: 15,
+    marginTop: 0,
+    marginBottom: 0,
+    fontFamily:"ipaexg",
+    color:'#000'
   },  
   //--------------------
   //--------テキスト-------
@@ -161,6 +168,16 @@ export const styles = StyleSheet.create({
     borderColor: 'black', // 枠線の色
     padding: 10,
     height: 40, 
+    minWidth: 200, // テキストボックスの最小幅
+    textAlign: 'center',
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+  },
+  inputNarrow: {
+    borderWidth: 1, // 枠線の幅
+    borderColor: 'black', // 枠線の色
+    padding: 0,
+    height: 20,
     minWidth: 200, // テキストボックスの最小幅
     textAlign: 'center',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
@@ -220,6 +237,17 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     // その他必要に応じたスタイル
   },
+  inputIntDecNarrow: {
+    borderWidth: 1,
+    borderColor: 'black',
+    height: 30, // テキストサイズに適したサイズに
+    flex: 1, // これにより、各入力が兄弟要素との関係でフレックスします
+    textAlign: 'center',
+    padding:0,
+    maxWidth:50,
+    // その他必要に応じたスタイル
+  },  
+
   //--------------------
   //--------テキスト-------
   inputReasonContainer: {
@@ -285,6 +313,19 @@ export const styles = StyleSheet.create({
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
     width:'35%'
+  },
+  button50: {
+    maxWidth:'50%',
+  },
+  buttonNarrower: {
+    backgroundColor: '#548236', // パステルな水色
+    padding: 5,
+    margin: 0,
+    borderRadius: 15,
+    height: 50,
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+    width:'45%'
   },  
   buttonRead: {
     marginRight:'10%',
@@ -374,6 +415,16 @@ export const styles = StyleSheet.create({
     alignItems: 'center', // 子要素を水平方向に中央揃え
     backgroundColor: '#d9d9d9', 
     padding: 10,
+    flex: 1,
+  },
+  detailButtonNarrow: {
+    margin: 5,
+    marginLeft: 30,
+    borderRadius: 10,
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+    backgroundColor: '#d9d9d9', 
+    padding: 5,
     flex: 1,
   },
   updateButton:{
@@ -572,6 +623,14 @@ export const styles = StyleSheet.create({
     minHeight: 220,
     maxHeight: 220,
   },
+  scrollPushContainerNarrow: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop:3,
+    marginBottom:3,
+    minHeight: 120,
+    maxHeight: 120,
+  },  
   scrollPushViewStyle: {
     width: 'auto', // または必要な幅に設定
     maxWidth:'100%',
@@ -627,19 +686,24 @@ export const styles = StyleSheet.create({
   },
   tableRow: {
     flexDirection: 'row', // 行のスタイル
-    // 他のスタイル
   },
   tableCell: {
     flex: 1, // セルのスタイル
-    // 他のスタイル
   },
   tableCell1: {
     flex: 1, // セルのスタイル
-    // 他のスタイル
   },
   tableCell2: {
     flex: 2, // セルのスタイル
-    // 他のスタイル
+  },    
+  tableCell3: {
+    flex: 3, // セルのスタイル
+  },    
+  tableCell4: {
+    flex: 4, // セルのスタイル
+  },    
+  tableCell5: {
+    flex: 5, // セルのスタイル
   },    
   checkBox: {
     transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] // 1.5倍に拡大

@@ -3,7 +3,10 @@
  * atom/atom.tsx
  * ---------------------------------------------*/
 import { atom, atomFamily } from "recoil";
-import {WA1070Const,WA1080Const,WA1100Const,WA1130Const,WA1140Const,WA1110Const,WA1060Const,WA1060WkPlacConst,WA1060OldTagInfoConst,WA1092WtDsConst,WA1090WkPlacConst,WA1091OldTagInfoConst,IFT0640ResponseDtl,IFT0640ResponseDtlDtlCheck} from "../types/type"
+import {WA1070Const,WA1080Const,WA1100Const,WA1130Const,WA1140Const,WA1110Const,WA1060Const,
+  WA1060WkPlacConst,WA1060OldTagInfoConst,WA1092WtDsConst,WA1090WkPlacConst,WA1091OldTagInfoConst,
+  WA1120Const,WA1120WkPlacConst,WA1120CarConst,WA1120DrvConst,WA1120DestConst,WA1121NewTagConst,WA1121DataConst,
+  IFT0640ResponseDtl,IFT0640ResponseDtlDtlCheck} from "../types/type"
 import Realm from "realm";
 
 //共通 フッタサーバ名用
@@ -84,6 +87,79 @@ export const WA1101BackState = atom<boolean>({key: "WA1101BackState",default: fa
 //WA1110用
 export const WA1110DataState = atom<WA1110Const|null>({key: "WA1110DataState",default: null,});
 export const WA1111BackState = atom<boolean>({key: "WA1111BackState",default: false,});
+//WA1120用
+export const WA1120DataState = atom<WA1120Const>({key: "WA1120DataState",default: {
+  wkplcTyp: '',
+  wkplc: '',
+},});
+export const WA1120BackState = atom<boolean>({key: "WA1120BackState",default: false,});
+export const WA1120TrpCardNoState = atom<string>({key: "WA1120TrpCardNoState",default: "",});
+export const WA1120PrevScreenId = atom<string>({key: "WA1120PrevScreenId",default: "",});
+export const WA1120WkPlacState = atom<WA1120WkPlacConst>({key: "WA1120WkPlacState",default: {
+  idTyp:'',//ID種別
+  wkplacId:'',//作業場所ID
+  wkplacNm:'',//作業場所名
+  delSrcTyp:'',//搬出元種別
+  wkplac:'',//作業場所
+}});
+export const WA1120CarState = atom<WA1120CarConst>({key: "WA1120CarState",default: {
+  idTyp:'',//ID種別
+  carId:'',//車両ID
+  carNm:'',//車両名称
+  carNo:'',//車両番号
+  maxWt:'',//最大積載量
+  carWt:'',//車両重量
+  empCarWt:'',//空車重量
+}});
+export const WA1120DrvState = atom<WA1120DrvConst>({key: "WA1120DrvState",default: {
+  idTyp:'',//ID種別
+  drvId:'',//運転手ID
+  drvNm:'',//運転手名
+}});
+export const WA1120DestState = atom<WA1120DestConst>({key: "WA1120DestState",default: {
+  idTyp:'',//ID種別
+  storPlacId:'',//保管場ID
+  fixPlacId:'',//定置場ID
+  fixPlacNm:'',//定置場名
+  facTyp:'',//施設区分
+  raKbn:'',//濃度区分
+}});
+export const WA1121NewTagListState = atom<[WA1121NewTagConst]>({key: "WA1121NewTagListState",default:[{
+  newTagId:'',//新タグID
+  rmSolTyp:'',//除去土壌等種別
+  ashTyp:'',//焼却灰種別
+  caLgSdBgWt:'',//重量
+  caLgSdBgDs:'',//線量
+  estRa:'',//濃度
+  raKbn:'',//濃度区分
+  class:'',//分類
+  newTagIdRed:false,//新タグIDを赤文字にするかどうか
+  caLgSdBgDsRed:false,//線量を赤文字にするかどうか
+}]});
+export const WA1121DataState = atom<WA1121DataConst<WA1121NewTagConst>>({key: "WA1121DataState",default: {
+  freJudTyp:'0',//フレコン判定種別
+  freJudNen:'0',//フレコン判定不燃可燃
+  freJudGai:'0',//フレコン判定有害無害
+  freJudNod:'0',//フレコン判定濃度
+  freJudWt:'0',//フレコン判定重量
+  freTyp:'0',//フレコン種別
+  udNoMb:'0',//高低濃度混載
+  nenMb:'0',//不燃可燃混載
+  haiMb:'0',//主灰飛灰混載
+  monoTyp:'0',//物品種類
+  gai:'0',//有害・無害
+  trpCardTagInfoList:[],//輸送カード新タグID(配列)
+  flamNm:'0',//可燃
+  nonFlamNm:'0',//不燃
+  bottomAshNm:'0',//主灰
+  flyAshNm:'0',//飛灰
+  surDsRt:'',//表面線量率(最大)
+  maxEstRa:'',//放射能濃度(最大)
+  possibleWt:'0',//積載可能重量
+  sumWt:'0',//累計積載量
+  trpCardApRslt:'0',//輸送カード申請結果
+  leftWt:'0',//残り積載可能
+}});
 //WA1130用
 export const WA1130DataState = atom<WA1130Const>({key: "WA1130DataState",default: {
   facTyp:'',//施設区分

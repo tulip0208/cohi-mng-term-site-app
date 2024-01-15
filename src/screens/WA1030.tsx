@@ -282,7 +282,7 @@ const WA1030 = ({navigation}:Props) => {
               // ナビゲーションスタックをリセットして、初期画面に移動する
               navigation.reset({
                 index: 0,
-                routes: [{ name: 'WA1030' }], // 'Home'は最初の画面のルート名に置き換えてください
+                routes: [{ name: 'WA1030' }],
               });
               return;
             }

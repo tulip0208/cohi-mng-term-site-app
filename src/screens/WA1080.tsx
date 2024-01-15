@@ -78,8 +78,7 @@ const WA1080 = ({navigation}:Props) => {
           setDelSrcTyp(place.delSrcTyp as number);
           setIsTagRead(true);
           break;
-        case 5:
-        case 6:
+        default:
           setIsTagRead(false);
           await showAlert("通知", messages.WA5001(), false);
           break;
@@ -156,7 +155,7 @@ const WA1080 = ({navigation}:Props) => {
       setIsTagRead(true);
       setIsWkPlcRead(true);
     };
-    // 作業場所Rコードスキャンボタン押下時の処理
+    // 作業場所コードスキャンボタン押下時の処理
     const btnWkPlcQr = async () => {
       await logUserAction(`ボタン押下: 作業場所読込`);
       setShowScannerWkPlc(true);
