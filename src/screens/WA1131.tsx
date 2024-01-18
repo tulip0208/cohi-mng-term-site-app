@@ -45,19 +45,30 @@ const WA1131 = ({navigation}:Props) => {
     const [inputValue, setInputValue] = useState<string>('');
     const [newTagId,setNewTagId] = useState<String>();
     const [inputVisible, setInputVisible] = useState<boolean>(false);
+    const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout|null>(null);
     const realm = getInstance();
     /************************************************
      * 初期表示設定
      ************************************************/   
     useEffect(() => {
     }, []);
-    // 10秒以上の長押しを検出
-    const handleLongPress = () => {  
-      setTimeout(() => {
-        setInputVisible(true);
-      }, 1); // 10秒 = 10000ミリ秒
-    };
 
+    // 10秒以上の長押しを検出
+    const onPressIn = () => {
+      // 10秒後に実行されるアクション
+      const timer = setTimeout(() => {
+        setInputVisible(true);
+      }, 10000); // 10秒 = 10000ミリ秒
+      setLongPressTimer(timer); // タイマーIDを保存
+    }; 
+    // タッチ終了時のイベントハンドラ
+    const onPressOut = () => {
+      // タイマーが設定されていればクリア
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        setLongPressTimer(null); // タイマーIDをクリア
+      }
+    };
     /************************************************
      * フォーマットチェック
      ************************************************/
@@ -275,10 +286,10 @@ const WA1131 = ({navigation}:Props) => {
       if (!response.success) {
         switch(response.error){
           case 'codeHttp200':
-            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
             break;
           case 'codeRsps01':
-            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
             break;
           case 'timeout':
             await showAlert("通知", messages.EA5003(), false);
@@ -297,14 +308,18 @@ const WA1131 = ({navigation}:Props) => {
       //積載大型土のう袋等明細（新タグ）リスト
       const newTagComponent = IFT0640Data.lgSdBgDtl.map((lgSdBg, index) => (
         <View key={index} style={[styles.detailSection,]}>
-          <View style={[styles.tableCell2,styles.center]}>
+          <View style={[styles.tableCell1,styles.center]}>
             <Text style={styles.labelText}>
               {lgSdBg.check && 
-                <Text style={styles.labelText}>{`☑ `}</Text>
+                <Text style={[styles.labelText,styles.labelCheck]}>{`☑ `}</Text>
               }
               {!lgSdBg.check && 
-                <Text style={styles.labelText}>{`☐ `}</Text>
+                <Text style={[styles.labelText,styles.labelCheck]}>{`☐ `}</Text>
               }
+            </Text>
+          </View>
+          <View style={[styles.tableCell4]}>
+            <Text style={styles.labelText}>
               {`${index + 1}: ${lgSdBg.newTagId}`}
             </Text>
           </View>
@@ -358,7 +373,7 @@ const WA1131 = ({navigation}:Props) => {
           </View>
           {/* 中段3 */}
           <View  style={[styles.main,styles.center]}>
-            <TouchableWithoutFeedback onLongPress={handleLongPress}>
+            <TouchableWithoutFeedback onPressIn={() => onPressIn()} onPressOut={onPressOut}>
               <View>
                 <Text style={styles.labelText}>新タグIDが読み込めない場合は<Text style={styles.bgYellow}>こちら</Text>を長押しして下さい。</Text>
               </View>
@@ -421,8 +436,8 @@ const WA1131 = ({navigation}:Props) => {
                 />
                 <Text style={styles.inputWithText}>a</Text>
               </View>
-              <View style={[styles.bottomSection,styles.settingMain]}>
-                <TouchableOpacity style={[styles.button, styles.settingButton,styles.settingButton3]} 
+              <View style={[styles.bottomSection,styles.settingMain,styles.justifyContentCenter]}>
+                <TouchableOpacity style={[styles.button, styles.popupSettingButton,styles.settingButton3]} 
                   onPress={() => {
                   logUserAction(`ボタン押下: 戻る(WA1131)`);
                   setInputValue('');
@@ -430,7 +445,7 @@ const WA1131 = ({navigation}:Props) => {
                   }}>
                   <Text style={styles.endButtonText}>戻る</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.settingButton,styles.settingButton]} onPress={btnAppSet}>
+                <TouchableOpacity style={[styles.button, styles.popupSettingButton,styles.settingButton2]} onPress={btnAppSet}>
                   <Text style={[styles.endButtonText,styles.settingButtonText1]}>設定</Text>
                 </TouchableOpacity>                    
               </View>

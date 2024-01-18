@@ -203,10 +203,10 @@ const WA1110 = ({navigation}:Props) => {
       if (!response.success) {
         switch(response.error){
           case 'codeHttp200':
-            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
             break;
           case 'codeRsps01':
-            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
             break;
           case 'timeout':
             await showAlert("通知", messages.EA5003(), false);
@@ -238,22 +238,22 @@ const WA1110 = ({navigation}:Props) => {
           <Text style={[styles.labelText,styles.labelTextPlace]}>{wkplc}</Text>
           <TouchableOpacity style={[styles.button,styles.buttonSmall,styles.centerButton]} onPress={btnWkPlcQr}>
             <Text style={styles.buttonText}>作業場所読込</Text>
-          </TouchableOpacity>             
+          </TouchableOpacity>
+          <View  style={[styles.main,styles.center]}>
+            <Text style={styles.labelText}>旧タグIDを入力して下さい。</Text>
+            <View style={[styles.inputContainer]}>
+              <TextInput 
+                style={styles.input}
+                onChangeText={handleInputChange}
+                onBlur={handleInputBlur}
+                value={inputValue}
+                maxLength={50}
+              />
+            </View>
+          </View>
         </View>
 
         {/* 中段2 */}
-        <View  style={[styles.main,styles.topContent,styles.center]}>
-          <Text style={styles.labelText}>旧タグIDを入力して下さい。</Text>
-          <View style={[styles.inputContainer]}>
-            <TextInput 
-              style={styles.input}
-              onChangeText={handleInputChange}
-              onBlur={handleInputBlur}
-              value={inputValue}
-              maxLength={50}
-            />
-          </View>
-        </View>
         <View style={{ flex: 1 }} /> 
         {/* 下段 */}
         <View style={styles.bottomSection}>

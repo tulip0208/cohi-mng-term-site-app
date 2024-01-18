@@ -180,11 +180,11 @@ const WA1130 = ({navigation}:Props) => {
       }else if(type === RNCamera.Constants.BarCodeType.qr && parts.length === 2){
         // --QRコード(2カラム)--
         setModalVisible(true);
+        const trpCrdNo = parts[1]
         setWA1130Data({...WA1130Data,
           trpComId:parts[0],
-          trpCrdNo:parts[1],
+          trpCrdNo:trpCrdNo,
         })
-
         // 通信を実施
         const responseIFT0640 = await IFT0640(WA1130Data);
         if(await apiIsError(responseIFT0640)){
@@ -193,21 +193,21 @@ const WA1130 = ({navigation}:Props) => {
         }else{
           await showAlert("通知", messages.IA5005('輸送カード申請'), false);
         }
-        const data = responseIFT0640.data as IFT0640Response<IFT0640ResponseDtl<IFT0640ResponseDtlDtl>>;
+        const responseIFT0640Data = responseIFT0640.data as IFT0640Response<IFT0640ResponseDtl<IFT0640ResponseDtlDtl>>;
         //0件の場合
-        if(data?.dtl.length===0){
-          await showAlert("通知", messages.EA5018(WA1130Data.trpCrdNo), false);
+        if(responseIFT0640Data?.dtl.length===0){
+          await showAlert("通知", messages.EA5018(trpCrdNo), false);
           setModalVisible(false);
           return;
         }else
         //一次記憶領域の[保管場ID]とレスポンスが一致しない場合(応答データを1件として扱う)
-        if(data?.dtl[0].stgLocId === WA1130Data.storPlacId){
-          await showAlert("通知", messages.EA5019(WA1130Data.trpCrdNo), false);
+        if(responseIFT0640Data?.dtl[0].stgLocId !== WA1130Data.storPlacId){
+          await showAlert("通知", messages.EA5019(trpCrdNo), false);
           setModalVisible(false);
           return;
         }
         //レスポンスを一時記憶領域に設定
-        const dataDtl = data.dtl[0] as IFT0640ResponseDtl<IFT0640ResponseDtlDtl>;
+        const dataDtl = responseIFT0640Data.dtl[0] as IFT0640ResponseDtl<IFT0640ResponseDtlDtl>;
 
         // lgSdBgDtl 配列を変換
         const lgSdBgDtlWithCheck = dataDtl.lgSdBgDtl.map(item => ({
@@ -218,10 +218,10 @@ const WA1130 = ({navigation}:Props) => {
         // 変換した配列を使用して新しいデータオブジェクトを作成
         const newDataDtl = {
           ...dataDtl,
-          lgSdBgDtl: lgSdBgDtlWithCheck
+          lgSdBgDtl: lgSdBgDtlWithCheck,
         };
 
-        // アトムに新しいデータを設定
+        // レスポンスデータを記憶領域に設定
         setIFT0640Data(newDataDtl);
 
         setWA1130Data({...WA1130Data,
@@ -267,10 +267,10 @@ const WA1130 = ({navigation}:Props) => {
       if (!response.success) {
         switch(response.error){
           case 'codeHttp200':
-            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
             break;
           case 'codeRsps01':
-            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
             break;
           case 'timeout':
             await showAlert("通知", messages.EA5003(), false);

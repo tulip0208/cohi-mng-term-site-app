@@ -17,7 +17,7 @@ import { useAlert } from '../components/AlertContext.tsx';
 import messages from '../utils/messages.tsx';
 import ProcessingModal from '../components/Modal.tsx';
 import { IFA0320 } from '../utils/Api.tsx'; 
-import { ApiResponse, IFA0110Response,IFA0320ResponseDtl } from '../types/type.tsx';
+import { ApiResponse, IFA0320Response,IFA0320ResponseDtl } from '../types/type.tsx';
 // WA1091 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1091'>;
 interface Props {
@@ -101,7 +101,7 @@ const WA1091 = ({navigation}:Props) => {
       if(await apiIsError(responseIFA0320)){
         return;
       }
-      const data = responseIFA0320.data as IFA0110Response<IFA0320ResponseDtl>;
+      const data = responseIFA0320.data as IFA0320Response<IFA0320ResponseDtl>;
       const dataDtl = data.dtl[0] as IFA0320ResponseDtl;
       // 一時データ格納する
       setWA1091OldTagInfo({
@@ -128,10 +128,10 @@ const WA1091 = ({navigation}:Props) => {
       if (!response.success) {
         switch(response.error){
           case 'codeHttp200':
-            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
             break;
           case 'codeRsps01':
-            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
             break;
           case 'timeout':
             await showAlert("通知", messages.EA5003(), false);
@@ -160,12 +160,10 @@ const WA1091 = ({navigation}:Props) => {
           {/* 上段 */}
           <View  style={[styles.topContent]}>
             <View  style={[styles.main]}>
-              <Text style={[styles.labelText]}>新タグID：{newTagId}</Text>
+              <Text style={[styles.labelText,styles.bold]}>新タグID：{newTagId}</Text>
             </View>
-          </View>
 
-          {/* 中段2 */}
-          <View  style={[styles.main,styles.center]}>
+            <View  style={[styles.main,styles.center,styles.middleContainer]}>
             <Text style={styles.labelText}>旧タグIDを入力して下さい。</Text>
             <View style={[styles.inputContainer]}>
               <Text style={styles.inputWithText}>a</Text>
@@ -180,6 +178,11 @@ const WA1091 = ({navigation}:Props) => {
               <Text style={styles.inputWithText}>a</Text>
             </View>
           </View>
+
+
+
+          </View>
+
 
           {/* 下段 */}
           <View style={styles.bottomSection}>

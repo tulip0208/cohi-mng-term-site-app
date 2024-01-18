@@ -131,8 +131,8 @@ const WA1093 = ({navigation}:Props) => {
           {/* 上段 */}
           <View  style={[styles.topContent]}>
             <View  style={[styles.main]}>
-              <Text style={[styles.labelText]}>新タグID：{newTagId}</Text>
-              <Text style={[styles.labelText]}>旧タグID：{WA1091OldTagInfo.oldTagId}</Text>
+              <Text style={[styles.labelText,styles.bold]}>新タグID：{newTagId}</Text>
+              <Text style={[styles.labelText,styles.bold]}>旧タグID：{WA1091OldTagInfo.oldTagId}</Text>
               <Text style={[styles.labelText,styles.centerContent]}>メモを入力して下さい。</Text>
               <Text style={[styles.labelText,styles.centerContent]}>メモ(省略可){inputLimit}文字まで：</Text>
             </View>

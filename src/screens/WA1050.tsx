@@ -156,10 +156,10 @@
         if (!response.success) {
           switch(response.error){
             case 'codeHttp200':
-              await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+              await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
               break;
             case 'codeRsps01':
-              await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+              await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
               break;
             case 'timeout':
               await showAlert("通知", messages.EA5003(), false);
@@ -214,13 +214,13 @@
           </View>  
 
           {/* 下段 */}
-          <View style={[styles.bottomSection,styles.settingMain]}>
+          <View style={[styles.bottomSection,styles.settingMain,styles.justifyContentCenter]}>
             <TouchableOpacity style={getButtonStyle(1)} onPress={btnDelLog} disabled={isDisabled}>
               <Text style={getTextStyle()}>ログ消去</Text>
             </TouchableOpacity>
             <TouchableOpacity style={getButtonStyle(2)} onPress={btnUpLog} disabled={isDisabled}>
               <Text style={[styles.endButtonText,styles.settingButtonText1]}>ログ送信</Text>
-            </TouchableOpacity>                    
+            </TouchableOpacity>                 
             <TouchableOpacity style={[styles.button, styles.settingButton,styles.settingButton3]} onPress={btnBack}>
               <Text style={styles.endButtonText}>戻る</Text>
             </TouchableOpacity>

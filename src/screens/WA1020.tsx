@@ -7,7 +7,7 @@ import FunctionHeader from '../components/FunctionHeader.tsx';
 import Footer from '../components/Footer'; 
 import { styles } from '../styles/CommonStyle'; 
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Modal, Alert,BackHandler } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, BackHandler } from 'react-native';
 import setupRealm,{ getInstance } from '../utils/Realm';
 import messages from '../utils/messages';
 import {encryptWithAES256CBC,generateDeviceUniqueKey} from '../utils/Security';
@@ -102,7 +102,6 @@ const WA1020 = ({navigation}:Props) => {
       // CSVデータのフォーマットを確認（5つの部分があるか）
       if (parts.length === 5) {
         // ID種別が1かどうかを確認
-        //console.log(parts)
         const comId = parts[0];       //事業者ID
         if (comId.startsWith("J")){//&&comId.length==10 ) {
             const trmId = parts[1];   //端末ID
@@ -155,7 +154,6 @@ const WA1020 = ({navigation}:Props) => {
         await logUserAction(`ボタン押下: QRコード読込(ユーザ)`);  
         
         setShowScannerUsr(true);
-        console.log("")
     };
     // アクティベーションQRコードスキャンボタン押下時の処理
     const btnActQr = async ():Promise<void> => {
@@ -250,10 +248,10 @@ const WA1020 = ({navigation}:Props) => {
       if (!response.success) {
         switch(response.error){
           case 'codeHttp200':
-            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
             break;
           case 'codeRsps01':
-            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
             break;
           case 'timeout':
             await showAlert("通知", messages.EA5003(), false);

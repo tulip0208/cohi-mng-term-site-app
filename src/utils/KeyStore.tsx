@@ -21,7 +21,7 @@ export const storeEncryptionKeyInKeystore = async (key: Uint8Array): Promise<voi
     });
     console.log('Key stored successfully!');
   } catch (error) {
-    console.error('Error storing the encryption key', error);
+    console.log('Error storing the encryption key', error);
     throw error;
   }
 };
@@ -39,7 +39,7 @@ export const getEncryptionKeyFromKeystore = async (): Promise<Uint8Array> => {
     const binaryString = base64ToUint8Array(credentials.password);
     return binaryString;
   } else {
-    console.error('Error retrieving the encryption key No key found');
+    console.log('Error retrieving the encryption key No key found');
     return new Uint8Array();
   }
 };
@@ -53,7 +53,7 @@ export const clearKeyStore = async (key: string): Promise<void> => {
     await Keychain.resetGenericPassword({ service: key });
     console.log("Key value cleared successfully. key:",key);
   } catch (error) {
-    console.error("Error clearing key value: ", error);
+    console.log("Error clearing key value: ", error);
   }
 };
 
@@ -69,7 +69,7 @@ export const saveToKeystore = async <T,>(key: string, data: T): Promise<void> =>
     await Keychain.setGenericPassword(key, base64Data,{service: key});
     console.log('Data saved successfully! key : ',key);
   } catch (error) {
-    console.error('Error saving data', error);
+    console.log('Error saving data', error);
   }
 };
 
@@ -90,7 +90,7 @@ export const loadFromKeystore = async <T,>(key: string): Promise<T | null> => {
       console.log('No data found key:',key);
     }
   } catch (error) {
-    console.error('Error loading data', error);
+    console.log('Error loading data', error);
   }
   return null;
 };
@@ -112,7 +112,7 @@ export const checkActivation = async (): Promise<ActivationInfo | null> => {
       return data
     }
   } catch (error) {
-    console.error('Activation check failed', error);
+    console.log('Activation check failed', error);
   }
   return null;
 };

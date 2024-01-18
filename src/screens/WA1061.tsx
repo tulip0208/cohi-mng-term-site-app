@@ -242,7 +242,7 @@ const WA1061 = ({navigation}:Props) => {
       const oldTagComponent = WA1060OldTagInfos.map((oldTagInfo, index) => (
         <View key={index} style={styles.detailSection}>
           <View style={[styles.tableCell2]}>
-            <Text style={styles.labelText}>{`${index + 1}: ${oldTagInfo.oldTag}`}</Text>
+            <Text style={styles.labelTextNarrow}>{`${index + 1}: ${oldTagInfo.oldTag}`}</Text>
           </View>
           <View style={[styles.tableCell1]}>
             <TouchableOpacity 
@@ -263,7 +263,8 @@ const WA1061 = ({navigation}:Props) => {
       if (WA1060OldTagInfos.length < 9) {
         const configComponent = (
           <View key={WA1060OldTagInfos.length+1} style={[styles.detailSection]}>
-            <View style={[styles.tableCell2]}>
+            <View style={[styles.tableCell2,styles.inputContainerLeft]}>
+              <Text style={styles.labelTextNarrow}>{`${WA1060OldTagInfos.length + 1}: `}</Text>
               <TextInput 
                 value={inputValue}
                 style={styles.input}
@@ -444,10 +445,10 @@ const WA1061 = ({navigation}:Props) => {
       if (!response.success) {
         switch(response.error){
           case 'codeHttp200':
-            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
             break;
           case 'codeRsps01':
-            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
             break;
           case 'timeout':
             await showAlert("通知", messages.EA5003(), false);
@@ -473,7 +474,7 @@ const WA1061 = ({navigation}:Props) => {
       
           {/* 上段 */}
           <View  style={[styles.main]}>
-            <Text style={[styles.labelText]}>新タグID：{newTagId}</Text>
+            <Text style={[styles.labelText,styles.bold]}>新タグID：{newTagId}</Text>
             <Text style={[styles.labelTextNarrow,styles.center]}>タグ読取ボタンを押してフレコンに取り付けられたタグを読込んで下さい。</Text>
           </View>         
           <View style={styles.bottomSection}>
@@ -487,7 +488,7 @@ const WA1061 = ({navigation}:Props) => {
           {/* 中段 */}
           <View  style={[styles.textareaContainer,styles.topContent]}>
             <View style={styles.bottomSectionNarrow}>
-              <Text style={[styles.labelTextSetting]}>旧タグ数：{WA1060OldTagInfos.length}</Text>
+              <Text style={[styles.labelTextSetting,styles.bold]}>旧タグ数：{WA1060OldTagInfos.length}</Text>
               <TouchableOpacity style={[styles.buttonMoreNarrow,styles.centerButtonNarrow,styles.allCancelButton]} onPress={btnOldTagClr}>
                 <Text style={styles.buttonTextNarrow}>一括取消</Text>
               </TouchableOpacity>

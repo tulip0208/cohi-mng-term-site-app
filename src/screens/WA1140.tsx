@@ -18,7 +18,7 @@ import { IFA0330,IFA0340 } from '../utils/Api.tsx';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RNCamera } from 'react-native-camera';
 import { RootList } from '../navigation/AppNavigator.tsx';
-import { ApiResponse, IFA0110Response,IFA0330Response,IFA0310ResponseDtl,IFA0330ResponseDtl } from '../types/type.tsx';
+import { ApiResponse,IFA0330Response,IFA0330ResponseDtl } from '../types/type.tsx';
 import { useRecoilState,useResetRecoilState } from "recoil";
 import { WA1140DataState,WA1141BackState,WA1140PrevScreenId } from "../atom/atom.tsx";
 // WA1140 用の navigation 型
@@ -52,7 +52,7 @@ const WA1140 = ({navigation}:Props) => {
     const [prevScreenId,setPrevScreenId] = useRecoilState(WA1140PrevScreenId);//遷移元画面ID
     const [WA1141back,setWa1141Back] = useRecoilState(WA1141BackState);
     const resetWA1140Data = useResetRecoilState(WA1140DataState);
-
+    const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout|null>(null);
     const { showAlert } = useAlert();
     /************************************************
      * 初期表示設定
@@ -120,14 +120,24 @@ const WA1140 = ({navigation}:Props) => {
       setIsViewNextButton(false);
     };
     // 10秒以上の長押しを検出
-    const handleLongPress = () => {  
-      setTimeout(() => {
+    const onPressIn = () => {
+      // 10秒後に実行されるアクション
+      const timer = setTimeout(() => {
         setInputVisible(true);
         setIsNext(false);
         setIsCannotRead(true);
         setIsViewNextButton(true);
       }, 10000); // 10秒 = 10000ミリ秒
-    };
+      setLongPressTimer(timer); // タイマーIDを保存
+    }; 
+    // タッチ終了時のイベントハンドラ
+    const onPressOut = () => {
+      // タイマーが設定されていればクリア
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        setLongPressTimer(null); // タイマーIDをクリア
+      }
+    };    
     // 次へボタンのスタイルを動的に変更するための関数
     const getNextButtonStyle = () => {
       return isNext ? [styles.button,styles.startButton] : [styles.button,styles.startButton, styles.disabledButton];
@@ -359,10 +369,10 @@ const WA1140 = ({navigation}:Props) => {
       if (!response.success) {
         switch(response.error){
           case 'codeHttp200':
-            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
             break;
           case 'codeRsps01':
-            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
             break;
           case 'timeout':
             await showAlert("通知", messages.EA5003(), false);
@@ -407,7 +417,7 @@ const WA1140 = ({navigation}:Props) => {
 
         {/* 中段2 */}
         <View  style={[styles.main,styles.center]}>
-          <TouchableWithoutFeedback onLongPress={handleLongPress}>
+          <TouchableWithoutFeedback onPressIn={() => onPressIn()} onPressOut={onPressOut}>
             <Text style={styles.labelText}>{getInfoMsg()}</Text>
           </TouchableWithoutFeedback>
           {inputVisible && 
@@ -419,7 +429,7 @@ const WA1140 = ({navigation}:Props) => {
                 onBlur={handleInputBlur}
                 value={inputValue}
                 editable={isWkPlcRead}
-                maxLength={50}
+                maxLength={15}
               />
               <Text style={styles.inputWithText}>a</Text>
             </View>

@@ -264,9 +264,8 @@ export const IFA0310 = async (txtOldTagId:string,wkPlacId:string) : Promise<ApiR
     const res = await sendToServer(requestData,"IFA0110","旧タグ情報照会(除去土壌)");
     const response = res as AxiosResponse<IFA0110Response<IFA0310Response<IFA0310ResponseDtl>>>;
 
-    //IFA0110側で判断
+    //0件の場合
     if (response.data && response.data.sttCd && response.data.gyDt.cnt == 0){
-      //0件の場合
       return { success: false, error: "zero", status:null, code:null, api:null, data:null};
     }
     return { success: true, data: response.data.gyDt };
@@ -297,9 +296,8 @@ export const IFA0320 = async (txtOldTagId:string,wkPlacId:string) : Promise<ApiR
     const res = await sendToServer(requestData,"IFA0110","旧タグ情報照会(除去土壌)");
     const response = res as AxiosResponse<IFA0110Response<IFA0320Response<IFA0320ResponseDtl>>>;
 
-    //IFA0110側で判断
+    //0件の場合
     if (response.data && response.data.sttCd && response.data.gyDt.cnt == 0){
-      //0件の場合
       return { success: false, error: "zero", status:null, code:null, api:null, data:null};
     }
     return { success: true, data: response.data.gyDt };
@@ -328,9 +326,8 @@ export const IFA0330 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0320R
     const res = await sendToServer(requestData,"IFA0110","新タグ情報照会(除去土壌)");    
     const response = res as AxiosResponse<IFA0110Response<IFA0330Response<IFA0330ResponseDtl>>>;
 
-    //IFA0110側で判断
+    //0件の場合
     if (response.data && response.data.sttCd && response.data.gyDt.cnt == 0){
-      //0件の場合
       return { success: false, error: "zero", status:null, code:null, api:null, data:null};
     }
     return { success: true, data: response.data.gyDt };
@@ -359,8 +356,8 @@ export const IFA0340 = async (txtNewTagId:string) : Promise<ApiResponse<IFA0340R
     const res = await sendToServer(requestData,"IFA0110","新タグ情報照会(焼却灰)");
     const response = res as AxiosResponse<IFA0110Response<IFA0340Response<IFA0340ResponseDtl>>>;
 
+    //0件の場合
     if (response.data && response.data.sttCd && response.data.gyDt.cnt == 0){
-      //0件の場合
       return { success: false, error: "zero", status:null, code:null, api:null, data:null};
     }
     return { success: true, data: response.data.gyDt };
@@ -796,11 +793,9 @@ export const IFT0640 = async (
  * @param {*} msg インターフェース名
  ************************************************/
 export const sendToServer = async <TRequest, TResponse>(requestData:TRequest,endpoint:string,msg:string):Promise<AxiosResponse<TResponse>> => {
-  let URI = null;
   // 設定ファイルから接続先URLを取得
-  const settings = await getSettings(endpoint);
-  const BASEURL = settings.connectionURL;
-  URI = BASEURL;
+  const retURL = await getBaseURL(endpoint);
+  const URI = retURL.connectionURL;
 
   // リクエスト送信前にログ記録
   await logCommunication('SEND', URI, null, endpoint + " : " + JSON.stringify(requestData));
@@ -823,22 +818,30 @@ export const sendToServer = async <TRequest, TResponse>(requestData:TRequest,end
   let response = null;
   try{
     response = await axios(config);
-    if(endpoint == "IFA0040"||endpoint == "IFA0050"){//★スタブここから
-      // TextEncoderを使用してテキストをUint8Arrayにエンコード
-      // Bufferを使用してテキストをバイナリデータに変換
-      const jsonString = `{"id":1,"appVer":"1.0.0","settingFileDt":"2024/01/0100:00:00","serverName":"開発","serverUrl":"https://script.google.com/macros/s/AKfycbzFBRaRH1gCdaTFkj6NBWEaEJwxfoXr_VDh-s3hbBNclipA2fC9M-cn9zMBhc1HffBgfA/exec?p1=","logTerm":30,"logCapacity":10000,"locGetTerm":60,"camTimeout":30,"btnNewTagSoil":1,"btnRefNewTagSoil":1,"btnRefOldTagSoil":1,"btnNewTagAsh":1,"btnRefNewTagAsh":1,"btnRefOldTagAsg":1,"btnTrnCard":1,"btnUnload":1,"btnStat":1,"reasonListOldTag":"updated,deprecated","useMethodInnerBag":2,"packTyp":3,"kgThresSoil":500,"kgThresAsh":1000,"radioThres":30,"ldpRadioThres":10,"ldpRadioThresMax":100,"estRadioThres":20,"radioConvFact":15,"facArriveTerm":120,"selPlants":2,"thresPlants":50,"selCombust":3,"thresCombust":75,"selSoil":4,"thresSoil":100,"selConcrete":5,"thresConcrete":125,"selAsphalt":6,"thresAsphalt":150,"selNoncombustMix":7,"thresNoncombustMix":175,"selAsbestos":8,"thresAsbestos":200,"selPlasterboard":9,"thresPlasterboard":225,"selHazard":10,"thresHazard":250,"selOutCombust":11,"thresOutCombust":275,"selOutNoncombust":12,"thresOutNoncombust":300,"selTmpCombust":13,"thresTmpCombust":325,"selTmpNoncombust":14,"thresTmpCNoncombust":350,"selAsh":15,"thresAsh":375}`;
-      const bufferData = Buffer.from(jsonString);
+   
+    //★---    
+    const realm = getInstance()
+    const settingsInfo = realm.objects('settings')[0]
+    let baseUrl = settingsInfo.serverUrl as string;
+    if (baseUrl.endsWith('?p1=')){//★スタブ用 
+      if(endpoint == "IFA0040"||endpoint == "IFA0050"){//★スタブここから
+        // TextEncoderを使用してテキストをUint8Arrayにエンコード
+        // Bufferを使用してテキストをバイナリデータに変換
+        const jsonString = `{"id":1,"appVer":"1.0.0","settingFileDt":"2024/01/0100:00:00","serverName":"開発","serverUrl":"https://script.google.com/macros/s/AKfycbzV1XBmuC84DZLtN9vhkJDedYGN7Gq6feaydsrKyIX-NrHDlQ4LByP3zTAp3VailhVcuQ/exec?p1=","logTerm":30,"logCapacity":10000,"locGetTerm":60,"camTimeout":30,"btnNewTagSoil":1,"btnRefNewTagSoil":1,"btnRefOldTagSoil":1,"btnNewTagAsh":1,"btnRefNewTagAsh":1,"btnRefOldTagAsg":1,"btnTrnCard":1,"btnUnload":1,"btnStat":1,"reasonListOldTag":"updated,deprecated","useMethodInnerBag":2,"packTyp":3,"kgThresSoil":500,"kgThresAsh":1000,"radioThres":30,"ldpRadioThres":10,"ldpRadioThresMax":100,"estRadioThres":20,"radioConvFact":15,"facArriveTerm":120,"selPlants":2,"thresPlants":50,"selCombust":3,"thresCombust":75,"selSoil":4,"thresSoil":100,"selConcrete":5,"thresConcrete":125,"selAsphalt":6,"thresAsphalt":150,"selNoncombustMix":7,"thresNoncombustMix":175,"selAsbestos":8,"thresAsbestos":200,"selPlasterboard":9,"thresPlasterboard":225,"selHazard":10,"thresHazard":250,"selOutCombust":11,"thresOutCombust":275,"selOutNoncombust":12,"thresOutNoncombust":300,"selTmpCombust":13,"thresTmpCombust":325,"selTmpNoncombust":14,"thresTmpCNoncombust":350,"selAsh":15,"thresAsh":375}`;
+        const bufferData = Buffer.from(jsonString);
 
-      // 新しい ArrayBuffer を作成
-      const arrayBufferData = new ArrayBuffer(bufferData.length);
-      
-      // 新しい Uint8Array を作成し、BufferData の内容をコピー
-      const view = new Uint8Array(arrayBufferData);
-      for (let i = 0; i < bufferData.length; ++i) {
-          view[i] = bufferData[i];
+        // 新しい ArrayBuffer を作成
+        const arrayBufferData = new ArrayBuffer(bufferData.length);
+        
+        // 新しい Uint8Array を作成し、BufferData の内容をコピー
+        const view = new Uint8Array(arrayBufferData);
+        for (let i = 0; i < bufferData.length; ++i) {
+            view[i] = bufferData[i];
+        }
+        response.data = view.buffer;
       }
-      response.data = view.buffer;
     }//★スタブここまで
+    //★---
   }catch(e){
     const error = e as AxiosError
     const errorMessage = error.response ? `Status: ${error.response.status}, Body: ${JSON.stringify(error.response.data)}` : error.message;
@@ -859,7 +862,8 @@ export const sendToServer = async <TRequest, TResponse>(requestData:TRequest,end
     console.error('Server returned status code ', response.status);
     throw new CustomError('codeHttp200',response.status,null,msg);
   //【応答データ】.【ステータスコード】＝"01:異常"　の場合
-  }else if(response.data && response.data.sttCd && response.data.sttCd == "01"){
+  }else if((response.data && response.data.sttCd && response.data.sttCd == "01")
+         ||(response.data && endpoint === "IFA0110" && response.data.gyDt && response.data.gyDt.sttCd && response.data.gyDt.sttCd == "01")){
     console.error('Server returned status code ', response.status);
     throw new CustomError('codeRsps01',response.status,response.data.sttCd,msg);
   }
@@ -877,7 +881,6 @@ export const sendToServer = async <TRequest, TResponse>(requestData:TRequest,end
  * @param {*} filePath ファイルパス
  ************************************************/
 export const sendFileToServer = async <TRequest, TResponse>(requestData:TRequest,endpoint:string,msg:string,filePath:string):Promise<AxiosResponse<TResponse>> => {
-  let URI = null;
   const formData = new FormData();
   formData.append('file', {
     uri: `file://${filePath}`,
@@ -889,9 +892,8 @@ export const sendFileToServer = async <TRequest, TResponse>(requestData:TRequest
     formData.append(key, requestData[key]);
   }
   // 設定ファイルから接続先URLを取得
-  const settings = await getSettings(endpoint);
-  const BASEURL = settings.connectionURL;
-  URI = BASEURL;
+  const retURL = await getBaseURL(endpoint);
+  const URI = retURL.connectionURL;
 
   // リクエスト送信前にログ記録
   await logCommunication('SEND', URI, null, endpoint + " : "  + `${JSON.stringify(requestData)} filePath:${filePath}`);
@@ -936,7 +938,8 @@ export const sendFileToServer = async <TRequest, TResponse>(requestData:TRequest
     console.error('Server returned status code ', response.status);
     throw new CustomError('codeHttp200',response.status,null,msg);
   //【応答データ】.【ステータスコード】＝"01:異常"　の場合
-  }else if(response.data && response.data.sttCd && response.data.sttCd == "01"){
+  }else if((response.data && response.data.sttCd && response.data.sttCd == "01")
+         ||(response.data && endpoint === "IFA0110" && response.data.gyDt && response.data.gyDt.sttCd && response.data.gyDt.sttCd == "01")){
     console.error('Server returned status code ', response.status);
     throw new CustomError('codeRsps01',response.status,response.data.sttCd,msg);
   }
@@ -952,49 +955,10 @@ export const sendFileToServer = async <TRequest, TResponse>(requestData:TRequest
  * 設定ファイルの読み込み関数
  * @returns 
  ************************************************/
-const getSettings = async (endpoint:string) => {
+const getBaseURL = async (endpoint:string) => {
   const realm = getInstance()
   const settingsInfo = realm.objects('settings')[0]
   
-  // //★スタブここから
-  // if(endpoint=='IFA0310'){
-  //   return {
-  //     connectionURL: 'https://script.google.com/macros/s/AKfycby_Js595MlPtFMmzmk4X1e9nOaDHxVv6IF5TNxjwIaOfD7FZ6jWdcS0Kt-n6eyOEWorcw/exec'
-  //   }
-  // }else if(endpoint=='IFA0320'){
-  //   return {
-  //     connectionURL: 'https://script.google.com/macros/s/AKfycbyBmJYwzwyhpSNdSVvkTDdLammyRRqGsPTNkSoMymb-epttVzNhCpqqyc2nAz0H8ZQi/exec'
-  //   }
-  // }else if(endpoint=='IFA0330'){
-  //   return {
-  //     connectionURL: 'https://script.google.com/macros/s/AKfycbyErGHV-aqxbP9xle4wSrrPOkOoQuVtv8o9gCGYwI4wcvbN0G6gi7OWRQTnak38-KJ_/exec'
-  //   }
-  // }else if(endpoint=='IFA0340'){
-  //   return {
-  //     connectionURL: 'https://script.google.com/macros/s/AKfycbxJv5Kt29jmSPpFF9qFErXfAfNzxQK28oZ_0aPKHyeAzbkzlnj3SqU9nBMeOWace-sPPQ/exec'
-  //   }
-  // }else if(endpoint == 'IFA0040' || endpoint == 'IF0050'){
-  //   return {
-  //     connectionURL: 'https://script.google.com/macros/s/AKfycbwepLJEO6HV2Hn1-ykRyFCLze5bSfp5gDnsNiL54bdbe7vIHR07ivOuF6d6FlKwoVn6/exec'
-  //   }
-  // }else if(endpoint=='IFA0030'){
-  //   return {
-  //     connectionURL: 'https://script.google.com/macros/s/AKfycbwFul0A7PHmend-smjoO5y8Rahugea53bdH9-nKasEX4tferFnHq4GDtm4jzRxFJZNELw/exec'
-  //   }
-  // }else if(endpoint=='IFT0640'){
-  //   return {
-  //     connectionURL: 'https://script.google.com/macros/s/AKfycbwHuGyYtmNXdCrr2nuM1EbHSKEUVQL_afq70qA8uWA-pIVkabKyowj-Yfx9lpZWHM_t/exec'
-  //   }
-  // }else if(endpoint===""){
-  //   return {
-  //     connectionURL: 'https://script.google.com/macros/s/AKfycbyCG4ubbVKiFRzDwYvV89gcJqizu64vXgULcnrnPEH_SKcvRPyX1jOnnhHLRsrXWQUdcQ/exec'
-  //   }
-  // }else{
-  //   return {
-  //     connectionURL: 'https://script.google.com/macros/s/AKfycbyCG4ubbVKiFRzDwYvV89gcJqizu64vXgULcnrnPEH_SKcvRPyX1jOnnhHLRsrXWQUdcQ/exec'
-  //   }
-  // }
-  //★スタブここまで
   // URLが'/'で終わっていなければ、'/'を追加する
   let baseUrl = settingsInfo.serverUrl as string;
   if (baseUrl.endsWith('?p1=')){//★スタブ用

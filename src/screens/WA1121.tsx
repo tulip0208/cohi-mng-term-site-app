@@ -45,7 +45,6 @@ const WA1121 = ({navigation}:Props) => {
     const resetWA1121Data = useResetRecoilState(WA1121DataState);
     const [isTagRead,setIsTagRead] = useState<boolean>(true);
     const [isSendNext,setIsSendNext] = useState<boolean>(true);
-    // useStateを使用してタイマーIDの状態を保持
     const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout|null>(null);
     const realm = getInstance();
     const { showAlert } = useAlert();
@@ -708,10 +707,10 @@ const WA1121 = ({navigation}:Props) => {
       if (!response.success) {
         switch(response.error){
           case 'codeHttp200':
-            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
             break;
           case 'codeRsps01':
-            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
             break;
           case 'timeout':
             await showAlert("通知", messages.EA5003(), false);
@@ -752,7 +751,7 @@ const WA1121 = ({navigation}:Props) => {
             <View style={styles.tableRow}>
               <View style={[styles.tableCell3]}>
                 <TouchableWithoutFeedback onPressIn={() => onPressIn(index)} onPressOut={onPressOut}>
-                  <Text style={styles.labelText}>{`${index + 1}: ${trpCardTagInfo.newTagId}`}</Text>
+                  <Text style={[styles.labelText,(trpCardTagInfo.newTagIdRed ? styles.red : '')]}>{`${index + 1}: ${trpCardTagInfo.newTagId}`}</Text>
                 </TouchableWithoutFeedback>
               </View>
               <View style={[styles.tableCell1]}>
@@ -766,7 +765,7 @@ const WA1121 = ({navigation}:Props) => {
             
             <View style={styles.tableRow}>
               <View style={[styles.tableCell3]}><Text style={styles.labelTextNarrowMore}>重:{trpCardTagInfo.caLgSdBgWt}</Text></View>
-              <View style={[styles.tableCell4]}><Text style={styles.labelTextNarrowMore}>線:{trpCardTagInfo.caLgSdBgDs}</Text></View>
+              <View style={[styles.tableCell4]}><Text style={[styles.labelTextNarrowMore,(trpCardTagInfo.caLgSdBgDsRed ? styles.red : '')]}>線:{trpCardTagInfo.caLgSdBgDs}</Text></View>
               <View style={[styles.tableCell4]}><Text style={styles.labelTextNarrowMore}>濃:{trpCardTagInfo.estRa}</Text></View>
             </View>
           </View>
@@ -840,15 +839,15 @@ const WA1121 = ({navigation}:Props) => {
             <View style={styles.tableRow}>
               <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore,styles.alignRight]}>輸送カード番号 </Text></View>
               <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore]}>:{WA1120TrpCardNo}</Text></View>
-            </View>                                                
-            <View style={styles.bottomSection}>
-              <TouchableOpacity 
-                disabled={!isTagRead}
-                style={getTagReadButtonStyle()}
-                onPress={btnTagQr}>
-                <Text style={styles.buttonTextNarrow}>タグ読込</Text>
-              </TouchableOpacity>
             </View>
+          </View>
+          <View style={styles.bottomSection}>
+            <TouchableOpacity 
+              disabled={!isTagRead}
+              style={getTagReadButtonStyle()}
+              onPress={btnTagQr}>
+              <Text style={styles.buttonTextNarrow}>タグ読込</Text>
+            </TouchableOpacity>
           </View>
 
 
@@ -867,20 +866,20 @@ const WA1121 = ({navigation}:Props) => {
             <View style={styles.tableRow}>
               <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore]}>積載可能</Text></View>
               <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore]}>累積可能</Text></View>
-              <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore]}>残り積載可能</Text></View>
+              <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore,styles.bold]}>残り積載可能</Text></View>
             </View>
             <View style={styles.tableRow}>
               <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore]}>{WA1121Data.possibleWt}(kg)</Text></View>
               <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore]}>{WA1121Data.sumWt}(kg)</Text></View>
-              <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore]}>{WA1121Data.leftWt}(kg)</Text></View>
+              <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore,styles.bold]}>{WA1121Data.leftWt}(kg)</Text></View>
             </View>
             <View style={styles.tableRow}>
               <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore]}>表面線量率(最大)</Text></View>
-              <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore]}>:{WA1121Data.surDsRt}(μSv/h)</Text></View>
+              <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore,styles.bold]}>:{WA1121Data.surDsRt}(μSv/h)</Text></View>
             </View>
             <View style={styles.tableRow}>
               <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore]}>放射能濃度(最大)</Text></View>
-              <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore]}>:{WA1121Data.maxEstRa}(Bq/kg)</Text></View>
+              <View style={styles.tableCell}><Text style={[styles.labelTextNarrowMore,styles.bold]}>:{WA1121Data.maxEstRa}(Bq/kg)</Text></View>
             </View>
           </View>
           {/* 下段 */}

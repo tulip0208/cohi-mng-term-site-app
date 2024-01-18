@@ -52,7 +52,7 @@ const setupRealm = async (): Promise<string> => {
     const settings = realm.objects('settings').filtered('id == 1'); // 'settings'はスキーマ名
 
     // 設定データがまだ存在しない場合は挿入する
-    if (!settings.isEmpty()) {
+    if (settings.isEmpty()) {
       console.log('setupRealm settings');
       const bundledSettings = bundledSettingsPath; // requireによってインポートされた設定データ
 

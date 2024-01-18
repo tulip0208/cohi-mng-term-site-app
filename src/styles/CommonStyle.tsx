@@ -2,10 +2,12 @@
  * 共通_スタイルシート
  * styles/CommonStyle.tsx
  * ---------------------------------------------*/
-import { StyleSheet } from 'react-native';
-// import StyleSheet from "react-native-rem-stylesheet";
-// 基準サイズ
-const baseSize = 16;
+// import { StyleSheet } from 'react-native';
+import StyleSheet from "react-native-rem-stylesheet";
+import { Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
   fontAndColor:{
@@ -23,15 +25,15 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff', // 背景色は白
   },  
   main:{
-    marginRight:30,
-    marginLeft:30,
+    marginRight:20,
+    marginLeft:20,
   },
   textareaContainer:{
     marginRight:10,
     marginLeft:10,
   },
   textareaContainerSecond:{
-    maxHeight:"20%"
+    maxHeight:windowWidth*0.2
   },  
   middleContent: {
     flex: 1,
@@ -52,6 +54,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え    
   },
+  left:{
+    alignItems: 'left',
+    justifyContent: 'left', // 子要素を垂直方向に中央揃え    
+  },  
   middleContainer:{
     paddingTop:10,
   },
@@ -64,12 +70,12 @@ export const styles = StyleSheet.create({
   headerContainer: {
     padding: 5,
     backgroundColor: '#1E74BD', // ヘッダの背景色
-    height: 40,
+    height: 25,
     zIndex:1,
     justifyContent: 'center',
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 15,
     color: '#fff',
     textAlign: 'center',
     fontFamily:"ipaexg",
@@ -77,18 +83,18 @@ export const styles = StyleSheet.create({
   //--------------------
   //--------機能ヘッダ--------
   functionHeaderContainer: {
-    padding: 5,
+    padding: 2,
     flexDirection: 'row',
     flexWrap: 'wrap', // 子要素が親要素の幅を超えたら折り返す
     justifyContent: 'space-between',  
     alignItems: 'center',      
     backgroundColor: '#1E74BD', // ヘッダの背景色
-    height: 40,
+    height: 25,
     zIndex:1,
   },
   functionHeaderLeft: {
-    fontSize: 16,
-    marginLeft: 10, // 適切な余白を設定
+    fontSize: 13,
+    marginLeft: 5, // 適切な余白を設定
     color: 'white',
     fontWeight: 'bold',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
@@ -97,7 +103,7 @@ export const styles = StyleSheet.create({
     fontFamily:"ipaexg",
   },
   functionHeaderMiddle: {
-    fontSize: 20,
+    fontSize: 15,
     alignSelf: 'center',
     color: 'white',
     fontWeight: 'bold',
@@ -107,7 +113,8 @@ export const styles = StyleSheet.create({
     fontFamily:"ipaexg",
   },
   functionHeaderRight: {
-    fontSize: 16,
+    fontSize: 13,
+    marginRight: 5, // 適切な余白を設定
     color: 'white',
     fontWeight: 'bold',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
@@ -118,14 +125,20 @@ export const styles = StyleSheet.create({
   //--------------------  
   //--------ラベル-------
   labelText: {
-    fontSize: 15,
+    fontSize: 14,
     marginTop: 10,
-    marginBottom: 5,
+    marginBottom: 3,
     fontFamily:"ipaexg",
     color:'#000'
   },
+  labelCheck: {
+    fontSize: 14,
+  },  
+  bold: {
+    fontWeight: 'bold',
+  },
   labelTextPlace: {
-    marginLeft: 75,
+    marginLeft: 70,
     fontFamily:"ipaexg",
   },
   alignRight: {
@@ -134,15 +147,18 @@ export const styles = StyleSheet.create({
   alignLeft: {
     textAlign:"left",
   },  
+  justifyContentCenter: {
+    justifyContent: 'center', // 子要素を親要素の中央に揃える
+  },
   labelTextNarrow: {
-    fontSize: 15,
+    fontSize: 14,
     marginTop: 2,
-    marginBottom: 5,
+    marginBottom: 3,
     fontFamily:"ipaexg",
     color:'#000'
   },
   labelTextNarrowMore: {
-    fontSize: 15,
+    fontSize: 14,
     marginTop: 0,
     marginBottom: 0,
     fontFamily:"ipaexg",
@@ -153,30 +169,38 @@ export const styles = StyleSheet.create({
   inputContainer: {
     alignItems: 'center',
     flexDirection: 'row', // 子要素を横並びにする
-    justifyContent: 'center', // 子要素を親要素の左端に揃える
+    justifyContent: 'center', // 子要素を親要素の中央に揃える
+  },
+  inputContainerLeft: {
+    alignItems: 'center',
+    flexDirection: 'row', // 子要素を横並びにする
+    justifyContent: 'left', // 子要素を親要素の左端に揃える
   },
   inputWithText: {
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
     fontFamily:"ipaexg",
     color:'#000',
+    fontSize:14,
   },  
   input: {
+    fontSize:14,
     borderWidth: 1, // 枠線の幅
     borderColor: 'black', // 枠線の色
-    padding: 10,
-    height: 40, 
-    minWidth: 200, // テキストボックスの最小幅
+    padding: 0,
+    height: 25,
+    width: windowWidth*0.5, // テキストボックスの最小幅
     textAlign: 'center',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
   },
   inputNarrow: {
+    fontSize:14,
     borderWidth: 1, // 枠線の幅
     borderColor: 'black', // 枠線の色
     padding: 0,
     height: 20,
-    minWidth: 200, // テキストボックスの最小幅
+    minWidth: windowWidth*0.5, // テキストボックスの最小幅
     textAlign: 'center',
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
@@ -190,7 +214,7 @@ export const styles = StyleSheet.create({
   textArea: {
     // テキストエリアのスタイル
     height: 100, // 高さを設定
-    width: '100%', // 幅を親要素に合わせて設定
+    width: windowWidth, // 幅を親要素に合わせて設定
     borderColor: 'black', // 枠線の色
     borderWidth: 1, // 枠線の太さ
     padding: 5, // 内側の余白
@@ -200,24 +224,32 @@ export const styles = StyleSheet.create({
     flex: 1,
     textAlignVertical: 'top',
     padding: 5,
-    width: '100%', // 幅を親要素に合わせて設定
+    // width: windowWidth, // 幅を親要素に合わせて設定
+    borderColor: 'black', // 枠線の色
+    borderWidth: 1, // 枠線の太さ
+  },
+  textAreaInput09: {
+    flex: 1,
+    textAlignVertical: 'top',
+    padding: 5,
+    width: windowWidth*0.9, // 幅を親要素に合わせて設定
     borderColor: 'black', // 枠線の色
     borderWidth: 1, // 枠線の太さ
   },
   inputWt: {
+    fontSize:14,
     borderWidth: 1,
     borderColor: 'black',
-    height: 40, // テキストサイズに適したサイズに
+    height: 30, // テキストサイズに適したサイズに
     flex: 1, // これにより、各入力が兄弟要素との関係でフレックスします
     textAlign: 'center',
-    // その他必要に応じたスタイル
+    padding:0,
   },
   // 小数入力と小数点のためのコンテナのスタイル
   decimalInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // その他必要に応じたスタイル
   },
 
   // 小数点のスタイル
@@ -228,12 +260,13 @@ export const styles = StyleSheet.create({
 
   // 小数入力のためのスタイルを調整
   inputDs: {
+    fontSize:14,
     borderWidth: 1,
     borderColor: 'black',
-    height: 40, // テキストサイズに適したサイズに
+    height: 30, // テキストサイズに適したサイズに
     flex: 1, // これにより、各入力が兄弟要素との関係でフレックスします
     textAlign: 'center',
-    // その他必要に応じたスタイル
+    padding:0,
   },
   inputIntDecNarrow: {
     borderWidth: 1,
@@ -243,7 +276,6 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     padding:0,
     maxWidth:50,
-    // その他必要に応じたスタイル
   },  
 
   //--------------------
@@ -254,8 +286,6 @@ export const styles = StyleSheet.create({
   },
   inputReasonScrollContainer: {
     flex: 1,
-    maxHeight: "100%", // ScrollViewの最大高さを設定
-    width: '100%', // スクロールビューの幅を親要素に合わせる
     padding: 10,
   },
   
@@ -274,35 +304,50 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     padding:1,
   },
+  memoScrollSmallContainer:{
+    borderColor: 'black',
+    borderWidth: 1,
+    padding:1,
+    flex:1,
+    maxHeight:80
+  },  
   memoScroll:{
-    height: 200, 
+    overflow: 'hidden'
+  },
+  memoScrollSmall:{
     overflow: 'hidden'
   },
   memo: {
     textAlignVertical: 'top',
     padding: 5,
   },
-  
+  red:{
+    color:'red'
+  },
   
   //--------ボタン-------
+  zIndex:{
+    zIndex:1,
+  },
   button: {
     backgroundColor: '#548236', // パステルな水色
     padding: 5,
     margin: 5,
-    borderRadius: 15,
-    height: 60,
+    borderRadius: 10,
+    height: 50,
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
+    zIndex:1,
   },
   buttonNarrow: {
     backgroundColor: '#548236', // パステルな水色
     padding: 5,
     margin: 5,
-    borderRadius: 15,
-    height: 60,
+    borderRadius: 10,
+    height: 50,
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
-    width:'45%'
+    width:windowWidth*0.4
   },
   buttonMoreNarrow: {
     backgroundColor: '#548236', // パステルな水色
@@ -310,38 +355,40 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
-    width:'35%'
+    width:windowWidth*0.35
   },
   button50: {
-    maxWidth:'50%',
+    maxWidth:windowWidth*0.5,
   },
   buttonNarrower: {
     backgroundColor: '#548236', // パステルな水色
     padding: 5,
     margin: 0,
-    borderRadius: 15,
-    height: 50,
+    borderRadius: 10,
+    height: 40,
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
-    width:'45%'
-  },  
+    width:windowWidth*0.4
+  }, 
   buttonRead: {
-    marginRight:'10%',
-    marginLeft:'10%',
+    marginRight:windowWidth*0.15,
+    marginLeft:windowWidth*0.15,
   },  
   buttonSmall: {
-    marginRight:'20%',
-    marginLeft:'20%',
+    marginRight:windowWidth*0.2,
+    marginLeft:windowWidth*0.2,
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 15,
     color: 'white',
     fontFamily:"ipaexg",
+    fontWeight: 'bold',
   },
   buttonTextNarrow: {
     fontSize: 15,
     color: 'white',
     fontFamily:"ipaexg",
+    fontWeight: 'bold',
   },  
   centerButton:{
     alignItems: 'center', // 子要素を水平方向に中央揃え
@@ -359,14 +406,14 @@ export const styles = StyleSheet.create({
     padding:5,
   },
   startButtonText: {
-    fontSize: 20,
+    fontSize: 15,
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',    
     fontFamily:"ipaexg",
   },
   endButtonText: {
-    fontSize: 20,
+    fontSize: 15,
     color: 'black',
     fontWeight: 'bold',
     textAlign: 'center',
@@ -386,19 +433,19 @@ export const styles = StyleSheet.create({
     backgroundColor: '#F1D2C1',
     padding: 5,
     flex: 1,
-    maxWidth:"50%",
+    maxWidth:windowWidth*0.5,
   },
   destroyButton: {
-    backgroundColor: '#F1D2C1',
+    backgroundColor: '#ffcbb3',
     padding: 5,
     flex: 1,
-    maxWidth:"15%",
+    maxWidth:windowWidth*0.15,
   },  
   endButtonSmall: {
     backgroundColor: '#F1D2C1',
     padding: 5,
-    height:50,
-    width:"48%"
+    height:40,
+    width:windowWidth*0.35
   },  
   startButton: {
     backgroundColor: '#1e74bd', 
@@ -406,13 +453,15 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   detailButton: {
-    margin: 5,
-    marginLeft: 20,
+    width:windowWidth*0.2,
+    height:35,
+    margin: 2,
+    marginLeft: 10,
     borderRadius: 10,
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
     backgroundColor: '#d9d9d9', 
-    padding: 10,
+    padding: 5,
     flex: 1,
   },
   detailButtonNarrow: {
@@ -429,24 +478,28 @@ export const styles = StyleSheet.create({
     backgroundColor: '#1e74bd', 
   },
   popupCloseButton: {
-    height:"10%",
+    height:windowWidth*0.1,
     backgroundColor: '#1e74bd', 
     color:"#FFF",
   },  
   buttonHalf: {    
-    width:"50%",
+    width:windowWidth*0.5,
   },
   buttonMaxHalf: {    
-    maxWidth:"50%",
+    maxWidth:windowWidth*0.5,
   },
   updownMargin:{
-    marginTop:10,
-    marginBottom:10,
+    marginTop:5,
+    marginBottom:5,
   },
   textBlack:{
     color:'black',
     fontFamily:"ipaexg",    
   },
+  marginSide: {
+    marginRight:windowWidth*0.05,
+    marginLeft:windowWidth*0.05,
+  },    
   //--------------------
   //--------カメラ-------
   overlay: {
@@ -458,13 +511,13 @@ export const styles = StyleSheet.create({
   crosshair: {
     position: 'absolute',
     width: 2,
-    height: '30%',
+    height: windowWidth*0.3,
     backgroundColor: 'white',
     opacity: 0.5, //透明度50%
   },
   crosshairHorizontal: {
     position: 'absolute',
-    width: '40%',
+    width: windowWidth*0.3,
     height: 2,
     backgroundColor: 'white',
     opacity: 0.5, //透明度50%
@@ -486,12 +539,12 @@ export const styles = StyleSheet.create({
     flexWrap: 'wrap', // 子要素が親要素の幅を超えたら折り返す
     justifyContent: 'flex-start', // 子要素を親要素の左端に揃える
     paddingTop:10,
-    paddingLeft:45,
-    paddingRight:45,
+    paddingLeft:40,
+    paddingRight:40,
   },
   menuButton: {
-    width: '48%', // 画面幅の半分のサイズ
-    height: 80,
+    width: windowWidth*0.30,
+    height: windowHeight*0.12,
     backgroundColor: '#548236', // パステルな水色
     marginBottom: 2,
     padding: 15,
@@ -502,12 +555,12 @@ export const styles = StyleSheet.create({
     marginRight:2,
   },
   menuButtonText1: {
-    fontSize: 18,
+    fontSize: 15,
     color: 'white',
     fontFamily:"ipaexg",
   }, 
   menuButtonText2: {
-    fontSize: 18,
+    fontSize: 15,
     color: 'black',
     fontFamily:"ipaexg",
   }, 
@@ -545,14 +598,14 @@ export const styles = StyleSheet.create({
     flexWrap: 'wrap', // 子要素が親要素の幅を超えたら折り返す
     justifyContent: 'flex-start', // 子要素を親要素の左端に揃える
     paddingTop:10,
-    paddingLeft:10,
-    paddingRight:10,
+    paddingLeft:5,
+    paddingRight:5,
   },
   settingButton: {
-    width: '45%', // 画面幅の半分のサイズ
+    width: windowWidth*0.4, // 画面幅の半分のサイズ
     height: 60,
-    marginRight: 'auto', // 右のマージンを自動調整
-    marginLeft: 'auto', // 左のマージンを自動調整  },
+    //★marginRight: 'auto', // 右のマージンを自動調整
+    //marginLeft: 'auto', // 左のマージンを自動調整  },
     backgroundColor: '#1e74bd', // パステルな水色
     marginBottom: 5,
     padding: 0,
@@ -560,6 +613,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
   },
+  popupSettingButton: {
+    width: windowWidth*0.3, // 画面幅の半分のサイズ
+    height: 60,
+    //★marginRight: 'auto', // 右のマージンを自動調整
+    //marginLeft: 'auto', // 左のマージンを自動調整  },
+    backgroundColor: '#1e74bd', // パステルな水色
+    marginBottom: 5,
+    padding: 0,
+    borderRadius: 15,
+    justifyContent: 'center', // 子要素を垂直方向に中央揃え
+    alignItems: 'center', // 子要素を水平方向に中央揃え
+  },  
   settingButton1: {
     backgroundColor: '#fff2cc'
   },
@@ -578,7 +643,7 @@ export const styles = StyleSheet.create({
     fontFamily:"ipaexg",
   },
   labelTextSetting: {
-    fontSize: 15,
+    fontSize: 14,
     marginTop:1,
     marginBottom:1,
     fontFamily:"ipaexg",
@@ -596,18 +661,16 @@ export const styles = StyleSheet.create({
     marginBottom:3,
   },
   scrollContainerSecond: {
-    maxHeight:"30%"
+    maxHeight:windowWidth*0.3
   },  
   scrollViewStyle: {
-    width: 'auto', // または必要な幅に設定
-    maxWidth:'100%',
-    minWidth: '90%', // または必要な幅に設定
+    maxWidth:windowWidth*0.83,
+    minWidth: windowWidth*0.83, // または必要な幅に設定
     borderWidth: 1, // 枠線の幅
     borderColor: '#000', // 枠線の色
     borderRadius: 5, // 枠の角を丸くする場合
     paddingLeft:5,
     paddingRight:5,
-    minHeight: '80%',
   },
   scrollPushSection: {
     flex:1,
@@ -630,37 +693,44 @@ export const styles = StyleSheet.create({
     maxHeight: 120,
   },  
   scrollPushViewStyle: {
-    width: 'auto', // または必要な幅に設定
-    maxWidth:'100%',
-    minWidth: '90%', // または必要な幅に設定
+    //★width: 'auto', // または必要な幅に設定
+    maxWidth:windowWidth,
+    minWidth: windowWidth*0.9, // または必要な幅に設定
     borderWidth: 1, // 枠線の幅
     borderColor: '#000', // 枠線の色
     borderRadius: 5, // 枠の角を丸くする場合
-    paddingLeft:5,
-    paddingRight:5,
+    paddingLeft:10,
+    paddingRight:10,
   },  
   scrollViewStyleSecond: {
-    height:"30%"
+    height:windowWidth*0.3
   },    
   scrollViewStyleTop: {
   },  
   innerScrollViewStyle: {
-    width: "100%", // または必要な幅に設定
+    width: windowWidth, // または必要な幅に設定
   },
   //--------------------  
   bottomSection: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingBottom: 5,
+    paddingBottom: 2,
     zIndex:1,
   },
   detailSection: {
-    padding: 5,
+    padding: 0,
     flexDirection: 'row',
     // justifyContent: 'space-around',
      justifyContent: 'center', // 子要素を垂直方向に中央揃え
      alignItems: 'center', // 子要素を水平方向に中央揃え
-  },  
+  },
+  detailSectionList: {
+    padding: 0,
+    flexDirection: 'row',
+    // justifyContent: 'space-around',
+     //justifyContent: 'center', // 子要素を垂直方向に中央揃え
+     //alignItems: 'center', // 子要素を水平方向に中央揃え
+  },    
   bottomSectionNarrow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -679,29 +749,51 @@ export const styles = StyleSheet.create({
   //--------------------    
   //--------テーブル-------
   tableMain: {
-    width: '100%', // テーブルの幅を指定
+    width: windowWidth*0.8, // テーブルの幅を指定
     // 他のスタイル
   },
   tableRow: {
     flexDirection: 'row', // 行のスタイル
   },
+  tableCell0_5: {
+    flex: windowWidth*0.5, // セルのスタイル
+  },
+  tableCell0_3: {
+    flex: windowWidth*0.3, // セルのスタイル
+  },
+  tableCell0_7: {
+    flex: windowWidth*0.7, // セルのスタイル
+  },
+  tableCell0_2: {
+    flex: windowWidth*0.2, // セルのスタイル
+  },
   tableCell: {
     flex: 1, // セルのスタイル
   },
+  tableCell08: {
+    flex: 0.8, // セルのスタイル
+  },
+  tableCell07: {
+    flex: 0.7, // セルのスタイル
+  },
+
+  tableCell03: {
+    flex: 0.3, // セルのスタイル
+  },
   tableCell1: {
-    flex: 1, // セルのスタイル
+    flex: 1, 
   },
   tableCell2: {
-    flex: 2, // セルのスタイル
+    flex: 2, 
   },    
   tableCell3: {
-    flex: 3, // セルのスタイル
+    flex: 3, 
   },    
   tableCell4: {
-    flex: 4, // セルのスタイル
+    flex: 4, 
   },    
   tableCell5: {
-    flex: 5, // セルのスタイル
+    flex: 5, 
   },    
   checkBox: {
     transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] // 1.5倍に拡大
@@ -718,20 +810,19 @@ export const styles = StyleSheet.create({
   pickerStyle:{
     borderWidth: 1, // 枠線の幅
     borderColor: 'black', // 枠線の色
-    height:30,
+    height:25,
     marginTop:  -12,
     marginBottom: -12,
-
   },
   pickerFixStyle:{
     borderWidth: 1, // 枠線の幅
     borderColor: 'black', // 枠線の色
-    height:30,
+    height:25,
 
   },  
   pickerLabelText: {
     marginEnd: 10, // ピッカーとの間隔を設定    
-    fontSize: 15,
+    fontSize: 14,
     marginTop: 10,
     marginBottom: 5,
     fontFamily:"ipaexg",
@@ -782,11 +873,11 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // 透明度を持たせた黒でオーバーレイ
   },
   modalView: {
-    height:"90%",
-    width: '80%',
+    height:windowHeight*0.8,
+    width: windowWidth*0.8,
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 10,    
+    padding: 10,
   },
   closeButton: {
     alignSelf: 'flex-end',
@@ -801,7 +892,7 @@ export const styles = StyleSheet.create({
   },
   modalInputView: {
     height:180,
-    width: '80%',
+    width: windowWidth*0.8,
     backgroundColor: '#f2f2f2',
     borderRadius: 10,
     padding: 10,    
@@ -817,7 +908,7 @@ export const styles = StyleSheet.create({
   //--------------------    
   //--------カスタムアラート-------
   alertView: {
-    width:'50%',
+    width:windowWidth*0.5,
     backgroundColor: "#f2f2f2",
   },
   alertButtonContainer: {
@@ -833,7 +924,7 @@ export const styles = StyleSheet.create({
     margin:1,
     marginLeft:2,
     marginRight:2,
-    width:'45%',
+    width:windowWidth*0.45,
   },
   alertButtonCancel: {
     backgroundColor: "#f1d2c1", // 薄いピンク    
@@ -886,20 +977,24 @@ export const styles = StyleSheet.create({
   footerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10,
     backgroundColor: '#000', // フッターの背景色
+    padding: 2,
     zIndex:2,
   },
   footerText: {
-    fontSize: 15,
     color: '#fff',
     height: 20,
     fontFamily:"ipaexg",
   },
   serverNameText: {
+    paddingLeft: 5,
+    padding: 1,
+    fontSize: 15,
     textAlign: 'left',
   },
   copyrightText: {
+    padding: 1,
+    fontSize: 12,
     textAlign: 'right',
   },  
   //--------------------    

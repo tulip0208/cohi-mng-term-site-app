@@ -50,6 +50,7 @@ const WA1090 = ({navigation}:Props) => {
     const resetWA1091OldTagInfo = useResetRecoilState(WA1091OldTagInfoState);
     const resetWA1090WkPlac = useResetRecoilState(WA1090WkPlacState);
     const resetWA1093Memo = useResetRecoilState(WA1093MemoState);
+    const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout|null>(null);
     const { showAlert } = useAlert();
     /************************************************
      * 初期表示設定
@@ -119,14 +120,25 @@ const WA1090 = ({navigation}:Props) => {
       setIsNext(true);
     };
     // 10秒以上の長押しを検出
-    const handleLongPress = () => {  
-      setTimeout(() => {
+    const onPressIn = () => {
+      // 10秒後に実行されるアクション
+      const timer = setTimeout(() => {
         setInputVisible(true);
         setIsNext(false);
         setIsCannotRead(true);
         setIsViewNextButton(true);
       }, 10000); // 10秒 = 10000ミリ秒
+      setLongPressTimer(timer); // タイマーIDを保存
+    }; 
+    // タッチ終了時のイベントハンドラ
+    const onPressOut = () => {
+      // タイマーが設定されていればクリア
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        setLongPressTimer(null); // タイマーIDをクリア
+      }
     };
+
     // 次へボタンのスタイルを動的に変更するための関数
     const getNextButtonStyle = () => {
       return isNext ? [styles.button,styles.startButton] : [styles.button,styles.startButton, styles.disabledButton];
@@ -327,10 +339,10 @@ const WA1090 = ({navigation}:Props) => {
       if (!response.success) {
         switch(response.error){
           case 'codeHttp200':
-            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
             break;
           case 'codeRsps01':
-            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
             break;
           case 'timeout':
             await showAlert("通知", messages.EA5003(), false);
@@ -370,12 +382,12 @@ const WA1090 = ({navigation}:Props) => {
             <Text style={styles.labelText}>下記ボタンを押してフレコンに取り付けられたタグを読み込んで下さい。</Text>
             <TouchableOpacity style={getTagReadButtonStyle()} onPress={btnTagQr}>
               <Text style={styles.buttonText}>タグ読込</Text>
-            </TouchableOpacity>          
+            </TouchableOpacity>
           </View>
 
           {/* 中段2 */}
-          <View  style={[styles.main,styles.center]}>
-            <TouchableWithoutFeedback onLongPress={handleLongPress}>
+          <View  style={[styles.main,styles.center,styles.zIndex]}>
+            <TouchableWithoutFeedback onPressIn={() => onPressIn()} onPressOut={onPressOut}>
               <Text style={styles.labelText}>{getInfoMsg()}</Text>
             </TouchableWithoutFeedback>
             {inputVisible && 

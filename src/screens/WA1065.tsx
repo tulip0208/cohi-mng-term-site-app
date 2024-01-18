@@ -136,13 +136,13 @@ const WA1065 = ({navigation}:Props) => {
           {/* 上段 */}
           <View  style={[styles.topContent]}>
             <View  style={[styles.main]}>
-              <Text style={[styles.labelText]}>新タグID：{newTagId}</Text>
-              <Text style={[styles.labelText]}>旧タグ数：{WA1060OldTagInfos.length}</Text>
+              <Text style={[styles.labelText,,styles.bold]}>新タグID：{newTagId}</Text>
+              <Text style={[styles.labelText,styles.bold]}>旧タグ数：{WA1060OldTagInfos.length}</Text>
               <Text style={[styles.labelText,styles.centerContent]}>メモを入力して下さい。</Text>
               <Text style={[styles.labelText,styles.centerContent]}>メモ(省略可){inputLimit}文字まで：</Text>
             </View>
 
-            <View  style={[styles.middleContent]}>
+            <View  style={[styles.middleContent,styles.justifyContentCenter]}>
               <View style={[styles.inputReasonScrollContainer]}>
                 <ScrollView 
                     contentContainerStyle={[styles.inputReasonScrollViewStyle]}

@@ -122,10 +122,10 @@ const WA1094 = ({navigation}:Props) => {
       if (!response.success) {
         switch(response.error){
           case 'codeHttp200':
-            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
             break;
           case 'codeRsps01':
-            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
             break;
           case 'timeout':
             await showAlert("通知", messages.EA5003(), false);
@@ -150,26 +150,26 @@ const WA1094 = ({navigation}:Props) => {
           {/* 上段 */}
           <View  style={[styles.main]}>
             <Text style={[styles.labelText]}>作業場所：{WA1090WkPlac.wkplac}</Text>
-            <Text style={[styles.labelText,styles.labelTextPlace]}>{WA1090WkPlac.wkplacNm}</Text>
-            <Text style={[styles.labelText]}>新タグID：{newTagId}</Text>
-            <Text style={[styles.labelText]}>旧タグID：{WA1091OldTagInfo.oldTagId}</Text>
+            <Text style={[styles.labelTextNarrow,styles.labelTextPlace]}>{WA1090WkPlac.wkplacNm}</Text>
+            <Text style={[styles.labelTextNarrow,styles.bold]}>新タグID：{newTagId}</Text>
+            <Text style={[styles.labelTextNarrow,styles.bold]}>旧タグID：{WA1091OldTagInfo.oldTagId}</Text>
 
             <View style={styles.tableMain}>
               <View style={[styles.tableRow,styles.pickerContainer]}>
-                <View style={styles.tableCell}><Text style={[styles.pickerLabelText,styles.alignRight]}>重量(Kg)：</Text></View>
-                <View style={[styles.tableCell]}><Text style={styles.pickerLabelText}>{WA1092WtDs.caLgSdBgWt ?? ''}</Text></View>
+                <View style={styles.tableCell}><Text style={[styles.labelTextNarrow,styles.alignRight]}>重量(Kg)：</Text></View>
+                <View style={[styles.tableCell]}><Text style={styles.labelTextNarrow}>{WA1092WtDs.caLgSdBgWt ?? ''}</Text></View>
               </View>
               <View style={[styles.tableRow,styles.pickerContainer]}>
-                <View style={styles.tableCell}><Text style={[styles.pickerLabelText,styles.alignRight]}>線量(μSv/h)：</Text></View>
-                <View style={[styles.tableCell]}><Text style={styles.pickerLabelText}>{WA1092WtDs.caLgSdBgDs ?? ''}</Text></View>
+                <View style={styles.tableCell}><Text style={[styles.labelTextNarrow,styles.alignRight]}>線量(μSv/h)：</Text></View>
+                <View style={[styles.tableCell]}><Text style={styles.labelTextNarrow}>{WA1092WtDs.caLgSdBgDs ?? ''}</Text></View>
               </View>
               <View style={[styles.tableRow,styles.pickerContainer]}>
-                <View style={styles.tableCell}><Text style={[styles.pickerLabelText,styles.alignRight]}>推定放射能濃度：</Text></View>
-                <View style={[styles.tableCell]}><Text style={styles.pickerLabelText}>{WA1091OldTagInfo.meaRa}</Text></View>
+                <View style={styles.tableCell}><Text style={[styles.labelTextNarrow,styles.alignRight]}>推定放射能濃度：</Text></View>
+                <View style={[styles.tableCell]}><Text style={styles.labelTextNarrow}>{WA1091OldTagInfo.meaRa}</Text></View>
               </View>
               <View style={styles.tableRow}>
-                <View style={styles.tableCell}><Text style={[styles.inputLabelText,styles.alignRight]}>(Bq/Kg)　</Text></View>
-                <View style={styles.tableCell}><Text style={styles.inputLabelText}></Text></View>
+                <View style={styles.tableCell}><Text style={[styles.labelTextNarrow,styles.alignRight]}>(Bq/Kg)　</Text></View>
+                <View style={styles.tableCell}><Text style={styles.labelTextNarrow}></Text></View>
               </View>
             </View>
 
@@ -183,27 +183,29 @@ const WA1094 = ({navigation}:Props) => {
             </View>
 
             <View style={[styles.tableRow,styles.pickerContainer]}>
-              <View style={styles.tableCell}><Text style={[styles.pickerLabelText]}>メモ：</Text></View>
+              <View style={styles.tableCell}><Text style={[styles.labelTextNarrow]}>メモ：</Text></View>
               <View style={styles.tableCell}></View>
             </View>
-            
-            <View style={styles.memoScrollContainer}>
-              <View style={styles.memoScroll}>
-                <ScrollView nestedScrollEnabled={true}>
-                  <Text style={[styles.memo,styles.textBlack]}>{WA1093Memo}</Text>
-                </ScrollView>
-              </View>
-            </View>
-    
-            <View style={[styles.center,styles.updownMargin]}>
-              <TouchableOpacity 
-                style={[styles.detailButton,styles.buttonHalf]}
-                onPress={btnEdtMemo}
-              >
-                <Text style={[styles.detailButtonText]}>メモ編集</Text>
-              </TouchableOpacity>
+          </View>
+
+          <View style={[styles.memoScrollSmallContainer,styles.tableCell,styles.marginSide]}>
+            <View style={styles.memoScrollSmall}>
+              <ScrollView nestedScrollEnabled={true}>
+                <Text style={[styles.memo,styles.textBlack]}>{WA1093Memo}</Text>
+              </ScrollView>
             </View>
           </View>
+          <View style={[styles.center,styles.updownMargin]}>
+            <TouchableOpacity 
+              style={[styles.detailButton,styles.buttonHalf]}
+              onPress={btnEdtMemo}
+            >
+              <Text style={[styles.detailButtonText]}>メモ編集</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ flex: 1 }} />
+
           {/* 下段 */}
           <View style={styles.bottomSection}>
             <TouchableOpacity style={[styles.button, styles.destroyButton]} onPress={btnAppDestroy}>

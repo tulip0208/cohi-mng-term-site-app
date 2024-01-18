@@ -265,8 +265,8 @@ const WA1062 = ({navigation}:Props) => {
       
           {/* 上段 */}
           <View  style={[styles.main]}>
-            <Text style={[styles.labelText]}>新タグID：{newTagId}</Text>
-            <Text style={[styles.labelText]}>{("dummyTag" === WA1061TagId[1]) ? "ダミー" : "旧"}タグID：{WA1061TagId[0]}</Text>
+            <Text style={[styles.labelText,styles.bold]}>新タグID：{newTagId}</Text>
+            <Text style={[styles.labelText,styles.bold]}>{("dummyTag" === WA1061TagId[1]) ? "ダミー" : "旧"}タグID：{WA1061TagId[0]}</Text>
             <View style={[styles.center]}>
               <Text style={[styles.labelText]}>{("dummyTag" === WA1061TagId[1]) ? "ダミー" : "旧"}タグ情報を選択してください。</Text>
             </View>
@@ -274,22 +274,19 @@ const WA1062 = ({navigation}:Props) => {
             <View style={styles.tableMain}>
               <View style={[styles.tableRow,styles.pickerContainer]}>
                 <View style={styles.tableCell}><Text style={[styles.pickerLabelText,styles.alignRight]}>除去土壌等種別：</Text></View>
-                <View style={[styles.tableCell,styles.pickerStyle,]}>{makePickerRmSolTyp()}</View>
+                <View style={[styles.tableCell,styles.pickerFixStyle,]}>{makePickerRmSolTyp()}</View>
               </View>
               <View style={[styles.tableRow,styles.pickerContainer]}>
                 <View style={styles.tableCell}><Text style={[styles.pickerLabelText,styles.alignRight]}>アルミ内袋の利用：</Text></View>
-                <View style={[styles.tableCell,styles.pickerStyle]}>{makePickerUsgAluBg()}</View>
+                <View style={[styles.tableCell,styles.pickerFixStyle]}>{makePickerUsgAluBg()}</View>
               </View>
               <View style={[styles.tableRow,styles.pickerContainer]}>
                 <View style={styles.tableCell}><Text style={[styles.pickerLabelText,styles.alignRight]}>発行理由：</Text></View>
-                <View style={[styles.tableCell,styles.pickerStyle]}>{makePickerLnkNewTagDatMem()}</View>
+                <View style={[styles.tableCell,styles.pickerFixStyle]}>{makePickerLnkNewTagDatMem()}</View>
               </View>
               <View style={[styles.tableRow,styles.pickerContainer]}>
                 <View style={styles.tableCell}><Text style={[styles.pickerLabelText,styles.alignRight]}>その他発行理由　</Text></View>
                 <View style={styles.tableCell}></View>
-              </View>
-              <View style={styles.tableRow}>
-                
               </View>
             </View>
           </View>

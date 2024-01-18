@@ -314,8 +314,8 @@ const WA1063 = ({navigation}:Props) => {
       
           {/* 上段 */}
           <View  style={[styles.main,styles.topContent]}>
-            <Text style={[styles.labelText]}>新タグID：{newTagId}</Text>
-            <Text style={[styles.labelText]}>旧タグ数：{WA1060OldTagInfos.length}</Text>
+            <Text style={[styles.labelText,styles.bold]}>新タグID：{newTagId}</Text>
+            <Text style={[styles.labelText,styles.bold]}>旧タグ数：{WA1060OldTagInfos.length}</Text>
             
             <View style={styles.tableMain}>
               <View style={[styles.tableRow,styles.pickerContainer]}>

@@ -173,10 +173,10 @@ const AppNavigator = () => {
     if (!response.success) {
       switch(response.error){
         case 'codeHttp200':
-          await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+          await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
           break;
         case 'codeRsps01':
-          await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+          await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
           break;
         case 'timeout':
           await showAlert("通知", messages.EA5003(), false);

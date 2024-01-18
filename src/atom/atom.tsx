@@ -197,7 +197,30 @@ export const IFT0640DataState = atom<IFT0640ResponseDtl<IFT0640ResponseDtlDtlChe
   drvName:'',
   stgLocId:'',
   acpSrtFctId:'',
-  lgSdBgDtl:[],
+  lgSdBgDtl:[{
+    newTagId: '222',
+    tagCol: '',
+    rmSolTyp: '',
+    caLgSdBgWt: '',
+    caLgSdBgDs: '',
+    radCon: '',
+    check:true,
+  },
+{
+  newTagId: '333',
+  tagCol: '',
+  rmSolTyp: '',
+  caLgSdBgWt: '',
+  caLgSdBgDs: '',
+  radCon: '',
+  check:true,
+},
+
+
+
+
+
+  ],
   vclRdtDsFr:'',
   vclRdtDsRe:'',
   vclRdtDsLe:'',

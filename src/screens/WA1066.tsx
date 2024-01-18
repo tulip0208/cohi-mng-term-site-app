@@ -201,10 +201,10 @@ const WA1066 = ({navigation}:Props) => {
       if (!response.success) {
         switch(response.error){
           case 'codeHttp200':
-            await showAlert("通知", messages.EA5004(response.api as string,response.code as string), false);
+            await showAlert("通知", messages.EA5004(response.api as string,response.status as number), false);
             break;
           case 'codeRsps01':
-            await showAlert("通知", messages.EA5005(response.api as string,response.status as number), false); 
+            await showAlert("通知", messages.EA5005(response.api as string,response.code as string), false); 
             break;
           case 'timeout':
             await showAlert("通知", messages.EA5003(), false);
@@ -230,8 +230,8 @@ const WA1066 = ({navigation}:Props) => {
           <View  style={[styles.main]}>
             <Text style={[styles.labelText]}>作業場所：{WA1060WkPlac.wkplac}</Text>
             <Text style={[styles.labelText,styles.labelTextPlace]}>{WA1060WkPlac.wkplacNm}</Text>
-            <Text style={[styles.labelText]}>新タグID：{newTagId}</Text>
-            <Text style={[styles.labelText]}>旧タグ数：{WA1060OldTagInfos.length}</Text>
+            <Text style={[styles.labelText,styles.bold]}>新タグID：{newTagId}</Text>
+            <Text style={[styles.labelText,styles.bold]}>旧タグ数：{WA1060OldTagInfos.length}</Text>
 
             <View style={styles.tableMain}>
               {
