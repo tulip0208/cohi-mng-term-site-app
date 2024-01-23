@@ -166,16 +166,14 @@ const WA1091 = ({navigation}:Props) => {
             <View  style={[styles.main,styles.center,styles.middleContainer]}>
             <Text style={styles.labelText}>旧タグIDを入力して下さい。</Text>
             <View style={[styles.inputContainer]}>
-              <Text style={styles.inputWithText}>a</Text>
               <TextInput 
                 style={styles.input}
                 onChangeText={handleInputChange}
                 onBlur={handleInputBlur}
                 value={inputValue}
                 editable={true}
-                maxLength={15}
+                maxLength={50}
               />
-              <Text style={styles.inputWithText}>a</Text>
             </View>
           </View>
 

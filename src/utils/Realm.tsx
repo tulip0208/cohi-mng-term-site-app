@@ -65,7 +65,7 @@ const setupRealm = async (): Promise<string> => {
     }
     return settings[0].serverName as string;
   } catch (error) {
-    console.error('Error setting up Realm:', error);
+    console.log('Error setting up Realm:', error);
     return "";
   }
 };

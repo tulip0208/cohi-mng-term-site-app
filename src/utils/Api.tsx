@@ -819,7 +819,6 @@ export const sendToServer = async <TRequest, TResponse>(requestData:TRequest,end
   try{
     response = await axios(config);
    
-    //★---    
     const realm = getInstance()
     const settingsInfo = realm.objects('settings')[0]
     let baseUrl = settingsInfo.serverUrl as string;
@@ -827,7 +826,7 @@ export const sendToServer = async <TRequest, TResponse>(requestData:TRequest,end
       if(endpoint == "IFA0040"||endpoint == "IFA0050"){//★スタブここから
         // TextEncoderを使用してテキストをUint8Arrayにエンコード
         // Bufferを使用してテキストをバイナリデータに変換
-        const jsonString = `{"id":1,"appVer":"1.0.0","settingFileDt":"2024/01/0100:00:00","serverName":"開発","serverUrl":"https://script.google.com/macros/s/AKfycbzV1XBmuC84DZLtN9vhkJDedYGN7Gq6feaydsrKyIX-NrHDlQ4LByP3zTAp3VailhVcuQ/exec?p1=","logTerm":30,"logCapacity":10000,"locGetTerm":60,"camTimeout":30,"btnNewTagSoil":1,"btnRefNewTagSoil":1,"btnRefOldTagSoil":1,"btnNewTagAsh":1,"btnRefNewTagAsh":1,"btnRefOldTagAsg":1,"btnTrnCard":1,"btnUnload":1,"btnStat":1,"reasonListOldTag":"updated,deprecated","useMethodInnerBag":2,"packTyp":3,"kgThresSoil":500,"kgThresAsh":1000,"radioThres":30,"ldpRadioThres":10,"ldpRadioThresMax":100,"estRadioThres":20,"radioConvFact":15,"facArriveTerm":120,"selPlants":2,"thresPlants":50,"selCombust":3,"thresCombust":75,"selSoil":4,"thresSoil":100,"selConcrete":5,"thresConcrete":125,"selAsphalt":6,"thresAsphalt":150,"selNoncombustMix":7,"thresNoncombustMix":175,"selAsbestos":8,"thresAsbestos":200,"selPlasterboard":9,"thresPlasterboard":225,"selHazard":10,"thresHazard":250,"selOutCombust":11,"thresOutCombust":275,"selOutNoncombust":12,"thresOutNoncombust":300,"selTmpCombust":13,"thresTmpCombust":325,"selTmpNoncombust":14,"thresTmpCNoncombust":350,"selAsh":15,"thresAsh":375}`;
+        const jsonString = `{"id":1,"appVer":"1.0.0","settingFileDt":"2024/01/0100:00:00","serverName":"開発","serverUrl":"https://script.google.com/macros/s/AKfycbzP9A2oPXyDoyCpHsRyOikvh0hRQbqkYM5k2B86woJfPiJTZRcgIgFhkRqxI2KB68BJ3g/exec?p1=","logTerm":30,"logCapacity":10000,"locGetTerm":60,"camTimeout":30,"btnNewTagSoil":1,"btnRefNewTagSoil":1,"btnRefOldTagSoil":1,"btnNewTagAsh":1,"btnRefNewTagAsh":1,"btnRefOldTagAsg":1,"btnTrnCard":1,"btnUnload":1,"btnStat":1,"reasonListOldTag":"updated,deprecated","useMethodInnerBag":2,"packTyp":3,"kgThresSoil":500,"kgThresAsh":1000,"radioThres":30,"ldpRadioThres":10,"ldpRadioThresMax":100,"estRadioThres":20,"radioConvFact":15,"facArriveTerm":120,"selPlants":2,"thresPlants":50,"selCombust":3,"thresCombust":75,"selSoil":4,"thresSoil":100,"selConcrete":5,"thresConcrete":125,"selAsphalt":6,"thresAsphalt":150,"selNoncombustMix":7,"thresNoncombustMix":175,"selAsbestos":8,"thresAsbestos":200,"selPlasterboard":9,"thresPlasterboard":225,"selHazard":10,"thresHazard":250,"selOutCombust":11,"thresOutCombust":275,"selOutNoncombust":12,"thresOutNoncombust":300,"selTmpCombust":13,"thresTmpCombust":325,"selTmpNoncombust":14,"thresTmpCNoncombust":350,"selAsh":15,"thresAsh":375}`;
         const bufferData = Buffer.from(jsonString);
 
         // 新しい ArrayBuffer を作成
@@ -841,7 +840,6 @@ export const sendToServer = async <TRequest, TResponse>(requestData:TRequest,end
         response.data = view.buffer;
       }
     }//★スタブここまで
-    //★---
   }catch(e){
     const error = e as AxiosError
     const errorMessage = error.response ? `Status: ${error.response.status}, Body: ${JSON.stringify(error.response.data)}` : error.message;
