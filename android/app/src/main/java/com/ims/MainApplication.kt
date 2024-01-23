@@ -20,10 +20,10 @@ class MainApplication : Application(), ReactApplication {
         override fun getPackages(): List<ReactPackage> {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-    val packages = PackageList(this).packages
-    packages.add(SignalStrengthPackage()) // ここで 'add' を使っています
-    packages.add(JISInputFilterPackage()) // この行を追加
-    return packages
+          val packages = PackageList(this).packages
+          packages.add(SignalStrengthPackage()) // ここで 'add' を使っています
+          packages.add(JISInputFilterPackage()) // この行を追加
+          return packages
         }
 
         override fun getJSMainModuleName(): String = "index"
