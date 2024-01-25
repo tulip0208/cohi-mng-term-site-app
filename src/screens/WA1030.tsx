@@ -14,7 +14,7 @@ import Realm from 'realm';
 import QRScanner from '../utils/QRScanner';
 import ProcessingModal from '../components/Modal';
 import {saveToKeystore, loadFromKeystore} from '../utils/KeyStore';
-import {IFA0030, IFA0040, IFA0050} from '../utils/Api';
+import {IFA0030, IFA0040, IFA0050, IFA0051} from '../utils/Api';
 import {initializeLogFile, logUserAction, logScreen} from '../utils/Log';
 import {watchLocation} from '../utils/Location';
 import RNFS from 'react-native-fs';
@@ -350,8 +350,8 @@ const WA1030 = ({navigation}: Props) => {
             });
           }
           // IFA0051_バージョンアップ完了報告を呼び出す
-          const responseIFA0050 = await IFA0050();
-          if (await apiIsError(responseIFA0050)) {
+          const responseIFA0051 = await IFA0051();
+          if (await apiIsError(responseIFA0051)) {
             return;
           }
         }
