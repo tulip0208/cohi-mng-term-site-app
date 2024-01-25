@@ -12,4 +12,3 @@ declare global {
   var realmInstance: Realm;
 }
 export {};
-  

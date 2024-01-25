@@ -1,8 +1,8 @@
 // App.tsx
 import AppNavigator from './navigation/AppNavigator';
-import React, { useEffect } from 'react';
-import { Buffer } from 'buffer';
-import { RecoilRoot } from 'recoil';
+import React, {useEffect} from 'react';
+import {Buffer} from 'buffer';
+import {RecoilRoot} from 'recoil';
 global.Buffer = Buffer;
 const App = () => {
   global.locationStarted = false;
@@ -10,13 +10,12 @@ const App = () => {
   global.locationErrored = false;
   global.watchId = null;
 
-  useEffect(() => {
-  }, []);
-  
+  useEffect(() => {}, []);
+
   return (
     <RecoilRoot>
-      <AppNavigator />      
+      <AppNavigator />
     </RecoilRoot>
   );
-}
+};
 export default App;

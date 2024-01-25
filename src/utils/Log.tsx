@@ -2,15 +2,15 @@
  * ログ処理
  * utils/Log.tsx
  * ---------------------------------------------*/
-import RNFS,{ReadDirItem} from 'react-native-fs';
-import Geolocation, { GeoPosition, GeoError } from 'react-native-geolocation-service';
+import RNFS, {ReadDirItem} from 'react-native-fs';
+import Geolocation from 'react-native-geolocation-service';
 
 export const logDirectory = `${RNFS.DocumentDirectoryPath}/logs`;
 import messages from './messages';
-import { zip } from 'react-native-zip-archive';
-import { loadFromKeystore } from './KeyStore'; 
-import { getInstance } from './Realm'; // realm.jsから関数をインポート
-import { TrmId } from '../types/type'
+import {zip} from 'react-native-zip-archive';
+import {loadFromKeystore} from './KeyStore';
+import {getInstance} from './Realm'; // realm.jsから関数をインポート
+import {TrmId} from '../types/type';
 
 /************************************************
  * 指定したログファイルを削除する関数
@@ -33,8 +33,11 @@ export const deleteLogFile = async (filePath: string): Promise<void> => {
  * ログファイルを圧縮する関数
  ************************************************/
 export const compressLogFiles = async (): Promise<string | undefined> => {
-  const trmId = await loadFromKeystore('trmId') as TrmId;
-  const timestamp = new Date().toISOString().replace(/[^0-9]/g, "").slice(0,14); // yyyyMMddhhmmss形式
+  const trmId = (await loadFromKeystore('trmId')) as TrmId;
+  const timestamp = new Date()
+    .toISOString()
+    .replace(/[^0-9]/g, '')
+    .slice(0, 14); // yyyyMMddhhmmss形式
   const targetPath = `${RNFS.DocumentDirectoryPath}/log_${trmId.trmId}_${timestamp}.zip`;
   const sourcePath = `${RNFS.DocumentDirectoryPath}/logs`;
 
@@ -59,7 +62,7 @@ export const checkLogFile = async (): Promise<number | undefined> => {
         totalSize++;
       }
     }
-    console.log("total:",totalSize," files");
+    console.log('total:', totalSize, ' files');
     return totalSize;
   } catch (error) {
     console.error('Failed to delete logs:', error);
@@ -69,8 +72,13 @@ export const checkLogFile = async (): Promise<number | undefined> => {
 /************************************************
  * ログファイルを削除する関数
  ************************************************/
-export const deleteLogs = async (showAlertCallback: (title: string, message: string, cancelable: boolean) => Promise<void>): Promise<void> => {
-
+export const deleteLogs = async (
+  showAlertCallback: (
+    title: string,
+    message: string,
+    cancelable: boolean,
+  ) => Promise<void>,
+): Promise<void> => {
   try {
     const files = await RNFS.readDir(logDirectory);
     for (const file of files) {
@@ -78,11 +86,11 @@ export const deleteLogs = async (showAlertCallback: (title: string, message: str
         await RNFS.unlink(file.path);
       }
     }
-    const result = await showAlertCallback("通知", messages.IA5005('ログの削除'), false);
+    await showAlertCallback('通知', messages.IA5005('ログの削除'), false);
 
     // ステップ2.4: 削除操作のログを記録
-    initializeLogFile()
-    logUserAction('ログファイル初期化')
+    initializeLogFile();
+    logUserAction('ログファイル初期化');
   } catch (error) {
     console.error('Failed to delete logs:', error);
   }
@@ -97,7 +105,8 @@ export const calculateTotalLogSize = async (): Promise<number> => {
     let totalSize = 0; // 合計サイズ
 
     for (const file of files) {
-      if (file.isFile()) { // ディレクトリではなくファイルの場合
+      if (file.isFile()) {
+        // ディレクトリではなくファイルの場合
         const fileSize = await RNFS.stat(file.path); // ファイルのサイズを取得
         totalSize += fileSize.size; // 合計サイズに加算
       }
@@ -105,7 +114,7 @@ export const calculateTotalLogSize = async (): Promise<number> => {
 
     // バイトをMBに変換し、小数点1位以下を切り上げ
     const totalSizeMB = Math.max(1, Math.ceil(totalSize / (1024 * 1024)));
-    
+
     return totalSizeMB; // 合計サイズをMB単位で返す
   } catch (error) {
     console.error(error);
@@ -135,12 +144,12 @@ export const initializeLogFile = async (): Promise<void> => {
 
 /************************************************
  * ログの書き込み
- * @param {*} logData 
+ * @param {*} logData
  ************************************************/
 export const writeLog = async (logData: string): Promise<void> => {
   await rotateLogFile();
   const logFilePath = `${logDirectory}/${getCurrentLogFileName()}`;
-  console.log(logData)
+  console.log(logData);
   await RNFS.appendFile(logFilePath, `${logData}\n`, 'utf8');
 };
 
@@ -171,7 +180,7 @@ export const rotateLogFile = async (): Promise<void> => {
   try {
     const currentLogFileName = await getCurrentLogFileName();
     const currentLogFilePath = `${logDirectory}/${currentLogFileName}`;
-    
+
     // ファイルの存在を確認
     const fileExists = await RNFS.exists(currentLogFilePath);
     if (!fileExists) {
@@ -182,9 +191,12 @@ export const rotateLogFile = async (): Promise<void> => {
     const fileStats = await RNFS.stat(currentLogFilePath);
     const realm = getInstance();
     const settingsInfo = realm.objects('settings')[0];
-    const maxLogFileSize = settingsInfo.logCapacity as number * 1024 * 1024;
+    const maxLogFileSize = (settingsInfo.logCapacity as number) * 1024 * 1024;
 
-    if (fileStats.size >= maxLogFileSize || new Date().getDate() !== new Date(fileStats.ctime).getDate()) {
+    if (
+      fileStats.size >= maxLogFileSize ||
+      new Date().getDate() !== new Date(fileStats.ctime).getDate()
+    ) {
       await initializeLogFile();
     }
 
@@ -192,7 +204,7 @@ export const rotateLogFile = async (): Promise<void> => {
     const expiredDate = new Date();
     expiredDate.setDate(expiredDate.getDate() - retentionPeriod);
 
-    const files = await RNFS.readDir(logDirectory);//ディレクトリ内のファイル一覧を取得
+    const files = await RNFS.readDir(logDirectory); //ディレクトリ内のファイル一覧を取得
     for (const file of files) {
       if (file.ctime) {
         const fileDate = new Date(file.ctime);
@@ -204,59 +216,70 @@ export const rotateLogFile = async (): Promise<void> => {
   } catch (error) {
     console.error('Error rotating log files:', error);
   }
-}
+};
 
 /************************************************
  * 画面遷移ログの書き込み
- * @param {*} actionDescription 
+ * @param {*} actionDescription
  ************************************************/
 export const logScreen = async (actionDescription: string): Promise<void> => {
-    const logEntry = `"VW", "${new Date().toISOString()}", "${actionDescription}"`;
-    await writeLog(logEntry);
+  const logEntry = `"VW", "${new Date().toISOString()}", "${actionDescription}"`;
+  await writeLog(logEntry);
 };
 
 /************************************************
  * 操作ログの書き込み
- * @param {*} actionDescription 
+ * @param {*} actionDescription
  ************************************************/
-export const logUserAction = async (actionDescription: string): Promise<void> => {
-    const logEntry = `"OP", "${new Date().toISOString()}", "${actionDescription}"`;
-    await writeLog(logEntry);
+export const logUserAction = async (
+  actionDescription: string,
+): Promise<void> => {
+  const logEntry = `"OP", "${new Date().toISOString()}", "${actionDescription}"`;
+  await writeLog(logEntry);
 };
 
 /************************************************
  * 通信ログの書き込み
- * @param {*} method 
- * @param {*} url 
- * @param {*} status 
- * @param {*} response 
+ * @param {*} method
+ * @param {*} url
+ * @param {*} status
+ * @param {*} response
  ************************************************/
-export const logCommunication = async (method: string, url: string, status: number|null, response: string): Promise<void> => {
-    const logEntry = `"CM", "${new Date().toISOString()}", "${method}", "${url}", "${status}", "${response}"`;
-    await writeLog(logEntry);
+export const logCommunication = async (
+  method: string,
+  url: string,
+  status: number | null,
+  response: string,
+): Promise<void> => {
+  const logEntry = `"CM", "${new Date().toISOString()}", "${method}", "${url}", "${status}", "${response}"`;
+  await writeLog(logEntry);
 };
 
 /************************************************
  * 位置情報の取得とログ
- * @param {*} position 
- * @param {*} flg 
- * @param {*} error 
+ * @param {*} position
+ * @param {*} flg
+ * @param {*} error
  ************************************************/
-export const logPosition = async (position: Geolocation.GeoPosition|null, flg: string, error: string|null): Promise<void> => {
-    if(flg === "get" && position){
-        const { latitude, longitude } = position.coords;
-        const logEntry = `"LC", "${new Date().toISOString()}", "開始", "${latitude}", "${longitude}"`;
-        writeLog(logEntry);  
-    }else if(flg === "stop" && position){
-        const { latitude, longitude } = position.coords;
-        const logEntry = `"LC", "${new Date().toISOString()}", "停止", "${latitude}", "${longitude}"`;
-        writeLog(logEntry);  
-    }else if(flg === "reGet" && position){
-        const { latitude, longitude } = position.coords;
-        const logEntry = `"LC", "${new Date().toISOString()}", "再開", "${latitude}", "${longitude}"`;
-        writeLog(logEntry);  
-    }else{
-        const logEntry = `"LC", "${new Date().toISOString()}", "失敗", "${error}"`;
-        writeLog(logEntry);  
-    }
+export const logPosition = async (
+  position: Geolocation.GeoPosition | null,
+  flg: string,
+  error: string | null,
+): Promise<void> => {
+  if (flg === 'get' && position) {
+    const {latitude, longitude} = position.coords;
+    const logEntry = `"LC", "${new Date().toISOString()}", "開始", "${latitude}", "${longitude}"`;
+    writeLog(logEntry);
+  } else if (flg === 'stop' && position) {
+    const {latitude, longitude} = position.coords;
+    const logEntry = `"LC", "${new Date().toISOString()}", "停止", "${latitude}", "${longitude}"`;
+    writeLog(logEntry);
+  } else if (flg === 'reGet' && position) {
+    const {latitude, longitude} = position.coords;
+    const logEntry = `"LC", "${new Date().toISOString()}", "再開", "${latitude}", "${longitude}"`;
+    writeLog(logEntry);
+  } else {
+    const logEntry = `"LC", "${new Date().toISOString()}", "失敗", "${error}"`;
+    writeLog(logEntry);
+  }
 };
