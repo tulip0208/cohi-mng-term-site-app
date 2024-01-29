@@ -12,6 +12,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
 import com.ims.SignalStrengthPackage // インポートを追加
+import com.ims.JISInputFilterPackage; // インポートを追加
 
 class MainApplication : Application(), ReactApplication {
   override val reactNativeHost: ReactNativeHost =
@@ -19,9 +20,10 @@ class MainApplication : Application(), ReactApplication {
         override fun getPackages(): List<ReactPackage> {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-    val packages = PackageList(this).packages
-    packages.add(SignalStrengthPackage()) // ここで 'add' を使っています
-    return packages
+          val packages = PackageList(this).packages
+          packages.add(SignalStrengthPackage()) // ここで 'add' を使っています
+          packages.add(JISInputFilterPackage()) // この行を追加
+          return packages
         }
 
         override fun getJSMainModuleName(): String = "index"

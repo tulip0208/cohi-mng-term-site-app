@@ -22,8 +22,16 @@ class SignalStrengthModule(private val reactContext: ReactApplicationContext) : 
         telephonyManager.listen(object : PhoneStateListener() {
             override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
                 super.onSignalStrengthsChanged(signalStrength)
-                val level = signalStrength.level
-                promise.resolve(level)
+                val asu = signalStrength.gsmSignalStrength
+                val dBm = 2 * asu - 113 // ASUをdBmに変換
+
+                val signalLevel = when {
+                    dBm >= -70 -> "良好" // 強信号
+                    dBm >= -85 -> "注意" // 中信号
+                    else -> "不良" // 弱信号
+                }
+
+                promise.resolve(signalLevel)
             }
         }, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS)
     }
