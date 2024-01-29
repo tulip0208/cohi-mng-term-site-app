@@ -42,9 +42,9 @@ exports[`TapFunctionHeader コンポーネント 正しくレンダリングさ�
         "backgroundColor": "#1E74BD",
         "flexDirection": "row",
         "flexWrap": "wrap",
-        "height": 40,
+        "height": 58.59375,
         "justifyContent": "space-between",
-        "padding": 5,
+        "padding": 4.6875,
         "zIndex": 1,
       }
     }
@@ -55,10 +55,10 @@ exports[`TapFunctionHeader コンポーネント 正しくレンダリングさ�
           "color": "white",
           "flex": 1,
           "fontFamily": "ipaexg",
-          "fontSize": 16,
+          "fontSize": 30.46875,
           "fontWeight": "bold",
           "justifyContent": "center",
-          "marginLeft": 10,
+          "marginLeft": 11.71875,
           "textAlign": "left",
         }
       }
@@ -72,7 +72,7 @@ exports[`TapFunctionHeader コンポーネント 正しくレンダリングさ�
           "color": "white",
           "flex": 1,
           "fontFamily": "ipaexg",
-          "fontSize": 20,
+          "fontSize": 35.15625,
           "fontWeight": "bold",
           "justifyContent": "center",
           "textAlign": "center",
@@ -87,9 +87,10 @@ exports[`TapFunctionHeader コンポーネント 正しくレンダリングさ�
           "color": "white",
           "flex": 1,
           "fontFamily": "ipaexg",
-          "fontSize": 16,
+          "fontSize": 30.46875,
           "fontWeight": "bold",
           "justifyContent": "center",
+          "marginRight": 11.71875,
           "textAlign": "right",
         }
       }

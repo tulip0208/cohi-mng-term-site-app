@@ -10,5 +10,7 @@ declare global {
   var watchId: number | null;
   //Realmインスタンス用
   var realmInstance: Realm;
+  // NodeJS.Global型を追加
+  var global: NodeJS.Global;
 }
 export {};

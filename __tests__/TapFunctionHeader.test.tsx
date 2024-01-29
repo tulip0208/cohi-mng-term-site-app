@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import TestRenderer, { act } from 'react-test-renderer';
+import TestRenderer, { act, ReactTestRenderer } from 'react-test-renderer';
 import { NavigationContext } from '@react-navigation/native';
 import TapFunctionHeader from '../src/components/TapFunctionHeader.tsx';
 
@@ -20,7 +20,7 @@ const navigationContext: any = {
 describe('TapFunctionHeader コンポーネント', () => {
   // 初期化処理
   jest.useFakeTimers();
-  let consoleSpy, clearTimeoutSpy, testRenderer;
+  let consoleSpy: jest.SpyInstance, clearTimeoutSpy: jest.SpyInstance, testRenderer: ReactTestRenderer;
 
   // テスト前に実行される関数
   beforeEach(() => {

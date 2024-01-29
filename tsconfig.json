@@ -3,7 +3,8 @@
   "compilerOptions": {
     // 他のコンパイラオプション...
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "jsx": "react",
   },
   "include": [
     "react-native-rem-stylesheet.d.ts",
