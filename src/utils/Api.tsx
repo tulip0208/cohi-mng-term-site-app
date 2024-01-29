@@ -842,7 +842,7 @@ export const IFT0140FromWA1131 = async (
   WA1130Data: WA1130Const,
   IFT0640Data: IFT0640ResponseDtl<IFT0640ResponseDtlDtlCheck>,
   dateStr: string,
-): Promise<ApiResponse<IFT0420Response<IFT0420ResponseDtl>>> => {
+): Promise<ApiResponse<IFT0140Response<IFT0140ResponseDtl>>> => {
   try {
     const realm = getInstance();
     const loginInfo = realm.objects('login')[0];
@@ -899,7 +899,7 @@ export const IFT0140FromWA1131 = async (
 export const IFT0140 = async (
   WA1140Data: WA1140Const,
   dateStr: string,
-): Promise<ApiResponse<IFT0420Response<IFT0420ResponseDtl>>> => {
+): Promise<ApiResponse<IFT0140Response<IFT0140ResponseDtl>>> => {
   try {
     const realm = getInstance();
     const loginInfo = realm.objects('login')[0];
@@ -1036,7 +1036,7 @@ export const IFT0420 = async (
       '新タグ紐付データ取込(焼却灰)',
     );
     const response = res as AxiosResponse<
-      IFA0110Response<IFT0090Response<IFT0090ResponseDtl>>
+      IFA0110Response<IFT0420Response<IFT0420ResponseDtl>>
     >;
 
     return {success: true, data: response.data.gyDt};
