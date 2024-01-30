@@ -3,7 +3,7 @@
     "appVer": "1.0.0",
     "settingFileDt": "2024/01/01 00:00:00",
     "serverName": "開発",
-    "serverUrl": "https://script.google.com/macros/s/AKfycbzP9A2oPXyDoyCpHsRyOikvh0hRQbqkYM5k2B86woJfPiJTZRcgIgFhkRqxI2KB68BJ3g/exec?p1=",
+    "serverUrl": "https://mobile-api-test.willwave.jp/",
     "logTerm": 30,
     "logCapacity": 10000,
     "locGetTerm": 60,
