@@ -85,7 +85,7 @@ const WA1060 = ({navigation}: Props) => {
   const resetWA1060WkPlac = useResetRecoilState(WA1060WkPlacState);
   const resetWA1063MemoAuto = useResetRecoilState(WA1063MemoAutoState);
   const resetWA1065Memo = useResetRecoilState(WA1065MemoState);
-  const [longPressTimer, setLongPressTimer] = useState<number | null>(
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
     null,
   );
   const {showAlert} = useAlert();

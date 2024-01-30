@@ -52,7 +52,9 @@ const WA1131 = ({navigation}: Props) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [newTagId, setNewTagId] = useState<String>();
   const [inputVisible, setInputVisible] = useState<boolean>(false);
-  const [longPressTimer, setLongPressTimer] = useState<number | null>(null);
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
+    null,
+  );
   const realm = getInstance();
   /************************************************
    * 初期表示設定

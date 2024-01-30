@@ -63,7 +63,9 @@ const WA1140 = ({navigation}: Props) => {
   const [prevScreenId, setPrevScreenId] = useRecoilState(WA1140PrevScreenId); //遷移元画面ID
   const [WA1141back, setWa1141Back] = useRecoilState(WA1141BackState);
   const resetWA1140Data = useResetRecoilState(WA1140DataState);
-  const [longPressTimer, setLongPressTimer] = useState<number | null>(null);
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
+    null,
+  );
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定

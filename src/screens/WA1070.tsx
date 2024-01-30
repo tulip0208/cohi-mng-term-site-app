@@ -48,7 +48,9 @@ const WA1070 = ({navigation}: Props) => {
   const [isCannotRead, setIsCannotRead] = useState<boolean>(false);
   const [WA1071back, setWA1071Back] = useRecoilState(WA1071BackState);
   const reseWA1070Data = useResetRecoilState(WA1070DataState);
-  const [longPressTimer, setLongPressTimer] = useState<number | null>(null);
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
+    null,
+  );
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定
