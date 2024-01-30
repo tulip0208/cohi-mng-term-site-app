@@ -1,13 +1,13 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import TestRenderer, { act, ReactTestRenderer } from 'react-test-renderer';
-import { NavigationContext } from '@react-navigation/native';
+import {TouchableOpacity} from 'react-native';
+import TestRenderer, {act, ReactTestRenderer} from 'react-test-renderer';
+import {NavigationContext} from '@react-navigation/native';
 import TapFunctionHeader from '../src/components/TapFunctionHeader.tsx';
 
 // ログ関数とナビゲーションのモック
 jest.mock('../src/utils/Log.tsx', () => ({
   logScreen: jest.fn(),
-  logUserAction: jest.fn()
+  logUserAction: jest.fn(),
 }));
 
 const mockNavigate = jest.fn();
@@ -20,7 +20,9 @@ const navigationContext: any = {
 describe('TapFunctionHeader コンポーネント', () => {
   // 初期化処理
   jest.useFakeTimers();
-  let consoleSpy: jest.SpyInstance, clearTimeoutSpy: jest.SpyInstance, testRenderer: ReactTestRenderer;
+  let consoleSpy: jest.SpyInstance,
+    clearTimeoutSpy: jest.SpyInstance,
+    testRenderer: ReactTestRenderer;
 
   // テスト前に実行される関数
   beforeEach(() => {
@@ -31,8 +33,13 @@ describe('TapFunctionHeader コンポーネント', () => {
     // testRendererの初期化
     testRenderer = TestRenderer.create(
       <NavigationContext.Provider value={navigationContext}>
-        <TapFunctionHeader appType="App" viewTitle="View" functionTitle="Function" sourceScreenId="Source" />
-      </NavigationContext.Provider>
+        <TapFunctionHeader
+          appType="App"
+          viewTitle="View"
+          functionTitle="Function"
+          sourceScreenId="Source"
+        />
+      </NavigationContext.Provider>,
     );
   });
 
@@ -60,13 +67,13 @@ describe('TapFunctionHeader コンポーネント', () => {
       touchableOpacity.props.onPress();
     });
     // 1のカウントが行われていること
-    expect(consoleSpy).toHaveBeenCalledWith("count tap ", 1);
+    expect(consoleSpy).toHaveBeenCalledWith('count tap ', 1);
     act(() => {
       const touchableOpacity = testRenderer.root.findByType(TouchableOpacity);
       touchableOpacity.props.onPress();
     });
     // 2のカウントが行われていること
-    expect(consoleSpy).toHaveBeenCalledWith("count tap ", 2);
+    expect(consoleSpy).toHaveBeenCalledWith('count tap ', 2);
   });
 
   it('タップをカウントし、5秒後にリセットされること', () => {
@@ -76,22 +83,21 @@ describe('TapFunctionHeader コンポーネント', () => {
       touchableOpacity.props.onPress();
     });
     // 1のカウントが行われていること
-    expect(consoleSpy).toHaveBeenCalledWith("count tap ", 1);
-
+    expect(consoleSpy).toHaveBeenCalledWith('count tap ', 1);
 
     // 5秒後の動作確認
     act(() => {
       jest.advanceTimersByTime(5000);
     });
     // カウントリセットのログが流れること
-    expect(consoleSpy).toHaveBeenCalledWith("count tap reset 0");
+    expect(consoleSpy).toHaveBeenCalledWith('count tap reset 0');
     // タップしてカウントアップ
     act(() => {
       const touchableOpacity = testRenderer.root.findByType(TouchableOpacity);
       touchableOpacity.props.onPress();
     });
     // リセットされ、1のカウントが行われていること
-    expect(consoleSpy).toHaveBeenCalledWith("count tap ", 1);
+    expect(consoleSpy).toHaveBeenCalledWith('count tap ', 1);
   });
 
   it('タップをカウントし、4秒後にリセットされていないこと', () => {
@@ -101,22 +107,21 @@ describe('TapFunctionHeader コンポーネント', () => {
       touchableOpacity.props.onPress();
     });
     // 1のカウントが行われていること
-    expect(consoleSpy).toHaveBeenCalledWith("count tap ", 1);
-
+    expect(consoleSpy).toHaveBeenCalledWith('count tap ', 1);
 
     // 4秒後の動作確認
     act(() => {
       jest.advanceTimersByTime(4000);
     });
     // カウントリセットのログが流れていないこと
-    expect(consoleSpy).not.toHaveBeenCalledWith("count tap reset 0");
+    expect(consoleSpy).not.toHaveBeenCalledWith('count tap reset 0');
     // タップしてカウントアップ
     act(() => {
       const touchableOpacity = testRenderer.root.findByType(TouchableOpacity);
       touchableOpacity.props.onPress();
     });
     // 2のカウントが行われていること
-    expect(consoleSpy).toHaveBeenCalledWith("count tap ", 2);
+    expect(consoleSpy).toHaveBeenCalledWith('count tap ', 2);
   });
 
   it('タイマーがない場合はリセットが行われないこと', () => {
@@ -146,7 +151,6 @@ describe('TapFunctionHeader コンポーネント', () => {
     });
     // 2回目はタイマーが存在するためリセットが行われること
     expect(clearTimeoutSpy).toHaveBeenCalled();
-
   });
 
   it('4回タップしてもナビゲートが起こらないこと', () => {
@@ -160,7 +164,9 @@ describe('TapFunctionHeader コンポーネント', () => {
     // タイマーのリセットが行われていないか
     expect(clearTimeoutSpy).not.toHaveBeenCalled();
     // ナビゲーションが呼ばれていないか
-    expect(mockNavigate).not.toHaveBeenCalledWith('WA1050', { sourceScreenId: 'Source' });
+    expect(mockNavigate).not.toHaveBeenCalledWith('WA1050', {
+      sourceScreenId: 'Source',
+    });
   });
 
   it('5回タップするとナビゲートが起こるか', () => {
@@ -174,6 +180,8 @@ describe('TapFunctionHeader コンポーネント', () => {
     // タイマーのリセットが行われているか
     expect(clearTimeoutSpy).toHaveBeenCalled();
     // ナビゲーションが呼ばれているか
-    expect(mockNavigate).toHaveBeenCalledWith('WA1050', { sourceScreenId: 'Source' });
+    expect(mockNavigate).toHaveBeenCalledWith('WA1050', {
+      sourceScreenId: 'Source',
+    });
   });
 });

@@ -1,9 +1,7 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { styles } from '../src/styles/CommonStyle.tsx';
+import {StyleSheet} from 'react-native';
+import {styles} from '../src/styles/CommonStyle.tsx';
 
 describe('CommonStyle スタイルシート', () => {
-
   it('styles オブジェクトが正しくエクスポートされていること', () => {
     expect(styles).toBeDefined();
     expect(StyleSheet.flatten(styles)).toBeInstanceOf(Object);
@@ -13,17 +11,17 @@ describe('CommonStyle スタイルシート', () => {
   describe('各スタイルのプロパティテスト', () => {
     it('fontAndColor スタイルが期待通りであること', () => {
       const expectedFontAndColor = {
-        color: "#000",
-        fontFamily: "ipaexg",
+        color: '#000',
+        fontFamily: 'ipaexg',
       };
       expect(styles.fontAndColor).toEqual(expectedFontAndColor);
     });
 
     it('container スタイルが期待通りであること', () => {
       const expectedContainer = {
-        backgroundColor: "#fff",
+        backgroundColor: '#fff',
         flex: 1,
-        justifyContent: "space-between",
+        justifyContent: 'space-between',
       };
       expect(styles.container).toEqual(expectedContainer);
     });
@@ -41,5 +39,4 @@ describe('CommonStyle スタイルシート', () => {
   //     expect(rem(pixels)).toEqual(expectedRem);
   //   });
   // });
-
 });
