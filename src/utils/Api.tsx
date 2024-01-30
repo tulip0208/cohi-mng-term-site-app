@@ -346,10 +346,12 @@ export const IFA0310 = async (
     const loginInfo = realm.objects('login')[0];
     const requestDataDtl = {
       comId: loginInfo.comId,
-      dtl: {
-        tmpLocId: wkPlacId,
-        oldTagId: txtOldTagId,
-      },
+      dtl: [
+        {
+          tmpLocId: wkPlacId,
+          oldTagId: txtOldTagId,
+        },
+      ],
     };
 
     const requestData = await setIFA0110RequestData('IFA0310', requestDataDtl);
@@ -400,10 +402,12 @@ export const IFA0320 = async (
     const loginInfo = realm.objects('login')[0];
     const requestDataDtl = {
       comId: loginInfo.comId,
-      dtl: {
-        tmpLocId: wkPlacId,
-        oldTagId: txtOldTagId,
-      },
+      dtl: [
+        {
+          tmpLocId: wkPlacId,
+          oldTagId: txtOldTagId,
+        },
+      ],
     };
 
     const requestData = await setIFA0110RequestData('IFA0320', requestDataDtl);
@@ -453,7 +457,7 @@ export const IFA0330 = async (
     const loginInfo = realm.objects('login')[0];
     const requestDataDtl = {
       comId: loginInfo.comId,
-      dtl: {newTagId: txtNewTagId},
+      dtl: [{newTagId: txtNewTagId}],
     };
 
     const requestData = await setIFA0110RequestData('IFA0330', requestDataDtl);
@@ -503,7 +507,7 @@ export const IFA0340 = async (
     const loginInfo = realm.objects('login')[0];
     const requestDataDtl = {
       comId: loginInfo.comId,
-      dtl: {newTagId: txtNewTagId},
+      dtl: [{newTagId: txtNewTagId}],
     };
 
     const requestData = await setIFA0110RequestData('IFA0340', requestDataDtl);
@@ -580,32 +584,35 @@ export const IFT0090 = async (
     const requestDataDtl = {
       comId: loginInfo.comId,
       tmpLocId: wlPlac.wkplacId,
-      dtl: oldTagInfos.map((oldTagInfo, index) => ({
-        chgKnd: 'I',
-        sndId: 'SH' + trmId.trmId + dateStr.replace(/[^0-9]/g, '').slice(0, 14),
-        newTagId: newTagId,
-        oldTagId: oldTagInfo.genbaCheck === '1' ? oldTagInfo.oldTag : '',
-        sitTagId: oldTagInfo.genbaCheck === '2' ? oldTagInfo.oldTag : '',
-        twoOneTrOneBrNum: index,
-        caLgSdBgWt: data.caLgSdBgWt,
-        caLgSdBgDs: data.caLgSdBgDs,
-        tyRegDt: data.tyRegDt,
-        pkTyp: data.pkTyp,
-        yesNoOP: data.yesNoOP,
-        arNm: wlPlac.wkplacNm,
-        tsuInd: data.tsuInd,
-        splFac: data.splFac,
-        rmSolTyp: data.rmSolTyp,
-        ocLndCla: oldTagInfo.ocLndCla,
-        usgInnBg: data.usgInnBg,
-        usgAluBg: data.usgAluBg,
-        vol: oldTagInfo.vol,
-        airDsRt: oldTagInfo.airDsRt,
-        ocLndUseknd: oldTagInfo.ocLndUseknd,
-        ocloc: oldTagInfo.ocloc,
-        rmSolInf: oldTagInfo.rmSolInf,
-        lnkNewTagDatMem: memo,
-      })),
+      dtl: [
+        oldTagInfos.map((oldTagInfo, index) => ({
+          chgKnd: 'I',
+          sndId:
+            'SH' + trmId.trmId + dateStr.replace(/[^0-9]/g, '').slice(0, 14),
+          newTagId: newTagId,
+          oldTagId: oldTagInfo.genbaCheck === '1' ? oldTagInfo.oldTag : '',
+          sitTagId: oldTagInfo.genbaCheck === '2' ? oldTagInfo.oldTag : '',
+          twoOneTrOneBrNum: index,
+          caLgSdBgWt: data.caLgSdBgWt,
+          caLgSdBgDs: data.caLgSdBgDs,
+          tyRegDt: data.tyRegDt,
+          pkTyp: data.pkTyp,
+          yesNoOP: data.yesNoOP,
+          arNm: wlPlac.wkplacNm,
+          tsuInd: data.tsuInd,
+          splFac: data.splFac,
+          rmSolTyp: data.rmSolTyp,
+          ocLndCla: oldTagInfo.ocLndCla,
+          usgInnBg: data.usgInnBg,
+          usgAluBg: data.usgAluBg,
+          vol: oldTagInfo.vol,
+          airDsRt: oldTagInfo.airDsRt,
+          ocLndUseknd: oldTagInfo.ocLndUseknd,
+          ocloc: oldTagInfo.ocloc,
+          rmSolInf: oldTagInfo.rmSolInf,
+          lnkNewTagDatMem: memo,
+        })),
+      ],
     };
 
     const requestData = await setIFA0110RequestData('IFT0090', requestDataDtl);
