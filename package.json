@@ -17,6 +17,7 @@
     "@react-native-picker/picker": "^2.6.1",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
+    "@testing-library/react-native": "^12.4.3",
     "axios": "^1.6.2",
     "deprecated-react-native-prop-types": "^5.0.0",
     "metro-react-native-babel-preset": "^0.77.0",

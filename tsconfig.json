@@ -5,6 +5,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "jsx": "react",
+    "types": ["node","jest"],
   },
   "include": [
     "react-native-rem-stylesheet.d.ts",
