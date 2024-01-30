@@ -69,9 +69,7 @@ const WA1090 = ({navigation}: Props) => {
   const resetWA1091OldTagInfo = useResetRecoilState(WA1091OldTagInfoState);
   const resetWA1090WkPlac = useResetRecoilState(WA1090WkPlacState);
   const resetWA1093Memo = useResetRecoilState(WA1093MemoState);
-  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
-    null,
-  );
+  const [longPressTimer, setLongPressTimer] = useState<number | null>(null);
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定

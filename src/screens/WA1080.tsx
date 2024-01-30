@@ -56,9 +56,7 @@ const WA1080 = ({navigation}: Props) => {
   const [wkPlacId, setWkPlcId] = useState<string>();
   const [WA1081back, setWa1081Back] = useRecoilState(WA1081BackState);
   const resetWA1080Data = useResetRecoilState(WA1080DataState);
-  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
-    null,
-  );
+  const [longPressTimer, setLongPressTimer] = useState<number | null>(null);
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定

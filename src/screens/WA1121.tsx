@@ -70,9 +70,7 @@ const WA1121 = ({navigation}: Props) => {
   const resetWA1121Data = useResetRecoilState(WA1121DataState);
   const [isTagRead, setIsTagRead] = useState<boolean>(true);
   const [isSendNext, setIsSendNext] = useState<boolean>(true);
-  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
-    null,
-  );
+  const [longPressTimer, setLongPressTimer] = useState<number | null>(null);
   const realm = getInstance();
   const {showAlert} = useAlert();
   /************************************************
