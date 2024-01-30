@@ -24,7 +24,7 @@ const TapFunctionHeader = ({
   sourceScreenId,
 }: Props) => {
   const [tapCount, setTapCount] = useState<number>(0);
-  const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null);
+  const [timerId, setTimerId] = useState<number | null>(null);
   const navigation = useNavigation<NavigationProp>();
   useEffect(() => {
     if (tapCount === 5) {
