@@ -8,7 +8,7 @@ import Footer from '../components/Footer';
 import {styles} from '../styles/CommonStyle';
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Modal, BackHandler} from 'react-native';
-import setupRealm, {getInstance} from '../utils/Realm';
+import {getInstance} from '../utils/Realm';
 import messages from '../utils/messages';
 import {encryptWithAES256CBC, generateDeviceUniqueKey} from '../utils/Security';
 import Realm from 'realm';
@@ -65,29 +65,25 @@ const WA1020 = ({navigation}: Props) => {
 
         const realm = getInstance();
         //realmへ保存
-        try {
-          realm.write(() => {
-            // 既に同じユーザIDのデータがあれば上書き、なければ新規作成
-            realm.create(
-              'user',
-              {
-                id: 1,
-                comId: comIdQr,
-                comNm: comNameQr,
-                userId: userIdQr,
-                userNm: userNameQr,
-              },
-              Realm.UpdateMode.Modified,
-            ); // Modified は既存のデータがあれば更新、なければ作成
-          });
-          console.log('save realm : user => ', realm.objects('user')[0]);
-          // 別途保存しているユーザー名ステートがある場合はその更新も行う
-          setUserName(userNameQr);
-          setComName(comNameQr);
-          setComId(comIdQr);
-        } catch (error) {
-          console.error('ユーザ設定に失敗しました。', error);
-        }
+        realm.write(() => {
+          // 既に同じユーザIDのデータがあれば上書き、なければ新規作成
+          realm.create(
+            'user',
+            {
+              id: 1,
+              comId: comIdQr,
+              comNm: comNameQr,
+              userId: userIdQr,
+              userNm: userNameQr,
+            },
+            Realm.UpdateMode.Modified,
+          ); // Modified は既存のデータがあれば更新、なければ作成
+        });
+        console.log('save realm : user => ', realm.objects('user')[0]);
+        // 別途保存しているユーザー名ステートがある場合はその更新も行う
+        setUserName(userNameQr);
+        setComName(comNameQr);
+        setComId(comIdQr);
         setShowScannerUsr(false);
       } else {
         // ID種別が1ではない場合のエラーハンドリング
@@ -188,7 +184,6 @@ const WA1020 = ({navigation}: Props) => {
    * 終了ボタン押下時のポップアップ表示
    ************************************************/
   const btnAppClose = async () => {
-    await setupRealm();
     await logUserAction('ボタン押下: 終了(WA1030)');
     const result = await showAlert('確認', messages.IA5001(), true);
     if (result) {
@@ -310,7 +305,8 @@ const WA1020 = ({navigation}: Props) => {
         </Text>
         <TouchableOpacity
           style={[styles.button, styles.buttonRead]}
-          onPress={btnActQr}>
+          onPress={btnActQr}
+          testID="act">
           <Text style={styles.buttonText}>アクティベーション</Text>
           <Text style={styles.buttonText}>コード読込</Text>
         </TouchableOpacity>
@@ -327,8 +323,7 @@ const WA1020 = ({navigation}: Props) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle()}
-          //onPress={/* 送信処理 */}
-          //disabled={!isReadyToSend} // 送信準備ができていなければ無効化
+          disabled={!isReadyToSend}
           onPress={btnSend}>
           <Text style={styles.startButtonText}>送信</Text>
         </TouchableOpacity>
