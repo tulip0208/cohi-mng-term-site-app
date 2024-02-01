@@ -4,6 +4,7 @@ module.exports = {
   rules: {
     'no-trailing-spaces': 'off',
     'react-hooks/exhaustive-deps': 'off',
+    'react/self-closing-comp': 'off',
   },
   env: {
     // ... 他の環境設定

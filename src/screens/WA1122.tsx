@@ -504,15 +504,16 @@ const WA1122 = ({navigation}: Props) => {
                 <Text style={styles.labelTextNarrow}>{WA1120TrpCardNo}</Text>
               </View>
             </View>
-            <View style={styles.tableRow}>
+            <View style={[styles.tableRow, styles.center]}>
               <Text style={[styles.labelText, styles.centerContent]}>
-                荷台各面の中心位置放射線量率を入力後、送信ボタンを押して下さい。
+                荷台各面の中心位置放射線量率を入力後、
+                送信ボタンを押して下さい。
               </Text>
             </View>
           </View>
         </View>
 
-        <View style={[styles.main, styles.middleContent]}>
+        <View style={[styles.main, styles.topContent]}>
           <View style={styles.middleContainer}>
             <View style={styles.tableMain}>
               <View style={[styles.tableRow, styles.pickerContainer]}>

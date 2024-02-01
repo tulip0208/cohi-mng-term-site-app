@@ -850,7 +850,7 @@ const WA1121 = ({navigation}: Props) => {
 
         return (
           <View key={index} style={[styles.tableMain]}>
-            <View style={styles.tableRow}>
+            <View style={[styles.tableRow]}>
               <View style={[styles.tableCell3]}>
                 <TouchableWithoutFeedback
                   onPressIn={() => onPressIn(index)}
@@ -862,16 +862,14 @@ const WA1121 = ({navigation}: Props) => {
                     ]}>{`${index + 1}: ${trpCardTagInfo.newTagId}`}</Text>
                 </TouchableWithoutFeedback>
               </View>
-              <View style={[styles.tableCell1]}>
-                <Text style={styles.labelText}>
-                  分類
-                  <View
-                    style={[
-                      {backgroundColor: tagColor}, // 背景色
-                      styles.block,
-                    ]}
-                  />
-                </Text>
+              <View style={[styles.tableCell1, styles.centerContainer]}>
+                <Text style={[styles.labelText]}>分類</Text>
+                <View
+                  style={[
+                    styles.block,
+                    {backgroundColor: tagColor}, // 背景色
+                  ]}
+                />
               </View>
             </View>
             <View style={styles.tableRow}>
@@ -1041,7 +1039,7 @@ const WA1121 = ({navigation}: Props) => {
             {WA1121Data.flyAshNm} 主灰:{WA1121Data.bottomAshNm}
           </Text>
         </View>
-        <View style={styles.tableMain}>
+        <View style={[styles.tableMain, styles.main]}>
           <View style={styles.tableRow}>
             <View style={styles.tableCell}>
               <Text style={[styles.labelTextNarrowMore]}>積載可能</Text>
@@ -1058,17 +1056,20 @@ const WA1121 = ({navigation}: Props) => {
           <View style={styles.tableRow}>
             <View style={styles.tableCell}>
               <Text style={[styles.labelTextNarrowMore]}>
-                {WA1121Data.possibleWt}(kg)
+                {WA1121Data.possibleWt}
+                <Text style={styles.labelSmall}>(kg)</Text>
               </Text>
             </View>
             <View style={styles.tableCell}>
               <Text style={[styles.labelTextNarrowMore]}>
-                {WA1121Data.sumWt}(kg)
+                {WA1121Data.sumWt}
+                <Text style={styles.labelSmall}>(kg)</Text>
               </Text>
             </View>
             <View style={styles.tableCell}>
               <Text style={[styles.labelTextNarrowMore, styles.bold]}>
-                {WA1121Data.leftWt}(kg)
+                {WA1121Data.leftWt}
+                <Text style={styles.labelSmall}>(kg)</Text>
               </Text>
             </View>
           </View>
@@ -1078,7 +1079,8 @@ const WA1121 = ({navigation}: Props) => {
             </View>
             <View style={styles.tableCell}>
               <Text style={[styles.labelTextNarrowMore, styles.bold]}>
-                :{WA1121Data.surDsRt}(μSv/h)
+                : {WA1121Data.surDsRt}
+                <Text style={styles.labelSmall}>(μSv/h)</Text>
               </Text>
             </View>
           </View>
@@ -1088,7 +1090,8 @@ const WA1121 = ({navigation}: Props) => {
             </View>
             <View style={styles.tableCell}>
               <Text style={[styles.labelTextNarrowMore, styles.bold]}>
-                :{WA1121Data.maxEstRa}(Bq/kg)
+                : {WA1121Data.maxEstRa}
+                <Text style={styles.labelSmall}>(Bq/kg)</Text>
               </Text>
             </View>
           </View>

@@ -125,7 +125,7 @@ const WA1120 = ({navigation}: Props) => {
           delSrcTyp: place.delSrcTyp as string, //搬出元種別
           wkplac: wkplcTyp, //作業場所
         });
-        setWkplc(place.tmpPlacNm as string);
+        // setWkplc(place.tmpPlacNm as string);
         break;
       default:
         await showAlert('通知', messages.WA5001(), false);
@@ -383,40 +383,98 @@ const WA1120 = ({navigation}: Props) => {
 
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText]}>作業場所：{wkplcTyp}</Text>
-          <Text style={[styles.labelTextNarrow, styles.labelTextPlace]}>
-            {wkplc}
-          </Text>
-          <View style={[styles.narrow]}>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonSmall, styles.centerButton]}
-              onPress={btnWkPlcQr}>
-              <Text style={styles.buttonText}>作業場所読込</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={[styles.labelTextNarrow]}>輸送車両：{carPlate}</Text>
-          <View style={[styles.narrow]}>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonSmall, styles.centerButton]}
-              onPress={btnCarQr}>
-              <Text style={styles.buttonText}>車両読込</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={[styles.labelTextNarrow]}>運転手：{drvNm}</Text>
-          <View style={[styles.narrow]}>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonSmall, styles.centerButton]}
-              onPress={btnDrvQr}>
-              <Text style={styles.buttonText}>運転手読込</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={[styles.labelTextNarrow]}>行先名：{destinationNm}</Text>
-          <View style={[styles.narrow]}>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonSmall, styles.centerButton]}
-              onPress={btnDestamQr}>
-              <Text style={styles.buttonText}>行先読込</Text>
-            </TouchableOpacity>
+          <View style={styles.tableMain}>
+            <View style={styles.tableRow}>
+              <View style={styles.tableCell11}>
+                <Text style={[styles.labelText, styles.alignRight]}>
+                  作業場所：
+                </Text>
+              </View>
+              <View style={[styles.tableCell5, styles.alignLeft]}>
+                <Text style={[styles.labelText, styles.alignLeft]}>
+                  {wkplcTyp}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.tableRow}>
+              <View style={styles.tableCell11}>
+                <Text style={[styles.labelTextNarrow, styles.alignRight]}>
+                  　　　　　
+                </Text>
+              </View>
+              <View style={[styles.tableCell5, styles.alignLeft]}>
+                <Text style={[styles.labelTextNarrow, styles.alignLeft]}>
+                  {wkplc}
+                </Text>
+              </View>
+            </View>
+            <View style={[styles.narrow]}>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonSmall, styles.centerButton]}
+                onPress={btnWkPlcQr}>
+                <Text style={styles.buttonText}>作業場所読込</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.tableRow}>
+              <View style={styles.tableCell11}>
+                <Text style={[styles.labelText, styles.alignRight]}>
+                  輸送車両：
+                </Text>
+              </View>
+              <View style={[styles.tableCell5, styles.alignLeft]}>
+                <Text style={[styles.labelText, styles.alignLeft]}>
+                  {carPlate}
+                </Text>
+              </View>
+            </View>
+            <View style={[styles.narrow]}>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonSmall, styles.centerButton]}
+                onPress={btnCarQr}>
+                <Text style={styles.buttonText}>車両読込</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.tableRow}>
+              <View style={styles.tableCell11}>
+                <Text style={[styles.labelText, styles.alignRight]}>
+                  運転手：
+                </Text>
+              </View>
+              <View style={[styles.tableCell5, styles.alignLeft]}>
+                <Text style={[styles.labelText, styles.alignLeft]}>
+                  {drvNm}
+                </Text>
+              </View>
+            </View>
+            <View style={[styles.narrow]}>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonSmall, styles.centerButton]}
+                onPress={btnDrvQr}>
+                <Text style={styles.buttonText}>運転手読込</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.tableRow}>
+              <View style={styles.tableCell11}>
+                <Text style={[styles.labelText, styles.alignRight]}>
+                  行先名：
+                </Text>
+              </View>
+              <View style={[styles.tableCell5, styles.alignLeft]}>
+                <Text style={[styles.labelText, styles.alignLeft]}>
+                  {destinationNm}
+                </Text>
+              </View>
+            </View>
+            <View style={[styles.narrow]}>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonSmall, styles.centerButton]}
+                onPress={btnDestamQr}>
+                <Text style={styles.buttonText}>行先読込</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 

@@ -17,9 +17,9 @@ import {
   CT0007,
   CT0006,
   CT0005,
-  CT0009,
+  CT0009_2,
   CT0010,
-  CT0011,
+  CT0011_2,
   CT0008,
 } from '../enum/enums.tsx';
 
@@ -41,131 +41,145 @@ const WA1081 = ({navigation}: Props) => {
    ************************************************/
   const renderData = () => {
     return (
-      <View style={styles.tableMain}>
+      <View style={styles.tableMiddleContent3}>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>土壌等種別：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
               {CT0007[WA1080Data?.data.rmSolTyp as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>重量：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>{WA1080Data?.data.weight}</Text>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
+              {WA1080Data?.data.weight}
+            </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>空間線量率：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>{WA1080Data?.data.airDsRt}</Text>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
+              {WA1080Data?.data.airDsRt}
+            </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>受入日：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>{WA1080Data?.data.rcvDt}</Text>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
+              {WA1080Data?.data.rcvDt}
+            </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>特定施設：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
               {CT0006[WA1080Data?.data.splFac as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>津波浸水：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
               {CT0005[WA1080Data?.data.tsuInd as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>荷姿種別：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
-              {CT0009[WA1080Data?.data.pkTyp as number]}
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
+              {CT0009_2[WA1080Data?.data.pkTyp as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>内袋利用方法：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
               {CT0010[WA1080Data?.data.usgInnBg as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>アルミ内袋：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
-              {CT0011[WA1080Data?.data.usgAluBg as number]}
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
+              {CT0011_2[WA1080Data?.data.usgAluBg as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>容積：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>{WA1080Data?.data.vol}</Text>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
+              {WA1080Data?.data.vol}
+            </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>エリア名：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>{WA1080Data?.data.arNm}</Text>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
+              {WA1080Data?.data.arNm}
+            </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>発生土地分類：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
               {CT0008[WA1080Data?.data.ocLndCla as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>土地利用区分：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>{WA1080Data?.data.ocLndUseknd}</Text>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
+              {WA1080Data?.data.ocLndUseknd}
+            </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>発生場所：</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>{WA1080Data?.data.ocloc}</Text>
+          <View style={styles.tableCell3}>
+            <Text style={[styles.labelText, styles.marginLeft]}>
+              {WA1080Data?.data.ocloc}
+            </Text>
           </View>
         </View>
         <View style={styles.tableRow}>

@@ -131,6 +131,9 @@ export const styles = StyleSheet.create({
     fontFamily: 'ipaexg',
     color: '#000',
   },
+  marginLeft: {
+    marginLeft: -5,
+  },
   labelCheck: {
     fontSize: 14,
   },
@@ -163,6 +166,9 @@ export const styles = StyleSheet.create({
     marginBottom: 0,
     fontFamily: 'ipaexg',
     color: '#000',
+  },
+  labelSmall: {
+    fontSize: 10,
   },
   //--------------------
   //--------テキスト-------
@@ -675,6 +681,15 @@ export const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
   },
+  scrollViewMiddleContentStyle: {
+    maxWidth: windowWidth * 0.7,
+    minWidth: windowWidth * 0.7, // または必要な幅に設定
+    borderWidth: 1, // 枠線の幅
+    borderColor: '#000', // 枠線の色
+    borderRadius: 5, // 枠の角を丸くする場合
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
   scrollPushSection: {
     flex: 1,
     justifyContent: 'flex-start',
@@ -692,8 +707,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 3,
     marginBottom: 3,
-    minHeight: 120,
-    maxHeight: 120,
+    minHeight: 140,
+    maxHeight: 140,
   },
   scrollPushViewStyle: {
     //★width: 'auto', // または必要な幅に設定
@@ -752,6 +767,22 @@ export const styles = StyleSheet.create({
   //--------テーブル-------
   tableMain: {
     width: windowWidth * 0.8, // テーブルの幅を指定
+    // 他のスタイル
+  },
+  tableMiddleContent1: {
+    width: windowWidth * 0.78, // テーブルの幅を指定
+    // 他のスタイル
+  },
+  tableMiddleContent2: {
+    width: windowWidth * 0.75, // テーブルの幅を指定
+    // 他のスタイル
+  },
+  tableMiddleContent3: {
+    width: windowWidth * 0.73, // テーブルの幅を指定
+    // 他のスタイル
+  },
+  tableMiddleContent4: {
+    width: windowWidth * 0.4, // テーブルの幅を指定
     // 他のスタイル
   },
   tableRow: {
@@ -834,6 +865,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center', // 子要素を垂直方向に中央揃えにする
     justifyContent: 'flex-start', // 子要素を水平方向に左揃えにする
   },
+  centerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center', // 子要素を垂直方向に中央揃えにする
+    justifyContent: 'flex-start', // 子要素を水平方向に左揃えにする
+  },
   inputLabelText: {
     //height: 30, // ラベルの高さをピッカーと同じにする
     //lineHeight: 30, // テキストをラベルの高さの中央に揃える
@@ -899,10 +935,10 @@ export const styles = StyleSheet.create({
     padding: 10,
   },
   //--------------------
-  //--------カスタムアラート-------
+  //--------WA1121用 四角-------
   block: {
-    width: 10, // 四角形の幅
-    height: 10, // 四角形の高さ
+    width: 25, // 四角形の幅
+    height: 25, // 四角形の高さ
     borderColor: 'black', // 枠線の色
     borderWidth: 1, // 枠線の太さ
   },
