@@ -43,11 +43,26 @@ const WA1030 = ({navigation}: Props) => {
   const [isReadyToSend, setIsReadyToSend] = useState<boolean>(false); // 送信準備完了状態
   const [showScannerUsr, setShowScannerUsr] = useState<boolean>(false); // カメラ表示用の状態
   const [showScannerWkplac, setShowScannerWkplac] = useState<boolean>(false); // カメラ表示用の状態
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
   const [wkplacId, setWkplacId] = useState<string>(''); // 作業場所種別ID
-  const [wkplacTyp, setWkplacTyp] = useState<number>();
-  const [fixPlacId, setFixPlacId] = useState<string | null>(null);
+  const [wkplacTyp, setWkplacTyp] = useState<number>(); //作業場所種類
+  const [fixPlacId, setFixPlacId] = useState<string | null>(null); // 定置場ID
   const {showAlert} = useAlert();
+
+  // useEffect フックを使用してステートが変更されるたびにチェック
+  useEffect(() => {
+    initializeLogFile();
+    if (userName !== '' && wkplac !== '') {
+      setIsReadyToSend(true); // 送信ボタンを活性化
+    }
+  }, [userName, wkplac]); // 依存配列に usrId と actReadFlg を追加
+
+  // 送信ボタンのスタイルを動的に変更するための関数
+  const getButtonStyle = () => {
+    return isReadyToSend
+      ? [styles.button, styles.startButton]
+      : [styles.button, styles.startButton, styles.disabledButton];
+  };
 
   /************************************************
    * QRコードスキャン後の処理 (ユーザ情報用)
@@ -227,24 +242,13 @@ const WA1030 = ({navigation}: Props) => {
     await logUserAction('ボタン押下: QRコード読込(ユーザ)');
     setShowScannerUsr(true);
   };
+
   // 作業場所QRコードスキャンボタン押下時の処理
   const btnWkplac = async () => {
     await logUserAction('ボタン押下: QRコード読込(作業場所)');
     setShowScannerWkplac(true);
   };
-  // useEffect フックを使用してステートが変更されるたびにチェック
-  useEffect(() => {
-    initializeLogFile();
-    if (userName !== '' && wkplac !== '') {
-      setIsReadyToSend(true); // 送信ボタンを活性化
-    }
-  }, [userName, wkplac]); // 依存配列に usrId と actReadFlg を追加
-  // 送信ボタンのスタイルを動的に変更するための関数
-  const getButtonStyle = () => {
-    return isReadyToSend
-      ? [styles.button, styles.startButton]
-      : [styles.button, styles.startButton, styles.disabledButton];
-  };
+
   /************************************************
    * 終了ボタン押下時のポップアップ表示
    ************************************************/

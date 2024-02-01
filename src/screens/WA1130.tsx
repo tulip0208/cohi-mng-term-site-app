@@ -44,22 +44,22 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1130 = ({navigation}: Props) => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [wkplcTyp, setWkplcTyp] = useState<string>(''); //作業場所種類
+  const [wkplc, setWkplc] = useState<string>(''); // 作業場所
+  const [storPlacId, setStorPlacId] = useState<String>(''); //保管場ID
+  const [fixPlacId, setFixPlacId] = useState<String>(''); //定置場ID
+  const [facTyp, setFacTyp] = useState<String>(''); //施設区分
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
   const [showScannerCard, setShowScannerCard] = useState<boolean>(false); // カメラ表示用の状態
   const [showScannerWkPlc, setShowScannerWkPlc] = useState<boolean>(false); // カメラ表示用の状態
-  const [wkplcTyp, setWkplcTyp] = useState<string>('');
-  const [wkplc, setWkplc] = useState<string>('');
-  const [WA1130Data, setWA1130Data] = useRecoilState(WA1130DataState);
   const [isCard, setIsCard] = useState<boolean>(false); // 送信準備完了状態
-  const [storPlacId, setStorPlacId] = useState<String>();
-  const [fixPlacId, setFixPlacId] = useState<String>();
-  const [facTyp, setFacTyp] = useState<String>();
-  const setPrevScreenId = useSetRecoilState(WA1130PrevScreenId); //遷移元画面ID
-  const [WA1131back, setWa1131Back] = useRecoilState(WA1131BackState);
-  const resetWA1130Data = useResetRecoilState(WA1130DataState);
-  const setIFT0640Data = useSetRecoilState(IFT0640DataState);
-
+  const [WA1130Data, setWA1130Data] = useRecoilState(WA1130DataState); // Recoil 保管場ID,定置場ID,施設区分
+  const [WA1131back, setWa1131Back] = useRecoilState(WA1131BackState); // Recoil 戻る
+  const setPrevScreenId = useSetRecoilState(WA1130PrevScreenId); // Recoil 遷移元画面ID
+  const setIFT0640Data = useSetRecoilState(IFT0640DataState); // Recoil IFT0640レスポンスデータ
+  const resetWA1130Data = useResetRecoilState(WA1130DataState); //Recoilリセット
   const {showAlert} = useAlert();
+
   /************************************************
    * 初期表示設定
    ************************************************/
@@ -68,6 +68,7 @@ const WA1130 = ({navigation}: Props) => {
     reset();
     contentsViews();
   }, []);
+
   //WA1141帰還処理
   useEffect(() => {
     if (WA1131back) {
@@ -77,6 +78,8 @@ const WA1130 = ({navigation}: Props) => {
       contentsViews();
     }
   }, [WA1131back]);
+
+  //画面表示前処理
   const contentsViews = async () => {
     const realm = getInstance();
     const loginInfo = realm.objects('login')[0];
@@ -119,6 +122,7 @@ const WA1130 = ({navigation}: Props) => {
       await showAlert('通知', messages.WA5010(), false);
     }
   };
+
   // 値の初期化
   const reset = () => {
     resetWA1130Data();
@@ -127,6 +131,7 @@ const WA1130 = ({navigation}: Props) => {
     setWkplc('');
     setWkplcTyp('');
   };
+
   // タグ読込ボタンのスタイルを動的に変更するための関数
   const getCardButtonStyle = () => {
     return isCard
@@ -175,6 +180,7 @@ const WA1130 = ({navigation}: Props) => {
 
     setIsCard(true);
   };
+
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
     await logUserAction('ボタン押下: 作業場所読込');
@@ -254,6 +260,7 @@ const WA1130 = ({navigation}: Props) => {
     setModalVisible(false);
     return;
   };
+
   // タグコードスキャンボタン押下時の処理
   const btnTrpCrd = async () => {
     await logUserAction('ボタン押下: 輸送カード読込');

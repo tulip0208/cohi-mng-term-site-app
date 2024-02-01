@@ -35,16 +35,16 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1123 = ({navigation}: Props) => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [isViewUpdate, setIsViewUpdate] = useState<boolean>(true); //更新ボタン 表示・非表示
+  const [makeQR, doMakeQR] = useState<boolean>(false); // QRコード表示非表示
+  const WA1120Car = useRecoilValue(WA1120CarState); // Recoil 車両情報
+  const WA1120Drv = useRecoilValue(WA1120DrvState); // Recoil 運転手情報情報
+  const WA1120Dest = useRecoilValue(WA1120DestState); // Recoil 行先情報
+  const WA1120Data = useRecoilValue(WA1120DataState); // Recoil 画面上部作業情報
+  const WA1121Data = useRecoilValue(WA1121DataState); // Recoil 画面作業情報
+  const WA1120TrpCardNo = useRecoilValue(WA1120TrpCardNoState); // Recoil 輸送カード番号
   const setPrevScreenId = useSetRecoilState(WA1120PrevScreenId); //遷移元画面ID
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const WA1120Car = useRecoilValue(WA1120CarState);
-  const WA1120Drv = useRecoilValue(WA1120DrvState);
-  const WA1120Dest = useRecoilValue(WA1120DestState);
-  const WA1120Data = useRecoilValue(WA1120DataState);
-  const WA1121Data = useRecoilValue(WA1121DataState);
-  const WA1120TrpCardNo = useRecoilValue(WA1120TrpCardNoState);
-  const [isViewUpdate, setIsViewUpdate] = useState<boolean>(true);
-  const [makeQR, doMakeQR] = useState<boolean>(false);
   const realm = getInstance();
   const loginInfo = realm.objects('login')[0];
   const {showAlert} = useAlert();

@@ -54,27 +54,28 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1121 = ({navigation}: Props) => {
-  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1120PrevScreenId); //遷移元画面ID
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [showScannerTag, setShowScannerTag] = useState<boolean>(false); // カメラ表示用の状態
   const [inputValue, setInputValue] = useState<string>('');
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
-  const WA1120TrpCardNo = useRecoilValue(WA1120TrpCardNoState);
-  const WA1120WkPlac = useRecoilValue(WA1120WkPlacState);
-  const WA1120Car = useRecoilValue(WA1120CarState);
-  const WA1120Drv = useRecoilValue(WA1120DrvState);
-  const WA1120Dest = useRecoilValue(WA1120DestState);
-  const WA1120Data = useRecoilValue(WA1120DataState);
-  const newTagList = useRecoilValue(WA1121NewTagListState);
-  const [WA1121Data, setWA1121Data] = useRecoilState(WA1121DataState);
-  const resetWA1121Data = useResetRecoilState(WA1121DataState);
-  const [isTagRead, setIsTagRead] = useState<boolean>(true);
-  const [isSendNext, setIsSendNext] = useState<boolean>(true);
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [showScannerTag, setShowScannerTag] = useState<boolean>(false); // カメラ表示用の状態
+  const [isDisabled, setIsDisabled] = useState<boolean>(false); // 送信・次へボタンのスタイル 活性・非活性
+  const [isTagRead, setIsTagRead] = useState<boolean>(true); // タグ読込ボタンのスタイル 活性・非活性
+  const [isSendNext, setIsSendNext] = useState<boolean>(true); // true=送信表示,false=次へ表示
   const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
     null,
-  );
+  ); //長押しタグ表示用
+  const WA1120TrpCardNo = useRecoilValue(WA1120TrpCardNoState); // Recoil 輸送カード番号
+  const WA1120WkPlac = useRecoilValue(WA1120WkPlacState); // Recoil 作業場所情報
+  const WA1120Car = useRecoilValue(WA1120CarState); // Recoil 車両情報
+  const WA1120Drv = useRecoilValue(WA1120DrvState); // Recoil 運転手情報情報
+  const WA1120Dest = useRecoilValue(WA1120DestState); // Recoil 行先情報
+  const WA1120Data = useRecoilValue(WA1120DataState); // Recoil 画面上部作業情報
+  const newTagList = useRecoilValue(WA1121NewTagListState); // Recoil 新タグリスト
+  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1120PrevScreenId); // Recoil 遷移元画面ID
+  const [WA1121Data, setWA1121Data] = useRecoilState(WA1121DataState); // Recoil 画面作業情報
+  const resetWA1121Data = useResetRecoilState(WA1121DataState); //Recoilリセット
   const realm = getInstance();
   const {showAlert} = useAlert();
+
   /************************************************
    * 初期表示設定
    ************************************************/
@@ -108,12 +109,14 @@ const WA1121 = ({navigation}: Props) => {
       setIsSendNext(true);
     }
   }, []);
+
   //新タグ情報20件以上の場合 タグ読込非活性
   useEffect(() => {
     if (newTagList.length >= 20) {
       setIsTagRead(false);
     }
   }, [newTagList]);
+
   //新タグ情報0件
   useEffect(() => {
     if (newTagList.length <= 0) {
@@ -142,6 +145,7 @@ const WA1121 = ({navigation}: Props) => {
           styles.disabledButton,
         ];
   };
+
   // 送信・次へボタンのスタイルを動的に変更するための関数
   const getActionButtonStyle = () => {
     return isDisabled

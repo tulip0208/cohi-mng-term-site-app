@@ -19,7 +19,12 @@ import {
 import {logUserAction, logScreen} from '../utils/Log.tsx';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootList} from '../navigation/AppNavigator.tsx';
-import {useRecoilValue, useSetRecoilState, useResetRecoilState} from 'recoil';
+import {
+  useRecoilValue,
+  useSetRecoilState,
+  useResetRecoilState,
+  useRecoilState,
+} from 'recoil';
 import {
   WA1060PrevScreenId,
   WA1061BackState,
@@ -53,20 +58,21 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1061 = ({navigation}: Props) => {
-  const newTagId = useRecoilValue(WA1060NewTagIdState); //新タグID
-  const setPrevScreenId = useSetRecoilState(WA1060PrevScreenId); //遷移元画面ID
-  const WA1060OldTagInfos = useRecoilValue(WA1060OldTagInfosState);
-  const setBack = useSetRecoilState(WA1061BackState);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false); // 処理中モーダルの状態
   const [showScannerTag, setShowScannerTag] = useState<boolean>(false); // カメラ表示用の状態
-  const [popupVisible, setPopupVisible] = useState<boolean>(false);
+  const [popupVisible, setPopupVisible] = useState<boolean>(false); // 詳細ポップアップ
+  const [inputValue, setInputValue] = useState<string>(''); //旧タグID入力値
   const [selectedOldTagInfo, setSelectedOldTagInfo] =
-    useState<WA1060OldTagInfoConst | null>(null);
-  const WA1060WkPlac = useRecoilValue(WA1060WkPlacState);
-  const resetWA1060OldTagInfos = useResetRecoilState(WA1060OldTagInfosState);
-  const setWA1060OldTagInfos = useSetRecoilState(WA1060OldTagInfosState);
-  const setWA1061TagId = useSetRecoilState(WA1061TagIdState);
-  const [inputValue, setInputValue] = useState<string>('');
+    useState<WA1060OldTagInfoConst | null>(null); // 詳細ポップアップ表示する旧タグ情報
+  const newTagId = useRecoilValue(WA1060NewTagIdState); // Recoil 新タグID
+  const WA1060WkPlac = useRecoilValue(WA1060WkPlacState); // Recoil 作業場所情報
+  const [WA1060OldTagInfos, setWA1060OldTagInfos] = useRecoilState(
+    WA1060OldTagInfosState,
+  ); //Recoil 旧タグ情報
+  const setPrevScreenId = useSetRecoilState(WA1060PrevScreenId); // Recoil 遷移元画面ID
+  const setBack = useSetRecoilState(WA1061BackState); // Recoil 戻る
+  const resetWA1060OldTagInfos = useResetRecoilState(WA1060OldTagInfosState); //Recoilリセット
+  const setWA1061TagId = useSetRecoilState(WA1061TagIdState); //Recoil 旧タグ
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定
@@ -214,172 +220,6 @@ const WA1061 = ({navigation}: Props) => {
       }
     }
     return true;
-  };
-
-  /************************************************
-   * 詳細データをレンダリングするための関数
-   ************************************************/
-  const renderDetailData = (oldTagInfo: WA1060OldTagInfoConst) => {
-    return (
-      <View style={styles.tableMain}>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
-              津波浸水：{CT0005[Number(oldTagInfo?.tsuInd)]}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
-              特定施設：{CT0006[Number(oldTagInfo?.splFac)]}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
-              除去土壌等種別：{CT0007[Number(oldTagInfo?.rmSolTyp)]}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
-              発生土地分類：{CT0008[Number(oldTagInfo?.ocLndCla)]}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
-              荷姿種別：{CT0009[Number(oldTagInfo?.pkTyp)]}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
-              内袋の利用方法：{CT0010[Number(oldTagInfo?.usgInnBg)]}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
-              アルミ内袋の利用：{CT0011[Number(oldTagInfo?.usgAluBg)]}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>容積：{oldTagInfo?.vol}</Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
-              空間線量率：{oldTagInfo?.airDsRt}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>
-              発生土地の利用区分：{oldTagInfo?.ocLndUseknd}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>発生場所：{oldTagInfo?.ocloc}</Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>備考(除去土壌情報)：</Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>{oldTagInfo?.rmSolInf}</Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>除染時データメモ：</Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>{oldTagInfo?.lnkNewTagDatMem}</Text>
-          </View>
-        </View>
-      </View>
-    );
-  };
-
-  /************************************************
-   * データ部分の値を表示するための関数
-   ************************************************/
-  const renderOldTagList = () => {
-    //旧タグリスト
-    const oldTagComponent = WA1060OldTagInfos.map((oldTagInfo, index) => (
-      <View key={index} style={styles.detailSection}>
-        <View style={[styles.tableCell2]}>
-          <Text style={styles.labelTextNarrow}>{`${index + 1}: ${
-            oldTagInfo.oldTag
-          }`}</Text>
-        </View>
-        <View style={[styles.tableCell1]}>
-          <TouchableOpacity
-            style={[styles.detailButton]}
-            onPress={async () => {
-              setSelectedOldTagInfo(oldTagInfo);
-              setPopupVisible(true);
-              await logUserAction(
-                'ボタン押下: 詳細(' + oldTagInfo.oldTag + ')(WA1061)',
-              );
-            }}>
-            <Text style={styles.detailButtonText}>詳細</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    ));
-
-    // 旧タグが9個未満の場合に表示する設定セクション
-    if (WA1060OldTagInfos.length < 9) {
-      const configComponent = (
-        <View key={WA1060OldTagInfos.length + 1} style={[styles.detailSection]}>
-          <View style={[styles.tableCell2, styles.inputContainerLeft]}>
-            <Text style={styles.labelTextNarrow}>{`${
-              WA1060OldTagInfos.length + 1
-            }: `}</Text>
-            <TextInput
-              value={inputValue}
-              style={styles.input}
-              maxLength={50}
-              onChangeText={(text: string) => setInputValue(text)}
-            />
-          </View>
-          <View style={[styles.tableCell1]}>
-            <TouchableOpacity
-              style={[styles.detailButton, styles.updateButton]}
-              onPress={async () => {
-                await logUserAction('ボタン押下: 設定(WA1061)');
-                await btnSetting();
-              }}>
-              <Text style={[styles.detailButtonText, styles.settingButtonText]}>
-                設定
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-      // configComponent を oldTagComponent 配列の末尾に追加
-      oldTagComponent.push(configComponent);
-    }
-    return <View style={styles.tableMain}>{oldTagComponent}</View>;
   };
 
   /************************************************
@@ -564,6 +404,173 @@ const WA1061 = ({navigation}: Props) => {
       return '';
     }
   };
+
+  /************************************************
+   * データ部分の値を表示するための関数
+   ************************************************/
+  const renderOldTagList = () => {
+    //旧タグリスト
+    const oldTagComponent = WA1060OldTagInfos.map((oldTagInfo, index) => (
+      <View key={index} style={styles.detailSection}>
+        <View style={[styles.tableCell2]}>
+          <Text style={styles.labelTextNarrow}>{`${index + 1}: ${
+            oldTagInfo.oldTag
+          }`}</Text>
+        </View>
+        <View style={[styles.tableCell1]}>
+          <TouchableOpacity
+            style={[styles.detailButton]}
+            onPress={async () => {
+              setSelectedOldTagInfo(oldTagInfo);
+              setPopupVisible(true);
+              await logUserAction(
+                'ボタン押下: 詳細(' + oldTagInfo.oldTag + ')(WA1061)',
+              );
+            }}>
+            <Text style={styles.detailButtonText}>詳細</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    ));
+
+    // 旧タグが9個未満の場合に表示する設定セクション
+    if (WA1060OldTagInfos.length < 9) {
+      const configComponent = (
+        <View key={WA1060OldTagInfos.length + 1} style={[styles.detailSection]}>
+          <View style={[styles.tableCell2, styles.inputContainerLeft]}>
+            <Text style={styles.labelTextNarrow}>{`${
+              WA1060OldTagInfos.length + 1
+            }: `}</Text>
+            <TextInput
+              value={inputValue}
+              style={styles.input}
+              maxLength={50}
+              onChangeText={(text: string) => setInputValue(text)}
+            />
+          </View>
+          <View style={[styles.tableCell1]}>
+            <TouchableOpacity
+              style={[styles.detailButton, styles.updateButton]}
+              onPress={async () => {
+                await logUserAction('ボタン押下: 設定(WA1061)');
+                await btnSetting();
+              }}>
+              <Text style={[styles.detailButtonText, styles.settingButtonText]}>
+                設定
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+      // configComponent を oldTagComponent 配列の末尾に追加
+      oldTagComponent.push(configComponent);
+    }
+    return <View style={styles.tableMain}>{oldTagComponent}</View>;
+  };
+
+  /************************************************
+   * 詳細データをレンダリングするための関数
+   ************************************************/
+  const renderDetailData = (oldTagInfo: WA1060OldTagInfoConst) => {
+    return (
+      <View style={styles.tableMain}>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>
+              津波浸水：{CT0005[Number(oldTagInfo?.tsuInd)]}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>
+              特定施設：{CT0006[Number(oldTagInfo?.splFac)]}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>
+              除去土壌等種別：{CT0007[Number(oldTagInfo?.rmSolTyp)]}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>
+              発生土地分類：{CT0008[Number(oldTagInfo?.ocLndCla)]}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>
+              荷姿種別：{CT0009[Number(oldTagInfo?.pkTyp)]}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>
+              内袋の利用方法：{CT0010[Number(oldTagInfo?.usgInnBg)]}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>
+              アルミ内袋の利用：{CT0011[Number(oldTagInfo?.usgAluBg)]}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>容積：{oldTagInfo?.vol}</Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>
+              空間線量率：{oldTagInfo?.airDsRt}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>
+              発生土地の利用区分：{oldTagInfo?.ocLndUseknd}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>発生場所：{oldTagInfo?.ocloc}</Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>備考(除去土壌情報)：</Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>{oldTagInfo?.rmSolInf}</Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>除染時データメモ：</Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCell}>
+            <Text style={styles.labelText}>{oldTagInfo?.lnkNewTagDatMem}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={'padding'}

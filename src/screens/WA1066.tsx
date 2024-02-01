@@ -52,20 +52,20 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1066 = ({navigation}: Props) => {
-  const newTagId = useRecoilValue(WA1060NewTagIdState); //新タグID
-  const WA1060OldTagInfos = useRecoilValue(WA1060OldTagInfosState);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const setPrevScreenId = useSetRecoilState(WA1060PrevScreenId); //遷移元画面ID
-  const [WA1060Data, setWA1060Data] = useRecoilState(WA1060DataState);
-  const [lnkNewTagDatMem, setLnkNewTagDatMem] = useState<string>('');
-  const WA1063MemoAuto = useRecoilValue(WA1063MemoAutoState);
-  const WA1065Memo = useRecoilValue(WA1065MemoState);
-  const WA1060WkPlac = useRecoilValue(WA1060WkPlacState);
-  const cmnTagFlg = useRecoilValue(WA1060CmnTagFlgState);
+  const [lnkNewTagDatMem, setLnkNewTagDatMem] = useState<string>(''); // メモ
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [popupVisible, setPopupVisible] = useState<boolean>(false); // 詳細ポップアップ
   const [selectedOldTagInfo, setSelectedOldTagInfo] =
-    useState<WA1060OldTagInfoConst | null>(null);
-  const [popupVisible, setPopupVisible] = useState<boolean>(false);
-  const setBack = useSetRecoilState(WA1061BackState);
+    useState<WA1060OldTagInfoConst | null>(null); // 詳細ポップアップ表示する旧タグ情報
+  const newTagId = useRecoilValue(WA1060NewTagIdState); // Recoil 新タグID
+  const WA1060OldTagInfos = useRecoilValue(WA1060OldTagInfosState); //Recoil 旧タグ情報
+  const WA1063MemoAuto = useRecoilValue(WA1063MemoAutoState); // Recoil メモ自動
+  const WA1065Memo = useRecoilValue(WA1065MemoState); // Recoil メモ
+  const WA1060WkPlac = useRecoilValue(WA1060WkPlacState); // Recoil 作業場所情報
+  const cmnTagFlg = useRecoilValue(WA1060CmnTagFlgState); //Recoil 共通タグフラグ
+  const [WA1060Data, setWA1060Data] = useRecoilState(WA1060DataState); //Recoil 新タグ情報
+  const setPrevScreenId = useSetRecoilState(WA1060PrevScreenId); // Recoil 遷移元画面ID
+  const setBack = useSetRecoilState(WA1061BackState); // Recoil 戻る
   const {showAlert} = useAlert();
 
   /************************************************
@@ -128,6 +128,71 @@ const WA1066 = ({navigation}: Props) => {
     setPrevScreenId('WA1040');
     await logScreen('画面遷移:WA1060_新タグ読込(土壌)');
     navigation.navigate('WA1060');
+  };
+
+  /************************************************
+   * 必須情報編集ボタン処理
+   ************************************************/
+  const btnEdtReq = async () => {
+    await logUserAction('ボタン押下: 必須情報編集(WA1066)');
+    //遷移元画面IDを設定
+    setPrevScreenId('WA1066');
+    await logScreen('画面遷移:WA1063_必須情報設定(土壌)');
+    navigation.navigate('WA1063');
+  };
+
+  /************************************************
+   * 重量・線量編集ボタン処理
+   ************************************************/
+  const btnEdtWtDs = async () => {
+    await logUserAction('ボタン押下: 重量・線量編集(WA1066)');
+    //遷移元画面IDを設定
+    setPrevScreenId('WA1066');
+    await logScreen('画面遷移:WA1064_重量・線量(土壌)');
+    navigation.navigate('WA1064');
+  };
+
+  /************************************************
+   * メモ編集ボタン処理
+   ************************************************/
+  const btnEdtMemo = async () => {
+    await logUserAction('ボタン押下: メモ編集(WA1066)');
+    //遷移元画面IDを設定
+    setPrevScreenId('WA1066');
+    await logScreen('画面遷移:WA1065_メモ入力(土壌)');
+    navigation.navigate('WA1065');
+  };
+
+  /************************************************
+   * API通信処理エラー有無確認・エラーハンドリング
+   * @param {*} response
+   * @returns
+   ************************************************/
+  const apiIsError = async <T,>(response: ApiResponse<T>): Promise<boolean> => {
+    if (!response.success) {
+      switch (response.error) {
+        case 'codeHttp200':
+          await showAlert(
+            '通知',
+            messages.EA5004(response.api as string, response.status as number),
+            false,
+          );
+          break;
+        case 'codeRsps01':
+          await showAlert(
+            '通知',
+            messages.EA5005(response.api as string, response.code as string),
+            false,
+          );
+          break;
+        case 'timeout':
+          await showAlert('通知', messages.EA5003(), false);
+          break;
+      }
+      return true;
+    } else {
+      return false;
+    }
   };
 
   /************************************************
@@ -231,71 +296,6 @@ const WA1066 = ({navigation}: Props) => {
         </View>
       </View>
     );
-  };
-
-  /************************************************
-   * 必須情報編集ボタン処理
-   ************************************************/
-  const btnEdtReq = async () => {
-    await logUserAction('ボタン押下: 必須情報編集(WA1066)');
-    //遷移元画面IDを設定
-    setPrevScreenId('WA1066');
-    await logScreen('画面遷移:WA1063_必須情報設定(土壌)');
-    navigation.navigate('WA1063');
-  };
-
-  /************************************************
-   * 重量・線量編集ボタン処理
-   ************************************************/
-  const btnEdtWtDs = async () => {
-    await logUserAction('ボタン押下: 重量・線量編集(WA1066)');
-    //遷移元画面IDを設定
-    setPrevScreenId('WA1066');
-    await logScreen('画面遷移:WA1064_重量・線量(土壌)');
-    navigation.navigate('WA1064');
-  };
-
-  /************************************************
-   * メモ編集ボタン処理
-   ************************************************/
-  const btnEdtMemo = async () => {
-    await logUserAction('ボタン押下: メモ編集(WA1066)');
-    //遷移元画面IDを設定
-    setPrevScreenId('WA1066');
-    await logScreen('画面遷移:WA1065_メモ入力(土壌)');
-    navigation.navigate('WA1065');
-  };
-
-  /************************************************
-   * API通信処理エラー有無確認・エラーハンドリング
-   * @param {*} response
-   * @returns
-   ************************************************/
-  const apiIsError = async <T,>(response: ApiResponse<T>): Promise<boolean> => {
-    if (!response.success) {
-      switch (response.error) {
-        case 'codeHttp200':
-          await showAlert(
-            '通知',
-            messages.EA5004(response.api as string, response.status as number),
-            false,
-          );
-          break;
-        case 'codeRsps01':
-          await showAlert(
-            '通知',
-            messages.EA5005(response.api as string, response.code as string),
-            false,
-          );
-          break;
-        case 'timeout':
-          await showAlert('通知', messages.EA5003(), false);
-          break;
-      }
-      return true;
-    } else {
-      return false;
-    }
   };
 
   return (

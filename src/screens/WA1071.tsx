@@ -29,12 +29,43 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1071 = ({navigation}: Props) => {
-  const WA1070Data = useRecoilValue(WA1070DataState);
-  const setBack = useSetRecoilState(WA1071BackState);
+  const WA1070Data = useRecoilValue(WA1070DataState); // Recoil 新タグID情報
+  const setBack = useSetRecoilState(WA1071BackState); // Recoil 戻る
+
   /************************************************
    * 初期表示設定
    ************************************************/
   useEffect(() => {}, []);
+
+  /************************************************
+   * データ部分の値を表示するための関数
+   ************************************************/
+  const renderOldTag = () => {
+    return WA1070Data?.oldTag.oldTagIdList.map((tagId, index) => (
+      <View key={index}>
+        <Text style={styles.labelText}>{`${index + 1}: ${tagId}`}</Text>
+      </View>
+    ));
+  };
+
+  /************************************************
+   * 戻るボタン処理
+   ************************************************/
+  const btnAppBack = async () => {
+    await logUserAction('ボタン押下: 戻る(WA1071)');
+    setBack(true);
+    await logScreen('画面遷移:WA1070_新タグ参照(土壌)');
+    navigation.navigate('WA1070');
+  };
+
+  /************************************************
+   * メニューボタン処理
+   ************************************************/
+  const btnMenu = async () => {
+    await logUserAction('ボタン押下: メニュー(WA1071)');
+    await logScreen('画面遷移:WA1040_メニュー');
+    navigation.navigate('WA1040');
+  };
 
   /************************************************
    * データ部分の値を表示するための関数
@@ -150,35 +181,6 @@ const WA1071 = ({navigation}: Props) => {
         </View>
       </View>
     );
-  };
-
-  /************************************************
-   * データ部分の値を表示するための関数
-   ************************************************/
-  const renderOldTag = () => {
-    return WA1070Data?.oldTag.oldTagIdList.map((tagId, index) => (
-      <View key={index}>
-        <Text style={styles.labelText}>{`${index + 1}: ${tagId}`}</Text>
-      </View>
-    ));
-  };
-  /************************************************
-   * 戻るボタン処理
-   ************************************************/
-  const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1071)');
-    setBack(true);
-    await logScreen('画面遷移:WA1070_新タグ参照(土壌)');
-    navigation.navigate('WA1070');
-  };
-
-  /************************************************
-   * メニューボタン処理
-   ************************************************/
-  const btnMenu = async () => {
-    await logUserAction('ボタン押下: メニュー(WA1071)');
-    await logScreen('画面遷移:WA1040_メニュー');
-    navigation.navigate('WA1040');
   };
 
   return (

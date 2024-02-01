@@ -45,32 +45,32 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1120 = ({navigation}: Props) => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [wkplcTyp, setWkplcTyp] = useState<string>('');
+  const [wkplcTyp, setWkplcTyp] = useState<string>(''); //作業場所種類
+  const [wkplc, setWkplc] = useState<string>(''); // 作業場所
+  const [carPlate, setCarPlate] = useState<string>(''); //輸送車両
+  const [drvNm, setDrvNm] = useState<string>(''); //運転手
+  const [destinationNm, setDestinationNm] = useState<string>(''); // 行先名
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
   const [isNext, setIsNext] = useState<boolean>(false); // 送信準備完了状態
-  const [back, setBack] = useRecoilState(WA1120BackState);
-  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1120PrevScreenId); //遷移元画面ID
   const [showScannerWkPlc, setShowScannerWkPlc] = useState<boolean>(false); // カメラ表示用の状態
   const [showScannerCarQr, setShowScannerCarQr] = useState<boolean>(false); // カメラ表示用の状態
   const [showScannerDrvQr, setShowScannerDrvQr] = useState<boolean>(false); // カメラ表示用の状態
   const [showScannerDestamQr, setShowScannerDestamQr] =
     useState<boolean>(false); // カメラ表示用の状態
-  const setWA1120TrpCardNo = useSetRecoilState(WA1120TrpCardNoState);
-  const [WA1120WkPlac, setWA1120WkPlac] = useRecoilState(WA1120WkPlacState);
-  const [WA1120Car, setWA1120Car] = useRecoilState(WA1120CarState);
-  const [WA1120Drv, setWA1120Drv] = useRecoilState(WA1120DrvState);
-  const [WA1120Dest, setWA1120Dest] = useRecoilState(WA1120DestState);
-  const setWA1120Data = useSetRecoilState(WA1120DataState);
-  const resetWA112WkPlacState = useResetRecoilState(WA1120WkPlacState);
-  const resetWA1120CarState = useResetRecoilState(WA1120CarState);
-  const resetWA1120DrvState = useResetRecoilState(WA1120DrvState);
-  const resetWA1120DestState = useResetRecoilState(WA1120DestState);
-  const [wkplc, setWkplc] = useState<string>('');
-  const [carPlate, setCarPlate] = useState<string>('');
-  const [drvNm, setDrvNm] = useState<string>('');
-  const [destinationNm, setDestinationNm] = useState<string>('');
-
+  const [back, setBack] = useRecoilState(WA1120BackState); //Recoil 戻る
+  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1120PrevScreenId); // Recoil 遷移元画面ID
+  const [WA1120WkPlac, setWA1120WkPlac] = useRecoilState(WA1120WkPlacState); // Recoil 作業場所情報
+  const [WA1120Car, setWA1120Car] = useRecoilState(WA1120CarState); // Recoil 車両情報
+  const [WA1120Drv, setWA1120Drv] = useRecoilState(WA1120DrvState); // Recoil 運転手情報情報
+  const [WA1120Dest, setWA1120Dest] = useRecoilState(WA1120DestState); // Recoil 行先情報
+  const setWA1120TrpCardNo = useSetRecoilState(WA1120TrpCardNoState); // Recoil 輸送カード番号
+  const setWA1120Data = useSetRecoilState(WA1120DataState); // Recoil 画面上部作業情報
+  const resetWA112WkPlacState = useResetRecoilState(WA1120WkPlacState); //Recoilリセット
+  const resetWA1120CarState = useResetRecoilState(WA1120CarState); //Recoilリセット
+  const resetWA1120DrvState = useResetRecoilState(WA1120DrvState); //Recoilリセット
+  const resetWA1120DestState = useResetRecoilState(WA1120DestState); //Recoilリセット
   const {showAlert} = useAlert();
+
   /************************************************
    * 初期表示設定
    ************************************************/
@@ -110,6 +110,7 @@ const WA1120 = ({navigation}: Props) => {
     WA1120Dest.storPlacId,
   ]);
 
+  //画面表示前処理
   const contentsViews = async () => {
     const realm = getInstance();
     const loginInfo = realm.objects('login')[0];
@@ -132,13 +133,13 @@ const WA1120 = ({navigation}: Props) => {
         break;
     }
   };
+
   // 値の初期化
   const reset = () => {
     resetWA112WkPlacState();
     resetWA1120CarState();
     resetWA1120DrvState();
     resetWA1120DestState();
-
     setWkplcTyp('');
     setWkplc('');
     setCarPlate('');
@@ -180,6 +181,7 @@ const WA1120 = ({navigation}: Props) => {
     });
     setWkplc(parts[2]);
   };
+
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
     await logUserAction('ボタン押下: 作業場所読込');
@@ -209,6 +211,7 @@ const WA1120 = ({navigation}: Props) => {
       empCarWt: parts[8], //空車重量
     });
   };
+
   // 車両コードスキャンボタン押下時の処理
   const btnCarQr = async () => {
     await logUserAction('ボタン押下: 車両読込');
@@ -234,6 +237,7 @@ const WA1120 = ({navigation}: Props) => {
       drvNm: parts[3], //運転手名
     });
   };
+
   // 運転手コードスキャンボタン押下時の処理
   const btnDrvQr = async () => {
     await logUserAction('ボタン押下: 運転手読込');
@@ -264,6 +268,7 @@ const WA1120 = ({navigation}: Props) => {
     setWkplc(parts[2]);
     setIsNext(true); //次へボタン活性化
   };
+
   // 行先コードスキャンボタン押下時の処理
   const btnDestamQr = async () => {
     await logUserAction('ボタン押下: 行先読込');

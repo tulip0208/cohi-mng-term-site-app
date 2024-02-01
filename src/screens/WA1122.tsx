@@ -49,15 +49,6 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1122 = ({navigation}: Props) => {
-  const setPrevScreenId = useSetRecoilState(WA1120PrevScreenId); //遷移元画面ID
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const WA1120WkPlac = useRecoilValue(WA1120WkPlacState);
-  const WA1120Car = useRecoilValue(WA1120CarState);
-  const WA1120Drv = useRecoilValue(WA1120DrvState);
-  const WA1120Dest = useRecoilValue(WA1120DestState);
-  const WA1120Data = useRecoilValue(WA1120DataState);
-  const WA1120TrpCardNo = useRecoilValue(WA1120TrpCardNoState);
-  const [WA1121Data, setWA1121Data] = useRecoilState(WA1121DataState);
   const [frCaLgSdBgDsInt, setFrCaLgSdBgDsInt] = useState<string>(''); //前の線量_整数
   const [frCaLgSdBgDsDec, setFrCaLgSdBgDsDec] = useState<string>(''); //前の線量_小数
   const [leCaLgSdBgDsInt, setLeCaLgSdBgDsInt] = useState<string>(''); //左の線量_整数
@@ -72,7 +63,16 @@ const WA1122 = ({navigation}: Props) => {
     right: '', //放射線量 右
     left: '', //放射線量 左
   });
-  const [isSend, setIsSend] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [isSend, setIsSend] = useState<boolean>(false); // 送信ボタン 活性・非活性
+  const WA1120WkPlac = useRecoilValue(WA1120WkPlacState); // Recoil 作業場所情報
+  const WA1120Car = useRecoilValue(WA1120CarState); // Recoil 車両情報
+  const WA1120Drv = useRecoilValue(WA1120DrvState); // Recoil 運転手情報情報
+  const WA1120Dest = useRecoilValue(WA1120DestState); // Recoil 行先情報
+  const WA1120Data = useRecoilValue(WA1120DataState); // Recoil 画面上部作業情報
+  const WA1120TrpCardNo = useRecoilValue(WA1120TrpCardNoState); // Recoil 輸送カード番号
+  const [WA1121Data, setWA1121Data] = useRecoilState(WA1121DataState); // Recoil 画面作業情報
+  const setPrevScreenId = useSetRecoilState(WA1120PrevScreenId); //遷移元画面ID
   const realm = getInstance();
   const settingsInfo = realm.objects('settings')[0];
   const {showAlert} = useAlert();
@@ -104,9 +104,9 @@ const WA1122 = ({navigation}: Props) => {
     ) {
       setCaLgSdBgDsInfo({
         front: frCaLgSdBgDsInt + '.' + frCaLgSdBgDsDec, //放射線量 前
-        back: leCaLgSdBgDsInt + '.' + leCaLgSdBgDsDec, //放射線量 後
-        right: baCaLgSdBgDsInt + '.' + baCaLgSdBgDsDec, //放射線量 右
-        left: riCaLgSdBgDsInt + '.' + riCaLgSdBgDsDec, //放射線量 左
+        left: leCaLgSdBgDsInt + '.' + leCaLgSdBgDsDec, //放射線量 左
+        back: baCaLgSdBgDsInt + '.' + baCaLgSdBgDsDec, //放射線量 後
+        right: riCaLgSdBgDsInt + '.' + riCaLgSdBgDsDec, //放射線量 右
       });
       setIsSend(true);
     } else {
@@ -123,27 +123,34 @@ const WA1122 = ({navigation}: Props) => {
     riCaLgSdBgDsDec,
   ]);
 
-  // 小数点以下二桁目補填
+  // 小数点以下二桁目補填 前
   const handleBlurFrCaLgSdBgDsDec = () => {
     if (frCaLgSdBgDsDec.length < 2) {
       setFrCaLgSdBgDsDec(frCaLgSdBgDsDec.padEnd(2, '0'));
     }
   };
+
+  // 小数点以下二桁目補填 左
   const handleBlurLeCaLgSdBgDsDec = () => {
     if (leCaLgSdBgDsDec.length < 2) {
       setLeCaLgSdBgDsDec(leCaLgSdBgDsDec.padEnd(2, '0'));
     }
   };
+
+  // 小数点以下二桁目補填 後
   const handleBlurBaCaLgSdBgDsDec = () => {
     if (baCaLgSdBgDsDec.length < 2) {
       setBaCaLgSdBgDsDec(baCaLgSdBgDsDec.padEnd(2, '0'));
     }
   };
+
+  // 小数点以下二桁目補填 右
   const handleBlurRiCaLgSdBgDsDec = () => {
     if (riCaLgSdBgDsDec.length < 2) {
       setRiCaLgSdBgDsDec(riCaLgSdBgDsDec.padEnd(2, '0'));
     }
   };
+
   /************************************************
    * ボタンスタイル
    ************************************************/

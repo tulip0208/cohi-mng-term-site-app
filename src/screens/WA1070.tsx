@@ -36,21 +36,21 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1070 = ({navigation}: Props) => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [wkplcTyp, setWkplcTyp] = useState<string>(''); //作業場所種類
+  const [wkplc, setWkplc] = useState<string>(''); // 作業場所
+  const [inputValue, setInputValue] = useState<string>(''); //新タグID入力値
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
   const [showScannerTag, setShowScannerTag] = useState<boolean>(false); // カメラ表示用の状態
-  const [wkplcTyp, setWkplcTyp] = useState<string>('');
-  const [wkplc, setWkplc] = useState<string>('');
-  const setWA1070Data = useSetRecoilState(WA1070DataState);
-  const [inputVisible, setInputVisible] = useState<boolean>(false);
+  const [inputVisible, setInputVisible] = useState<boolean>(false); // 新タグ欄入力値 表示・非表示
   const [isNext, setIsNext] = useState<boolean>(false); // 送信準備完了状態
-  const [inputValue, setInputValue] = useState<string>('');
-  const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false);
-  const [isCannotRead, setIsCannotRead] = useState<boolean>(false);
-  const [WA1071back, setWA1071Back] = useRecoilState(WA1071BackState);
-  const reseWA1070Data = useResetRecoilState(WA1070DataState);
+  const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false); // 次へボタン 表示・非表示
+  const [isCannotRead, setIsCannotRead] = useState<boolean>(false); // 新タグID読み取りメッセージ
   const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
     null,
-  );
+  ); //長押しタグ表示用
+  const [WA1071back, setWA1071Back] = useRecoilState(WA1071BackState); // Recoil 戻る
+  const setWA1070Data = useSetRecoilState(WA1070DataState); // Recoil 新タグID情報
+  const reseWA1070Data = useResetRecoilState(WA1070DataState); //Recoilリセット
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定
@@ -60,6 +60,7 @@ const WA1070 = ({navigation}: Props) => {
     reset();
     contentsViews();
   }, []);
+
   //WA1071帰還処理
   useEffect(() => {
     if (WA1071back) {
@@ -69,6 +70,8 @@ const WA1070 = ({navigation}: Props) => {
       contentsViews();
     }
   }, [WA1071back]);
+
+  // 画面表示前処理
   const contentsViews = async () => {
     const realm = getInstance();
     const loginInfo = realm.objects('login')[0];
@@ -91,6 +94,7 @@ const WA1070 = ({navigation}: Props) => {
         break;
     }
   };
+
   // 値の初期化
   const reset = () => {
     reseWA1070Data();
@@ -102,6 +106,7 @@ const WA1070 = ({navigation}: Props) => {
     setWkplcTyp('');
     setIsNext(true);
   };
+
   // 10秒以上の長押しを検出
   const onPressIn = () => {
     // 10秒後に実行されるアクション
@@ -113,6 +118,7 @@ const WA1070 = ({navigation}: Props) => {
     }, 10000); // 10秒 = 10000ミリ秒
     setLongPressTimer(timer); // タイマーIDを保存
   };
+
   // タッチ終了時のイベントハンドラ
   const onPressOut = () => {
     // タイマーが設定されていればクリア
@@ -121,22 +127,26 @@ const WA1070 = ({navigation}: Props) => {
       setLongPressTimer(null); // タイマーIDをクリア
     }
   };
+
   // 送信ボタンのスタイルを動的に変更するための関数
   const getButtonStyle = () => {
     return isNext
       ? [styles.button, styles.startButton]
       : [styles.button, styles.startButton, styles.disabledButton];
   };
+
   // 新タグID読み取りメッセージ
   const getInfoMsg = () => {
     return isCannotRead
       ? '新タグIDが読み込めない場合：'
       : '新タグIDが読み込めない場合はここを長押しして下さい。';
   };
+
   // 入力値が変更されたときのハンドラー
   const handleInputChange = (text: string) => {
     setInputValue(text);
   };
+
   // 入力がフォーカスアウトされたときのハンドラー
   const handleInputBlur = async () => {
     // 入力値が空かどうかによってブール値ステートを更新

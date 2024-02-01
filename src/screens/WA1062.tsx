@@ -41,23 +41,24 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1062 = ({navigation}: Props) => {
-  const newTagId = useRecoilValue(WA1060NewTagIdState); //新タグID
-  const WA1060OldTagInfos = useRecoilValue(WA1060OldTagInfosState);
-  const setBack = useSetRecoilState(WA1061BackState);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const setWA1060OldTagInfos = useSetRecoilState(WA1060OldTagInfosState);
-  const WA1061TagId = useRecoilValue(WA1061TagIdState);
-  const [selectRmSolType, setSelectRmSolType] = useState<string>('');
-  const [selectRmSolTypeInit, setSelectRmSolTypeInit] = useState<string>('');
-  const [selectUsgAluBg, setSelectUsgAluBg] = useState<string>('');
-  const [selectLnkNewTagDatMem, setSelectLnkNewTagDatMem] =
-    useState<string>('');
-  const [isLnkNewTagDatMemInpDisabled, setIsLnkNewTagDatMemInpDisabled] =
-    useState<boolean>(true);
+  const [modalVisible, setModalVisible] = useState<boolean>(false); // 処理中モーダルの状態
+  const [selectRmSolType, setSelectRmSolType] = useState<string>(''); // 除去土壌等種別
+  const [selectRmSolTypeInit, setSelectRmSolTypeInit] = useState<string>(''); // 除去土壌等種別 初期値
+  const [selectUsgAluBg, setSelectUsgAluBg] = useState<string>(''); // アルミ内袋の有無
   const [lnkNewTagDatMemInp, setLnkNewTagDatMemInp] = useState<string>('');
+  const [selectLnkNewTagDatMem, setSelectLnkNewTagDatMem] =
+    useState<string>(''); //除染時データメモ 入力値
+  const [isLnkNewTagDatMemInpDisabled, setIsLnkNewTagDatMemInpDisabled] =
+    useState<boolean>(true); //除染時データメモ 入力値 活性・非活性
+  const newTagId = useRecoilValue(WA1060NewTagIdState); // Recoil 新タグID
+  const WA1061TagId = useRecoilValue(WA1061TagIdState); //Recoil 旧タグ
   const [WA1063MemoAuto, setWA1063MemoAuto] =
-    useRecoilState(WA1063MemoAutoState);
-  const setPrevScreenId = useSetRecoilState(WA1060PrevScreenId); //遷移元画面ID
+    useRecoilState(WA1063MemoAutoState); //Recoil メモ情報
+  const [WA1060OldTagInfos, setWA1060OldTagInfos] = useRecoilState(
+    WA1060OldTagInfosState,
+  ); //Recoil 旧タグ情報
+  const setBack = useSetRecoilState(WA1061BackState); // Recoil 遷移前画面
+  const setPrevScreenId = useSetRecoilState(WA1060PrevScreenId); // Recoil 戻る
   const {showAlert} = useAlert();
 
   /************************************************
@@ -93,6 +94,13 @@ const WA1062 = ({navigation}: Props) => {
       setIsLnkNewTagDatMemInpDisabled(true);
     }
   }, [selectLnkNewTagDatMem]);
+
+  // テキストボックスのスタイルを動的に変更するための関数
+  const getTextInputStyle = () => {
+    return isLnkNewTagDatMemInpDisabled
+      ? [styles.textAreaInput, styles.inputDisabled]
+      : styles.textAreaInput;
+  };
 
   useEffect(() => {}, []);
 
@@ -155,6 +163,45 @@ const WA1062 = ({navigation}: Props) => {
     }
     await logScreen('画面遷移:WA1061_旧タグ読込(土壌)');
     navigation.navigate('WA1061');
+  };
+
+  /************************************************
+   * 文字フィルタリング
+   * JIS第一水準、JIS第二水準に含まれない場合、入力された文字を無効
+   ************************************************/
+  // 入力されたときのハンドラー
+  const handleInputChange = async (newText: string) => {
+    try {
+      if (newText == null) {
+        setLnkNewTagDatMemInp('');
+      }
+      let filteredText: string = await JISInputFilter.checkJISText(newText);
+      if (!filteredText) {
+        filteredText = '';
+      }
+      setLnkNewTagDatMemInp(filteredText);
+    } catch (error) {
+      console.error(error);
+    }
+    setLnkNewTagDatMemInp(newText);
+  };
+
+  // 入力がフォーカスアウトされたときのハンドラー
+  const filterText = async () => {
+    try {
+      if (lnkNewTagDatMemInp == null) {
+        setLnkNewTagDatMemInp('');
+      }
+      let filteredText: string = await JISInputFilter.checkJISText(
+        lnkNewTagDatMemInp,
+      );
+      if (!filteredText) {
+        filteredText = '';
+      }
+      setLnkNewTagDatMemInp(filteredText);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   /************************************************
@@ -310,37 +357,7 @@ const WA1062 = ({navigation}: Props) => {
       </Picker>
     );
   };
-  // テキストボックスのスタイルを動的に変更するための関数
-  const getTextInputStyle = () => {
-    return isLnkNewTagDatMemInpDisabled
-      ? [styles.textAreaInput, styles.inputDisabled]
-      : styles.textAreaInput;
-  };
 
-  /************************************************
-   * 文字フィルタリング
-   * JIS第一水準、JIS第二水準に含まれない場合、入力された文字を無効
-   ************************************************/
-  const handleInputChange = async (newText: string) => {
-    setLnkNewTagDatMemInp(newText);
-  };
-  // 入力がフォーカスアウトされたときのハンドラー
-  const filterText = async () => {
-    try {
-      if (lnkNewTagDatMemInp == null) {
-        setLnkNewTagDatMemInp('');
-      }
-      let filteredText: string = await JISInputFilter.checkJISText(
-        lnkNewTagDatMemInp,
-      );
-      if (!filteredText) {
-        filteredText = '';
-      }
-      setLnkNewTagDatMemInp(filteredText);
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
     <KeyboardAvoidingView
       behavior={'padding'}

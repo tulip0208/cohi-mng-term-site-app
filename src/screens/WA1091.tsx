@@ -41,35 +41,39 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1091 = ({navigation}: Props) => {
-  const newTagId = useRecoilValue(WA1090NewTagIdState); //新タグID
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const setPrevScreenId = useSetRecoilState(WA1090PrevScreenId); //遷移元画面ID
-  const WA1090WkPlac = useRecoilValue(WA1090WkPlacState);
-  const setBack = useSetRecoilState(WA1091BackState);
-  const [inputValue, setInputValue] = useState<string>('');
-  const setWA1091OldTagInfo = useSetRecoilState(WA1091OldTagInfoState);
-  const [isNext, setIsNext] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>(''); //旧タグID入力値
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [isNext, setIsNext] = useState<boolean>(false); //次へボタンのスタイル 活性・非活性
+  const newTagId = useRecoilValue(WA1090NewTagIdState); // Recoil 新タグID
+  const WA1090WkPlac = useRecoilValue(WA1090WkPlacState); // Recoil 作業場所情報
+  const setPrevScreenId = useSetRecoilState(WA1090PrevScreenId); // Recoil 遷移元画面ID
+  const setBack = useSetRecoilState(WA1091BackState); // Recoil 戻る
+  const setWA1091OldTagInfo = useSetRecoilState(WA1091OldTagInfoState); // Recoil 旧タグID情報
   const {showAlert} = useAlert();
 
   /************************************************
    * 初期表示設定
    ************************************************/
   useEffect(() => {}, []);
+
   // 入力値が変更されたときのハンドラー
   const handleInputChange = (text: string) => {
     setInputValue(text);
   };
+
   // 入力がフォーカスアウトされたときのハンドラー
   const handleInputBlur = async () => {
     // 入力値が空かどうかによってブール値ステートを更新
     setIsNext(inputValue !== '');
   };
+
   // 次へボタンのスタイルを動的に変更するための関数
   const getNextButtonStyle = () => {
     return isNext
       ? [styles.button, styles.startButton]
       : [styles.button, styles.startButton, styles.disabledButton];
   };
+
   /************************************************
    * 破棄ボタン処理
    ************************************************/

@@ -48,30 +48,30 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1090 = ({navigation}: Props) => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [wkplcTyp, setWkplcTyp] = useState<string>(''); //作業場所種類
+  const [wkplc, setWkplc] = useState<string>(''); // 作業場所
+  const [inputValue, setInputValue] = useState<string>(''); //新タグID入力値
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
   const [showScannerTag, setShowScannerTag] = useState<boolean>(false); // カメラ表示用の状態
-  const [wkplcTyp, setWkplcTyp] = useState<string>('');
-  const [wkplc, setWkplc] = useState<string>('');
-  const [inputVisible, setInputVisible] = useState<boolean>(false);
-  const [isNext, setIsNext] = useState<boolean>(false);
-  const [inputValue, setInputValue] = useState<string>('');
-  const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false);
-  const [isCannotRead, setIsCannotRead] = useState<boolean>(false);
-  const [back, setBack] = useRecoilState(WA1091BackState);
-  const setNewTagId = useSetRecoilState(WA1090NewTagIdState);
-  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1090PrevScreenId); //遷移元画面ID
+  const [inputVisible, setInputVisible] = useState<boolean>(false); // 新タグ欄入力値 表示・非表示
+  const [isNext, setIsNext] = useState<boolean>(false); // 送信準備完了状態
+  const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false); // 次へボタン 表示・非表示
+  const [isCannotRead, setIsCannotRead] = useState<boolean>(false); // 新タグID読み取りメッセージ
   const [showScannerWkPlc, setShowScannerWkPlc] = useState<boolean>(false); // カメラ表示用の状態
-  const setWA1090WkPlac = useSetRecoilState(WA1090WkPlacState);
-  const [isTagRead, setIsTagRead] = useState<boolean>(false);
+  const [isTagRead, setIsTagRead] = useState<boolean>(false); // 送信準備完了状態
   const [isWkPlcRead, setIsWkPlcRead] = useState<boolean>(false); // タグ読込
-  const resetWA1092WtDsState = useResetRecoilState(WA1092WtDsState);
-  const resetWA1090NewTagId = useResetRecoilState(WA1090NewTagIdState);
-  const resetWA1091OldTagInfo = useResetRecoilState(WA1091OldTagInfoState);
-  const resetWA1090WkPlac = useResetRecoilState(WA1090WkPlacState);
-  const resetWA1093Memo = useResetRecoilState(WA1093MemoState);
   const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
     null,
-  );
+  ); //長押しタグ表示用
+  const [back, setBack] = useRecoilState(WA1091BackState); //Recoil 戻る
+  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1090PrevScreenId); //遷移元画面ID
+  const setNewTagId = useSetRecoilState(WA1090NewTagIdState); //Recoil 新タグID
+  const setWA1090WkPlac = useSetRecoilState(WA1090WkPlacState); // Recoil 作業場所情報
+  const resetWA1092WtDsState = useResetRecoilState(WA1092WtDsState); //Recoilリセット
+  const resetWA1090NewTagId = useResetRecoilState(WA1090NewTagIdState); //Recoilリセット
+  const resetWA1091OldTagInfo = useResetRecoilState(WA1091OldTagInfoState); //Recoilリセット
+  const resetWA1090WkPlac = useResetRecoilState(WA1090WkPlacState); //Recoilリセット
+  const resetWA1093Memo = useResetRecoilState(WA1093MemoState); //Recoilリセット
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定
@@ -92,6 +92,7 @@ const WA1090 = ({navigation}: Props) => {
     contentsViews();
   }, [back]);
 
+  // 画面表示前処理
   const contentsViews = async () => {
     const realm = getInstance();
     const loginInfo = realm.objects('login')[0];
@@ -123,7 +124,6 @@ const WA1090 = ({navigation}: Props) => {
     resetWA1090NewTagId();
     resetWA1090WkPlac();
     resetWA1093Memo();
-
     setIsTagRead(false);
     setIsWkPlcRead(false);
     setPrevScreenId('WA1090');
@@ -136,6 +136,7 @@ const WA1090 = ({navigation}: Props) => {
     contentsViews();
     setIsNext(true);
   };
+
   // 10秒以上の長押しを検出
   const onPressIn = () => {
     // 10秒後に実行されるアクション
@@ -147,6 +148,7 @@ const WA1090 = ({navigation}: Props) => {
     }, 10000); // 10秒 = 10000ミリ秒
     setLongPressTimer(timer); // タイマーIDを保存
   };
+
   // タッチ終了時のイベントハンドラ
   const onPressOut = () => {
     // タイマーが設定されていればクリア
@@ -162,6 +164,7 @@ const WA1090 = ({navigation}: Props) => {
       ? [styles.button, styles.startButton]
       : [styles.button, styles.startButton, styles.disabledButton];
   };
+
   // タグ読込ボタンのスタイルを動的に変更するための関数
   const getTagReadButtonStyle = () => {
     return isTagRead
@@ -173,20 +176,24 @@ const WA1090 = ({navigation}: Props) => {
           styles.disabledButton,
         ];
   };
+
   // テキストボックスのスタイルを動的に変更するための関数
   const getTextInputStyle = () => {
     return isWkPlcRead ? styles.input : [styles.input, styles.inputDisabled];
   };
+
   // 新タグID読み取りメッセージ
   const getInfoMsg = () => {
     return isCannotRead
       ? '新タグIDが読み込めない場合：'
       : '新タグIDが読み込めない場合はここを長押しして下さい。';
   };
+
   // 入力値が変更されたときのハンドラー
   const handleInputChange = (text: string) => {
     setInputValue(text);
   };
+
   // 入力がフォーカスアウトされたときのハンドラー
   const handleInputBlur = async () => {
     // 入力値が空かどうかによってブール値ステートを更新
@@ -224,6 +231,7 @@ const WA1090 = ({navigation}: Props) => {
     setIsTagRead(true);
     setIsWkPlcRead(true);
   };
+
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
     await logUserAction('ボタン押下: 作業場所読込');
@@ -275,6 +283,7 @@ const WA1090 = ({navigation}: Props) => {
       // 終了処理
     }
   };
+
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
     await logUserAction('ボタン押下: タグ読込');

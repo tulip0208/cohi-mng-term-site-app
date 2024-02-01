@@ -42,8 +42,22 @@ const WA1020 = ({navigation}: Props) => {
   const [showScannerActivate, setShowScannerActivate] =
     useState<boolean>(false); // カメラ表示用の状態
   const [isReadyToSend, setIsReadyToSend] = useState<boolean>(false); // 送信準備完了状態
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
   const {showAlert} = useAlert();
+
+  // useEffect フックを使用してステートが変更されるたびにチェック
+  useEffect(() => {
+    if (userName !== '' && actReadFlg !== '') {
+      setIsReadyToSend(true); // 送信ボタンを活性化
+    }
+  }, [userName, actReadFlg]); // 依存配列に usrId と actReadFlg を追加
+
+  // 送信ボタンのスタイルを動的に変更するための関数
+  const getButtonStyle = () => {
+    return isReadyToSend
+      ? [styles.button, styles.startButton]
+      : [styles.button, styles.startButton, styles.disabledButton];
+  };
 
   /************************************************
    * QRコードスキャン後の処理 (ユーザ情報用)
@@ -156,28 +170,18 @@ const WA1020 = ({navigation}: Props) => {
       // CSVデータが正しいフォーマットでない場合のエラーハンドリング
     }
   };
+
   // ユーザQRコードスキャンボタン押下時の処理
   const btnUserQr = async (): Promise<void> => {
     await logUserAction('ボタン押下: QRコード読込(ユーザ)');
 
     setShowScannerUsr(true);
   };
+
   // アクティベーションQRコードスキャンボタン押下時の処理
   const btnActQr = async (): Promise<void> => {
     await logUserAction('ボタン押下: QRコード読込(アクティベーション)');
     setShowScannerActivate(true);
-  };
-  // useEffect フックを使用してステートが変更されるたびにチェック
-  useEffect(() => {
-    if (userName !== '' && actReadFlg !== '') {
-      setIsReadyToSend(true); // 送信ボタンを活性化
-    }
-  }, [userName, actReadFlg]); // 依存配列に usrId と actReadFlg を追加
-  // 送信ボタンのスタイルを動的に変更するための関数
-  const getButtonStyle = () => {
-    return isReadyToSend
-      ? [styles.button, styles.startButton]
-      : [styles.button, styles.startButton, styles.disabledButton];
   };
 
   /************************************************

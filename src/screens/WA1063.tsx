@@ -32,20 +32,20 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1063 = ({navigation}: Props) => {
-  const newTagId = useRecoilValue(WA1060NewTagIdState); //新タグID
-  const WA1060OldTagInfos = useRecoilValue(WA1060OldTagInfosState);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [selectRmSolType, setSelectRmSolType] = useState<string>('');
-  const [selectUsgAluBg, setSelectUsgAluBg] = useState<string>('');
-  const [selectTsuInd, setSelectTsuInd] = useState<string>('');
-  const [selectSplFac, setSelectSplFac] = useState<string>('');
-  const [selectUsgInnBg, setSelectUsgInnBg] = useState<string>('');
-  const [selectPkTyp, setSelectPkTyp] = useState<string>('');
-  const [checkYesNoOP, setCheckYesNoOP] = useState<boolean>(false);
-  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1060PrevScreenId); //遷移元画面ID
-  const [WA1060Data, setWA1060Data] = useRecoilState(WA1060DataState);
-  const [isCheckable, setIsCheckable] = useState<boolean>(false);
-  const setBack = useSetRecoilState(WA1061BackState);
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [selectRmSolType, setSelectRmSolType] = useState<string>(''); //除去土壌等種別
+  const [selectUsgAluBg, setSelectUsgAluBg] = useState<string>(''); //アルミ内袋の有無
+  const [selectTsuInd, setSelectTsuInd] = useState<string>(''); //津波浸水域由来
+  const [selectSplFac, setSelectSplFac] = useState<string>(''); //特定施設由来
+  const [selectUsgInnBg, setSelectUsgInnBg] = useState<string>(''); //内袋の利用方法
+  const [selectPkTyp, setSelectPkTyp] = useState<string>(''); //荷姿種別
+  const [checkYesNoOP, setCheckYesNoOP] = useState<boolean>(false); //オーバーパック有無
+  const [isCheckable, setIsCheckable] = useState<boolean>(false); //オーバーパック有無チェック 活性・非活性
+  const newTagId = useRecoilValue(WA1060NewTagIdState); // Recoil 新タグID
+  const WA1060OldTagInfos = useRecoilValue(WA1060OldTagInfosState); // Recoil 旧タグ情報
+  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1060PrevScreenId); // Recoil 遷移元画面ID
+  const [WA1060Data, setWA1060Data] = useRecoilState(WA1060DataState); // Recoil 新タグ情報
+  const setBack = useSetRecoilState(WA1061BackState); // Recoil 戻る
   const {showAlert} = useAlert();
 
   /************************************************

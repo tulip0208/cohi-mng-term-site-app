@@ -32,12 +32,7 @@ import {
   IFA0330Response,
   IFA0330ResponseDtl,
 } from '../types/type.tsx';
-import {
-  useSetRecoilState,
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-} from 'recoil';
+import {useSetRecoilState, useRecoilState, useResetRecoilState} from 'recoil';
 import {
   WA1060PrevScreenId,
   WA1060DataState,
@@ -57,37 +52,36 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1060 = ({navigation}: Props) => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [wkplcTyp, setWkplcTyp] = useState<string>(''); //作業場所種類
+  const [wkplc, setWkplc] = useState<string>(''); // 作業場所
+  const [inputValue, setInputValue] = useState<string>(''); //新タグID入力値
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
   const [showScannerTag, setShowScannerTag] = useState<boolean>(false); // カメラ表示用の状態
-  const [wkplcTyp, setWkplcTyp] = useState<string>('');
-  const [wkplc, setWkplc] = useState<string>('');
-  const setWA1060Data = useSetRecoilState(WA1060DataState); //・
-  const WA1060Data = useRecoilValue(WA1060DataState); //・
-  const [inputVisible, setInputVisible] = useState<boolean>(false);
+  const [inputVisible, setInputVisible] = useState<boolean>(false); // 新タグ欄入力値 表示・非表示
   const [isNext, setIsNext] = useState<boolean>(false); // 送信準備完了状態
-  const [inputValue, setInputValue] = useState<string>('');
-  const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false);
-  const [isCannotRead, setIsCannotRead] = useState<boolean>(false);
-  const [back, setBack] = useRecoilState(WA1061BackState);
-  const setCmnTagFlg = useSetRecoilState(WA1060CmnTagFlgState);
-  const setNewTagId = useSetRecoilState(WA1060NewTagIdState);
-  const setWA1060OldTagInfos = useSetRecoilState(WA1060OldTagInfosState);
-  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1060PrevScreenId); //遷移元画面ID
+  const [isViewNextButton, setIsViewNextButton] = useState<boolean>(false); //次へボタン 表示・非表示
+  const [isCannotRead, setIsCannotRead] = useState<boolean>(false); // 新タグID読み取りメッセージ
   const [showScannerWkPlc, setShowScannerWkPlc] = useState<boolean>(false); // カメラ表示用の状態
-  const setWA1060WkPlac = useSetRecoilState(WA1060WkPlacState);
-  const [delSrcTyp, setDelSrcTyp] = useState<number | null>();
+  const [delSrcTyp, setDelSrcTyp] = useState<number | null>(); // 搬出元種別
   const [isTagRead, setIsTagRead] = useState<boolean>(false); // 送信準備完了状態
   const [isWkPlcRead, setIsWkPlcRead] = useState<boolean>(false); // タグ読込
-  const resetWA1060Data = useResetRecoilState(WA1060DataState);
-  const resetWA1060NewTagId = useResetRecoilState(WA1060NewTagIdState);
-  const resetWA1060CmnTagFlg = useResetRecoilState(WA1060CmnTagFlgState);
-  const resetWA1060OldTagInfos = useResetRecoilState(WA1060OldTagInfosState);
-  const resetWA1060WkPlac = useResetRecoilState(WA1060WkPlacState);
-  const resetWA1063MemoAuto = useResetRecoilState(WA1063MemoAutoState);
-  const resetWA1065Memo = useResetRecoilState(WA1065MemoState);
   const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
     null,
-  );
+  ); //長押しタグ表示用
+  const [WA1060Data, setWA1060Data] = useRecoilState(WA1060DataState); //Recoil 新タグ情報
+  const [back, setBack] = useRecoilState(WA1061BackState); //Recoil 戻る
+  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1060PrevScreenId); //Recoil 遷移元画面ID
+  const setWA1060WkPlac = useSetRecoilState(WA1060WkPlacState); // Recoil 作業場所情報
+  const setCmnTagFlg = useSetRecoilState(WA1060CmnTagFlgState); //Recoil 共通タグフラグ
+  const setNewTagId = useSetRecoilState(WA1060NewTagIdState); //Recoil 新タグID
+  const setWA1060OldTagInfos = useSetRecoilState(WA1060OldTagInfosState); //Recoil 旧タグ情報
+  const resetWA1060Data = useResetRecoilState(WA1060DataState); //Recoilリセット
+  const resetWA1060NewTagId = useResetRecoilState(WA1060NewTagIdState); //Recoilリセット
+  const resetWA1060CmnTagFlg = useResetRecoilState(WA1060CmnTagFlgState); //Recoilリセット
+  const resetWA1060OldTagInfos = useResetRecoilState(WA1060OldTagInfosState); //Recoilリセット
+  const resetWA1060WkPlac = useResetRecoilState(WA1060WkPlacState); //Recoilリセット
+  const resetWA1063MemoAuto = useResetRecoilState(WA1063MemoAutoState); //Recoilリセット
+  const resetWA1065Memo = useResetRecoilState(WA1065MemoState); //Recoilリセット
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定
@@ -110,6 +104,7 @@ const WA1060 = ({navigation}: Props) => {
     contentsViews();
   }, [back]);
 
+  // 画面表示前処理
   const contentsViews = async () => {
     const realm = getInstance();
     const loginInfo = realm.objects('login')[0];
@@ -135,6 +130,7 @@ const WA1060 = ({navigation}: Props) => {
         break;
     }
   };
+
   // 値の初期化
   const reset = () => {
     resetWA1060Data();
@@ -144,7 +140,6 @@ const WA1060 = ({navigation}: Props) => {
     resetWA1060WkPlac();
     resetWA1063MemoAuto();
     resetWA1065Memo();
-
     setIsTagRead(false);
     setIsWkPlcRead(false);
     setPrevScreenId('WA1060');
@@ -158,6 +153,7 @@ const WA1060 = ({navigation}: Props) => {
     contentsViews();
     setIsNext(true);
   };
+
   // 10秒以上の長押しを検出
   const onPressIn = () => {
     // 10秒後に実行されるアクション
@@ -169,6 +165,7 @@ const WA1060 = ({navigation}: Props) => {
     }, 10000); // 10秒 = 10000ミリ秒
     setLongPressTimer(timer); // タイマーIDを保存
   };
+
   // タッチ終了時のイベントハンドラ
   const onPressOut = () => {
     // タイマーが設定されていればクリア
@@ -184,6 +181,7 @@ const WA1060 = ({navigation}: Props) => {
       ? [styles.button, styles.startButton]
       : [styles.button, styles.startButton, styles.disabledButton];
   };
+
   // タグ読込ボタンのスタイルを動的に変更するための関数
   const getTagReadButtonStyle = () => {
     return isTagRead
@@ -195,20 +193,24 @@ const WA1060 = ({navigation}: Props) => {
           styles.disabledButton,
         ];
   };
+
   // テキストボックスのスタイルを動的に変更するための関数
   const getTextInputStyle = () => {
     return isWkPlcRead ? styles.input : [styles.input, styles.inputDisabled];
   };
+
   // 新タグID読み取りメッセージ
   const getInfoMsg = () => {
     return isCannotRead
       ? '新タグIDが読み込めない場合：'
       : '新タグIDが読み込めない場合はここを長押しして下さい。';
   };
+
   // 入力値が変更されたときのハンドラー
   const handleInputChange = (text: string) => {
     setInputValue(text);
   };
+
   // 入力がフォーカスアウトされたときのハンドラー
   const handleInputBlur = async () => {
     // 入力値が空かどうかによってブール値ステートを更新
@@ -422,6 +424,7 @@ const WA1060 = ({navigation}: Props) => {
     await logScreen('画面遷移:WA1065_メモ入力(土壌)');
     navigation.navigate('WA1065');
   };
+
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
     await logUserAction('ボタン押下: タグ読込');

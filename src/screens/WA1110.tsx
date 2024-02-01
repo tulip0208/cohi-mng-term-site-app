@@ -38,20 +38,20 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1110 = ({navigation}: Props) => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [wkplcTyp, setWkplcTyp] = useState<string>(''); //作業場所種類
+  const [wkplc, setWkplc] = useState<string>(''); // 作業場所
+  const [inputValue, setInputValue] = useState<string>(''); //旧タグID入力値
+  const [wkPlacId, setWkPlcId] = useState<string>(''); // 作業場所ID
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
   const [showScannerTag, setShowScannerTag] = useState<boolean>(false); // カメラ表示用の状態
   const [showScannerWkPlc, setShowScannerWkPlc] = useState<boolean>(false); // カメラ表示用の状態
-  const [wkplcTyp, setWkplcTyp] = useState<string>('');
-  const [wkplc, setWkplc] = useState<string>('');
-  const setWA1110Data = useSetRecoilState(WA1110DataState);
   const [isNext, setIsNext] = useState<boolean>(false); // 送信準備完了状態
-  const [inputValue, setInputValue] = useState<string>('');
   const [isWkPlcRead, setIsWkPlcRead] = useState<boolean>(false); // タグ読込
-  const [wkPlacId, setWkPlcId] = useState<string>();
-  const [WA1111back, setWa1111Back] = useRecoilState(WA1111BackState);
-  const resetWA1110Data = useResetRecoilState(WA1110DataState);
-
+  const [WA1111back, setWa1111Back] = useRecoilState(WA1111BackState); // Recoil 戻る
+  const setWA1110Data = useSetRecoilState(WA1110DataState); // Recoil 旧タグID情報
+  const resetWA1110Data = useResetRecoilState(WA1110DataState); //Recoilリセット
   const {showAlert} = useAlert();
+
   /************************************************
    * 初期表示設定
    ************************************************/
@@ -60,6 +60,7 @@ const WA1110 = ({navigation}: Props) => {
     reset();
     contentsViews();
   }, []); //WA1111帰還処理
+
   useEffect(() => {
     if (WA1111back) {
       reset();
@@ -68,6 +69,8 @@ const WA1110 = ({navigation}: Props) => {
       contentsViews();
     }
   }, [WA1111back]);
+
+  //画面表示前処理
   const contentsViews = async () => {
     const realm = getInstance();
     const loginInfo = realm.objects('login')[0];
@@ -100,16 +103,19 @@ const WA1110 = ({navigation}: Props) => {
     setWkplc('');
     setWkplcTyp('');
   };
+
   // 次へボタンのスタイルを動的に変更するための関数
   const getNextButtonStyle = () => {
     return isNext
       ? [styles.button, styles.startButton]
       : [styles.button, styles.startButton, styles.disabledButton];
   };
+
   // 入力値が変更されたときのハンドラー
   const handleInputChange = (text: string) => {
     setInputValue(text);
   };
+
   // 入力がフォーカスアウトされたときのハンドラー
   const handleInputBlur = async () => {
     // 作業場所読込・入力値が空かどうかによってブール値ステートを更新
@@ -133,6 +139,7 @@ const WA1110 = ({navigation}: Props) => {
     setWkplcTyp('仮置場');
     setIsWkPlcRead(true);
   };
+
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
     await logUserAction('ボタン押下: 作業場所読込');

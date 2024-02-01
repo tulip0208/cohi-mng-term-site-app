@@ -36,22 +36,23 @@ interface PickerOption {
   value: string;
 }
 const WA1141 = ({navigation}: Props) => {
-  const [WA1140Data, setWA1140Data] = useRecoilState(WA1140DataState);
-  const setBack = useSetRecoilState(WA1141BackState);
+  const [selectStySec, setSelectStySec] = useState<string>(''); //選択した定置区画ID
+  const [selectAreNo, setSelectAreNo] = useState<string>(''); //選択した区域番号
+  const [selectNos, setSelectNos] = useState<string>(''); //選択した段数
+  const [stySec, setStySec] = useState<string>(''); //定置区画ID
+  const [isStySecFocused, setIsStySecFocused] = useState<boolean>(false); //定置区画IDフォーカス判断
+  const [isAreNoFocused, setIsAreNoFocused] = useState<boolean>(false); //区域番号フォーカス判断
+  const [isNosFocused, setIsNosFocused] = useState<boolean>(false); //段数フォーカス判断
+  const [isSendDisabled, setIsSendDisabled] = useState<boolean>(false); //送信ボタン 活性・非活性
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [stySecOptions, setStySecOptions] = useState<PickerOption[]>([]); //定置区画ID 選択肢
+  const [areNoOptions, setAreNoOptions] = useState<PickerOption[]>([]); //区域番号 選択肢
+  const [WA1140Data, setWA1140Data] = useRecoilState(WA1140DataState); //Recoil 表示データ
+  const setBack = useSetRecoilState(WA1141BackState); // Recoil 戻る
   const setPrevScreenId = useSetRecoilState(WA1140PrevScreenId); //遷移元画面ID
-  const [selectStySec, setSelectStySec] = useState<string>('');
-  const [selectAreNo, setSelectAreNo] = useState<string>('');
-  const [selectNos, setSelectNos] = useState<string>('');
-  const [stySec, setStySec] = useState<string>('');
-  const [isStySecFocused, setIsStySecFocused] = useState<boolean>(false);
-  const [isAreNoFocused, setIsAreNoFocused] = useState<boolean>(false);
-  const [isNosFocused, setIsNosFocused] = useState<boolean>(false);
-  const [isSendDisabled, setIsSendDisabled] = useState<boolean>(false);
-  const [stySecOptions, setStySecOptions] = useState<PickerOption[]>([]);
-  const [areNoOptions, setAreNoOptions] = useState<PickerOption[]>([]);
   const {showAlert} = useAlert();
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const realm = getInstance();
+
   /************************************************
    * 初期表示設定
    ************************************************/
@@ -65,6 +66,7 @@ const WA1141 = ({navigation}: Props) => {
   useEffect(() => {
     updateAreNoOptions();
   }, [stySec]);
+
   /************************************************
    * 破棄ボタン処理
    ************************************************/
@@ -174,6 +176,7 @@ const WA1141 = ({navigation}: Props) => {
       ? [styles.button, styles.settingButton, styles.settingButtonDisabled]
       : [styles.button, styles.settingButton, styles.settingButton];
   };
+
   //ボタン活性化
   const isSend = () => {
     if (selectAreNo && selectAreNo && selectNos) {
@@ -182,6 +185,7 @@ const WA1141 = ({navigation}: Props) => {
       setIsSendDisabled(true);
     }
   };
+
   //定置区画ID選択肢作成
   const updateStySecOptions = () => {
     let tempList;
@@ -203,10 +207,12 @@ const WA1141 = ({navigation}: Props) => {
       setStySecOptions(options);
     }
   };
+
   //定置区画IDフォーカスイン
   const handleStySecFocus = () => {
     setIsStySecFocused(true);
   };
+
   //定置区画IDフォーカスアウト
   const handleStySecBlur = () => {
     if (isStySecFocused) {
@@ -257,26 +263,31 @@ const WA1141 = ({navigation}: Props) => {
       setAreNoOptions(options);
     }
   };
+
   //区域番号 フォーカスイン
   const handleAreNoFocus = () => {
     setIsAreNoFocused(true);
   };
+
   //区域番号 フォーカスアウト
   const handleAreNoBlur = () => {
     if (isAreNoFocused) {
       isSend();
     }
   };
+
   //段数 フォーカスイン
   const handleNosFocus = () => {
     setIsNosFocused(true);
   };
+
   //段数 フォーカスアウト
   const handleNosBlur = () => {
     if (isNosFocused) {
       isSend();
     }
   };
+
   //段数
   const makePickerNos = () => {
     const settingsInfo = realm.objects('settings')[0];
@@ -315,6 +326,7 @@ const WA1141 = ({navigation}: Props) => {
       </Picker>
     );
   };
+
   return (
     <View style={styles.container}>
       {/* ヘッダ */}

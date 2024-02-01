@@ -37,14 +37,14 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1093 = ({navigation}: Props) => {
-  const newTagId = useRecoilValue(WA1090NewTagIdState); //新タグID
-  const WA1091OldTagInfo = useRecoilValue(WA1091OldTagInfoState);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1090PrevScreenId); //遷移元画面ID
-  const [lnkNewTagDatMem, setLnkNewTagDatMem] = useState<string>('');
-  const [WA1093Memo, setWA1093Memo] = useRecoilState(WA1093MemoState);
-  const setBack = useSetRecoilState(WA1091BackState);
-  const [inputLimit, setInputLimit] = useState<number>(400);
+  const [lnkNewTagDatMem, setLnkNewTagDatMem] = useState<string>(''); // メモ
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [inputLimit, setInputLimit] = useState<number>(400); // メモ文字数
+  const newTagId = useRecoilValue(WA1090NewTagIdState); // Recoil 新タグID
+  const WA1091OldTagInfo = useRecoilValue(WA1091OldTagInfoState); // Recoil 旧タグ情報
+  const [prevScreenId, setPrevScreenId] = useRecoilState(WA1090PrevScreenId); // Recoil 遷移元画面ID
+  const [WA1093Memo, setWA1093Memo] = useRecoilState(WA1093MemoState); // Recoil メモ
+  const setBack = useSetRecoilState(WA1091BackState); // Recoil 戻る
   const {showAlert} = useAlert();
 
   /************************************************
@@ -111,10 +111,23 @@ const WA1093 = ({navigation}: Props) => {
    * 文字フィルタリング
    * JIS第一水準、JIS第二水準に含まれない場合、入力された文字を無効
    ************************************************/
+  // 入力されたときのハンドラー
   const handleInputChange = async (newText: string) => {
-    setLnkNewTagDatMem(newText);
-    setInputLimit(400 - lnkNewTagDatMem.length); //残文字数リアルタイム変動
+    try {
+      if (newText == null) {
+        setLnkNewTagDatMem('');
+      }
+      let filteredText: string = await JISInputFilter.checkJISText(newText);
+      if (!filteredText) {
+        filteredText = '';
+      }
+      setLnkNewTagDatMem(filteredText);
+      setInputLimit(400 - filteredText.length); //残文字数リアルタイム変動
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   // 入力がフォーカスアウトされたときのハンドラー
   const filterText = async () => {
     try {
@@ -132,6 +145,7 @@ const WA1093 = ({navigation}: Props) => {
       console.error(error);
     }
   };
+
   return (
     <KeyboardAvoidingView
       behavior={'padding'}

@@ -43,15 +43,14 @@ interface Props {
 
 const WA1050 = ({route, navigation}: Props) => {
   // route.paramsに遷移時に渡されたパラメータが含まれる
-  const {sourceScreenId} = route.params;
-  const [versionTt, setVrsionTt] = useState<string>('');
-  const [buildVersion, setBuildVersion] = useState<string>('');
-  const [revision, setRvision] = useState<string>('');
-  const [sttCom, setSttCom] = useState<string>('');
-  const [logCap, setLogCap] = useState<number>(0);
-
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const {sourceScreenId} = route.params; // 遷移元画面
+  const [versionTt, setVrsionTt] = useState<string>(''); // アプリバージョン
+  const [buildVersion, setBuildVersion] = useState<string>(''); // ビルドバージョン
+  const [revision, setRvision] = useState<string>(''); // 端末ID
+  const [sttCom, setSttCom] = useState<string>(''); // 通信状態
+  const [logCap, setLogCap] = useState<number>(0); // ログ(MB)
+  const [isDisabled, setIsDisabled] = useState<boolean>(true); // ログ消去・送信ボタン 活性・非活性
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
   const {showAlert} = useAlert();
 
   /************************************************

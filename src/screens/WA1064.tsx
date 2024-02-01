@@ -29,16 +29,16 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1064 = ({navigation}: Props) => {
+  const [caLgSdBgWt, setCaLgSdBgWt] = useState<string>(''); // 重量(Kg)
+  const [caLgSdBgDsInt, setCaLgSdBgDsInt] = useState<string>(''); // 線量(μSv/h) 整数
+  const [caLgSdBgDsDec, setCaLgSdBgDsDec] = useState<string>(''); // 線量(μSv/h) 小数
+  const [estRa, setEstRa] = useState<string>('-'); //推定放射能濃度
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
   const newTagId = useRecoilValue(WA1060NewTagIdState); //新タグID
-  const WA1060OldTagInfos = useRecoilValue(WA1060OldTagInfosState);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const WA1060OldTagInfos = useRecoilValue(WA1060OldTagInfosState); //Recoil 旧タグ情報
   const [prevScreenId, setPrevScreenId] = useRecoilState(WA1060PrevScreenId); //遷移元画面ID
-  const [WA1060Data, setWA1060Data] = useRecoilState(WA1060DataState);
-  const [caLgSdBgWt, setCaLgSdBgWt] = useState<string>('');
-  const [caLgSdBgDsInt, setCaLgSdBgDsInt] = useState<string>('');
-  const [caLgSdBgDsDec, setCaLgSdBgDsDec] = useState<string>('');
-  const setBack = useSetRecoilState(WA1061BackState);
-  const [estRa, setEstRa] = useState<string>('-');
+  const [WA1060Data, setWA1060Data] = useRecoilState(WA1060DataState); //Recoil 新タグ情報
+  const setBack = useSetRecoilState(WA1061BackState); // Recoil 戻る
   const realm = getInstance();
   const settings = realm.objects('settings')[0];
   const {showAlert} = useAlert();
@@ -84,19 +84,22 @@ const WA1064 = ({navigation}: Props) => {
     } else if (caLgSdBgWt === '0') {
       setEstRa('0');
     } else {
-      //線量(μSv/h) ×換算値÷重量(Kg) を 四捨五入して整数にする
-      const result = Math.round(
-        (Number(caLgSdBgWt) * Number(settings.radioConvFact)) /
-          (Number(caLgSdBgDsInt) + Number('0.' + caLgSdBgDsDec)),
-      );
-      if (result > Number(settings.estRadioThres)) {
-        await showAlert(
-          '通知',
-          messages.WA5006(String(settings.estRadioThres)),
-          false,
+      // 分母0チェックを実施し、問題無ければ処理
+      if (Number(caLgSdBgDsInt) + Number('0.' + caLgSdBgDsDec) !== 0) {
+        //線量(μSv/h) ×換算値÷重量(Kg) を 四捨五入して整数にする
+        const result = Math.round(
+          (Number(caLgSdBgWt) * Number(settings.radioConvFact)) /
+            (Number(caLgSdBgDsInt) + Number('0.' + caLgSdBgDsDec)),
         );
+        if (result > Number(settings.estRadioThres)) {
+          await showAlert(
+            '通知',
+            messages.WA5006(String(settings.estRadioThres)),
+            false,
+          );
+        }
+        setEstRa(String(result));
       }
-      setEstRa(String(result));
     }
   };
 

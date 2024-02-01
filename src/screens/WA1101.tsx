@@ -20,8 +20,9 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1101 = ({navigation}: Props) => {
-  const WA1100Data = useRecoilValue(WA1100DataState);
-  const setBack = useSetRecoilState(WA1101BackState);
+  const WA1100Data = useRecoilValue(WA1100DataState); // Recoil 新タグID情報
+  const setBack = useSetRecoilState(WA1101BackState); // Recoil 戻る
+
   /************************************************
    * 初期表示設定
    ************************************************/

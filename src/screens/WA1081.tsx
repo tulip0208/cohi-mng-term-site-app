@@ -29,12 +29,32 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1081 = ({navigation}: Props) => {
-  const WA1080Data = useRecoilValue(WA1080DataState);
-  const setBack = useSetRecoilState(WA1111BackState);
+  const WA1080Data = useRecoilValue(WA1080DataState); // Recoil 旧タグID情報
+  const setBack = useSetRecoilState(WA1111BackState); // Recoil 戻る
+
   /************************************************
    * 初期表示設定
    ************************************************/
   useEffect(() => {}, []);
+
+  /************************************************
+   * 戻るボタン処理
+   ************************************************/
+  const btnAppBack = async () => {
+    await logUserAction('ボタン押下: 戻る(WA1081)');
+    setBack(true);
+    await logScreen('画面遷移:WA1080_旧タグ参照(土壌)');
+    navigation.navigate('WA1080');
+  };
+
+  /************************************************
+   * メニューボタン処理
+   ************************************************/
+  const btnMenu = async () => {
+    await logUserAction('ボタン押下: メニュー(WA1081)');
+    await logScreen('画面遷移:WA1040_メニュー');
+    navigation.navigate('WA1040');
+  };
 
   /************************************************
    * データ部分の値を表示するための関数
@@ -206,25 +226,6 @@ const WA1081 = ({navigation}: Props) => {
         </View>
       </View>
     );
-  };
-
-  /************************************************
-   * 戻るボタン処理
-   ************************************************/
-  const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1081)');
-    setBack(true);
-    await logScreen('画面遷移:WA1080_旧タグ参照(土壌)');
-    navigation.navigate('WA1080');
-  };
-
-  /************************************************
-   * メニューボタン処理
-   ************************************************/
-  const btnMenu = async () => {
-    await logUserAction('ボタン押下: メニュー(WA1081)');
-    await logScreen('画面遷移:WA1040_メニュー');
-    navigation.navigate('WA1040');
   };
 
   return (

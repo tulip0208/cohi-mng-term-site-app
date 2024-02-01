@@ -29,16 +29,16 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1092 = ({navigation}: Props) => {
+  const [caLgSdBgWt, setCaLgSdBgWt] = useState<string>(''); // 重量(Kg)
+  const [caLgSdBgDsInt, setCaLgSdBgDsInt] = useState<string>(''); // 線量(μSv/h) 整数
+  const [caLgSdBgDsDec, setCaLgSdBgDsDec] = useState<string>(''); // 線量(μSv/h) 小数
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [isNext, setIsNext] = useState<boolean>(false); //次へボタンのスタイル 活性・非活性
   const newTagId = useRecoilValue(WA1090NewTagIdState); //新タグID
-  const WA1091OldTagInfo = useRecoilValue(WA1091OldTagInfoState);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const WA1091OldTagInfo = useRecoilValue(WA1091OldTagInfoState); //Recoil 旧タグ情報
   const [prevScreenId, setPrevScreenId] = useRecoilState(WA1090PrevScreenId); //遷移元画面ID
-  const [WA1092WtDs, setWA1092WtDs] = useRecoilState(WA1092WtDsState);
-  const [caLgSdBgWt, setCaLgSdBgWt] = useState<string>('');
-  const [caLgSdBgDsInt, setCaLgSdBgDsInt] = useState<string>('');
-  const [caLgSdBgDsDec, setCaLgSdBgDsDec] = useState<string>('');
-  const setBack = useSetRecoilState(WA1091BackState);
-  const [isNext, setIsNext] = useState<boolean>(false);
+  const [WA1092WtDs, setWA1092WtDs] = useRecoilState(WA1092WtDsState); // Recoil 重量・線量情報
+  const setBack = useSetRecoilState(WA1091BackState); // Recoil 戻る
   const realm = getInstance();
   const settings = realm.objects('settings')[0];
   const {showAlert} = useAlert();

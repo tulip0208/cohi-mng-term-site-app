@@ -41,21 +41,22 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1131 = ({navigation}: Props) => {
-  const [WA1130Data, setWA1130Data] = useRecoilState(WA1130DataState);
-  const setBack = useSetRecoilState(WA1131BackState);
+  const [inputValue, setInputValue] = useState<string>(''); //新タグID設定ポップアップ 入力値
+  const [newTagId, setNewTagId] = useState<String>(''); //新タグID
   const [showScannerTag, setShowScannerTag] = useState<boolean>(false); // カメラ表示用の状態
-  const setPrevScreenId = useSetRecoilState(WA1130PrevScreenId); //遷移元画面ID
-  const [isSendDisabled, setIsSendDisabled] = useState<boolean>(true);
-  const {showAlert} = useAlert();
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [IFT0640Data, setIFT0640Data] = useRecoilState(IFT0640DataState);
-  const [inputValue, setInputValue] = useState<string>('');
-  const [newTagId, setNewTagId] = useState<String>();
-  const [inputVisible, setInputVisible] = useState<boolean>(false);
+  const [isSendDisabled, setIsSendDisabled] = useState<boolean>(true); // 送信ボタン 活性・非活性
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [inputVisible, setInputVisible] = useState<boolean>(false); //新タグID設定ポップアップ 表示・非表示
   const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
     null,
-  );
+  ); //長押しタグ表示用
+  const [WA1130Data, setWA1130Data] = useRecoilState(WA1130DataState); // Recoil 保管場ID,定置場ID,施設区分
+  const [IFT0640Data, setIFT0640Data] = useRecoilState(IFT0640DataState); // Recoil IFT0640レスポンスデータ
+  const setBack = useSetRecoilState(WA1131BackState); // Recoil 戻る
+  const setPrevScreenId = useSetRecoilState(WA1130PrevScreenId); // Recoil 遷移元画面ID
+  const {showAlert} = useAlert();
   const realm = getInstance();
+
   /************************************************
    * 初期表示設定
    ************************************************/
@@ -293,7 +294,7 @@ const WA1131 = ({navigation}: Props) => {
   };
 
   /************************************************
-   * ボタン表示・非表示判断
+   * ボタン活性・非活性判断
    ************************************************/
   const getButtonStyle = () => {
     return isSendDisabled

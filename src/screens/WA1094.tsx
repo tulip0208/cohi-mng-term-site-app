@@ -39,15 +39,15 @@ interface Props {
   navigation: NavigationProp;
 }
 const WA1094 = ({navigation}: Props) => {
-  const newTagId = useRecoilValue(WA1090NewTagIdState); //新タグID
-  const WA1091OldTagInfo = useRecoilValue(WA1091OldTagInfoState);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [lnkNewTagDatMem, setLnkNewTagDatMem] = useState<string>(''); // メモ
+  const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const newTagId = useRecoilValue(WA1090NewTagIdState); // Recoil 新タグID
+  const WA1091OldTagInfo = useRecoilValue(WA1091OldTagInfoState); //Recoil 旧タグ情報
+  const WA1092WtDs = useRecoilValue(WA1092WtDsState); // Recoil 重量・線量情報
+  const WA1093Memo = useRecoilValue(WA1093MemoState); // Recoil メモ
+  const WA1090WkPlac = useRecoilValue(WA1090WkPlacState); // Recoil 作業場所情報
   const setPrevScreenId = useSetRecoilState(WA1090PrevScreenId); //遷移元画面ID
-  const WA1092WtDs = useRecoilValue(WA1092WtDsState);
-  const [lnkNewTagDatMem, setLnkNewTagDatMem] = useState<string>('');
-  const WA1093Memo = useRecoilValue(WA1093MemoState);
-  const WA1090WkPlac = useRecoilValue(WA1090WkPlacState);
-  const setBack = useSetRecoilState(WA1091BackState);
+  const setBack = useSetRecoilState(WA1091BackState); // Recoil 戻る
   const {showAlert} = useAlert();
 
   /************************************************
