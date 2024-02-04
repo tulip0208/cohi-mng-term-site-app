@@ -1139,7 +1139,7 @@ export const sendToServer = async <TRequest, TResponse>(
       return status >= 100 && status <= 599; // 全てのHTTPステータスコードを例外としない
     },
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
     },
   };
 
@@ -1158,17 +1158,17 @@ export const sendToServer = async <TRequest, TResponse>(
     await logCommunication('ERROR', URI, null, errorMessage);
     if (error.code === 'ECONNABORTED') {
       // タイムアウト処理
-      console.error('Communication timed out', error);
+      console.log('Communication timed out', error);
       throw new CustomError('timeout', null, null, msg);
     } else {
       // その他の異常処理
-      console.error('An error occurred during communication', error);
+      console.log('An error occurred during communication', error);
       throw new CustomError('error', null, null, msg);
     }
   }
   // HTTPステータスコードが200以外の場合は異常処理
   if (response.status !== 200) {
-    console.error('Server returned status code ', response.status);
+    console.log('Server returned status code ', response.status);
     throw new CustomError('codeHttp200', response.status, null, msg);
     //【応答データ】.【ステータスコード】＝"01:異常"　の場合
   } else if (
@@ -1179,7 +1179,18 @@ export const sendToServer = async <TRequest, TResponse>(
       response.data.gyDt.sttCd &&
       response.data.gyDt.sttCd === '01')
   ) {
-    console.error('Server returned status code ', response.status);
+    if (response.data && response.data.sttCd && response.data.sttCd === '01') {
+      console.log('Server returned data sttCd ', response.data.sttCd);
+    } else {
+      console.log('Server returned data gyDt sttCd ', response.data.gyDt.sttCd);
+    }
+    // 応答受信後にログ記録
+    await logCommunication(
+      'RECV',
+      URI,
+      response.status,
+      endpoint + ' : ' + JSON.stringify(response.data),
+    );
     throw new CustomError(
       'codeRsps01',
       response.status,
@@ -1264,17 +1275,17 @@ export const sendFileToServer = async <TRequest, TResponse>(
     await logCommunication('ERROR', URI, null, errorMessage);
     if (error.code === 'ECONNABORTED') {
       // タイムアウト処理
-      console.error('Communication timed out', errorMessage);
+      console.log('Communication timed out', errorMessage);
       throw new CustomError('timeout', null, null, msg);
     } else {
       // その他の異常処理
-      console.error('An error occurred during communication', errorMessage);
+      console.log('An error occurred during communication', errorMessage);
       throw new CustomError('error', null, null, msg);
     }
   }
   // HTTPステータスコードが200以外の場合は異常処理
   if (response.status !== 200) {
-    console.error('Server returned status code ', response.status);
+    console.log('Server returned status code ', response.status);
     throw new CustomError('codeHttp200', response.status, null, msg);
     //【応答データ】.【ステータスコード】＝"01:異常"　の場合
   } else if (
@@ -1285,7 +1296,18 @@ export const sendFileToServer = async <TRequest, TResponse>(
       response.data.gyDt.sttCd &&
       response.data.gyDt.sttCd === '01')
   ) {
-    console.error('Server returned status code ', response.status);
+    if (response.data && response.data.sttCd && response.data.sttCd === '01') {
+      console.log('Server returned data sttCd ', response.data.sttCd);
+    } else {
+      console.log('Server returned data gyDt sttCd ', response.data.gyDt.sttCd);
+    }
+    // 応答受信後にログ記録
+    await logCommunication(
+      'RECV',
+      URI,
+      response.status,
+      endpoint + ' : ' + JSON.stringify(response.data),
+    );
     throw new CustomError(
       'codeRsps01',
       response.status,
@@ -1313,6 +1335,15 @@ const getBaseURL = async (endpoint: string) => {
   const settingsInfo = realm.objects('settings')[0];
 
   let baseUrl = settingsInfo.serverUrl as string;
+  if (baseUrl.endsWith('?p1=')) {
+    //★スタブ用
+    return {
+      connectionURL: baseUrl + endpoint,
+    };
+  }
+  if (!baseUrl.endsWith('/')) {
+    baseUrl += '/';
+  }
   return {
     connectionURL: baseUrl + endpoint,
   };

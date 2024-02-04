@@ -444,7 +444,7 @@ const WA1120 = ({navigation}: Props) => {
             <View style={styles.tableRow}>
               <View style={styles.tableCell11}>
                 <Text style={[styles.labelText, styles.alignRight]}>
-                  運転手：
+                  　運転手：
                 </Text>
               </View>
               <View style={[styles.tableCell5, styles.alignLeft]}>
@@ -464,7 +464,7 @@ const WA1120 = ({navigation}: Props) => {
             <View style={styles.tableRow}>
               <View style={styles.tableCell11}>
                 <Text style={[styles.labelText, styles.alignRight]}>
-                  行先名：
+                  　行先名：
                 </Text>
               </View>
               <View style={[styles.tableCell5, styles.alignLeft]}>

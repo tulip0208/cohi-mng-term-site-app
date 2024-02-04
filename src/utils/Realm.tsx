@@ -29,7 +29,7 @@ export let encryptionKey: Uint8Array; // 暗号化キーをグローバルで保
  * アプリ起動時のRealmの設定を行う関数
  ************************************************/
 const setupRealm = async (): Promise<string> => {
-  // await deleteAllRealm() //debug用
+  //await deleteAllRealm(); //debug用
   try {
     // keyStoreからkeyを取得する
     encryptionKey = await getEncryptionKeyFromKeystore();

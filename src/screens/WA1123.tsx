@@ -199,20 +199,18 @@ const WA1123 = ({navigation}: Props) => {
               <Text style={styles.labelTextNarrow}>{WA1120TrpCardNo}</Text>
             </View>
           </View>
-        </View>
-        <View style={[styles.textareaContainer, styles.topContent]}>
-          <View style={styles.tableMain}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCell}>
-                <Text style={[styles.labelTextNarrow, styles.alignRight]}>
-                  申請状況：
-                </Text>
-              </View>
-              <View style={styles.tableCell}>
-                <Text style={styles.labelTextNarrow}>{}</Text>
-              </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCell}>
+              <Text style={[styles.labelTextNarrow, styles.alignRight]}>
+                申請状況：
+              </Text>
+            </View>
+            <View style={styles.tableCell}>
+              <Text style={styles.labelTextNarrow}>{}</Text>
             </View>
           </View>
+        </View>
+        <View style={[styles.textareaContainer, styles.topContent]}>
           {isViewUpdate && (
             <View style={styles.bottomSection}>
               <TouchableOpacity

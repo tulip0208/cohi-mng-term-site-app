@@ -370,6 +370,7 @@ const WA1060 = ({navigation}: Props) => {
     if (parts[6] === '1') {
       const result = await showAlert('確認', messages.IA5007('津波浸水'), true);
       if (!result) {
+        setModalVisible(false);
         return;
       }
     }
@@ -382,10 +383,12 @@ const WA1060 = ({navigation}: Props) => {
         true,
       );
       if (!IA5007_result) {
+        setModalVisible(false);
         return;
       } else {
         const IA5019_result = await showAlert('確認', messages.IA5019(), true);
         if (!IA5019_result) {
+          setModalVisible(false);
           return;
         } else {
           setWA1060Data(prevWA1060Data => ({

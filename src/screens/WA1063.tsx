@@ -311,7 +311,7 @@ const WA1063 = ({navigation}: Props) => {
         <Picker.Item key="2" label="クロス大型" value="2" />
         <Picker.Item key="3" label="ラン_Ⅰ" value="3" />
         <Picker.Item key="4" label="ラン_Ⅱ" value="4" />
-        <Picker.Item key="5" label="対候性3年" value="5" />
+        <Picker.Item key="5" label="耐候性" value="5" />
         <Picker.Item key="6" label="耐水耐候3" value="6" />
         <Picker.Item key="7" label="その他" value="7" />
         <Picker.Item key="8" label="耐候OP" value="8" />

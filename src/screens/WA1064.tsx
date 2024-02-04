@@ -7,7 +7,14 @@ import FunctionHeader from '../components/FunctionHeader.tsx'; // Headerコン�
 import Footer from '../components/Footer.tsx'; // Footerコンポーネントのインポート
 import {styles} from '../styles/CommonStyle.tsx'; // 共通スタイル
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {logUserAction, logScreen} from '../utils/Log.tsx';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootList} from '../navigation/AppNavigator.tsx';
@@ -206,139 +213,145 @@ const WA1064 = ({navigation}: Props) => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* ヘッダ */}
-      <FunctionHeader
-        appType={'現'}
-        viewTitle={'重量・線量'}
-        functionTitle={'紐付(土)'}
-      />
-      {/* 上段 */}
-      <View style={[styles.main, styles.topContent]}>
-        <Text style={[styles.labelText, styles.bold]}>
-          新タグID：{newTagId}
-        </Text>
-        <Text style={[styles.labelText, styles.bold]}>
-          旧タグ数：{WA1060OldTagInfos.length}
-        </Text>
-        <Text style={[styles.labelText, styles.centerContent]}>
-          重量、線量を入力して下さい。
-        </Text>
-        <View style={styles.middleContainer}>
-          <View style={styles.tableMain}>
-            <View style={[styles.tableRow, styles.pickerContainer]}>
-              <View style={styles.tableCell}>
-                <Text style={[styles.inputLabelText, styles.alignRight]}>
-                  重量(Kg)：
-                </Text>
+    <KeyboardAvoidingView
+      behavior={'padding'}
+      style={styles.flex1}
+      keyboardVerticalOffset={0}>
+      <ScrollView
+        contentContainerStyle={[styles.containerWithKeybord, styles.flexGrow1]}>
+        {/* ヘッダ */}
+        <FunctionHeader
+          appType={'現'}
+          viewTitle={'重量・線量'}
+          functionTitle={'紐付(土)'}
+        />
+        {/* 上段 */}
+        <View style={[styles.main, styles.topContent]}>
+          <Text style={[styles.labelText, styles.bold]}>
+            新タグID：{newTagId}
+          </Text>
+          <Text style={[styles.labelText, styles.bold]}>
+            旧タグ数：{WA1060OldTagInfos.length}
+          </Text>
+          <Text style={[styles.labelText, styles.centerContent]}>
+            重量、線量を入力して下さい。
+          </Text>
+          <View style={styles.middleContainer}>
+            <View style={styles.tableMain}>
+              <View style={[styles.tableRow, styles.pickerContainer]}>
+                <View style={styles.tableCell}>
+                  <Text style={[styles.inputLabelText, styles.alignRight]}>
+                    重量(Kg)：
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    styles.tableCell,
+                    styles.center,
+                    styles.decimalInputContainer,
+                  ]}>
+                  <TextInput
+                    keyboardType="numeric"
+                    value={caLgSdBgWt}
+                    style={styles.inputWt}
+                    maxLength={4}
+                    onChangeText={(text: string) => {
+                      const filteredText = text.replace(/[^0-9]/g, '');
+                      setCaLgSdBgWt(filteredText);
+                    }}
+                  />
+                </View>
               </View>
-              <View
-                style={[
-                  styles.tableCell,
-                  styles.center,
-                  styles.decimalInputContainer,
-                ]}>
-                <TextInput
-                  keyboardType="numeric"
-                  value={caLgSdBgWt}
-                  style={styles.inputWt}
-                  maxLength={4}
-                  onChangeText={(text: string) => {
-                    const filteredText = text.replace(/[^0-9]/g, '');
-                    setCaLgSdBgWt(filteredText);
-                  }}
-                />
+              <View style={[styles.tableRow, styles.pickerContainer]}>
+                <View style={styles.tableCell}>
+                  <Text style={[styles.inputLabelText, styles.alignRight]}>
+                    線量(μSv/h)：
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    styles.tableCell,
+                    styles.center,
+                    styles.decimalInputContainer,
+                  ]}>
+                  <TextInput
+                    keyboardType="numeric"
+                    value={caLgSdBgDsInt}
+                    style={styles.inputDs}
+                    maxLength={4}
+                    onChangeText={(text: string) => {
+                      const filteredText = text.replace(/[^0-9]/g, '');
+                      setCaLgSdBgDsInt(filteredText);
+                    }}
+                  />
+                  <Text style={styles.dotStyle}>.</Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    value={caLgSdBgDsDec}
+                    style={styles.inputDs}
+                    maxLength={2}
+                    onChangeText={(text: string) => {
+                      const filteredText = text.replace(/[^0-9]/g, '');
+                      setCaLgSdBgDsDec(filteredText);
+                    }}
+                    onBlur={handleBlurCaLgSdBgDsDec}
+                  />
+                </View>
               </View>
-            </View>
-            <View style={[styles.tableRow, styles.pickerContainer]}>
-              <View style={styles.tableCell}>
-                <Text style={[styles.inputLabelText, styles.alignRight]}>
-                  線量(μSv/h)：
-                </Text>
+              <View style={styles.tableRow}>
+                <View style={styles.tableCell}>
+                  <Text style={[styles.inputLabelText, styles.alignRight]}>
+                    推定放射能濃度：
+                  </Text>
+                </View>
+                <View style={styles.tableCell}>
+                  <Text style={styles.inputLabelText}>{estRa}</Text>
+                </View>
               </View>
-              <View
-                style={[
-                  styles.tableCell,
-                  styles.center,
-                  styles.decimalInputContainer,
-                ]}>
-                <TextInput
-                  keyboardType="numeric"
-                  value={caLgSdBgDsInt}
-                  style={styles.inputDs}
-                  maxLength={4}
-                  onChangeText={(text: string) => {
-                    const filteredText = text.replace(/[^0-9]/g, '');
-                    setCaLgSdBgDsInt(filteredText);
-                  }}
-                />
-                <Text style={styles.dotStyle}>.</Text>
-                <TextInput
-                  keyboardType="numeric"
-                  value={caLgSdBgDsDec}
-                  style={styles.inputDs}
-                  maxLength={2}
-                  onChangeText={(text: string) => {
-                    const filteredText = text.replace(/[^0-9]/g, '');
-                    setCaLgSdBgDsDec(filteredText);
-                  }}
-                  onBlur={handleBlurCaLgSdBgDsDec}
-                />
-              </View>
-            </View>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCell}>
-                <Text style={[styles.inputLabelText, styles.alignRight]}>
-                  推定放射能濃度：
-                </Text>
-              </View>
-              <View style={styles.tableCell}>
-                <Text style={styles.inputLabelText}>{estRa}</Text>
-              </View>
-            </View>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCell}>
-                <Text style={[styles.inputLabelText, styles.alignRight]}>
-                  (Bq/Kg)　
-                </Text>
-              </View>
-              <View style={styles.tableCell}>
-                <Text style={styles.inputLabelText} />
+              <View style={styles.tableRow}>
+                <View style={styles.tableCell}>
+                  <Text style={[styles.inputLabelText, styles.alignRight]}>
+                    (Bq/Kg)　
+                  </Text>
+                </View>
+                <View style={styles.tableCell}>
+                  <Text style={styles.inputLabelText} />
+                </View>
               </View>
             </View>
           </View>
         </View>
-      </View>
 
-      {/* 下段 */}
-      <View style={styles.bottomSection}>
-        <TouchableOpacity
-          style={[styles.button, styles.destroyButton]}
-          onPress={btnAppDestroy}>
-          <Text style={styles.endButtonText}>破棄</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.endButton]}
-          onPress={btnAppBack}>
-          <Text style={styles.endButtonText}>戻る</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.startButton]}
-          onPress={btnAppNext}>
-          <Text style={styles.startButtonText}>次へ</Text>
-        </TouchableOpacity>
-      </View>
+        {/* 下段 */}
+        <View style={styles.bottomSection}>
+          <TouchableOpacity
+            style={[styles.button, styles.destroyButton]}
+            onPress={btnAppDestroy}>
+            <Text style={styles.endButtonText}>破棄</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, styles.endButton]}
+            onPress={btnAppBack}>
+            <Text style={styles.endButtonText}>戻る</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, styles.startButton]}
+            onPress={btnAppNext}>
+            <Text style={styles.startButtonText}>次へ</Text>
+          </TouchableOpacity>
+        </View>
 
-      {/* フッタ */}
-      <Footer />
+        {/* フッタ */}
+        <Footer />
 
-      {/* 処理中モーダル */}
-      <ProcessingModal
-        visible={modalVisible}
-        message={messages.IA5018()}
-        onClose={() => setModalVisible(false)}
-      />
-    </View>
+        {/* 処理中モーダル */}
+        <ProcessingModal
+          visible={modalVisible}
+          message={messages.IA5018()}
+          onClose={() => setModalVisible(false)}
+        />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 export default WA1064;

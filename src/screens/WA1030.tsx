@@ -271,6 +271,7 @@ const WA1030 = ({navigation}: Props) => {
     try {
       const responseIFA0030 = await IFA0030();
       if (await apiIsError(responseIFA0030)) {
+        setModalVisible(false);
         return;
       }
 

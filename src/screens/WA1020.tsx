@@ -218,6 +218,7 @@ const WA1020 = ({navigation}: Props) => {
       // サーバー通信処理（Api.js内の関数を呼び出し）
       const responseIFA0010 = await IFA0010(encryptedKey, secretKey); //sendToServer(requestData,"IFA0010","端末登録");
       if (await apiIsError(responseIFA0010)) {
+        setModalVisible(false);
         return;
       }
 
