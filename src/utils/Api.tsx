@@ -1335,15 +1335,6 @@ const getBaseURL = async (endpoint: string) => {
   const settingsInfo = realm.objects('settings')[0];
 
   let baseUrl = settingsInfo.serverUrl as string;
-  if (baseUrl.endsWith('?p1=')) {
-    //★スタブ用
-    return {
-      connectionURL: baseUrl + endpoint,
-    };
-  }
-  if (!baseUrl.endsWith('/')) {
-    baseUrl += '/';
-  }
   return {
     connectionURL: baseUrl + endpoint,
   };
