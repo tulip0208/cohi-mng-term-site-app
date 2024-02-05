@@ -225,7 +225,7 @@ const WA1130 = ({navigation}: Props) => {
         return;
       }
       //一次記憶領域の[保管場ID]とレスポンスが一致しない場合(応答データを1件として扱う)
-      else if (responseIFT0640Data?.dtl[0].stgLocId === WA1130Data.storPlacId) {
+      else if (responseIFT0640Data?.dtl[0].stgLocId !== WA1130Data.storPlacId) {
         await showAlert('通知', messages.EA5019(trpCrdNo), false);
         setModalVisible(false);
         return;
