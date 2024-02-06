@@ -1,3 +1,8 @@
+/**-------------------------------------------
+ * A01-0020_アクティベーション テスト
+ * WA1020
+ * screens/WA1020.tsx
+ * ---------------------------------------------*/
 import React, {useEffect} from 'react';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import WA1020 from '../src/screens/WA1020';
@@ -6,7 +11,6 @@ import {RootList} from '../src/navigation/AppNavigator';
 import {RecoilRoot} from 'recoil';
 import {Text, View} from 'react-native';
 import messages from '../src/utils/messages';
-
 import {act} from '@testing-library/react-native';
 import {IFA0010} from '../src/utils/Api';
 import {ApiResponse} from '../src/types/type';
@@ -21,7 +25,9 @@ const mockNavigation = {
 let mockScanData =
   'J202200010,端末０１,72b9feea-de53-47ea-b00c-dbda5d8ca53c,db213e42-dd7f-42db-8997-cf58e9575dc1,20231205';
 
-// QRScannerのモック
+/************************************************
+ * モック
+ ************************************************/
 jest.mock('../src/utils/QRScanner', () => {
   return {
     __esModule: true,
@@ -108,7 +114,34 @@ jest.mock('../src/utils/Api', () => ({
   IFA0010: jest.fn<Promise<ApiResponse<null>>, [string, Uint8Array]>(),
 }));
 
+/************************************************
+ * テストコード
+ ************************************************/
 describe('WA1020 Screen', () => {
+  // // テストの実行前にモックを無効化
+  // beforeEach(async () => {
+  //   await act(() => {
+  //     jest.unmock('../src/utils/QRScanner');
+  //   });
+  // });
+
+  // //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  // it('モックを無効化するテストケース', async () => {
+  //   // jest.resetAllMocks(); // または jest.resetModules()
+  //   // jest.unmock('../src/utils/QRScanner'); // モックを無効化
+  //   const {getByText, queryByText} = render(
+  //     <RecoilRoot>
+  //       <WA1020 navigation={mockNavigation} />
+  //     </RecoilRoot>,
+  //   );
+  //   // 利用者読込ボタンを探してクリックする
+  //   fireEvent.press(getByText('利用者読込'));
+
+  //   // Modalが表示されていることを確認
+  //   await waitFor(() => {
+  //     expect(queryByText('利用者QRコード')).toBeTruthy();
+  //   });
+  // });
   beforeEach(() => {
     // 各テストの前にデフォルト値にリセット
     mockScanData =
@@ -116,6 +149,7 @@ describe('WA1020 Screen', () => {
   });
 
   // 非同期のテストケースで async キーワードを使用
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('成功 アクティベーション', async () => {
     mockScanData =
       'J202200010,端末０１,72b9feea-de53-47ea-b00c-dbda5d8ca53c,db213e42-dd7f-42db-8997-cf58e9575dc1,20231205';
@@ -135,6 +169,7 @@ describe('WA1020 Screen', () => {
     });
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('成功 ユーザ', async () => {
     mockScanData = '1,jigyosyaid12345,事業者なまえ,userid12345,ユーザなまえ';
 
@@ -154,6 +189,7 @@ describe('WA1020 Screen', () => {
     expect(findByText('事業者：事業者なまえ')).toBeTruthy();
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('失敗 ユーザ1', async () => {
     mockScanData = '2,jigyosyaid12345,事業者なまえ,userid12345,ユーザなまえ';
 
@@ -177,6 +213,7 @@ describe('WA1020 Screen', () => {
     });
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('失敗 ユーザ2', async () => {
     mockScanData = 'jigyosyaid12345,事業者なまえ,userid12345,ユーザなまえ';
 
@@ -199,6 +236,7 @@ describe('WA1020 Screen', () => {
     });
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('失敗1 アクティベーション', async () => {
     mockScanData =
       'J202200010,端末０１,72b9feea-de53-47ea-b00c-dbda5d8ca53c,db213e42-dd7f-42db-8997-cf58e9575dc1';
@@ -220,6 +258,7 @@ describe('WA1020 Screen', () => {
     });
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('失敗2 アクティベーション', async () => {
     mockScanData =
       'D202200010,端末０１,72b9feea-de53-47ea-b00c-dbda5d8ca53c,db213e42-dd7f-42db-8997-cf58e9575dc1,20231205';
@@ -241,6 +280,7 @@ describe('WA1020 Screen', () => {
     });
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('成功 送信ボタン活性', async () => {
     // 初期状態では送信ボタンが非活性化されていることを確認
     const {getByText, findByText, getByTestId} = render(
@@ -276,6 +316,7 @@ describe('WA1020 Screen', () => {
     });
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('成功 終了ボタンON', async () => {
     // 初期状態では送信ボタンが非活性化されていることを確認
     const {getByText, findByText} = render(
@@ -298,6 +339,7 @@ describe('WA1020 Screen', () => {
     //アラートはモックにてtrue返却 終了へ遷移
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('送信ボタンON IFA0010失敗1', async () => {
     // モック関数を失敗するレスポンスで設定
     await act(async () => {
@@ -346,6 +388,7 @@ describe('WA1020 Screen', () => {
     });
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('送信ボタンON IFA0010失敗2', async () => {
     // モック関数を失敗するレスポンスで設定
     await act(async () => {
@@ -394,6 +437,7 @@ describe('WA1020 Screen', () => {
     });
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('送信ボタンON IFA0010失敗3', async () => {
     // モック関数を失敗するレスポンスで設定
     await act(async () => {
@@ -442,6 +486,7 @@ describe('WA1020 Screen', () => {
     });
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('送信ボタンON IFA0010失敗4 exception', async () => {
     // モック関数を失敗するレスポンスで設定
     await act(async () => {
@@ -494,6 +539,7 @@ describe('WA1020 Screen', () => {
     });
   });
 
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('送信ボタンON IFA0010成功', async () => {
     // モック関数を成功するレスポンスで設定
     (IFA0010 as jest.Mock).mockResolvedValue({success: true});
@@ -541,6 +587,8 @@ describe('WA1020 Screen', () => {
       expect(mockNavigate).toHaveBeenCalledWith('WA1030');
     });
   });
+
+  //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
   it('無効なQRコードデータのテスト', async () => {
     // テスト用の無効なQRコードデータを設定
     mockScanData = '無効なデータ';
