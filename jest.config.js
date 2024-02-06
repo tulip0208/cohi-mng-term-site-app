@@ -9,7 +9,7 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest', // TSXファイル用
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|react-native-rem-stylesheet|jest-runtime|react-native-sha256|react-native-device-info|react-native-device-info|react-native-base64|react-native-keychain|jest-runtime)/)',
+    'node_modules/(?!(react-native|@react-native|react-native-rem-stylesheet|jest-runtime|react-native-sha256|react-native-device-info|react-native-device-info|react-native-base64|react-native-keychain|react-native-camera|jest-runtime)/)',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   setupFiles: ['<rootDir>/jest/setup.js'], // setupファイルへのパス
