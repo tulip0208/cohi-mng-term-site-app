@@ -1,10 +1,10 @@
-package com.ims
+package com.cms_site
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ViewManager
-import com.ims.JISInputFilterModule; // インポートを追加
+import com.cms_site.JISInputFilterModule; // インポートを追加
 class JISInputFilterPackage : ReactPackage {
 
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {

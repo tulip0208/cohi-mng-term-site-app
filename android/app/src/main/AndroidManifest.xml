@@ -25,7 +25,7 @@
         android:debuggable="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
-            <data android:scheme="com.ims"/>
+            <data android:scheme="com.cms_site"/>
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
