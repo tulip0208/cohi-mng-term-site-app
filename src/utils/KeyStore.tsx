@@ -17,7 +17,7 @@ export const storeEncryptionKeyInKeystore = async (
     // Convert the key to a string to store it
     const keyString = uint8ArrayToBase64(key);
     await Keychain.setGenericPassword('encryptionKey', keyString, {
-      service: 'ims.encryption',
+      service: 'cms_site.encryption',
       accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE,
       accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
     });
@@ -34,7 +34,7 @@ export const storeEncryptionKeyInKeystore = async (
  ************************************************/
 export const getEncryptionKeyFromKeystore = async (): Promise<Uint8Array> => {
   const credentials = await Keychain.getGenericPassword({
-    service: 'ims.encryption',
+    service: 'cms_site.encryption',
   });
   if (credentials) {
     const binaryString = base64ToUint8Array(credentials.password);
