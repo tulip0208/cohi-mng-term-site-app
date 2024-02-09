@@ -179,7 +179,7 @@ const WA1141 = ({navigation}: Props) => {
 
   //ボタン活性化
   const isSend = () => {
-    if (selectAreNo && selectAreNo && selectNos) {
+    if (selectStySec && selectAreNo && selectNos) {
       setIsSendDisabled(false);
     } else {
       setIsSendDisabled(true);
