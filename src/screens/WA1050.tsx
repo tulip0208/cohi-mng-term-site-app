@@ -3,7 +3,7 @@
  * WA1050
  * ---------------------------------------------*/
 // app/screens/WA1050.js
-import Header from '../components/Header'; // Headerコンポーネントのインポート
+import FunctionHeader from '../components/FunctionHeader'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer'; // Footerコンポーネントのインポート
 import {styles} from '../styles/CommonStyle'; // 共通スタイル
 import React, {useState, useEffect} from 'react';
@@ -217,7 +217,11 @@ const WA1050 = ({route, navigation}: Props) => {
   return (
     <View style={styles.container}>
       {/* ヘッダ */}
-      <Header title={'端末ID設定'} />
+      <FunctionHeader
+        appType={'現'}
+        viewTitle={'端末設定'}
+        functionTitle={''}
+      />
 
       {/* 中段 */}
       <View style={[styles.main, styles.topContent]}>
