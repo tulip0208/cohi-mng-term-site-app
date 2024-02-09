@@ -562,6 +562,7 @@ export const IFT0090 = async (
   newTagId: string,
   data: WA1060Const,
   memo: string,
+  kbn: string,
 ): Promise<ApiResponse<IFT0090Response<IFT0090ResponseDtl>>> => {
   try {
     const realm = getInstance();
@@ -592,7 +593,7 @@ export const IFT0090 = async (
       tmpLocId: wlPlac.wkplacId,
       dtl: [
         oldTagInfos.map((oldTagInfo, index) => ({
-          chgKnd: 'I',
+          chgKnd: kbn,
           sndId:
             'SH' + trmId.trmId + dateStr.replace(/[^0-9]/g, '').slice(0, 14),
           newTagId: newTagId,
@@ -1012,6 +1013,7 @@ export const IFT0420 = async (
   newTagId: string,
   data: WA1092WtDsConst,
   memo: string,
+  kbn: string,
 ): Promise<ApiResponse<IFT0420Response<IFT0420ResponseDtl>>> => {
   try {
     const realm = getInstance();
@@ -1022,7 +1024,7 @@ export const IFT0420 = async (
       tmpLocId: wlPlac.wkplacId,
       dtl: [
         {
-          chgKnd: 'I',
+          chgKnd: kbn,
           sndId:
             'SH' + trmId.trmId + dateStr.replace(/[^0-9]/g, '').slice(0, 14),
           newTagId: newTagId,

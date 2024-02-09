@@ -117,6 +117,10 @@ export const WA1065MemoState = atom<string>({
   key: 'WA1065MemoState',
   default: '',
 });
+export const WA1060KbnState = atom<string>({
+  key: 'WA1060KbnState',
+  default: 'I',
+});
 //WA1070用
 export const WA1070DataState = atom<WA1070Const | null>({
   key: 'WA1070DataState',
@@ -180,6 +184,10 @@ export const WA1091BackState = atom<boolean>({
 export const WA1093MemoState = atom<string>({
   key: 'WA1093MemoState',
   default: '',
+});
+export const WA1090KbnState = atom<string>({
+  key: 'WA1090KbnState',
+  default: 'I',
 });
 //WA1100用
 export const WA1100DataState = atom<WA1100Const | null>({

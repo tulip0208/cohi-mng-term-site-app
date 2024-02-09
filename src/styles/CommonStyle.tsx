@@ -843,14 +843,14 @@ export const styles = StyleSheet.create({
   pickerStyle: {
     borderWidth: 1, // 枠線の幅
     borderColor: 'black', // 枠線の色
-    height: 25,
+    height: 28,
     marginTop: -12,
     marginBottom: -12,
   },
   pickerFixStyle: {
     borderWidth: 1, // 枠線の幅
     borderColor: 'black', // 枠線の色
-    height: 25,
+    height: 28,
   },
   pickerLabelText: {
     marginEnd: 10, // ピッカーとの間隔を設定
@@ -1008,6 +1008,43 @@ export const styles = StyleSheet.create({
   //--------色--------
   bgYellow: {
     backgroundColor: 'yellow',
+  },
+  //--------------------
+  //--------カスタムコンボボックス--------
+  containerCdi: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#000',
+    height: 28,
+  },
+  inputCdi: {
+    flex: 1,
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  iconCdi: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: 50, // ▼アイコンの横幅を広げる
+  },
+  iconTextCdi: {
+    fontSize: 12, // アイコンサイズ調整が必要に応じて
+  },
+  modalOverlayCdi: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContentCdi: {
+    width: windowWidth * 0.7,
+    backgroundColor: 'white',
+    padding: 20,
+    elevation: 5,
+  },
+  itemTextCdi: {
+    padding: 10,
+    fontSize: 16,
   },
   //--------------------
   //--------フッタ--------

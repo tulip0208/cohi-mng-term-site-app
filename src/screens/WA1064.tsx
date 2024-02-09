@@ -41,6 +41,7 @@ const WA1064 = ({navigation}: Props) => {
   const [caLgSdBgDsDec, setCaLgSdBgDsDec] = useState<string>(''); // 線量(μSv/h) 小数
   const [estRa, setEstRa] = useState<string>('-'); //推定放射能濃度
   const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [isNext, setIsNext] = useState<boolean>(false); //次への活性・非活性
   const newTagId = useRecoilValue(WA1060NewTagIdState); //新タグID
   const WA1060OldTagInfos = useRecoilValue(WA1060OldTagInfosState); //Recoil 旧タグ情報
   const [prevScreenId, setPrevScreenId] = useRecoilState(WA1060PrevScreenId); //遷移元画面ID
@@ -65,7 +66,7 @@ const WA1064 = ({navigation}: Props) => {
         const tmpCaLgSdBgDs = WA1060Data.caLgSdBgDs.split('.');
         setCaLgSdBgDsInt(tmpCaLgSdBgDs[0]);
         if (tmpCaLgSdBgDs.length > 1) {
-          setCaLgSdBgDsInt(tmpCaLgSdBgDs[1]);
+          setCaLgSdBgDsDec(tmpCaLgSdBgDs[1]);
         }
       }
       //推定放射能濃度
@@ -82,21 +83,29 @@ const WA1064 = ({navigation}: Props) => {
       await caLgSdBgDs();
     };
     calc();
+
+    //次へボタン活性判断
+    if (caLgSdBgWt && caLgSdBgDsInt && caLgSdBgDsDec) {
+      setIsNext(true);
+    } else {
+      setIsNext(false);
+    }
   }, [caLgSdBgWt, caLgSdBgDsInt, caLgSdBgDsDec]);
 
   //推定放射能濃度計算
   const caLgSdBgDs = async () => {
-    if (!caLgSdBgWt || !caLgSdBgDsInt || !caLgSdBgDsDec) {
+    let tmpCaLgSdBgDsInt = caLgSdBgDsInt === '' ? 0 : caLgSdBgDsInt;
+    if (!caLgSdBgWt || !caLgSdBgDsDec) {
       setEstRa('-');
     } else if (caLgSdBgWt === '0') {
       setEstRa('0');
     } else {
       // 分母0チェックを実施し、問題無ければ処理
-      if (Number(caLgSdBgDsInt) + Number('0.' + caLgSdBgDsDec) !== 0) {
+      if (Number(tmpCaLgSdBgDsInt) + Number('0.' + caLgSdBgDsDec) !== 0) {
         //線量(μSv/h) ×換算値÷重量(Kg) を 四捨五入して整数にする
         const result = Math.round(
           (Number(caLgSdBgWt) * Number(settings.radioConvFact)) /
-            (Number(caLgSdBgDsInt) + Number('0.' + caLgSdBgDsDec)),
+            (Number(tmpCaLgSdBgDsInt) + Number('0.' + caLgSdBgDsDec)),
         );
         if (result > Number(settings.estRadioThres)) {
           await showAlert(
@@ -108,6 +117,13 @@ const WA1064 = ({navigation}: Props) => {
         setEstRa(String(result));
       }
     }
+  };
+
+  // 次へボタンのスタイルを動的に変更するための関数
+  const getButtonStyle = () => {
+    return isNext
+      ? [styles.button, styles.startButton]
+      : [styles.button, styles.startButton, styles.disabledButton];
   };
 
   // 小数点以下二桁目補填
@@ -335,8 +351,9 @@ const WA1064 = ({navigation}: Props) => {
             <Text style={styles.endButtonText}>戻る</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.button, styles.startButton]}
-            onPress={btnAppNext}>
+            style={getButtonStyle()}
+            onPress={btnAppNext}
+            disabled={!isNext}>
             <Text style={styles.startButtonText}>次へ</Text>
           </TouchableOpacity>
         </View>
