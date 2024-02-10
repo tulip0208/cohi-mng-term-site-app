@@ -43,6 +43,7 @@ import {
   WA1060WkPlacState,
   WA1063MemoAutoState,
   WA1065MemoState,
+  WA1060KbnState,
 } from '../atom/atom.tsx';
 import {CT0007} from '../enum/enums.tsx';
 
@@ -75,6 +76,7 @@ const WA1060 = ({navigation}: Props) => {
   const setCmnTagFlg = useSetRecoilState(WA1060CmnTagFlgState); //Recoil 共通タグフラグ
   const setNewTagId = useSetRecoilState(WA1060NewTagIdState); //Recoil 新タグID
   const setWA1060OldTagInfos = useSetRecoilState(WA1060OldTagInfosState); //Recoil 旧タグ情報
+  const setKbn = useSetRecoilState(WA1060KbnState); // Recoil 遷移元画面ID
   const resetWA1060Data = useResetRecoilState(WA1060DataState); //Recoilリセット
   const resetWA1060NewTagId = useResetRecoilState(WA1060NewTagIdState); //Recoilリセット
   const resetWA1060CmnTagFlg = useResetRecoilState(WA1060CmnTagFlgState); //Recoilリセット
@@ -323,6 +325,7 @@ const WA1060 = ({navigation}: Props) => {
     if (retScreen === 'WA1066') {
       // QR・バーコード両方
       setModalVisible(false);
+      setKbn('U');
       await logScreen('画面遷移:WA1066_登録内容確認(土壌)');
       navigation.navigate('WA1066');
     } else if (
@@ -331,6 +334,7 @@ const WA1060 = ({navigation}: Props) => {
     ) {
       // バーコードのみ 画面遷移
       setModalVisible(false);
+      setKbn('U');
       await logScreen('画面遷移:WA1063_必須情報設定(土壌)');
       navigation.navigate('WA1066');
     } else if (
@@ -339,6 +343,7 @@ const WA1060 = ({navigation}: Props) => {
     ) {
       // バーコードのみ 画面遷移
       setModalVisible(false);
+      setKbn('I');
       await logScreen('画面遷移:WA1061_旧タグ読込(土壌)');
       navigation.navigate('WA1061');
     } else if (type !== RNCamera.Constants.BarCodeType.qr) {
@@ -424,6 +429,7 @@ const WA1060 = ({navigation}: Props) => {
 
     // モーダル非表示
     setModalVisible(false);
+    setKbn('I');
     await logScreen('画面遷移:WA1065_メモ入力(土壌)');
     navigation.navigate('WA1065');
   };
@@ -501,14 +507,17 @@ const WA1060 = ({navigation}: Props) => {
     const retScreen = await procBarCode('a' + inputValue + 'a');
     if (retScreen === 'WA1066') {
       setModalVisible(false);
+      setKbn('U');
       await logScreen('画面遷移:WA1066_登録内容確認(土壌)');
       navigation.navigate('WA1066');
     } else if (retScreen === 'WA1063') {
       setModalVisible(false);
+      setKbn('I');
       await logScreen('画面遷移:WA1063_必須情報設定(土壌)');
       navigation.navigate('WA1063');
     } else if (retScreen === 'WA1061') {
       setModalVisible(false);
+      setKbn('I');
       await logScreen('画面遷移:WA1061_旧タグ読込(土壌)');
       navigation.navigate('WA1061');
     } else {

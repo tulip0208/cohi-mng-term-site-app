@@ -84,12 +84,7 @@ const WA1130 = ({navigation}: Props) => {
     const realm = getInstance();
     const loginInfo = realm.objects('login')[0];
     const fixedPlacesInfo = realm.objects('fixed_places')[0];
-    if (
-      loginInfo.wkplacTyp === 6 &&
-      fixedPlacesInfo &&
-      fixedPlacesInfo.type &&
-      fixedPlacesInfo.type === 0
-    ) {
+    if (loginInfo.wkplacTyp === 6 && fixedPlacesInfo) {
       setStorPlacId(
         fixedPlacesInfo.storPlacId
           ? (fixedPlacesInfo.storPlacId as string)

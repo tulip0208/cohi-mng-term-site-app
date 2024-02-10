@@ -26,27 +26,22 @@ import ProcessingModal from '../components/Modal.tsx';
 import {getCurrentDateTime} from '../utils/common.tsx';
 import {IFT0140} from '../utils/Api.tsx';
 import {ApiResponse} from '../types/type.tsx';
+import Crypto from 'react-native-aes-crypto';
+import CustomDropdownInput from '../components/CustomDropdownInput.tsx'; // Headerコンポーネントのインポート
+import Realm from 'realm';
 // WA1141 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1141'>;
 interface Props {
   navigation: NavigationProp;
 }
-interface PickerOption {
-  label: string;
-  value: string;
-}
 const WA1141 = ({navigation}: Props) => {
   const [selectStySec, setSelectStySec] = useState<string>(''); //選択した定置区画ID
   const [selectAreNo, setSelectAreNo] = useState<string>(''); //選択した区域番号
   const [selectNos, setSelectNos] = useState<string>(''); //選択した段数
-  const [stySec, setStySec] = useState<string>(''); //定置区画ID
-  const [isStySecFocused, setIsStySecFocused] = useState<boolean>(false); //定置区画IDフォーカス判断
-  const [isAreNoFocused, setIsAreNoFocused] = useState<boolean>(false); //区域番号フォーカス判断
-  const [isNosFocused, setIsNosFocused] = useState<boolean>(false); //段数フォーカス判断
   const [isSendDisabled, setIsSendDisabled] = useState<boolean>(false); //送信ボタン 活性・非活性
   const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
-  const [stySecOptions, setStySecOptions] = useState<PickerOption[]>([]); //定置区画ID 選択肢
-  const [areNoOptions, setAreNoOptions] = useState<PickerOption[]>([]); //区域番号 選択肢
+  const [stySecOptions, setStySecOptions] = useState<string[]>([]); //定置区画ID 選択肢
+  const [areNoOptions, setAreNoOptions] = useState<string[]>([]); //区域番号 選択肢
   const [WA1140Data, setWA1140Data] = useRecoilState(WA1140DataState); //Recoil 表示データ
   const setBack = useSetRecoilState(WA1141BackState); // Recoil 戻る
   const setPrevScreenId = useSetRecoilState(WA1140PrevScreenId); //遷移元画面ID
@@ -60,12 +55,20 @@ const WA1141 = ({navigation}: Props) => {
     // 初期ロード時に選択肢をセットする
     updateStySecOptions();
     updateAreNoOptions();
-    isSend(); //次へボタンの活性・非活性
   }, []);
 
   useEffect(() => {
     updateAreNoOptions();
-  }, [stySec]);
+  }, [selectStySec]);
+
+  //ボタン活性化
+  useEffect(() => {
+    if (selectStySec && selectAreNo && selectNos) {
+      setIsSendDisabled(false);
+    } else {
+      setIsSendDisabled(true);
+    }
+  }, [selectStySec, selectAreNo, selectNos]);
 
   /************************************************
    * 破棄ボタン処理
@@ -125,11 +128,47 @@ const WA1141 = ({navigation}: Props) => {
       return;
     }
     if (responseIFA0140.data?.itcRstCd === 1) {
-      //★確認
       await showAlert('通知', messages.EA5025(WA1140Data.newTagId), false);
       return;
     }
     await showAlert('通知', messages.IA5005('定置ステータス更新'), false);
+
+    let tempList = realm
+      .objects('fixed_places_info')
+      .filtered(
+        'storPlacId == $0 AND stySec == $1 AND areNo == $2',
+        WA1140Data.storPlacId,
+        selectStySec,
+        Number(selectAreNo),
+      );
+    if (tempList.length === 0) {
+      let uuid = await Crypto.randomUuid();
+      realm.write(() => {
+        realm.create(
+          'fixed_places_info',
+          {
+            id: String(uuid),
+            useDt: new Date(), //利用日時 YYYY/MM/DD hh:mm:ss
+            storPlacId: WA1140Data.storPlacId, // 保管場ID
+            fixPlacId: WA1140Data.fixPlacId, // 定置場ID
+            stySec: selectStySec, //定置区画ID
+            areNo: Number(selectAreNo), //区域番号
+          },
+          Realm.UpdateMode.Modified,
+        ); // Modified は既存のデータがあれば更新、なければ作成
+      });
+    } else {
+      realm.write(() => {
+        realm.create(
+          'fixed_places_info',
+          {
+            ...tempList[0],
+            useDt: new Date(), //利用日時 YYYY/MM/DD hh:mm:ss
+          },
+          Realm.UpdateMode.Modified,
+        ); // Modified は既存のデータがあれば更新、なければ作成
+      });
+    }
 
     setModalVisible(false);
     await logScreen('画面遷移:WA1040_メニュー');
@@ -177,15 +216,6 @@ const WA1141 = ({navigation}: Props) => {
       : [styles.button, styles.settingButton, styles.settingButton];
   };
 
-  //ボタン活性化
-  const isSend = () => {
-    if (selectAreNo && selectAreNo && selectNos) {
-      setIsSendDisabled(false);
-    } else {
-      setIsSendDisabled(true);
-    }
-  };
-
   //定置区画ID選択肢作成
   const updateStySecOptions = () => {
     let tempList;
@@ -198,47 +228,42 @@ const WA1141 = ({navigation}: Props) => {
       )
       .sorted('useDt', true);
     if (tempList.length > 0) {
-      setStySec(tempList[0].stySec as string); //定置区画ID
+      setSelectStySec(tempList[0].stySec as string); //定置区画ID
       setSelectAreNo(tempList[0].areNo as string); //区域番号
-      const options: PickerOption[] = tempList.map(item => ({
-        label: item.stySec as string, // 型アサーションを使用
-        value: item.stySec as string, // 型アサーションを使用
-      }));
-      setStySecOptions(options);
+      const listOptions: string[] = tempList.map(
+        item => item.areNo,
+      ) as string[];
+      setStySecOptions(listOptions);
     }
   };
 
-  //定置区画IDフォーカスイン
-  const handleStySecFocus = () => {
-    setIsStySecFocused(true);
+  //定置区画ID選択
+  const handleSelectStySec = (item: string) => {
+    setSelectStySec(item);
   };
 
   //定置区画IDフォーカスアウト
   const handleStySecBlur = () => {
-    if (isStySecFocused) {
-      //定置区画ID未入力
-      if (stySec === '') {
-        //区域番号一覧をクリア
-        setSelectAreNo('');
-        setStySecOptions([]);
-        return;
-      }
-      const tempList = realm
-        .objects('fixed_places_info')
-        .filtered(
-          'storPlacId == $0 AND fixPlacId == $1 AND stySec == $2',
-          WA1140Data.storPlacId,
-          WA1140Data.fixPlacId,
-          stySec,
-        )
-        .sorted('useDt', true);
-      if (tempList.length > 0) {
-        //取得した[区域番号]の一覧を画面上の区域番号に設定する。
-        updateStySecOptions(); // 区域番号選択肢を更新
-        setSelectAreNo(tempList[0].areNo as string); //区域番号
-      }
-      setIsStySecFocused(false);
-      isSend();
+    //定置区画ID未入力
+    if (selectStySec === '') {
+      //区域番号一覧をクリア
+      setSelectAreNo('');
+      setAreNoOptions([]);
+      return;
+    }
+    const tempList = realm
+      .objects('fixed_places_info')
+      .filtered(
+        'storPlacId == $0 AND fixPlacId == $1 AND stySec == $2',
+        WA1140Data.storPlacId,
+        WA1140Data.fixPlacId,
+        String(selectStySec),
+      )
+      .sorted('useDt', true);
+    if (tempList.length > 0) {
+      //取得した[区域番号]の一覧を画面上の区域番号に設定する。
+      updateStySecOptions(); // 区域番号選択肢を更新
+      setSelectAreNo(tempList[0].areNo as string); //区域番号
     }
   };
 
@@ -251,41 +276,21 @@ const WA1141 = ({navigation}: Props) => {
         'storPlacId == $0 AND fixPlacId == $1 AND stySec == $2',
         WA1140Data.storPlacId,
         WA1140Data.fixPlacId,
-        stySec,
+        String(selectStySec),
       )
       .sorted('useDt', true);
     if (tempList.length > 0) {
       setSelectAreNo(tempList[0].areNo as string); //区域番号
-      const options: PickerOption[] = tempList.map(item => ({
-        label: item.areNo as string, // 型アサーションを使用
-        value: item.areNo as string, // 型アサーションを使用
-      }));
-      setAreNoOptions(options);
+      const listOptions: string[] = tempList.map(
+        item => item.areNo,
+      ) as string[];
+      setAreNoOptions(listOptions);
     }
   };
 
-  //区域番号 フォーカスイン
-  const handleAreNoFocus = () => {
-    setIsAreNoFocused(true);
-  };
-
-  //区域番号 フォーカスアウト
-  const handleAreNoBlur = () => {
-    if (isAreNoFocused) {
-      isSend();
-    }
-  };
-
-  //段数 フォーカスイン
-  const handleNosFocus = () => {
-    setIsNosFocused(true);
-  };
-
-  //段数 フォーカスアウト
-  const handleNosBlur = () => {
-    if (isNosFocused) {
-      isSend();
-    }
+  //区域番号選択
+  const handleSelectAreNo = (item: string) => {
+    setSelectAreNo(item);
   };
 
   //段数
@@ -375,23 +380,13 @@ const WA1141 = ({navigation}: Props) => {
                 定置区画ID：
               </Text>
             </View>
-            <View
-              style={[styles.tableCell, styles.pickerFixStyle]}
-              onStartShouldSetResponder={() => true}
-              onResponderGrant={handleStySecFocus}
-              onResponderRelease={handleStySecBlur}>
-              <Picker
+            <View style={[styles.tableCell]}>
+              <CustomDropdownInput
+                options={stySecOptions}
                 selectedValue={selectStySec}
-                onValueChange={itemValue => setSelectStySec(itemValue)}
-                style={[styles.pickerStyle]}>
-                {stySecOptions.map(item => (
-                  <Picker.Item
-                    key={item.label as string}
-                    label={`${item.label}`}
-                    value={item.label}
-                  />
-                ))}
-              </Picker>
+                onSelect={handleSelectStySec}
+                onBlur={handleStySecBlur}
+              />
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -400,23 +395,13 @@ const WA1141 = ({navigation}: Props) => {
                 区域番号：
               </Text>
             </View>
-            <View
-              style={[styles.tableCell, styles.pickerFixStyle]}
-              onStartShouldSetResponder={() => true}
-              onResponderGrant={handleAreNoFocus}
-              onResponderRelease={handleAreNoBlur}>
-              <Picker
+            <View style={[styles.tableCell]}>
+              <CustomDropdownInput
+                options={areNoOptions}
                 selectedValue={selectAreNo}
-                onValueChange={itemValue => setSelectAreNo(itemValue)}
-                style={[styles.pickerStyle]}>
-                {areNoOptions.map(item => (
-                  <Picker.Item
-                    key={item.label as string}
-                    label={`${item.label}`}
-                    value={item.label}
-                  />
-                ))}
-              </Picker>
+                onSelect={handleSelectAreNo}
+                numericOnly={true}
+              />
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -425,9 +410,7 @@ const WA1141 = ({navigation}: Props) => {
             </View>
             <View
               style={[styles.tableCell, styles.pickerFixStyle]}
-              onStartShouldSetResponder={() => true}
-              onResponderGrant={handleNosFocus}
-              onResponderRelease={handleNosBlur}>
+              onStartShouldSetResponder={() => true}>
               {makePickerNos()}
             </View>
           </View>
@@ -463,4 +446,5 @@ const WA1141 = ({navigation}: Props) => {
     </View>
   );
 };
+
 export default WA1141;

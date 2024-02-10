@@ -40,6 +40,7 @@ import {
   WA1091OldTagInfoState,
   WA1090WkPlacState,
   WA1093MemoState,
+  WA1090KbnState,
 } from '../atom/atom.tsx';
 
 // WA1090 用の navigation 型
@@ -67,6 +68,7 @@ const WA1090 = ({navigation}: Props) => {
   const [prevScreenId, setPrevScreenId] = useRecoilState(WA1090PrevScreenId); //遷移元画面ID
   const setNewTagId = useSetRecoilState(WA1090NewTagIdState); //Recoil 新タグID
   const setWA1090WkPlac = useSetRecoilState(WA1090WkPlacState); // Recoil 作業場所情報
+  const setKbn = useSetRecoilState(WA1090KbnState); // Recoil 遷移元画面ID
   const resetWA1092WtDsState = useResetRecoilState(WA1092WtDsState); //Recoilリセット
   const resetWA1090NewTagId = useResetRecoilState(WA1090NewTagIdState); //Recoilリセット
   const resetWA1091OldTagInfo = useResetRecoilState(WA1091OldTagInfoState); //Recoilリセット
@@ -273,10 +275,12 @@ const WA1090 = ({navigation}: Props) => {
     const retScreen = await procBarCode(code);
     setModalVisible(false);
     if (retScreen === 'WA1094') {
+      setKbn('U');
       await logScreen('画面遷移:WA1094_登録内容確認(灰)');
       navigation.navigate('WA1094');
     } else if (retScreen === 'WA1091') {
       // 画面遷移
+      setKbn('I');
       await logScreen('画面遷移:WA1091_旧タグ読込(灰)');
       navigation.navigate('WA1091');
     } else {
@@ -352,10 +356,12 @@ const WA1090 = ({navigation}: Props) => {
     // 新タグID参照処理実施
     const retScreen = await procBarCode('a' + inputValue + 'a');
     if (retScreen === 'WA1094') {
+      setKbn('U');
       await logScreen('画面遷移:WA1094_登録内容確認(灰)');
       navigation.navigate('WA1094');
     } else if (retScreen === 'WA1091') {
       // 画面遷移
+      setKbn('I');
       await logScreen('画面遷移:WA1091_旧タグ読込(灰)');
       navigation.navigate('WA1091');
     } else {
