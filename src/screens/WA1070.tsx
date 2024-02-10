@@ -383,6 +383,7 @@ const WA1070 = ({navigation}: Props) => {
             下記ボタンを押してフレコンに取り付けられたタグを読み込んで下さい。
           </Text>
           <TouchableOpacity
+            testID="tag-read-btn"
             style={[styles.button, styles.buttonSmall, styles.centerButton]}
             onPress={btnTagQr}>
             <Text style={styles.buttonText}>タグ読込</Text>
@@ -398,14 +399,16 @@ const WA1070 = ({navigation}: Props) => {
             styles.zIndex,
           ]}>
           <TouchableWithoutFeedback
+            testID="info-msg"
             onPressIn={() => onPressIn()}
             onPressOut={onPressOut}>
             <Text style={styles.labelText}>{getInfoMsg()}</Text>
           </TouchableWithoutFeedback>
           {inputVisible && (
-            <View style={[styles.inputContainer]}>
+            <View testID="input-container" style={[styles.inputContainer]}>
               <Text style={styles.inputWithText}>a</Text>
               <TextInput
+                testID="text-input"
                 style={styles.input}
                 onChangeText={handleInputChange}
                 onBlur={handleInputBlur}
@@ -420,12 +423,14 @@ const WA1070 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            testID="back-btn"
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
           </TouchableOpacity>
           {isViewNextButton && (
             <TouchableOpacity
+              testID="next-btn"
               style={getButtonStyle()}
               onPress={btnAppNext}
               disabled={!isNext}>
