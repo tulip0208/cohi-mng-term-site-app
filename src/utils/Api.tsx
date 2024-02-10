@@ -318,6 +318,12 @@ const setIFA0110RequestData = async <T,>(interFaceName: string, dataDtl: T) => {
   const trmId = (await loadFromKeystore('trmId')) as TrmId;
   const apiKey = (await loadFromKeystore('apiKey')) as ApiKey;
   const trmKey = (await loadFromKeystore('trmKey')) as TrmKey;
+  let latitude = '0';
+  let longitude = '0';
+  if (locationInfo) {
+    latitude = locationInfo.latitude as string;
+    longitude = locationInfo.longitude as string;
+  }
   const requestData = {
     comId: userInfo.comId,
     usrId: userInfo.userId,
@@ -326,8 +332,8 @@ const setIFA0110RequestData = async <T,>(interFaceName: string, dataDtl: T) => {
     trmKey: decryptWithAES256CBC(trmKey.trmKey, secretKey), // 復号化
     appTyp: 1,
     appVer: settingsInfo.appVer,
-    vclLat: locationInfo.latitude,
-    vclLon: locationInfo.longitude,
+    vclLat: latitude,
+    vclLon: longitude,
     ifNo: interFaceName,
     gymDt: dataDtl,
   };
@@ -556,6 +562,7 @@ export const IFT0090 = async (
   newTagId: string,
   data: WA1060Const,
   memo: string,
+  kbn: string,
 ): Promise<ApiResponse<IFT0090Response<IFT0090ResponseDtl>>> => {
   try {
     const realm = getInstance();
@@ -586,7 +593,7 @@ export const IFT0090 = async (
       tmpLocId: wlPlac.wkplacId,
       dtl: [
         oldTagInfos.map((oldTagInfo, index) => ({
-          chgKnd: 'I',
+          chgKnd: kbn,
           sndId:
             'SH' + trmId.trmId + dateStr.replace(/[^0-9]/g, '').slice(0, 14),
           newTagId: newTagId,
@@ -1006,6 +1013,7 @@ export const IFT0420 = async (
   newTagId: string,
   data: WA1092WtDsConst,
   memo: string,
+  kbn: string,
 ): Promise<ApiResponse<IFT0420Response<IFT0420ResponseDtl>>> => {
   try {
     const realm = getInstance();
@@ -1016,7 +1024,7 @@ export const IFT0420 = async (
       tmpLocId: wlPlac.wkplacId,
       dtl: [
         {
-          chgKnd: 'I',
+          chgKnd: kbn,
           sndId:
             'SH' + trmId.trmId + dateStr.replace(/[^0-9]/g, '').slice(0, 14),
           newTagId: newTagId,

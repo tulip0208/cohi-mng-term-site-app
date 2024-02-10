@@ -28,6 +28,7 @@ import {
   WA1063MemoAutoState,
   WA1060WkPlacState,
   WA1065MemoState,
+  WA1060KbnState,
 } from '../atom/atom.tsx';
 import {useAlert} from '../components/AlertContext.tsx';
 import messages from '../utils/messages.tsx';
@@ -63,6 +64,7 @@ const WA1066 = ({navigation}: Props) => {
   const WA1065Memo = useRecoilValue(WA1065MemoState); // Recoil メモ
   const WA1060WkPlac = useRecoilValue(WA1060WkPlacState); // Recoil 作業場所情報
   const cmnTagFlg = useRecoilValue(WA1060CmnTagFlgState); //Recoil 共通タグフラグ
+  const kbn = useRecoilValue(WA1060KbnState);
   const [WA1060Data, setWA1060Data] = useRecoilState(WA1060DataState); //Recoil 新タグ情報
   const setPrevScreenId = useSetRecoilState(WA1060PrevScreenId); // Recoil 遷移元画面ID
   const setBack = useSetRecoilState(WA1061BackState); // Recoil 戻る
@@ -117,6 +119,7 @@ const WA1066 = ({navigation}: Props) => {
       newTagId,
       WA1060Data,
       lnkNewTagDatMem,
+      kbn,
     );
     const result = await apiIsError(responseIFA0310);
     if (result) {

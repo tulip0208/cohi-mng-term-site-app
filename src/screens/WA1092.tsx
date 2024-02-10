@@ -65,7 +65,7 @@ const WA1092 = ({navigation}: Props) => {
         const tmpCaLgSdBgDs = WA1092WtDs.caLgSdBgDs.split('.');
         setCaLgSdBgDsInt(tmpCaLgSdBgDs[0]);
         if (tmpCaLgSdBgDs.length > 1) {
-          setCaLgSdBgDsInt(tmpCaLgSdBgDs[1]);
+          setCaLgSdBgDsDec(tmpCaLgSdBgDs[1]);
         }
       }
     };
@@ -170,7 +170,7 @@ const WA1092 = ({navigation}: Props) => {
       caLgSdBgWt: String(caLgSdBgWt ?? ''), //重量
       caLgSdBgDs:
         caLgSdBgDsInt && caLgSdBgDsDec
-          ? String(Number(caLgSdBgDsInt) + Number(caLgSdBgDsDec))
+          ? String(Number(caLgSdBgDsInt) + Number('0.' + caLgSdBgDsDec))
           : '', //線量
     });
     if (prevScreenId === 'WA1094') {
