@@ -452,6 +452,7 @@ const WA1070 = ({navigation}: Props) => {
         {/* タグ用QRコードスキャナー */}
         {showScannerTag && (
           <Modal
+            testID="scaner-modal"
             visible={showScannerTag}
             onRequestClose={() => setShowScannerTag(false)}>
             <QRScanner
