@@ -32,9 +32,9 @@ const WA1101 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1101)');
+    await logUserAction('ボタン押下: WA1101 - 戻る');
     setBack(true);
-    await logScreen('画面遷移:WA1100_新タグ参照(土壌)');
+    await logScreen('画面遷移: WA1101 → WA1100_新タグ参照(土壌)');
     navigation.navigate('WA1100');
   };
 
@@ -42,8 +42,8 @@ const WA1101 = ({navigation}: Props) => {
    * メニューボタン処理
    ************************************************/
   const btnMenu = async () => {
-    await logUserAction('ボタン押下: メニュー(WA1101)');
-    await logScreen('画面遷移:WA1040_メニュー');
+    await logUserAction('ボタン押下: WA1101 - メニュー');
+    await logScreen('画面遷移: WA1101 → WA1040_メニュー');
     navigation.navigate('WA1040');
   };
 

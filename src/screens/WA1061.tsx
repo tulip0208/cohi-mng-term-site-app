@@ -154,7 +154,7 @@ const WA1061 = ({navigation}: Props) => {
       const result = await oldTagProc(data);
       if (result === 'WA1062') {
         //画面遷移
-        await logScreen('画面遷移:WA1062_旧タグ設定(土壌)');
+        await logScreen('画面遷移: WA1061 → WA1062_旧タグ設定(土壌)');
         navigation.navigate('WA1062');
       }
     }
@@ -164,7 +164,7 @@ const WA1061 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
-    await logUserAction('ボタン押下: タグ読込');
+    await logUserAction('ボタン押下: WA1061 - タグ読込');
     //旧タグ配列が9件の場合処理中止
     if (WA1060OldTagInfos.length >= 9) {
       await showAlert('通知', messages.WA5002(), false);
@@ -282,12 +282,12 @@ const WA1061 = ({navigation}: Props) => {
    * 設定ボタン処理
    ************************************************/
   const btnSetting = async () => {
-    await logUserAction('ボタン押下: 設定(WA1061)');
+    await logUserAction('ボタン押下: WA1061 - 設定');
     setModalVisible(true);
     const result = await oldTagProc(inputValue);
     if (result === 'WA1062') {
       //画面遷移
-      await logScreen('画面遷移:WA1062_旧タグ設定(土壌)');
+      await logScreen('画面遷移: WA1061 → WA1062_旧タグ設定(土壌)');
       navigation.navigate('WA1062');
     } else if (result === 'done') {
       setInputValue('');
@@ -299,7 +299,7 @@ const WA1061 = ({navigation}: Props) => {
    * ダミータグボタン処理
    ************************************************/
   const btnDummyTag = async () => {
-    await logUserAction('ボタン押下: ダミータグ(WA1061)');
+    await logUserAction('ボタン押下: WA1061 - ダミータグ');
     //旧タグ配列が9件の場合処理中止
     if (WA1060OldTagInfos.length >= 9) {
       await showAlert('通知', messages.WA5002(), false);
@@ -315,7 +315,7 @@ const WA1061 = ({navigation}: Props) => {
     //ダミータグを引継ぎ
     setWA1061TagId([dummyTag, 'dummyTag']);
     //画面遷移
-    await logScreen('画面遷移:WA1062_旧タグ設定(土壌)');
+    await logScreen('画面遷移: WA1061 → WA1062_旧タグ設定(土壌)');
     navigation.navigate('WA1062');
   };
 
@@ -323,7 +323,7 @@ const WA1061 = ({navigation}: Props) => {
    * 一括取消ボタン処理
    ************************************************/
   const btnOldTagClr = async () => {
-    await logUserAction('ボタン押下: 一括取消(WA1061)');
+    await logUserAction('ボタン押下: WA1061 - 一括取消');
     const result = await showAlert('確認', messages.IA5013(), true);
     if (result) {
       //旧タグ配列初期化
@@ -336,12 +336,12 @@ const WA1061 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1061)');
+    await logUserAction('ボタン押下: WA1061 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       //遷移元画面セット
       setPrevScreenId('WA1040');
-      await logScreen('画面遷移:WA1061_旧タグ読込(土壌)');
+      await logScreen('画面遷移: WA1061 → WA1061_旧タグ読込(土壌)');
       navigation.navigate('WA1061');
     }
   };
@@ -350,13 +350,13 @@ const WA1061 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1061)');
+    await logUserAction('ボタン押下: WA1061 - 戻る');
     const result = await showAlert('確認', messages.IA5014(), true);
     if (result) {
       setBack(true);
       //旧タグリストを初期値にリセット
       resetWA1060OldTagInfos();
-      await logScreen('画面遷移:WA1060_新タグ読込(土壌)');
+      await logScreen('画面遷移: WA1061 → WA1060_新タグ読込(土壌)');
       navigation.navigate('WA1060');
     }
   };
@@ -365,8 +365,8 @@ const WA1061 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
-    await logUserAction('ボタン押下: 次へ(WA1061)');
-    await logScreen('画面遷移:WA1063_必須情報設定(土壌)');
+    await logUserAction('ボタン押下: WA1061 - 次へ');
+    await logScreen('画面遷移: WA1061 → WA1063_必須情報設定(土壌)');
     navigation.navigate('WA1063');
   };
 
@@ -452,7 +452,7 @@ const WA1061 = ({navigation}: Props) => {
             <TouchableOpacity
               style={[styles.detailButton, styles.updateButton]}
               onPress={async () => {
-                await logUserAction('ボタン押下: 設定(WA1061)');
+                await logUserAction('ボタン押下: WA1061 - 設定');
                 await btnSetting();
               }}>
               <Text style={[styles.detailButtonText, styles.settingButtonText]}>

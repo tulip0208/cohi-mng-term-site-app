@@ -81,12 +81,12 @@ const WA1066 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1066)');
+    await logUserAction('ボタン押下: WA1066 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       setBack(true);
       setPrevScreenId('WA1040');
-      await logScreen('画面遷移:WA1060_新タグ読込(土壌)');
+      await logScreen('画面遷移: WA1066 → WA1060_新タグ読込(土壌)');
       navigation.navigate('WA1060');
     }
   };
@@ -95,7 +95,7 @@ const WA1066 = ({navigation}: Props) => {
    * 送信ボタン処理
    ************************************************/
   const btnAppSend = async () => {
-    await logUserAction('ボタン押下: 送信(WA1066)');
+    await logUserAction('ボタン押下: WA1066 - 送信');
     setModalVisible(true);
     const dateStr = getCurrentDateTime();
     //共通タグが2:新タグの場合 紐付登録日時を更新
@@ -129,7 +129,7 @@ const WA1066 = ({navigation}: Props) => {
     setModalVisible(false);
     //遷移元画面IDを設定
     setPrevScreenId('WA1040');
-    await logScreen('画面遷移:WA1060_新タグ読込(土壌)');
+    await logScreen('画面遷移: WA1066 → WA1060_新タグ読込(土壌)');
     navigation.navigate('WA1060');
   };
 
@@ -137,10 +137,10 @@ const WA1066 = ({navigation}: Props) => {
    * 必須情報編集ボタン処理
    ************************************************/
   const btnEdtReq = async () => {
-    await logUserAction('ボタン押下: 必須情報編集(WA1066)');
+    await logUserAction('ボタン押下: WA1066 - 必須情報編集');
     //遷移元画面IDを設定
     setPrevScreenId('WA1066');
-    await logScreen('画面遷移:WA1063_必須情報設定(土壌)');
+    await logScreen('画面遷移: WA1066 → WA1063_必須情報設定(土壌)');
     navigation.navigate('WA1063');
   };
 
@@ -148,10 +148,10 @@ const WA1066 = ({navigation}: Props) => {
    * 重量・線量編集ボタン処理
    ************************************************/
   const btnEdtWtDs = async () => {
-    await logUserAction('ボタン押下: 重量・線量編集(WA1066)');
+    await logUserAction('ボタン押下: WA1066 - 重量・線量編集');
     //遷移元画面IDを設定
     setPrevScreenId('WA1066');
-    await logScreen('画面遷移:WA1064_重量・線量(土壌)');
+    await logScreen('画面遷移: WA1066 → WA1064_重量・線量(土壌)');
     navigation.navigate('WA1064');
   };
 
@@ -159,10 +159,10 @@ const WA1066 = ({navigation}: Props) => {
    * メモ編集ボタン処理
    ************************************************/
   const btnEdtMemo = async () => {
-    await logUserAction('ボタン押下: メモ編集(WA1066)');
+    await logUserAction('ボタン押下: WA1066 - メモ編集');
     //遷移元画面IDを設定
     setPrevScreenId('WA1066');
-    await logScreen('画面遷移:WA1065_メモ入力(土壌)');
+    await logScreen('画面遷移: WA1066 → WA1065_メモ入力(土壌)');
     navigation.navigate('WA1065');
   };
 

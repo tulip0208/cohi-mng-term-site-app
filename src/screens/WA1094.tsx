@@ -64,11 +64,11 @@ const WA1094 = ({navigation}: Props) => {
    ************************************************/
   const btnAppDestroy = async () => {
     setPrevScreenId('WA1040');
-    await logUserAction('ボタン押下: 破棄(WA1094)');
+    await logUserAction('ボタン押下: WA1094 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       setBack(true);
-      await logScreen('画面遷移:WA1090_新タグ読込(灰)');
+      await logScreen('画面遷移: WA1094 → WA1090_新タグ読込(灰)');
       navigation.navigate('WA1090');
     }
   };
@@ -77,7 +77,7 @@ const WA1094 = ({navigation}: Props) => {
    * 送信ボタン処理
    ************************************************/
   const btnAppSend = async () => {
-    await logUserAction('ボタン押下: 送信(WA1094)');
+    await logUserAction('ボタン押下: WA1094 - 送信');
     setModalVisible(true);
     const dateStr = getCurrentDateTime();
 
@@ -104,7 +104,7 @@ const WA1094 = ({navigation}: Props) => {
     setModalVisible(false);
     //遷移元画面IDを設定
     setPrevScreenId('WA1040');
-    await logScreen('画面遷移:WA1090_新タグ読込(灰)');
+    await logScreen('画面遷移: WA1094 → WA1090_新タグ読込(灰)');
     navigation.navigate('WA1090');
   };
 
@@ -112,10 +112,10 @@ const WA1094 = ({navigation}: Props) => {
    * 重量・線量編集ボタン処理
    ************************************************/
   const btnEdtWtDs = async () => {
-    await logUserAction('ボタン押下: 重量・線量編集(WA1094)');
+    await logUserAction('ボタン押下: WA1094 - 重量・線量編集');
     //遷移元画面IDを設定
     setPrevScreenId('WA1094');
-    await logScreen('画面遷移:WA1092_重量・線量(灰)');
+    await logScreen('画面遷移: WA1094 → WA1092_重量・線量(灰)');
     navigation.navigate('WA1092');
   };
 
@@ -123,10 +123,10 @@ const WA1094 = ({navigation}: Props) => {
    * メモ編集ボタン処理
    ************************************************/
   const btnEdtMemo = async () => {
-    await logUserAction('ボタン押下: メモ編集(WA1094)');
+    await logUserAction('ボタン押下: WA1094 - メモ編集');
     //遷移元画面IDを設定
     setPrevScreenId('WA1094');
-    await logScreen('画面遷移:WA1093_メモ入力(灰)');
+    await logScreen('画面遷移: WA1094 → WA1093_メモ入力(灰)');
     navigation.navigate('WA1093');
   };
 

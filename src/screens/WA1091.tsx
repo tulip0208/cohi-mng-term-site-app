@@ -78,12 +78,12 @@ const WA1091 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1091)');
+    await logUserAction('ボタン押下: WA1091 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       setBack(true);
       setPrevScreenId('WA1040');
-      await logScreen('画面遷移:WA1090_新タグ読込(灰)');
+      await logScreen('画面遷移: WA1091 → WA1090_新タグ読込(灰)');
       navigation.navigate('WA1090');
     }
   };
@@ -92,7 +92,7 @@ const WA1091 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1091)');
+    await logUserAction('ボタン押下: WA1091 - 戻る');
     const result = await showAlert('確認', messages.IA5014(), true);
     if (result) {
       // 一時領域をクリアする
@@ -107,7 +107,7 @@ const WA1091 = ({navigation}: Props) => {
       }); //旧タグ由来情報
       //遷移元画面IDを設定
       setPrevScreenId('WA1091');
-      await logScreen('画面遷移:WA1090_新タグ読込(灰)');
+      await logScreen('画面遷移: WA1091 → WA1090_新タグ読込(灰)');
       navigation.navigate('WA1090');
     }
   };
@@ -116,7 +116,7 @@ const WA1091 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
-    await logUserAction('ボタン押下: 次へ(WA1091)');
+    await logUserAction('ボタン押下: WA1091 - 次へ');
     setModalVisible(true);
     // 通信を実施
     const responseIFA0320 = await IFA0320(inputValue, WA1090WkPlac.wkplacId);
@@ -137,7 +137,7 @@ const WA1091 = ({navigation}: Props) => {
     });
     //遷移元画面IDを設定
     setPrevScreenId('WA1091');
-    await logScreen('画面遷移:WA1092_必須情報入力(灰)');
+    await logScreen('画面遷移: WA1091 → WA1092_必須情報入力(灰)');
     navigation.navigate('WA1092');
   };
 

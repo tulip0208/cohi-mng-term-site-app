@@ -239,12 +239,12 @@ const WA1070 = ({navigation}: Props) => {
 
     // モーダル非表示
     setModalVisible(false);
-    await logScreen('画面遷移:WA1071_新タグ参照(土壌)');
+    await logScreen('画面遷移: WA1070 → WA1071_新タグ参照(土壌)');
     navigation.navigate('WA1071');
   };
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
-    await logUserAction('ボタン押下: タグ読込');
+    await logUserAction('ボタン押下: WA1070 - タグ読込');
     setShowScannerTag(true);
   };
 
@@ -297,8 +297,8 @@ const WA1070 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1070)');
-    await logScreen('画面遷移:WA1040_メニュー');
+    await logUserAction('ボタン押下: WA1070 - 戻る');
+    await logScreen('画面遷移: WA1070 → WA1040_メニュー');
     navigation.navigate('WA1040');
   };
 
@@ -306,7 +306,7 @@ const WA1070 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
-    await logUserAction('ボタン押下: 次へ(WA1070)');
+    await logUserAction('ボタン押下: WA1070 - 次へ');
     // モーダル表示
     setModalVisible(true);
     // 新タグID参照処理実施
@@ -318,7 +318,7 @@ const WA1070 = ({navigation}: Props) => {
     }
     // モーダル非表示
     setModalVisible(false);
-    await logScreen('画面遷移:WA1071_新タグ参照(土壌)');
+    await logScreen('画面遷移: WA1070 → WA1071_新タグ参照(土壌)');
     navigation.navigate('WA1071');
   };
 

@@ -173,14 +173,16 @@ const WA1020 = ({navigation}: Props) => {
 
   // ユーザQRコードスキャンボタン押下時の処理
   const btnUserQr = async (): Promise<void> => {
-    await logUserAction('ボタン押下: QRコード読込(ユーザ)');
+    await logUserAction('ボタン押下: WA1020 - QRコード読込(ユーザ)');
 
     setShowScannerUsr(true);
   };
 
   // アクティベーションQRコードスキャンボタン押下時の処理
   const btnActQr = async (): Promise<void> => {
-    await logUserAction('ボタン押下: QRコード読込(アクティベーション)');
+    await logUserAction(
+      'ボタン押下: WA1020 - QRコード読込(アクティベーション)',
+    );
     setShowScannerActivate(true);
   };
 
@@ -188,7 +190,7 @@ const WA1020 = ({navigation}: Props) => {
    * 終了ボタン押下時のポップアップ表示
    ************************************************/
   const btnAppClose = async () => {
-    await logUserAction('ボタン押下: 終了(WA1030)');
+    await logUserAction('ボタン押下: WA1020 - 終了');
     const result = await showAlert('確認', messages.IA5001(), true);
     if (result) {
       BackHandler.exitApp();
@@ -199,7 +201,7 @@ const WA1020 = ({navigation}: Props) => {
    * 送信ボタン押下時の処理
    ************************************************/
   const btnSend = async () => {
-    await logUserAction('ボタン押下: 送信(WA1020)');
+    await logUserAction('ボタン押下: WA1020 - 送信');
     // モーダル表示
     setModalVisible(true);
     const hashedKey = await generateDeviceUniqueKey(); // デバイスIDと現在の日時からユニークなキーを生成し、SHA256でハッシュ化する関数
@@ -247,7 +249,7 @@ const WA1020 = ({navigation}: Props) => {
       setModalVisible(false);
 
       // ログイン画面へ遷移する
-      await logScreen('画面遷移: WA1030_ログイン');
+      await logScreen('画面遷移: WA1020 → WA1030_ログイン');
       navigation.navigate('WA1030');
     } catch (error) {
       // モーダル非表示

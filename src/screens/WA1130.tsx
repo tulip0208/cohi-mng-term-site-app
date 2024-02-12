@@ -178,7 +178,7 @@ const WA1130 = ({navigation}: Props) => {
 
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
-    await logUserAction('ボタン押下: 作業場所読込');
+    await logUserAction('ボタン押下: WA1130 - 作業場所読込');
     setShowScannerWkPlc(true);
   };
 
@@ -245,7 +245,7 @@ const WA1130 = ({navigation}: Props) => {
       setIFT0640Data(newDataDtl);
 
       setWA1130Data({...WA1130Data, wkplc: wkplc, wkplcTyp: wkplcTyp});
-      await logScreen('画面遷移:WA1131_荷下登録新タグ読込');
+      await logScreen('画面遷移: WA1130 → WA1131_荷下登録新タグ読込');
       navigation.navigate('WA1131');
     } else {
       //それ以外
@@ -258,7 +258,7 @@ const WA1130 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTrpCrd = async () => {
-    await logUserAction('ボタン押下: 輸送カード読込');
+    await logUserAction('ボタン押下: WA1130 - 輸送カード読込');
     setShowScannerCard(true);
   };
 
@@ -266,11 +266,11 @@ const WA1130 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1130)');
+    await logUserAction('ボタン押下: WA1130 - 戻る');
     if (!(await showAlert('確認', messages.IA5011(), true))) {
       return;
     }
-    await logScreen('画面遷移:WA1040_メニュー');
+    await logScreen('画面遷移: WA1130 → WA1040_メニュー');
     navigation.navigate('WA1040');
   };
 
