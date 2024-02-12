@@ -15,7 +15,6 @@ import {
   RecoilRoot,
   selector,
   snapshot_UNSTABLE,
-  useRecoilValue,
   useSetRecoilState,
 } from 'recoil';
 import {Text, View} from 'react-native';
