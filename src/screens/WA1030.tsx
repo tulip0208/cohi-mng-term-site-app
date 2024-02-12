@@ -32,6 +32,9 @@ import {
 import Crypto from 'react-native-aes-crypto';
 import {Buffer} from 'buffer';
 import {getCurrentDateTime} from '../utils/common';
+import RNRestart from 'react-native-restart';
+import {NativeModules} from 'react-native';
+const {ApkInstaller} = NativeModules;
 // WA1030 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1030'>;
 interface Props {
@@ -265,7 +268,6 @@ const WA1030 = ({navigation}: Props) => {
    ************************************************/
   const btnSend = async () => {
     await logUserAction('ボタン押下: WA1030 - 利用開始');
-
     // モーダル表示
     setModalVisible(true);
     try {
@@ -288,9 +290,9 @@ const WA1030 = ({navigation}: Props) => {
           // ユーザーが「はい」を選んだ場合、IFA0050を呼び出す
           const responseIFA0050 = await IFA0050();
           if (await apiIsError(responseIFA0050)) {
+            setModalVisible(true);
             return;
           }
-          // console.log("responseIFA0050.data :",responseIFA0050.data)
           // バイナリーデータを変換する
           if (responseIFA0050.data) {
             const arrayBuffer = Buffer.from(responseIFA0050.data);
@@ -300,20 +302,18 @@ const WA1030 = ({navigation}: Props) => {
             const filePath =
               RNFS.DocumentDirectoryPath + '/IFA0050_BinaryData.apk';
             await RNFS.writeFile(filePath, text, 'base64');
-          }
-
-          // バージョンアップ報告を要で更新
-          await saveToKeystore('verUpRep', {verUpRep: 1});
-          const result = await showAlert('通知', messages.IA5008(), false);
-          if (result) {
-            //アプリ再起動
-            setModalVisible(false); // モーダルを非表示にする
-            // ナビゲーションスタックをリセットして、初期画面に移動する
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'WA1030'}],
-            });
-            return;
+            // バージョンアップ報告を要で更新
+            await saveToKeystore('verUpRep', {verUpRep: 1});
+            const result = await showAlert('通知', messages.IA5008(), false);
+            if (result) {
+              //アプリ再起動
+              setModalVisible(false); // モーダルを非表示にする
+              // APKファイルのパスを指定してインストール
+              ApkInstaller.installApk(filePath);
+              // アプリを再起動
+              RNRestart.Restart();
+              return;
+            }
           }
         } else {
           console.log('利用開始を中止しました。');

@@ -13,6 +13,7 @@ import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
 import com.cms_site.SignalStrengthPackage // インポートを追加
 import com.cms_site.JISInputFilterPackage; // インポートを追加
+import com.cms_site.ApkInstallerPackage // インポートを追加
 
 class MainApplication : Application(), ReactApplication {
   override val reactNativeHost: ReactNativeHost =
@@ -23,6 +24,7 @@ class MainApplication : Application(), ReactApplication {
           val packages = PackageList(this).packages
           packages.add(SignalStrengthPackage()) // ここで 'add' を使っています
           packages.add(JISInputFilterPackage()) // この行を追加
+          packages.add(ApkInstallerPackage()) // この行を追加
           return packages
         }
 
