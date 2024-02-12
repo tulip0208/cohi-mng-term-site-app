@@ -15,7 +15,7 @@ import {useAlert} from '../components/AlertContext';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootList} from '../navigation/AppNavigator';
 // WA1040 用の navigation 型
-type NavigationProp = StackNavigationProp<RootList, 'WA1030'>;
+type NavigationProp = StackNavigationProp<RootList, 'WA1040'>;
 interface Props {
   navigation: NavigationProp;
 }
