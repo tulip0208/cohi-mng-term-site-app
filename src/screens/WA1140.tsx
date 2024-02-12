@@ -245,7 +245,7 @@ const WA1140 = ({navigation}: Props) => {
 
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
-    await logUserAction('ボタン押下: 作業場所読込');
+    await logUserAction('ボタン押下: WA1140 - 作業場所読込');
     setShowScannerWkPlc(true);
   };
 
@@ -278,7 +278,7 @@ const WA1140 = ({navigation}: Props) => {
       //新タグID参照処理
       if (await procNewTagId(String(newTagId))) {
         setModalVisible(false);
-        await logScreen('画面遷移:WA1141_定置場所入力');
+        await logScreen('画面遷移: WA1140 → WA1141_定置場所入力');
         navigation.navigate('WA1141');
       }
     } else if (type === 'CODABAR') {
@@ -293,7 +293,7 @@ const WA1140 = ({navigation}: Props) => {
       //新タグID参照処理
       if (await procNewTagId(String(newTagId))) {
         setModalVisible(false);
-        await logScreen('画面遷移:WA1141_定置場所入力');
+        await logScreen('画面遷移: WA1140 → WA1141_定置場所入力');
         navigation.navigate('WA1141');
       }
     } else {
@@ -307,7 +307,7 @@ const WA1140 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
-    await logUserAction('ボタン押下: タグ読込');
+    await logUserAction('ボタン押下: WA1140 - タグ読込');
     setShowScannerTag(true);
   };
 
@@ -360,13 +360,13 @@ const WA1140 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1140)');
+    await logUserAction('ボタン押下: WA1140 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       reset();
       setPrevScreenId('WA1040');
       setWa1141Back(true);
-      await logScreen('画面遷移:WA1140_新タグ読込(定置登録)');
+      await logScreen('画面遷移: WA1140 → WA1140_新タグ読込(定置登録)');
       navigation.navigate('WA1140');
     }
   };
@@ -375,8 +375,8 @@ const WA1140 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1140)');
-    await logScreen('画面遷移:WA1040_メニュー');
+    await logUserAction('ボタン押下: WA1140 - 戻る');
+    await logScreen('画面遷移: WA1140 → WA1040_メニュー');
     navigation.navigate('WA1040');
   };
 
@@ -384,7 +384,7 @@ const WA1140 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
-    await logUserAction('ボタン押下: 次へ(WA1140)');
+    await logUserAction('ボタン押下: WA1140 - 次へ');
     // モーダル表示
     setModalVisible(true);
     // 新タグID参照処理実施
@@ -396,7 +396,7 @@ const WA1140 = ({navigation}: Props) => {
     }
     // モーダル非表示
     setModalVisible(false);
-    await logScreen('画面遷移:WA1141_定置場所入力');
+    await logScreen('画面遷移: WA1140 → WA1141_定置場所入力');
     navigation.navigate('WA1141');
   };
 

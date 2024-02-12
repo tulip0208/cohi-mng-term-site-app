@@ -68,7 +68,7 @@ const WA1123 = ({navigation}: Props) => {
    * 更新ボタン処理
    ************************************************/
   const btnUpdate = async () => {
-    await logUserAction('ボタン押下: 更新(WA1123)');
+    await logUserAction('ボタン押下: WA1123 - 更新');
 
     setModalVisible(true);
     //通信処理 IFT0210 輸送カード承認状況
@@ -82,7 +82,7 @@ const WA1123 = ({navigation}: Props) => {
     const dataDtl = data.dtl[0] as IFT0210ResponseDtl;
     if (dataDtl.crdIsRlt === 1) {
       await showAlert('通知', messages.IA5023(), false);
-      await logScreen('画面遷移:WA1121_輸送カード申請新タグ読込');
+      await logScreen('画面遷移: WA1123 → WA1121_輸送カード申請新タグ読込');
       navigation.navigate('WA1121');
     } else {
       setIsViewUpdate(false);
@@ -94,12 +94,12 @@ const WA1123 = ({navigation}: Props) => {
    * 輸送カード申請ボタン処理
    ************************************************/
   const btnReqTrpCrd = async () => {
-    await logUserAction('ボタン押下: 輸送カード申請(WA1123)');
+    await logUserAction('ボタン押下: WA1123 - 輸送カード申請');
 
     const result = await showAlert('確認', messages.IA5022(), true);
     if (result) {
       setPrevScreenId('WA1040');
-      await logScreen('画面遷移:WA1120_輸送カード申請QRコード読込');
+      await logScreen('画面遷移: WA1123 → WA1120_輸送カード申請QRコード読込');
       navigation.navigate('WA1120');
     }
   };

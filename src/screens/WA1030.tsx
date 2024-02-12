@@ -239,13 +239,13 @@ const WA1030 = ({navigation}: Props) => {
 
   // ユーザQRコードスキャンボタン押下時の処理
   const btnUserQr = async () => {
-    await logUserAction('ボタン押下: QRコード読込(ユーザ)');
+    await logUserAction('ボタン押下: WA1030 - QRコード読込(ユーザ)');
     setShowScannerUsr(true);
   };
 
   // 作業場所QRコードスキャンボタン押下時の処理
   const btnWkplac = async () => {
-    await logUserAction('ボタン押下: QRコード読込(作業場所)');
+    await logUserAction('ボタン押下: WA1030 - QRコード読込(作業場所)');
     setShowScannerWkplac(true);
   };
 
@@ -253,7 +253,7 @@ const WA1030 = ({navigation}: Props) => {
    * 終了ボタン押下時のポップアップ表示
    ************************************************/
   const btnAppClose = async () => {
-    await logUserAction('ボタン押下: 終了(WA1030)');
+    await logUserAction('ボタン押下: WA1030 - 終了');
     const result = await showAlert('確認', messages.IA5001(), true);
     if (result) {
       BackHandler.exitApp();
@@ -264,7 +264,7 @@ const WA1030 = ({navigation}: Props) => {
    * 利用開始ボタン押下時の処理
    ************************************************/
   const btnSend = async () => {
-    await logUserAction('ボタン押下: 利用開始(WA1030)');
+    await logUserAction('ボタン押下: WA1030 - 利用開始');
 
     // モーダル表示
     setModalVisible(true);
@@ -390,7 +390,7 @@ const WA1030 = ({navigation}: Props) => {
       setModalVisible(false);
 
       // メニュー画面へ遷移する
-      await logScreen('画面遷移: WA1040_メニュー');
+      await logScreen('画面遷移: WA1030 → WA1040_メニュー');
       navigation.navigate('WA1040');
     } catch (error) {
       // モーダル非表示

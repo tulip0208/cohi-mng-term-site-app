@@ -164,11 +164,11 @@ const WA1122 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1122)');
+    await logUserAction('ボタン押下: WA1122 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       setPrevScreenId('WA1040');
-      await logScreen('画面遷移:WA1120_輸送カード申請QR読込');
+      await logScreen('画面遷移: WA1122 → WA1120_輸送カード申請QR読込');
       navigation.navigate('WA1120');
     }
   };
@@ -177,10 +177,10 @@ const WA1122 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1122)');
+    await logUserAction('ボタン押下: WA1122 - 戻る');
     const result = await showAlert('確認', messages.IA5014(), true);
     if (result) {
-      await logScreen('画面遷移:WA1121_輸送カード申請新タグ読込');
+      await logScreen('画面遷移: WA1122 → WA1121_輸送カード申請新タグ読込');
       navigation.navigate('WA1121');
     }
   };
@@ -189,7 +189,7 @@ const WA1122 = ({navigation}: Props) => {
    * 送信ボタン処理
    ************************************************/
   const btnAppSend = async () => {
-    await logUserAction('ボタン押下: 送信(WA1122)');
+    await logUserAction('ボタン押下: WA1122 - 送信');
 
     //線量_前、線量_左、線量_後、線量_右の値がいずれが[Realm].[設定ファイル].[荷台線量_上限閾値]を超える場合
     if (
@@ -394,7 +394,7 @@ const WA1122 = ({navigation}: Props) => {
     if (data.invCnt > 0 || dataDtl.trpCdAplRst === 1) {
       await showAlert('通知', messages.EA5015(), false);
       setModalVisible(false);
-      await logScreen('画面遷移:WA1121_輸送カード申請QRコード読込');
+      await logScreen('画面遷移: WA1122 → WA1121_輸送カード申請QRコード読込');
       navigation.navigate('WA1121');
     }
 
@@ -403,7 +403,7 @@ const WA1122 = ({navigation}: Props) => {
     const trpCardApRslt = dataDtl.trpCdAplRst;
     setWA1121Data({...WA1121Data, trpCardApRslt: String(trpCardApRslt)});
     setModalVisible(false);
-    await logScreen('画面遷移:WA1123_輸送カード申請結果表示');
+    await logScreen('画面遷移: WA1122 → WA1123_輸送カード申請結果表示');
     navigation.navigate('WA1123');
   };
 

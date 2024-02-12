@@ -263,7 +263,7 @@ const WA1060 = ({navigation}: Props) => {
   };
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
-    await logUserAction('ボタン押下: 作業場所読込');
+    await logUserAction('ボタン押下: WA1060 - 作業場所読込');
     setShowScannerWkPlc(true);
   };
 
@@ -326,7 +326,7 @@ const WA1060 = ({navigation}: Props) => {
       // QR・バーコード両方
       setModalVisible(false);
       setKbn('U');
-      await logScreen('画面遷移:WA1066_登録内容確認(土壌)');
+      await logScreen('画面遷移: WA1060 → WA1066_登録内容確認(土壌)');
       navigation.navigate('WA1066');
     } else if (
       type !== RNCamera.Constants.BarCodeType.qr &&
@@ -335,7 +335,7 @@ const WA1060 = ({navigation}: Props) => {
       // バーコードのみ 画面遷移
       setModalVisible(false);
       setKbn('U');
-      await logScreen('画面遷移:WA1063_必須情報設定(土壌)');
+      await logScreen('画面遷移: WA1060 → WA1063_必須情報設定(土壌)');
       navigation.navigate('WA1066');
     } else if (
       type !== RNCamera.Constants.BarCodeType.qr &&
@@ -344,7 +344,7 @@ const WA1060 = ({navigation}: Props) => {
       // バーコードのみ 画面遷移
       setModalVisible(false);
       setKbn('I');
-      await logScreen('画面遷移:WA1061_旧タグ読込(土壌)');
+      await logScreen('画面遷移: WA1060 → WA1061_旧タグ読込(土壌)');
       navigation.navigate('WA1061');
     } else if (type !== RNCamera.Constants.BarCodeType.qr) {
       // バーコードのみ 終了処理
@@ -430,13 +430,13 @@ const WA1060 = ({navigation}: Props) => {
     // モーダル非表示
     setModalVisible(false);
     setKbn('I');
-    await logScreen('画面遷移:WA1065_メモ入力(土壌)');
+    await logScreen('画面遷移: WA1060 → WA1065_メモ入力(土壌)');
     navigation.navigate('WA1065');
   };
 
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
-    await logUserAction('ボタン押下: タグ読込');
+    await logUserAction('ボタン押下: WA1060 - タグ読込');
     setShowScannerTag(true);
   };
 
@@ -473,13 +473,13 @@ const WA1060 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1060)');
+    await logUserAction('ボタン押下: WA1060 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       reset();
       setPrevScreenId('WA1040');
       setBack(true);
-      await logScreen('画面遷移:WA1060_新タグ読込(土壌)');
+      await logScreen('画面遷移: WA1060 → WA1060_新タグ読込(土壌)');
       navigation.navigate('WA1060');
     }
   };
@@ -488,10 +488,10 @@ const WA1060 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1060)');
+    await logUserAction('ボタン押下: WA1060 - 戻る');
     const result = await showAlert('確認', messages.IA5011(), true);
     if (result) {
-      await logScreen('画面遷移:WA1040_メニュー');
+      await logScreen('画面遷移: WA1060 → WA1040_メニュー');
       navigation.navigate('WA1040');
     }
   };
@@ -500,7 +500,7 @@ const WA1060 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
-    await logUserAction('ボタン押下: 次へ(WA1060)');
+    await logUserAction('ボタン押下: WA1060 - 次へ');
     // モーダル表示
     setModalVisible(true);
     // 新タグID参照処理実施
@@ -508,17 +508,17 @@ const WA1060 = ({navigation}: Props) => {
     if (retScreen === 'WA1066') {
       setModalVisible(false);
       setKbn('U');
-      await logScreen('画面遷移:WA1066_登録内容確認(土壌)');
+      await logScreen('画面遷移: WA1060 → WA1066_登録内容確認(土壌)');
       navigation.navigate('WA1066');
     } else if (retScreen === 'WA1063') {
       setModalVisible(false);
       setKbn('I');
-      await logScreen('画面遷移:WA1063_必須情報設定(土壌)');
+      await logScreen('画面遷移: WA1060 → WA1063_必須情報設定(土壌)');
       navigation.navigate('WA1063');
     } else if (retScreen === 'WA1061') {
       setModalVisible(false);
       setKbn('I');
-      await logScreen('画面遷移:WA1061_旧タグ読込(土壌)');
+      await logScreen('画面遷移: WA1060 → WA1061_旧タグ読込(土壌)');
       navigation.navigate('WA1061');
     } else {
       // モーダル非表示

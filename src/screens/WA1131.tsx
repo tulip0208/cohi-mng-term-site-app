@@ -133,7 +133,7 @@ const WA1131 = ({navigation}: Props) => {
   };
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
-    await logUserAction('ボタン押下: タグ読込');
+    await logUserAction('ボタン押下: WA1131 - タグ読込');
     setShowScannerTag(true);
   };
 
@@ -141,12 +141,12 @@ const WA1131 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1131)');
+    await logUserAction('ボタン押下: WA1131 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       setBack(true);
       setPrevScreenId('WA1040');
-      await logScreen('画面遷移:WA1130_荷下登録QR読込');
+      await logScreen('画面遷移: WA1131 → WA1130_荷下登録QR読込');
       navigation.navigate('WA1130');
     }
   };
@@ -155,7 +155,7 @@ const WA1131 = ({navigation}: Props) => {
    * 送信ボタン処理
    ************************************************/
   const btnAppSend = async () => {
-    await logUserAction('ボタン押下: 送信(WA1131)');
+    await logUserAction('ボタン押下: WA1131 - 送信');
     setModalVisible(true);
     let tripStatusKbn = '';
     //一時記憶領域の[輸送ステータス区分]を設定する。
@@ -234,7 +234,7 @@ const WA1131 = ({navigation}: Props) => {
     setModalVisible(false);
     setBack(true);
     setPrevScreenId('WA1040');
-    await logScreen('画面遷移:WA1130_荷下登録QR読込');
+    await logScreen('画面遷移: WA1131 → WA1130_荷下登録QR読込');
     navigation.navigate('WA1130');
   };
 
@@ -242,7 +242,7 @@ const WA1131 = ({navigation}: Props) => {
    * 設定ボタン処理
    ************************************************/
   const btnAppSet = async () => {
-    await logUserAction('ボタン押下: 設定(WA1131)');
+    await logUserAction('ボタン押下: WA1131 - 設定');
     if (!checkFormat(inputValue)) {
       await showAlert('通知', messages.EA5017(inputValue), false);
       return;
@@ -517,7 +517,7 @@ const WA1131 = ({navigation}: Props) => {
                   styles.settingButton3,
                 ]}
                 onPress={() => {
-                  logUserAction('ボタン押下: 戻る(WA1131)');
+                  logUserAction('ボタン押下: WA1131 - 戻る');
                   setInputValue('');
                   setInputVisible(false);
                 }}>

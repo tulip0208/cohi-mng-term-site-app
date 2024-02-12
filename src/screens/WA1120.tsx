@@ -184,7 +184,7 @@ const WA1120 = ({navigation}: Props) => {
 
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
-    await logUserAction('ボタン押下: 作業場所読込');
+    await logUserAction('ボタン押下: WA1120 - 作業場所読込');
     setShowScannerWkPlc(true);
   };
 
@@ -214,7 +214,7 @@ const WA1120 = ({navigation}: Props) => {
 
   // 車両コードスキャンボタン押下時の処理
   const btnCarQr = async () => {
-    await logUserAction('ボタン押下: 車両読込');
+    await logUserAction('ボタン押下: WA1120 - 車両読込');
     setShowScannerCarQr(true);
   };
 
@@ -240,7 +240,7 @@ const WA1120 = ({navigation}: Props) => {
 
   // 運転手コードスキャンボタン押下時の処理
   const btnDrvQr = async () => {
-    await logUserAction('ボタン押下: 運転手読込');
+    await logUserAction('ボタン押下: WA1120 - 運転手読込');
     setShowScannerDrvQr(true);
   };
 
@@ -271,7 +271,7 @@ const WA1120 = ({navigation}: Props) => {
 
   // 行先コードスキャンボタン押下時の処理
   const btnDestamQr = async () => {
-    await logUserAction('ボタン押下: 行先読込');
+    await logUserAction('ボタン押下: WA1120 - 行先読込');
     setShowScannerDestamQr(true);
   };
 
@@ -279,13 +279,13 @@ const WA1120 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1120)');
+    await logUserAction('ボタン押下: WA1120 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       reset();
       setPrevScreenId('WA1040');
       setBack(true);
-      await logScreen('画面遷移:WA1120_輸送カード申請');
+      await logScreen('画面遷移: WA1120 → WA1120_輸送カード申請');
       navigation.navigate('WA1120');
     }
   };
@@ -294,10 +294,10 @@ const WA1120 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1120)');
+    await logUserAction('ボタン押下: WA1120 - 戻る');
     const result = await showAlert('確認', messages.IA5011(), true);
     if (result) {
-      await logScreen('画面遷移:WA1040_メニュー');
+      await logScreen('画面遷移: WA1120 → WA1040_メニュー');
       navigation.navigate('WA1040');
     }
   };
@@ -306,7 +306,7 @@ const WA1120 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
-    await logUserAction('ボタン押下: 次へ(WA1120)');
+    await logUserAction('ボタン押下: WA1120 - 次へ');
     // モーダル表示
     setModalVisible(true);
     const dateStr = getCurrentDateTime();
@@ -333,7 +333,7 @@ const WA1120 = ({navigation}: Props) => {
     });
 
     setPrevScreenId('WA1120');
-    await logScreen('画面遷移:WA1121_輸送カード申請タグ読込');
+    await logScreen('画面遷移: WA1120 → WA1121_輸送カード申請タグ読込');
     navigation.navigate('WA1121');
   };
 

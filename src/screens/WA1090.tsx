@@ -236,7 +236,7 @@ const WA1090 = ({navigation}: Props) => {
 
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
-    await logUserAction('ボタン押下: 作業場所読込');
+    await logUserAction('ボタン押下: WA1090 - 作業場所読込');
     setShowScannerWkPlc(true);
   };
 
@@ -276,12 +276,12 @@ const WA1090 = ({navigation}: Props) => {
     setModalVisible(false);
     if (retScreen === 'WA1094') {
       setKbn('U');
-      await logScreen('画面遷移:WA1094_登録内容確認(灰)');
+      await logScreen('画面遷移: WA1090 → WA1094_登録内容確認(灰)');
       navigation.navigate('WA1094');
     } else if (retScreen === 'WA1091') {
       // 画面遷移
       setKbn('I');
-      await logScreen('画面遷移:WA1091_旧タグ読込(灰)');
+      await logScreen('画面遷移: WA1090 → WA1091_旧タグ読込(灰)');
       navigation.navigate('WA1091');
     } else {
       // 終了処理
@@ -290,7 +290,7 @@ const WA1090 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
-    await logUserAction('ボタン押下: タグ読込');
+    await logUserAction('ボタン押下: WA1090 - タグ読込');
     setShowScannerTag(true);
   };
 
@@ -323,13 +323,13 @@ const WA1090 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1090)');
+    await logUserAction('ボタン押下: WA1090 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       reset();
       setPrevScreenId('WA1040');
       setBack(true);
-      await logScreen('画面遷移:WA1090_新タグ読込(土壌)');
+      await logScreen('画面遷移: WA1090 → WA1090_新タグ読込(土壌)');
       navigation.navigate('WA1090');
     }
   };
@@ -338,10 +338,10 @@ const WA1090 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1090)');
+    await logUserAction('ボタン押下: WA1090 - 戻る');
     const result = await showAlert('確認', messages.IA5011(), true);
     if (result) {
-      await logScreen('画面遷移:WA1040_メニュー');
+      await logScreen('画面遷移: WA1090 → WA1040_メニュー');
       navigation.navigate('WA1040');
     }
   };
@@ -352,17 +352,17 @@ const WA1090 = ({navigation}: Props) => {
   const btnAppNext = async () => {
     // モーダル表示
     setModalVisible(true);
-    await logUserAction('ボタン押下: 次へ(WA1090)');
+    await logUserAction('ボタン押下: WA1090 - 次へ');
     // 新タグID参照処理実施
     const retScreen = await procBarCode('a' + inputValue + 'a');
     if (retScreen === 'WA1094') {
       setKbn('U');
-      await logScreen('画面遷移:WA1094_登録内容確認(灰)');
+      await logScreen('画面遷移: WA1090 → WA1094_登録内容確認(灰)');
       navigation.navigate('WA1094');
     } else if (retScreen === 'WA1091') {
       // 画面遷移
       setKbn('I');
-      await logScreen('画面遷移:WA1091_旧タグ読込(灰)');
+      await logScreen('画面遷移: WA1090 → WA1091_旧タグ読込(灰)');
       navigation.navigate('WA1091');
     } else {
       // 終了処理

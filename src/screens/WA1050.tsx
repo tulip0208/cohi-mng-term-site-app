@@ -90,7 +90,7 @@ const WA1050 = ({route, navigation}: Props) => {
    * ログ消去ボタン
    ************************************************/
   const btnDelLog = async () => {
-    await logUserAction('ボタン押下:ログ消去');
+    await logUserAction('WA1050 - ボタン押下:ログ消去');
     const IA5010_choise = await showAlert('確認', messages.IA5010(), true);
     // ユーザーの選択に応じた処理
     if (IA5010_choise) {
@@ -107,7 +107,7 @@ const WA1050 = ({route, navigation}: Props) => {
    * ログ送信ボタン
    ************************************************/
   const btnUpLog = async () => {
-    await logUserAction('ボタン押下:ログ送信');
+    await logUserAction('WA1050 - ボタン押下:ログ送信');
     const IA5006_choise = await showAlert('確認', messages.IA5006(), true);
     // ユーザーの選択に応じた処理
     if (IA5006_choise) {
@@ -142,7 +142,7 @@ const WA1050 = ({route, navigation}: Props) => {
    * 戻るボタン
    ************************************************/
   const btnBack = async () => {
-    await logUserAction('ボタン押下:戻る');
+    await logUserAction('WA1050 - ボタン押下:戻る');
     await logScreen(`画面遷移: ${sourceScreenId}`);
     navigation.navigate(sourceScreenId as 'WA1030' | 'WA1040');
   };

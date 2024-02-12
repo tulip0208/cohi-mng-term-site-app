@@ -74,10 +74,10 @@ const WA1141 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1141)');
+    await logUserAction('ボタン押下: WA1141 - 破棄');
     setBack(true);
     setPrevScreenId('WA1040');
-    await logScreen('画面遷移:WA1140_新タグ読込(定置登録)');
+    await logScreen('画面遷移: WA1141 → WA1140_新タグ読込(定置登録)');
     navigation.navigate('WA1140');
   };
 
@@ -85,7 +85,7 @@ const WA1141 = ({navigation}: Props) => {
    * 送信ボタン処理
    ************************************************/
   const btnAppSend = async () => {
-    await logUserAction('ボタン押下: 送信(WA1141)');
+    await logUserAction('ボタン押下: WA1141 - 送信');
     //段数で選択された値が、除去土壌種別ごとの閾値を超える場合
     const settingsInfo = realm.objects('settings')[0];
     // maxNosのマッピングを作成し、適切な型アノテーションを設定
@@ -171,7 +171,7 @@ const WA1141 = ({navigation}: Props) => {
     }
 
     setModalVisible(false);
-    await logScreen('画面遷移:WA1040_メニュー');
+    await logScreen('画面遷移: WA1141 → WA1040_メニュー');
     navigation.navigate('WA1040');
   };
 

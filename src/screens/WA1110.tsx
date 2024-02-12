@@ -142,7 +142,7 @@ const WA1110 = ({navigation}: Props) => {
 
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
-    await logUserAction('ボタン押下: 作業場所読込');
+    await logUserAction('ボタン押下: WA1110 - 作業場所読込');
     setShowScannerWkPlc(true);
   };
 
@@ -181,8 +181,8 @@ const WA1110 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1110)');
-    await logScreen('画面遷移:WA1040_メニュー');
+    await logUserAction('ボタン押下: WA1110 - 戻る');
+    await logScreen('画面遷移: WA1110 → WA1040_メニュー');
     navigation.navigate('WA1040');
   };
 
@@ -190,7 +190,7 @@ const WA1110 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
-    await logUserAction('ボタン押下: 次へ(WA1110)');
+    await logUserAction('ボタン押下: WA1110 - 次へ');
     // モーダル表示
     setModalVisible(true);
     // 旧タグID参照処理実施
@@ -202,7 +202,7 @@ const WA1110 = ({navigation}: Props) => {
     }
     // モーダル非表示
     setModalVisible(false);
-    await logScreen('画面遷移:WA1111_旧タグ参照(土壌)');
+    await logScreen('画面遷移: WA1110 → WA1111_旧タグ参照(土壌)');
     navigation.navigate('WA1111');
   };
 

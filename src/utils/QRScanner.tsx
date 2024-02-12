@@ -80,10 +80,12 @@ const QRScanner: React.FC<QRScannerProps> = ({
     };
   }, [isActive, camTimeout, errMsg, showAlert, closeModal]);
 
-  const handleBarCodeRead = ({type, data}: BarCodeReadEvent) => {
+  const handleBarCodeRead = async ({type, data}: BarCodeReadEvent) => {
     if (!scanned && isReadyToScan) {
       // isReadyToScan をチェック
       setScanned(true);
+      onScan(data, type); // スキャンデータを親コtypeンポーネントに渡す
+      await logUserAction(`読込タイプ：${type} - データ: ${data}`);
       onScan(data, type); // スキャンデータを親コンポーネントに渡す
     }
   };

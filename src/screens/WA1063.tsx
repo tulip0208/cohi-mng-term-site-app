@@ -110,12 +110,12 @@ const WA1063 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1063)');
+    await logUserAction('ボタン押下: WA1063 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       setBack(true);
       setPrevScreenId('WA1040');
-      await logScreen('画面遷移:WA1060_新タグ読込(土壌)');
+      await logScreen('画面遷移: WA1063 → WA1060_新タグ読込(土壌)');
       navigation.navigate('WA1060');
     }
   };
@@ -124,11 +124,11 @@ const WA1063 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1063)');
+    await logUserAction('ボタン押下: WA1063 - 戻る');
     if (prevScreenId === 'WA1066') {
       //遷移元画面IDを設定
       setPrevScreenId('WA1063');
-      await logScreen('画面遷移:WA1066_登録内容確認(土壌)');
+      await logScreen('画面遷移: WA1063 → WA1066_登録内容確認(土壌)');
       navigation.navigate('WA1066');
     } else {
       const result = await showAlert('確認', messages.IA5014(), true);
@@ -146,7 +146,7 @@ const WA1063 = ({navigation}: Props) => {
         });
         //遷移元画面IDを設定
         setPrevScreenId('WA1063');
-        await logScreen('画面遷移:WA1061_旧タグ読込(土壌)');
+        await logScreen('画面遷移: WA1063 → WA1061_旧タグ読込(土壌)');
         navigation.navigate('WA1061');
       }
     }
@@ -156,7 +156,7 @@ const WA1063 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
-    await logUserAction('ボタン押下: 次へ(WA1063)');
+    await logUserAction('ボタン押下: WA1063 - 次へ');
     // 一時領域に設定する
     setWA1060Data({
       ...WA1060Data,
@@ -171,12 +171,12 @@ const WA1063 = ({navigation}: Props) => {
     if (prevScreenId === 'WA1066') {
       //遷移元画面IDを設定
       setPrevScreenId('WA1063');
-      await logScreen('画面遷移:WA1066_登録内容確認(土壌)');
+      await logScreen('画面遷移: WA1063 → WA1066_登録内容確認(土壌)');
       navigation.navigate('WA1066');
     } else {
       //遷移元画面IDを設定
       setPrevScreenId('WA1063');
-      await logScreen('画面遷移:WA1064_重量・線量(土壌)');
+      await logScreen('画面遷移: WA1063 → WA1064_重量・線量(土壌)');
       navigation.navigate('WA1064');
     }
   };

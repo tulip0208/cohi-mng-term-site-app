@@ -108,11 +108,11 @@ const WA1062 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1062)');
+    await logUserAction('ボタン押下: WA1062 - 戻る');
     const result = await showAlert('確認', messages.IA5014(), true);
     if (result) {
       setBack(true);
-      await logScreen('画面遷移:WA1061_旧タグ読込(土壌)');
+      await logScreen('画面遷移: WA1062 → WA1061_旧タグ読込(土壌)');
       navigation.navigate('WA1061');
     }
   };
@@ -121,7 +121,7 @@ const WA1062 = ({navigation}: Props) => {
    * 設定ボタン処理
    ************************************************/
   const btnSetting = async () => {
-    await logUserAction('ボタン押下: 設定(WA1062)');
+    await logUserAction('ボタン押下: WA1062 - 設定');
     // 一時記憶領域の[旧タグ由来情報(配列)]の配列末尾[N]に追加する。
     setWA1060OldTagInfos([
       ...WA1060OldTagInfos,
@@ -161,7 +161,7 @@ const WA1062 = ({navigation}: Props) => {
         setWA1063MemoAuto(WA1061TagId + ':除去土壌等種別が異なる');
       }
     }
-    await logScreen('画面遷移:WA1061_旧タグ読込(土壌)');
+    await logScreen('画面遷移: WA1062 → WA1061_旧タグ読込(土壌)');
     navigation.navigate('WA1061');
   };
 

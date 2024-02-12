@@ -195,7 +195,7 @@ const WA1121 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
-    await logUserAction('ボタン押下: タグ読込');
+    await logUserAction('ボタン押下: WA1121 - タグ読込');
     //カメラ起動
     setShowScannerTag(true);
   };
@@ -204,12 +204,12 @@ const WA1121 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
-    await logUserAction('ボタン押下: 破棄(WA1121)');
+    await logUserAction('ボタン押下: WA1121 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
       //遷移元画面セット
       setPrevScreenId('WA1040');
-      await logScreen('画面遷移:WA1121_輸送カード申請QR読込');
+      await logScreen('画面遷移: WA1121 → WA1121_輸送カード申請QR読込');
       navigation.navigate('WA1121');
     }
   };
@@ -218,12 +218,12 @@ const WA1121 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
-    await logUserAction('ボタン押下: 戻る(WA1121)');
+    await logUserAction('ボタン押下: WA1121 - 戻る');
     const result = await showAlert('確認', messages.IA5014(), true);
     if (result) {
       //新タグリストを初期値にリセット
       resetWA1121Data();
-      await logScreen('画面遷移:WA1120_輸送カード申請QR読込');
+      await logScreen('画面遷移: WA1121 → WA1120_輸送カード申請QR読込');
       navigation.navigate('WA1120');
     }
   };
@@ -232,7 +232,7 @@ const WA1121 = ({navigation}: Props) => {
    * 送信ボタン処理
    ************************************************/
   const btnSend = async () => {
-    await logUserAction('ボタン押下: 送信(WA1121)');
+    await logUserAction('ボタン押下: WA1121 - 送信');
     setModalVisible(true);
 
     //継続不可能組み合わせ判定
@@ -347,7 +347,7 @@ const WA1121 = ({navigation}: Props) => {
     //輸送カード申請結果を更新
     const trpCardApRslt = responseIFT0130.data?.dtl[0].trpCdAplRst as number;
     setWA1121Data({...WA1121Data, trpCardApRslt: String(trpCardApRslt)});
-    await logScreen('画面遷移:WA1123_輸送カード申請結果表示');
+    await logScreen('画面遷移: WA1121 → WA1123_輸送カード申請結果表示');
     navigation.navigate('WA1123');
   };
 
@@ -355,7 +355,7 @@ const WA1121 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
-    await logUserAction('ボタン押下: 次へ(WA1121)');
+    await logUserAction('ボタン押下: WA1121 - 次へ');
 
     //[フレコン種別]＝"1:除去土壌"の場合
     if (WA1121Data.freTyp === '1') {
@@ -387,7 +387,7 @@ const WA1121 = ({navigation}: Props) => {
       }
     }
 
-    await logScreen('画面遷移:WA1122_輸送カード申請荷台高さ線量入力');
+    await logScreen('画面遷移: WA1121 → WA1122_輸送カード申請荷台高さ線量入力');
     navigation.navigate('WA1122');
   };
 
@@ -484,7 +484,7 @@ const WA1121 = ({navigation}: Props) => {
    * 設定ボタン処理
    ************************************************/
   const btnSetting = async () => {
-    await logUserAction('ボタン押下: 設定(WA1121)');
+    await logUserAction('ボタン押下: WA1121 - 設定');
     if (!checkFormat(inputValue)) {
       await showAlert('通知', messages.EA5017(inputValue), false);
       return;
@@ -928,7 +928,7 @@ const WA1121 = ({navigation}: Props) => {
                 styles.labelTextNarrowMore,
               ]}
               onPress={async () => {
-                await logUserAction('ボタン押下: 設定(WA1121)');
+                await logUserAction('ボタン押下: WA1121 - 設定');
                 await btnSetting();
               }}>
               <Text style={[styles.detailButtonText, styles.settingButtonText]}>

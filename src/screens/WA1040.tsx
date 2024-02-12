@@ -53,7 +53,7 @@ const WA1040 = ({navigation}: Props) => {
    * 終了ボタン押下時のポップアップ表示
    ************************************************/
   const btnAppClose = async () => {
-    await logUserAction('ボタン押下: 終了(WA1040)');
+    await logUserAction('ボタン押下: WA1040 - 終了');
     const result = await showAlert('確認', messages.IA5001(), true);
     if (result) {
       BackHandler.exitApp();
@@ -61,56 +61,56 @@ const WA1040 = ({navigation}: Props) => {
   };
 
   const btnNewTagRegSol = async () => {
-    await logUserAction('ボタン押下:新タグ紐付(土壌)');
-    await logScreen('画面遷移:WA1060_新タグ紐付(土壌)');
+    await logUserAction('WA1040 - ボタン押下:新タグ紐付(土壌)');
+    await logScreen('画面遷移: WA1040 → WA1060_新タグ紐付(土壌)');
     navigation.navigate('WA1060');
   };
 
   const btnNewTagAsh = async () => {
-    await logUserAction('ボタン押下:新タグ紐付(灰)');
-    await logScreen('画面遷移:WA1090_新タグ紐付(灰)');
+    await logUserAction('WA1040 - ボタン押下:新タグ紐付(灰)');
+    await logScreen('画面遷移: WA1040 → WA1090_新タグ紐付(灰)');
     navigation.navigate('WA1090');
   };
 
   const btnNewTagRefSol = async () => {
-    await logUserAction('ボタン押下:新タグID参照(土壌)');
-    await logScreen('画面遷移:WA1070_新タグID参照(土壌)');
+    await logUserAction('WA1040 - ボタン押下:新タグID参照(土壌)');
+    await logScreen('画面遷移: WA1040 → WA1070_新タグID参照(土壌)');
     navigation.navigate('WA1070');
   };
 
   const btnNewTagRefAsh = async () => {
-    await logUserAction('ボタン押下:新タグID参照(灰)');
-    await logScreen('画面遷移:WA1100_新タグID参照(灰)');
+    await logUserAction('WA1040 - ボタン押下:新タグID参照(灰)');
+    await logScreen('画面遷移: WA1040 → WA1100_新タグID参照(灰)');
     navigation.navigate('WA1100');
   };
 
   const btnOldTagRefSol = async () => {
-    await logUserAction('ボタン押下:旧タグ参照(土壌)');
-    await logScreen('画面遷移:WA1080_旧タグ参照(土壌)');
+    await logUserAction('WA1040 - ボタン押下:旧タグ参照(土壌)');
+    await logScreen('画面遷移: WA1040 → WA1080_旧タグ参照(土壌)');
     navigation.navigate('WA1080');
   };
 
   const btnOldTagRefAsh = async () => {
-    await logUserAction('ボタン押下: 旧タグID参照(灰)');
-    await logScreen('画面遷移:WA1110_旧タグID参照(灰)');
+    await logUserAction('ボタン押下: WA1040 - 旧タグID参照(灰)');
+    await logScreen('画面遷移: WA1040 → WA1110_旧タグID参照(灰)');
     navigation.navigate('WA1110');
   };
 
   const btnTrpCrd = async () => {
-    await logUserAction('ボタン押下: 輸送カード申請');
-    await logScreen('画面遷移:WA1120_輸送カード申請');
+    await logUserAction('ボタン押下: WA1040 - 輸送カード申請');
+    await logScreen('画面遷移: WA1040 → WA1120_輸送カード申請');
     navigation.navigate('WA1120');
   };
 
   const btnNsReg = async () => {
-    await logUserAction('ボタン押下: 荷下登録');
-    await logScreen('画面遷移:WA1130_荷下登録');
+    await logUserAction('ボタン押下: WA1040 - 荷下登録');
+    await logScreen('画面遷移: WA1040 → WA1130_荷下登録');
     navigation.navigate('WA1130');
   };
 
   const btnStyReg = async () => {
-    await logUserAction('ボタン押下: 定置登録');
-    await logScreen('画面遷移:WA1140_定置登録');
+    await logUserAction('ボタン押下: WA1040 - 定置登録');
+    await logScreen('画面遷移: WA1040 → WA1140_定置登録');
     navigation.navigate('WA1140');
   };
 
