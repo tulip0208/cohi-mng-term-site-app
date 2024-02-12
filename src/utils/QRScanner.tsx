@@ -84,7 +84,7 @@ const QRScanner: React.FC<QRScannerProps> = ({
     if (!scanned && isReadyToScan) {
       // isReadyToScan をチェック
       setScanned(true);
-      await logUserAction(`読込タイプ：${type} - データ: ${data}`);
+      await logUserAction(`カメラ読込: タイプ[${type}] データ[${data}]`);
       onScan(data, type); // スキャンデータを親コンポーネントに渡す
     }
   };

@@ -61,31 +61,31 @@ const WA1040 = ({navigation}: Props) => {
   };
 
   const btnNewTagRegSol = async () => {
-    await logUserAction('WA1040 - ボタン押下:新タグ紐付(土壌)');
+    await logUserAction('ボタン押下: WA1040 - 新タグ紐付(土壌)');
     await logScreen('画面遷移: WA1040 → WA1060_新タグ紐付(土壌)');
     navigation.navigate('WA1060');
   };
 
   const btnNewTagAsh = async () => {
-    await logUserAction('WA1040 - ボタン押下:新タグ紐付(灰)');
+    await logUserAction('ボタン押下: WA1040 - 新タグ紐付(灰)');
     await logScreen('画面遷移: WA1040 → WA1090_新タグ紐付(灰)');
     navigation.navigate('WA1090');
   };
 
   const btnNewTagRefSol = async () => {
-    await logUserAction('WA1040 - ボタン押下:新タグID参照(土壌)');
+    await logUserAction('ボタン押下: WA1040 - 新タグID参照(土壌)');
     await logScreen('画面遷移: WA1040 → WA1070_新タグID参照(土壌)');
     navigation.navigate('WA1070');
   };
 
   const btnNewTagRefAsh = async () => {
-    await logUserAction('WA1040 - ボタン押下:新タグID参照(灰)');
+    await logUserAction('ボタン押下: WA1040 - 新タグID参照(灰)');
     await logScreen('画面遷移: WA1040 → WA1100_新タグID参照(灰)');
     navigation.navigate('WA1100');
   };
 
   const btnOldTagRefSol = async () => {
-    await logUserAction('WA1040 - ボタン押下:旧タグ参照(土壌)');
+    await logUserAction('ボタン押下: WA1040 - 旧タグ参照(土壌)');
     await logScreen('画面遷移: WA1040 → WA1080_旧タグ参照(土壌)');
     navigation.navigate('WA1080');
   };

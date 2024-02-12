@@ -181,7 +181,7 @@ const WA1020 = ({navigation}: Props) => {
   // アクティベーションQRコードスキャンボタン押下時の処理
   const btnActQr = async (): Promise<void> => {
     await logUserAction(
-      'WA1020 - ボタン押下: QRコード読込(アクティベーション)',
+      'ボタン押下: WA1020 - QRコード読込(アクティベーション)',
     );
     setShowScannerActivate(true);
   };

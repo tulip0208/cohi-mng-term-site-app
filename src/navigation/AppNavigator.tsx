@@ -154,7 +154,7 @@ const AppNavigator = () => {
         ) {
           // [位置情報取得間隔]の間隔で位置情報の取得を開始する。
           await watchLocation();
-          await logScreen('画面遷移: WAWA1040_メニュー');
+          await logScreen('画面遷移: WA1040_メニュー');
           setInitialRoute('WA1040'); // ログイン済みの場合、メニュー画面起動
         } else {
           // realm-ログイン情報・ユーザクリア
@@ -170,11 +170,11 @@ const AppNavigator = () => {
             }
           });
 
-          await logScreen('画面遷移:: WA1030_ログイン');
+          await logScreen('画面遷移: WA1030_ログイン');
           setInitialRoute('WA1030'); // アクティベーション情報がない・アクティベージョン済の場合、ログイン画面に設定
         }
       } else {
-        await logScreen('画面遷移:: WA1020_アクティベーション');
+        await logScreen('画面遷移: WA1020_アクティベーション');
         setInitialRoute('WA1020'); // アクティベーション画面へ遷移
       }
       setIsLoading(false); // ローディング完了
