@@ -266,7 +266,8 @@ const WA1050 = ({route, navigation}: Props) => {
         <TouchableOpacity
           style={getButtonStyle(1)}
           onPress={btnDelLog}
-          disabled={isDisabled}>
+          disabled={isDisabled}
+          testID="logDelete">
           <Text style={getTextStyle()}>ログ消去</Text>
         </TouchableOpacity>
         <TouchableOpacity
