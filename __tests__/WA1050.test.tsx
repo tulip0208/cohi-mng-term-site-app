@@ -1,16 +1,15 @@
 import React from 'react';
-import {render, waitFor, act, fireEvent } from '@testing-library/react-native';
+import {render, waitFor, act, fireEvent} from '@testing-library/react-native';
 import {RecoilRoot} from 'recoil';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootList} from '../src/navigation/AppNavigator';
 import {RouteProp} from '@react-navigation/native';
 import bundledSettingsPath from '../assets/data/settings.json';
 import WA1050 from '../src/screens/WA1050';
-import { checkLogFile } from '../src/utils/Log';
+import {checkLogFile} from '../src/utils/Log';
 import messages from '../src/utils/messages';
-import { IFA0020 } from '../src/utils/Api';
-import { ApiResponse } from '../src/types/type';
-
+import {IFA0020} from '../src/utils/Api';
+import {ApiResponse} from '../src/types/type';
 
 const mockNavigate = jest.fn();
 // navigationオブジェクトのモック
@@ -32,14 +31,16 @@ const mockRouter = {
 jest.mock('react-native/Libraries/Utilities/Dimensions', () => ({
   __esModule: true,
   default: {
-    get: jest.fn(() => Promise.resolve({
-      width: 375,
-      height: 812,
-      scale: 1,
-      fontScale: 1.5,
-    })),
+    get: jest.fn(() =>
+      Promise.resolve({
+        width: 375,
+        height: 812,
+        scale: 1,
+        fontScale: 1.5,
+      }),
+    ),
     set: jest.fn(),
-  }
+  },
 }));
 
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
@@ -114,7 +115,22 @@ jest.mock('react-native-device-info', () => {
   };
 });
 
-jest.mock( 'react-native/Libraries/Utilities/NativePlatformConstantsIOS', () => ({ ...jest.requireActual( 'react-native/Libraries/Utilities/NativePlatformConstantsIOS', ), getConstants: () => ({ forceTouchAvailable: false, interfaceIdiom: 'en', isTesting: false, osVersion: 'ios', reactNativeVersion: { major: 60, minor: 1, patch: 0, }, systemName: 'ios', }), }), )
+jest.mock(
+  'react-native/Libraries/Utilities/NativePlatformConstantsIOS',
+  () => ({
+    ...jest.requireActual(
+      'react-native/Libraries/Utilities/NativePlatformConstantsIOS',
+    ),
+    getConstants: () => ({
+      forceTouchAvailable: false,
+      interfaceIdiom: 'en',
+      isTesting: false,
+      osVersion: 'ios',
+      reactNativeVersion: {major: 60, minor: 1, patch: 0},
+      systemName: 'ios',
+    }),
+  }),
+);
 
 jest.mock('../src/utils/KeyStore', () => ({
   saveToKeystore: jest.fn(),
@@ -138,7 +154,7 @@ jest.mock('../src/utils/Log', () => ({
   calculateTotalLogSize: jest.fn(),
   deleteLogs: jest.fn(),
   compressLogFiles: jest.fn(),
-  deleteLogFile: jest.fn()
+  deleteLogFile: jest.fn(),
 }));
 
 jest.mock('../src/utils/Api', () => ({
@@ -203,12 +219,12 @@ describe('WA1050 screen', () => {
         <WA1050 route={mockRouter} navigation={mockNavigation} />
       </RecoilRoot>,
     );
-    
+
     const triggerButton = getByTestId('logDelete');
     await act(async () => {
-      fireEvent(triggerButton, 'accessibilityAction', { disabled: false });
+      fireEvent(triggerButton, 'accessibilityAction', {disabled: false});
     });
-    
+
     await act(async () => {
       fireEvent.press(triggerButton);
     });
@@ -237,7 +253,7 @@ describe('WA1050 screen', () => {
     const triggerButton = getByText(/ログ送信/);
 
     await act(async () => {
-      fireEvent(triggerButton, 'accessibilityAction', { disabled: false });
+      fireEvent(triggerButton, 'accessibilityAction', {disabled: false});
     });
 
     await act(async () => {
@@ -267,7 +283,7 @@ describe('WA1050 screen', () => {
     const triggerButton = getByText(/ログ送信/);
 
     await act(async () => {
-      fireEvent(triggerButton, 'accessibilityAction', { disabled: false });
+      fireEvent(triggerButton, 'accessibilityAction', {disabled: false});
     });
 
     await act(async () => {
@@ -293,7 +309,7 @@ describe('WA1050 screen', () => {
     const triggerButton = getByText(/ログ送信/);
 
     await act(async () => {
-      fireEvent(triggerButton, 'accessibilityAction', { disabled: false });
+      fireEvent(triggerButton, 'accessibilityAction', {disabled: false});
     });
 
     await act(async () => {
@@ -319,7 +335,7 @@ describe('WA1050 screen', () => {
     const triggerButton = getByText(/ログ送信/);
 
     await act(async () => {
-      fireEvent(triggerButton, 'accessibilityAction', { disabled: false });
+      fireEvent(triggerButton, 'accessibilityAction', {disabled: false});
     });
 
     await act(async () => {
@@ -338,7 +354,7 @@ describe('WA1050 screen', () => {
     const triggerButton = getByText(/ログ送信/);
 
     await act(async () => {
-      fireEvent(triggerButton, 'accessibilityAction', { disabled: false });
+      fireEvent(triggerButton, 'accessibilityAction', {disabled: false});
     });
 
     await act(async () => {
