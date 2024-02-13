@@ -113,7 +113,6 @@ describe('WA1071 Screen', () => {
       </RecoilRoot>,
     );
 
-    await waitFor(() => {});
     // 作業場所
     expect(
       findByText(`作業場所：${mockWA1070Data?.head.wkplcTyp}`),

@@ -354,7 +354,6 @@ describe('WA1070 Screen', () => {
 
     // 長押しする
     await act(async () => {
-      console.log('...............');
       fireEvent(getByTestId('info-msg'), 'onPressIn');
     });
 
@@ -484,7 +483,7 @@ describe('WA1070 Screen', () => {
       jest.advanceTimersByTime(1005);
     });
 
-    // timeout error
+    // codeHttp200 error
     expect(mockShowAlert).toHaveBeenCalledWith(
       '通知',
       messages.EA5004('', 500),
@@ -521,7 +520,7 @@ describe('WA1070 Screen', () => {
       jest.advanceTimersByTime(1005);
     });
 
-    // timeout error
+    // codeRsps01 error
     expect(mockShowAlert).toHaveBeenCalledWith(
       '通知',
       messages.EA5005('', 'ERROR_500'),
@@ -889,7 +888,11 @@ describe('WA1070 Screen', () => {
   it('成功 WA1071帰還処理', async () => {
     const RecoilUpdate = () => {
       const setState = useSetRecoilState(WA1071BackState);
-      setTimeout(() => setState(true), 1000);
+      setTimeout(() => {
+        act(() => {
+          setState(true);
+        });
+      }, 1000);
       return null;
     };
 
