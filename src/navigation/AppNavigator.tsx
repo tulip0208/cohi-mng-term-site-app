@@ -116,7 +116,6 @@ const AppNavigator = () => {
           'verUpRep',
         )) as verUpRep;
         //バージョンアップ報告=1:"要"の場合
-        console.log(verUpRepKeyStore);
         if (verUpRepKeyStore && verUpRepKeyStore.verUpRep === 1) {
           // サーバー通信処理（Api.js内の関数を呼び出し
           try {
