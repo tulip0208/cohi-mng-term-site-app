@@ -306,7 +306,8 @@ const WA1030 = ({navigation}: Props) => {
             await saveToKeystore('verUpRep', {verUpRep: 1});
             const result = await showAlert('通知', messages.IA5008(), false);
             if (result) {
-              //アプリ再起動
+              // 設定realmを削除
+              await deleteRealm('settings');
               setModalVisible(false); // モーダルを非表示にする
               // APKファイルのパスを指定してインストール
               ApkInstaller.installApk(filePath);
