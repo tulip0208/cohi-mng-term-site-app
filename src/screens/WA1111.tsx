@@ -58,13 +58,26 @@ const WA1111 = ({navigation}: Props) => {
 
       {/* 上段 */}
       <View style={[styles.main]}>
-        <Text style={[styles.labelText]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           作業場所：{WA1110Data?.head.wkplcTyp}
         </Text>
-        <Text style={[styles.labelText, styles.labelTextPlace]}>
+        <Text
+          style={[
+            styles.labelText,
+            styles.labelTextPlace,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {WA1110Data?.head.wkplc}
         </Text>
-        <Text style={[styles.labelText]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           旧タグID：{WA1110Data?.head.oldTagId}
         </Text>
       </View>
@@ -79,7 +92,10 @@ const WA1111 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelText}>
+              <Text
+                style={[styles.labelText, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
                 {CT0054[WA1110Data?.data.ashTyp as number]}
               </Text>
             </View>
@@ -91,7 +107,12 @@ const WA1111 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelText}>{WA1110Data?.data.meaRa}</Text>
+              <Text
+                style={[styles.labelText, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {WA1110Data?.data.meaRa}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>

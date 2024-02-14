@@ -239,13 +239,26 @@ const WA1081 = ({navigation}: Props) => {
 
       {/* 上段 */}
       <View style={[styles.main]}>
-        <Text style={[styles.labelText]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           作業場所：{WA1080Data?.head.wkplcTyp}
         </Text>
-        <Text style={[styles.labelText, styles.labelTextPlace]}>
+        <Text
+          style={[
+            styles.labelText,
+            styles.labelTextPlace,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {WA1080Data?.head.wkplc}
         </Text>
-        <Text style={[styles.labelText]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           旧タグID：{WA1080Data?.head.oldTagId}
         </Text>
       </View>

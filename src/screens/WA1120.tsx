@@ -396,7 +396,14 @@ const WA1120 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell5, styles.alignLeft]}>
-                <Text style={[styles.labelText, styles.alignLeft]}>
+                <Text
+                  style={[
+                    styles.labelText,
+                    styles.alignLeft,
+                    styles.labelTextOver,
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {wkplcTyp}
                 </Text>
               </View>
@@ -408,7 +415,14 @@ const WA1120 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell5, styles.alignLeft]}>
-                <Text style={[styles.labelTextNarrow, styles.alignLeft]}>
+                <Text
+                  style={[
+                    styles.labelTextNarrow,
+                    styles.alignLeft,
+                    styles.labelTextOver,
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {wkplc}
                 </Text>
               </View>
@@ -428,7 +442,14 @@ const WA1120 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell5, styles.alignLeft]}>
-                <Text style={[styles.labelText, styles.alignLeft]}>
+                <Text
+                  style={[
+                    styles.labelText,
+                    styles.alignLeft,
+                    styles.labelTextOver,
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {carPlate}
                 </Text>
               </View>
@@ -448,7 +469,14 @@ const WA1120 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell5, styles.alignLeft]}>
-                <Text style={[styles.labelText, styles.alignLeft]}>
+                <Text
+                  style={[
+                    styles.labelText,
+                    styles.alignLeft,
+                    styles.labelTextOver,
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {drvNm}
                 </Text>
               </View>
@@ -468,7 +496,14 @@ const WA1120 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell5, styles.alignLeft]}>
-                <Text style={[styles.labelText, styles.alignLeft]}>
+                <Text
+                  style={[
+                    styles.labelText,
+                    styles.alignLeft,
+                    styles.labelTextOver,
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {destinationNm}
                 </Text>
               </View>

@@ -120,7 +120,7 @@ const WA1060 = ({navigation}: Props) => {
           wkplacId: place.tmpPlacId as string, //作業場所ID
           wkplacNm: place.tmpPlacNm as string, //作業場所名
           delSrcTyp: place.delSrcTyp as string, //搬出元種別
-          wkplac: wkplcTyp, //作業場所
+          wkplac: '仮置場', //作業場所
         });
         setWkplc(place.tmpPlacNm as string);
         setDelSrcTyp(place.delSrcTyp as number);
@@ -580,8 +580,22 @@ const WA1060 = ({navigation}: Props) => {
 
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText]}>作業場所：{wkplcTyp}</Text>
-          <Text style={[styles.labelText, styles.labelTextPlace]}>{wkplc}</Text>
+          <Text
+            style={[styles.labelText, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            作業場所：{wkplcTyp}
+          </Text>
+          <Text
+            style={[
+              styles.labelText,
+              styles.labelTextPlace,
+              styles.labelTextOver,
+            ]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {wkplc}
+          </Text>
           <TouchableOpacity
             style={[styles.button, styles.buttonSmall, styles.centerButton]}
             onPress={btnWkPlcQr}>

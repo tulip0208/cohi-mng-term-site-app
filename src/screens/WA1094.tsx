@@ -116,7 +116,7 @@ const WA1094 = ({navigation}: Props) => {
     //遷移元画面IDを設定
     setPrevScreenId('WA1094');
     await logScreen('画面遷移: WA1094 → WA1092_重量・線量(灰)');
-    navigation.navigate('WA1092');
+    navigation.navigate('WA1094');
   };
 
   /************************************************
@@ -177,16 +177,32 @@ const WA1094 = ({navigation}: Props) => {
         />
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText]}>
+          <Text
+            style={[styles.labelText, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             作業場所：{WA1090WkPlac.wkplac}
           </Text>
-          <Text style={[styles.labelTextNarrow, styles.labelTextPlace]}>
+          <Text
+            style={[
+              styles.labelTextNarrow,
+              styles.labelTextPlace,
+              styles.labelTextOver,
+            ]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             {WA1090WkPlac.wkplacNm}
           </Text>
-          <Text style={[styles.labelTextNarrow, styles.bold]}>
+          <Text
+            style={[styles.labelTextNarrow, styles.bold, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             新タグID：{newTagId}
           </Text>
-          <Text style={[styles.labelTextNarrow, styles.bold]}>
+          <Text
+            style={[styles.labelTextNarrow, styles.bold, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             旧タグID：{WA1091OldTagInfo.oldTagId}
           </Text>
 
@@ -198,7 +214,10 @@ const WA1094 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.labelTextNarrow}>
+                <Text
+                  style={[styles.labelTextNarrow, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {WA1092WtDs.caLgSdBgWt ?? ''}
                 </Text>
               </View>
@@ -210,7 +229,10 @@ const WA1094 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.labelTextNarrow}>
+                <Text
+                  style={[styles.labelTextNarrow, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {WA1092WtDs.caLgSdBgDs ?? ''}
                 </Text>
               </View>
@@ -222,7 +244,10 @@ const WA1094 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.labelTextNarrow}>
+                <Text
+                  style={[styles.labelTextNarrow, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {WA1091OldTagInfo.meaRa}
                 </Text>
               </View>

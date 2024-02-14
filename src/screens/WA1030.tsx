@@ -444,13 +444,23 @@ const WA1030 = ({navigation}: Props) => {
 
       {/* 中段 */}
       <View style={[styles.main, styles.topContent]}>
-        <Text style={styles.labelText}>利用者：{userName}</Text>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          利用者：{userName}
+        </Text>
         <TouchableOpacity
           style={[styles.button, styles.buttonRead]}
           onPress={btnUserQr}>
           <Text style={styles.buttonText}>利用者読込</Text>
         </TouchableOpacity>
-        <Text style={styles.labelText}>作業場所：{wkplac}</Text>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          作業場所：{wkplac}
+        </Text>
         <TouchableOpacity
           style={[styles.button, styles.buttonRead]}
           onPress={btnWkplac}>

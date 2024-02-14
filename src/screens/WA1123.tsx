@@ -150,8 +150,20 @@ const WA1123 = ({navigation}: Props) => {
 
       {/* 上段 */}
       <View style={[styles.main]}>
-        <Text style={[styles.labelText]}>作業場所：{WA1120Data.wkplcTyp}</Text>
-        <Text style={[styles.labelTextNarrow, styles.labelTextPlace]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          作業場所：{WA1120Data.wkplcTyp}
+        </Text>
+        <Text
+          style={[
+            styles.labelTextNarrow,
+            styles.labelTextPlace,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {WA1120Data.wkplc}
         </Text>
       </View>
@@ -166,7 +178,12 @@ const WA1123 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelTextNarrow}>{WA1120Car.carNo}</Text>
+              <Text
+                style={[styles.labelTextNarrow, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {WA1120Car.carNo}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -176,7 +193,12 @@ const WA1123 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelTextNarrow}>{WA1120Drv.drvNm}</Text>
+              <Text
+                style={[styles.labelTextNarrow, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {WA1120Drv.drvNm}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -186,7 +208,12 @@ const WA1123 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelTextNarrow}>{WA1120Dest.fixPlacNm}</Text>
+              <Text
+                style={[styles.labelTextNarrow, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {WA1120Dest.fixPlacNm}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -196,7 +223,12 @@ const WA1123 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelTextNarrow}>{WA1120TrpCardNo}</Text>
+              <Text
+                style={[styles.labelTextNarrow, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {WA1120TrpCardNo}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>

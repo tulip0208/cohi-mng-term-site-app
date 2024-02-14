@@ -389,8 +389,22 @@ const WA1080 = ({navigation}: Props) => {
 
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText]}>作業場所：{wkplcTyp}</Text>
-          <Text style={[styles.labelText, styles.labelTextPlace]}>{wkplc}</Text>
+          <Text
+            style={[styles.labelText, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            作業場所：{wkplcTyp}
+          </Text>
+          <Text
+            style={[
+              styles.labelText,
+              styles.labelTextPlace,
+              styles.labelTextOver,
+            ]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {wkplc}
+          </Text>
           <TouchableOpacity
             style={[styles.button, styles.buttonSmall, styles.centerButton]}
             onPress={btnWkPlcQr}>

@@ -373,8 +373,20 @@ const WA1131 = ({navigation}: Props) => {
 
       {/* 上段 */}
       <View style={[styles.main]}>
-        <Text style={[styles.labelText]}>作業場所：{WA1130Data.wkplcTyp}</Text>
-        <Text style={[styles.labelTextNarrow, styles.labelTextPlace]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          作業場所：{WA1130Data.wkplcTyp}
+        </Text>
+        <Text
+          style={[
+            styles.labelTextNarrow,
+            styles.labelTextPlace,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {WA1130Data.wkplc}
         </Text>
       </View>
@@ -389,7 +401,12 @@ const WA1131 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelTextNarrow}>{IFT0640Data.crdNo}</Text>
+              <Text
+                style={[styles.labelTextNarrow, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {IFT0640Data.crdNo}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -399,7 +416,12 @@ const WA1131 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelTextNarrow}>{IFT0640Data.vclNum}</Text>
+              <Text
+                style={[styles.labelTextNarrow, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {IFT0640Data.vclNum}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -409,7 +431,12 @@ const WA1131 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelTextNarrow}>{IFT0640Data.drvName}</Text>
+              <Text
+                style={[styles.labelTextNarrow, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {IFT0640Data.drvName}
+              </Text>
             </View>
           </View>
           <View style={[styles.main, styles.narrow]}>

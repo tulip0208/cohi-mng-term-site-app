@@ -587,7 +587,10 @@ const WA1061 = ({navigation}: Props) => {
 
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText, styles.bold]}>
+          <Text
+            style={[styles.labelText, styles.bold, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             新タグID：{newTagId}
           </Text>
           <Text style={[styles.labelTextNarrow, styles.center]}>

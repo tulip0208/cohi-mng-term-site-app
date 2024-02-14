@@ -43,7 +43,10 @@ const WA1071 = ({navigation}: Props) => {
   const renderOldTag = () => {
     return WA1070Data?.oldTag.oldTagIdList.map((tagId, index) => (
       <View key={index}>
-        <Text style={styles.labelText}>{`${index + 1}: ${tagId}`}</Text>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">{`${index + 1}: ${tagId}`}</Text>
       </View>
     ));
   };
@@ -74,94 +77,96 @@ const WA1071 = ({navigation}: Props) => {
     return (
       <View style={styles.tableMain}>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell1}>
             <Text style={styles.labelText}>土壌等種別：</Text>
           </View>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>
               {CT0007[WA1070Data?.data.rmSolTyp as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell1}>
             <Text style={styles.labelText}>特定施設：</Text>
           </View>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>
               {CT0006[WA1070Data?.data.splFac as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell1}>
             <Text style={styles.labelText}>津波浸水：</Text>
           </View>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>
               {CT0005[WA1070Data?.data.tsuInd as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell1}>
             <Text style={styles.labelText}>重量：</Text>
           </View>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>{WA1070Data?.data.caLgSdBgWt}</Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell1}>
             <Text style={styles.labelText}>線量：</Text>
           </View>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>{WA1070Data?.data.caLgSdBgDs}</Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell1}>
             <Text style={styles.labelText}>推定濃度：</Text>
           </View>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>{WA1070Data?.data.estRa}</Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell1}>
             <Text style={styles.labelText}>荷姿種別：</Text>
           </View>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>
               {CT0009[WA1070Data?.data.pkTyp as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell1}>
             <Text style={styles.labelText}>内袋利用方法：</Text>
           </View>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>
               {CT0010[WA1070Data?.data.usgInnBg as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell1}>
             <Text style={styles.labelText}>アルミ内袋：</Text>
           </View>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>
               {CT0011[WA1070Data?.data.usgAluBg as number]}
             </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text style={styles.labelText}>オーバーパック：</Text>
+          <View style={styles.tableCell1}>
+            <Text style={[styles.labelText, styles.labelSmall12]}>
+              オーバーパック：
+            </Text>
           </View>
-          <View style={styles.tableCell}>
+          <View style={styles.tableCell2}>
             <Text style={styles.labelText}>
               {CT0042[WA1070Data?.data.yesNoOP as number]}
             </Text>
@@ -194,13 +199,26 @@ const WA1071 = ({navigation}: Props) => {
 
       {/* 上段 */}
       <View style={[styles.main]}>
-        <Text style={[styles.labelText]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           作業場所：{WA1070Data?.head.wkplcTyp}
         </Text>
-        <Text style={[styles.labelText, styles.labelTextPlace]}>
+        <Text
+          style={[
+            styles.labelText,
+            styles.labelTextPlace,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {WA1070Data?.head.wkplc}
         </Text>
-        <Text style={[styles.labelText]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           新タグID：{WA1070Data?.head.newTagId}
         </Text>
       </View>

@@ -343,8 +343,20 @@ const WA1141 = ({navigation}: Props) => {
 
       {/* 上段 */}
       <View style={[styles.main]}>
-        <Text style={[styles.labelText]}>作業場所：{WA1140Data.wkplcTyp}</Text>
-        <Text style={[styles.labelText, styles.labelTextPlace]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          作業場所：{WA1140Data.wkplcTyp}
+        </Text>
+        <Text
+          style={[
+            styles.labelText,
+            styles.labelTextPlace,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {WA1140Data.wkplc}
         </Text>
       </View>
@@ -359,7 +371,12 @@ const WA1141 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelText}>{WA1140Data.newTagId}</Text>
+              <Text
+                style={[styles.labelText, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {WA1140Data.newTagId}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -369,7 +386,10 @@ const WA1141 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelText}>
+              <Text
+                style={[styles.labelText, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
                 {CT0007[Number(WA1140Data?.rmSolTyp)]}
               </Text>
             </View>

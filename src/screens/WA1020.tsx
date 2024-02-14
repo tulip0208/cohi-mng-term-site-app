@@ -301,13 +301,21 @@ const WA1020 = ({navigation}: Props) => {
 
       {/* 中段 */}
       <View style={[styles.main, styles.topContent]}>
-        <Text style={styles.labelText}>利用者：{userName}</Text>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          利用者：{userName}
+        </Text>
         <TouchableOpacity
           style={[styles.button, styles.buttonRead]}
           onPress={btnUserQr}>
           <Text style={styles.buttonText}>利用者読込</Text>
         </TouchableOpacity>
-        <Text style={styles.labelText}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           アクティベーションコード読込：{actReadFlg}
         </Text>
         <TouchableOpacity
@@ -317,8 +325,18 @@ const WA1020 = ({navigation}: Props) => {
           <Text style={styles.buttonText}>アクティベーション</Text>
           <Text style={styles.buttonText}>コード読込</Text>
         </TouchableOpacity>
-        <Text style={styles.labelText}>端末ID：{trmId}</Text>
-        <Text style={styles.labelText}>事業者：{comName}</Text>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          端末ID：{trmId}
+        </Text>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          事業者：{comName}
+        </Text>
       </View>
 
       {/* 下段 */}

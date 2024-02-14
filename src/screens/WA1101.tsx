@@ -58,13 +58,22 @@ const WA1101 = ({navigation}: Props) => {
 
       {/* 上段 */}
       <View style={[styles.main]}>
-        <Text style={[styles.labelText]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           仮置場：{WA1100Data?.data.tmpLocNm}
         </Text>
-        <Text style={[styles.labelText]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           新タグID：{WA1100Data?.head.newTagId}
         </Text>
-        <Text style={[styles.labelText]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           旧タグID：{WA1100Data?.data.oldTagId}
         </Text>
       </View>
@@ -79,7 +88,12 @@ const WA1101 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelText}>{WA1100Data?.data.surDsWt}</Text>
+              <Text
+                style={[styles.labelText, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {WA1100Data?.data.surDsWt}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -89,7 +103,12 @@ const WA1101 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelText}>{WA1100Data?.data.surDsRt}</Text>
+              <Text
+                style={[styles.labelText, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {WA1100Data?.data.surDsRt}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -99,7 +118,12 @@ const WA1101 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelText}>{WA1100Data?.data.meaRa}</Text>
+              <Text
+                style={[styles.labelText, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {WA1100Data?.data.meaRa}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>

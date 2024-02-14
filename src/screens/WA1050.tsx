@@ -226,13 +226,34 @@ const WA1050 = ({route, navigation}: Props) => {
       {/* 中段 */}
       <View style={[styles.main, styles.topContent]}>
         <Text style={styles.labelTextSetting}>[アプリ情報]</Text>
-        <Text style={[styles.labelTextSetting, styles.labelTextSettingDtl]}>
+        <Text
+          style={[
+            styles.labelTextSetting,
+            styles.labelTextSettingDtl,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           アプリバージョン：{versionTt}
         </Text>
-        <Text style={[styles.labelTextSetting, styles.labelTextSettingDtl]}>
+        <Text
+          style={[
+            styles.labelTextSetting,
+            styles.labelTextSettingDtl,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           ビルドバージョン：{buildVersion}
         </Text>
-        <Text style={[styles.labelTextSetting, styles.labelTextSettingDtl]}>
+        <Text
+          style={[
+            styles.labelTextSetting,
+            styles.labelTextSettingDtl,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           端末ID：{revision}
         </Text>
         <Text style={styles.labelTextSetting}>[通信状態]</Text>

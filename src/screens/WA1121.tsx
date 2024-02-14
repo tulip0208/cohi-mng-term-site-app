@@ -966,7 +966,10 @@ const WA1121 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={[styles.labelTextNarrowMore]}>
+              <Text
+                style={[styles.labelTextNarrowMore, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
                 :{WA1120Data.wkplc}
               </Text>
             </View>
@@ -978,7 +981,10 @@ const WA1121 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={[styles.labelTextNarrowMore]}>
+              <Text
+                style={[styles.labelTextNarrowMore, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
                 :{WA1120Car.carNo}
               </Text>
             </View>
@@ -990,7 +996,10 @@ const WA1121 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={[styles.labelTextNarrowMore]}>
+              <Text
+                style={[styles.labelTextNarrowMore, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
                 :{WA1120Drv.drvNm}
               </Text>
             </View>
@@ -1002,7 +1011,10 @@ const WA1121 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={[styles.labelTextNarrowMore]}>
+              <Text
+                style={[styles.labelTextNarrowMore, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
                 :{WA1120Dest.fixPlacNm}
               </Text>
             </View>
@@ -1014,7 +1026,10 @@ const WA1121 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={[styles.labelTextNarrowMore]}>
+              <Text
+                style={[styles.labelTextNarrowMore, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
                 :{WA1120TrpCardNo}
               </Text>
             </View>

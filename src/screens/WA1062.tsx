@@ -374,10 +374,16 @@ const WA1062 = ({navigation}: Props) => {
 
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText, styles.bold]}>
+          <Text
+            style={[styles.labelText, styles.bold, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             新タグID：{newTagId}
           </Text>
-          <Text style={[styles.labelText, styles.bold]}>
+          <Text
+            style={[styles.labelText, styles.bold, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             {WA1061TagId[1] === 'dummyTag' ? 'ダミー' : '旧'}タグID：
             {WA1061TagId[0]}
           </Text>

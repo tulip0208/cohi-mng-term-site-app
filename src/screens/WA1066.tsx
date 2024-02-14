@@ -316,13 +316,26 @@ const WA1066 = ({navigation}: Props) => {
         />
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText]}>
+          <Text
+            style={[styles.labelText, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             作業場所：{WA1060WkPlac.wkplac}
           </Text>
-          <Text style={[styles.labelText, styles.labelTextPlace]}>
+          <Text
+            style={[
+              styles.labelText,
+              styles.labelTextPlace,
+              styles.labelTextOver,
+            ]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             {WA1060WkPlac.wkplacNm}
           </Text>
-          <Text style={[styles.labelText, styles.bold]}>
+          <Text
+            style={[styles.labelText, styles.bold, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             新タグID：{newTagId}
           </Text>
           <Text style={[styles.labelText, styles.bold]}>
@@ -362,7 +375,10 @@ const WA1066 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.pickerLabelText}>
+                <Text
+                  style={[styles.pickerLabelText, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {CT0007[Number(WA1060Data.rmSolTyp)] ?? ''}
                 </Text>
               </View>
@@ -374,7 +390,10 @@ const WA1066 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.pickerLabelText}>
+                <Text
+                  style={[styles.pickerLabelText, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {CT0009[Number(WA1060Data.pkTyp)] ?? ''}
                 </Text>
               </View>
@@ -386,7 +405,10 @@ const WA1066 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.pickerLabelText}>
+                <Text
+                  style={[styles.pickerLabelText, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {CT0010[Number(WA1060Data.usgInnBg)] ?? ''}
                 </Text>
               </View>
@@ -398,7 +420,10 @@ const WA1066 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.pickerLabelText}>
+                <Text
+                  style={[styles.pickerLabelText, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {CT0005[Number(WA1060Data.tsuInd)] ?? ''}
                 </Text>
               </View>
@@ -410,7 +435,10 @@ const WA1066 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.pickerLabelText}>
+                <Text
+                  style={[styles.pickerLabelText, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {CT0006[Number(WA1060Data.splFac)] ?? ''}
                 </Text>
               </View>
@@ -422,14 +450,24 @@ const WA1066 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.pickerLabelText}>
+                <Text
+                  style={[styles.pickerLabelText, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {CT0011[Number(WA1060Data.usgAluBg)] ?? ''}
                 </Text>
               </View>
             </View>
             <View style={[styles.tableRow, styles.pickerContainer]}>
               <View style={styles.tableCell}>
-                <Text style={[styles.pickerLabelText, styles.alignRight]}>
+                <Text
+                  style={[
+                    styles.pickerLabelText,
+                    styles.alignRight,
+                    styles.labelTextOver,
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   オーバーパック有無：{CT0042[Number(WA1060Data.yesNoOP)] ?? ''}
                 </Text>
               </View>
@@ -452,7 +490,10 @@ const WA1066 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.pickerLabelText}>
+                <Text
+                  style={[styles.pickerLabelText, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {WA1060Data.caLgSdBgWt ?? ''}
                 </Text>
               </View>
@@ -464,7 +505,10 @@ const WA1066 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.pickerLabelText}>
+                <Text
+                  style={[styles.pickerLabelText, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {WA1060Data.caLgSdBgDs ?? ''}
                 </Text>
               </View>
@@ -476,7 +520,12 @@ const WA1066 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={[styles.tableCell]}>
-                <Text style={styles.pickerLabelText}>{WA1060Data.estRa}</Text>
+                <Text
+                  style={[styles.pickerLabelText, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
+                  {WA1060Data.estRa}
+                </Text>
               </View>
             </View>
             <View style={styles.tableRow}>
