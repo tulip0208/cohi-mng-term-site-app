@@ -243,7 +243,7 @@ export const rotateLogFile = async (): Promise<void> => {
  * @param {*} actionDescription
  ************************************************/
 export const logScreen = async (actionDescription: string): Promise<void> => {
-  const logEntry = `"VW", "${new Date().toISOString()}", "${actionDescription}"`;
+  const logEntry = `"OP", "${new Date().toISOString()}", "${actionDescription}"`;
   await writeLog(logEntry);
 };
 
