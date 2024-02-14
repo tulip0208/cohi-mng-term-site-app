@@ -1,4 +1,4 @@
-package com.cms_site
+package com.tms_site
 
 import android.content.Intent
 import android.net.Uri

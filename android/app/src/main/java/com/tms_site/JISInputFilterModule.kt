@@ -1,4 +1,4 @@
-package com.cms_site
+package com.tms_site
 
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -6,7 +6,7 @@ import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
 import android.text.Editable
 import android.text.SpannableStringBuilder
-import com.cms_site.JISInputFilter; // インポートを追加
+import com.tms_site.JISInputFilter; // インポートを追加
 class JISInputFilterModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
     override fun getName(): String {

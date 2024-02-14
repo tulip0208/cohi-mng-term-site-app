@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "cms_site.app"
-               BlueprintName = "cms_site"
-               ReferencedContainer = "container:cms_site.xcodeproj">
+               BuildableName = "tms_site.app"
+               BlueprintName = "tms_site"
+               ReferencedContainer = "container:tms_site.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "cms_siteTests.xctest"
-               BlueprintName = "cms_siteTests"
-               ReferencedContainer = "container:cms_site.xcodeproj">
+               BuildableName = "tms_siteTests.xctest"
+               BlueprintName = "tms_siteTests"
+               ReferencedContainer = "container:tms_site.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "cms_site.app"
-            BlueprintName = "cms_site"
-            ReferencedContainer = "container:cms_site.xcodeproj">
+            BuildableName = "tms_site.app"
+            BlueprintName = "tms_site"
+            ReferencedContainer = "container:tms_site.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "cms_site.app"
-            BlueprintName = "cms_site"
-            ReferencedContainer = "container:cms_site.xcodeproj">
+            BuildableName = "tms_site.app"
+            BlueprintName = "tms_site"
+            ReferencedContainer = "container:tms_site.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
