@@ -221,14 +221,7 @@ const WA1070 = ({navigation}: Props) => {
       // モーダル表示
       setModalVisible(true);
       code = 'a' + data + 'a';
-    } else {
-      //イレギュラー
-      //・CMから始まるバーコードもしくは
-      //・1カラム目は非CMの複数カラムデータ
-      await showAlert('通知', messages.EA5008(), false);
-      return;
     }
-
     // 新タグID参照処理実施
     if (!(await procNewTagId(code))) {
       // モーダル非表示
