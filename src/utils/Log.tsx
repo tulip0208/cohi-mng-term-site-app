@@ -148,7 +148,7 @@ export const initializeLogFile = async (): Promise<void> => {
  ************************************************/
 export const writeLog = async (logData: string): Promise<void> => {
   await rotateLogFile();
-  const logFilePath = `${logDirectory}/${getCurrentLogFileName()}`;
+  const logFilePath = `${logDirectory}/${await getCurrentLogFileName()}`;
   console.log(logData);
   await RNFS.appendFile(logFilePath, `${logData}\n`, 'utf8');
 };
