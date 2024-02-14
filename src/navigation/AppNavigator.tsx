@@ -9,7 +9,6 @@ import {
   checkActivation,
   loadFromKeystore,
   saveToKeystore,
-  clearKeyStore,
 } from '../utils/KeyStore'; // KeyStoreの確認関数
 import WA1020 from '../screens/WA1020';
 import WA1030 from '../screens/WA1030';
@@ -113,7 +112,6 @@ const AppNavigator = () => {
       if (activationInfo && activationInfo.actFin === 1) {
         //--------WA1030_前処理--------
         //バージョンアップ報告チェック
-        await clearKeyStore('verUpRep');
         const verUpRepKeyStore = (await loadFromKeystore(
           'verUpRep',
         )) as verUpRep;
