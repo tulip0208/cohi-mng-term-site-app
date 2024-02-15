@@ -5,6 +5,7 @@
  * ---------------------------------------------*/
 import React, {createContext, useState, useContext, ReactNode} from 'react';
 import CustomAlert from './CustomAlert'; // TypeScriptに変更したコンポーネントをインポート
+import {logUserAction} from '../utils/Log';
 
 interface AlertContextType {
   alert: {
@@ -19,7 +20,7 @@ interface AlertContextType {
     message: string,
     showCancelButton: boolean,
   ) => Promise<boolean>;
-  hideAlert: (result: boolean) => void;
+  hideAlert: (result: boolean, title: string, message: string) => void;
 }
 interface Props {
   children: ReactNode; // 子要素の型を定義
@@ -49,7 +50,13 @@ export const AlertProvider = ({children}: Props) => {
     });
   };
 
-  const hideAlert = (result: boolean) => {
+  const hideAlert = async (result: boolean, title: string, message: string) => {
+    await logUserAction(
+      `ボタン押下: ${result ? 'はい' : 'いいえ'} - [${title}:${message.replace(
+        /[\n]/g,
+        '',
+      )}]`,
+    );
     if (alert.resolve) {
       alert.resolve(result);
     }
@@ -63,8 +70,8 @@ export const AlertProvider = ({children}: Props) => {
         <CustomAlert
           title={alert.title}
           message={alert.message}
-          onConfirm={() => hideAlert(true)}
-          onCancel={() => hideAlert(false)}
+          onConfirm={() => hideAlert(true, alert.title, alert.message)}
+          onCancel={() => hideAlert(false, alert.title, alert.message)}
           showCancelButton={alert.showCancelButton}
         />
       )}
