@@ -52,7 +52,7 @@ const WA1020 = ({navigation}: Props) => {
 
   // useEffect フックを使用してステートが変更されるたびにチェック
   useEffect(() => {
-    if (userName !== '' && actReadFlg !== '') {
+    if (userName !== '' && actReadFlg === '済') {
       setIsReadyToSend(true); // 送信ボタンを活性化
     }
   }, [userName, actReadFlg]); // 依存配列に usrId と actReadFlg を追加
