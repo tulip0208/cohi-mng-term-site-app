@@ -247,7 +247,7 @@ const WA1040 = ({navigation}: Props) => {
             disabled={!isBtnEnabled110}
             style={[styles.menuButton, styles.menuButton6]}
             onPress={btnOldTagRefAsh}>
-            <Text style={styles.menuButtonText2}>旧タグ紐付</Text>
+            <Text style={styles.menuButtonText2}>旧タグ参照</Text>
             <Text style={styles.menuButtonText2}>(灰)</Text>
           </TouchableOpacity>
         )}
