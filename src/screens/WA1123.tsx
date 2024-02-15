@@ -28,6 +28,7 @@ import {getInstance} from '../utils/Realm.tsx'; // realm.jsから関数をイン
 import {IFT0210} from '../utils/Api.tsx';
 import {ApiResponse, IFT0210Response, IFT0210ResponseDtl} from '../types/type';
 import QRCode from 'react-native-qrcode-svg';
+import {useButton} from '../hook/useButton.tsx';
 
 // WA1123 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1123'>;
@@ -45,6 +46,8 @@ const WA1123 = ({navigation}: Props) => {
   const WA1121Data = useRecoilValue(WA1121DataState); // Recoil 画面作業情報
   const WA1120TrpCardNo = useRecoilValue(WA1120TrpCardNoState); // Recoil 輸送カード番号
   const setPrevScreenId = useSetRecoilState(WA1120PrevScreenId); //遷移元画面ID
+  const [isBtnEnabledUpd, toggleButtonUpd] = useButton(); //ボタン制御
+  const [isBtnEnabledApl, toggleButtonApl] = useButton(); //ボタン制御
   const realm = getInstance();
   const loginInfo = realm.objects('login')[0];
   const {showAlert} = useAlert();
@@ -68,6 +71,12 @@ const WA1123 = ({navigation}: Props) => {
    * 更新ボタン処理
    ************************************************/
   const btnUpdate = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledUpd) {
+      return;
+    } else {
+      toggleButtonUpd();
+    }
     await logUserAction('ボタン押下: WA1123 - 更新');
 
     setModalVisible(true);
@@ -94,6 +103,12 @@ const WA1123 = ({navigation}: Props) => {
    * 輸送カード申請ボタン処理
    ************************************************/
   const btnReqTrpCrd = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledApl) {
+      return;
+    } else {
+      toggleButtonApl();
+    }
     await logUserAction('ボタン押下: WA1123 - 輸送カード申請');
 
     const result = await showAlert('確認', messages.IA5022(), true);
@@ -246,6 +261,7 @@ const WA1123 = ({navigation}: Props) => {
           {isViewUpdate && (
             <View style={styles.bottomSection}>
               <TouchableOpacity
+                disabled={!isBtnEnabledUpd}
                 style={[styles.button, styles.button50, styles.startButton]}
                 onPress={btnUpdate}>
                 <Text style={styles.startButtonText}>更新</Text>
@@ -263,6 +279,7 @@ const WA1123 = ({navigation}: Props) => {
 
       <View style={styles.bottomSection}>
         <TouchableOpacity
+          disabled={!isBtnEnabledApl}
           style={[styles.button, styles.button50, styles.startButton]}
           onPress={btnReqTrpCrd}>
           <Text style={styles.startButtonText}>輸送カード申請</Text>

@@ -14,6 +14,7 @@ import {RootList} from '../navigation/AppNavigator.tsx';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {WA1110DataState, WA1111BackState} from '../atom/atom.tsx';
 import {CT0054} from '../enum/enums.tsx';
+import {useButton} from '../hook/useButton.tsx';
 
 // WA1111 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1111'>;
@@ -23,6 +24,9 @@ interface Props {
 const WA1111 = ({navigation}: Props) => {
   const WA1110Data = useRecoilValue(WA1110DataState); // Recoil 旧タグID情報
   const setBack = useSetRecoilState(WA1111BackState); // Recoil 戻る
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledMnu, toggleButtonMnu] = useButton(); //ボタン制御
+
   /************************************************
    * 初期表示設定
    ************************************************/
@@ -32,6 +36,12 @@ const WA1111 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1111 - 戻る');
     setBack(true);
     await logScreen('画面遷移: WA1111 → WA1110_旧タグ参照(灰)');
@@ -42,6 +52,12 @@ const WA1111 = ({navigation}: Props) => {
    * メニューボタン処理
    ************************************************/
   const btnMenu = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledMnu) {
+      return;
+    } else {
+      toggleButtonMnu();
+    }
     await logUserAction('ボタン押下: WA1111 - メニュー');
     await logScreen('画面遷移: WA1111 → WA1040_メニュー');
     navigation.navigate('WA1040');
@@ -131,11 +147,13 @@ const WA1111 = ({navigation}: Props) => {
       {/* 下段 */}
       <View style={[styles.bottomSection, styles.settingMain]}>
         <TouchableOpacity
+          disabled={!isBtnEnabledBck}
           style={[styles.button, styles.settingButton, styles.settingButton3]}
           onPress={btnAppBack}>
           <Text style={styles.endButtonText}>戻る</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          disabled={!isBtnEnabledMnu}
           style={[styles.button, styles.settingButton, styles.settingButton]}
           onPress={btnMenu}>
           <Text style={[styles.endButtonText, styles.settingButtonText1]}>

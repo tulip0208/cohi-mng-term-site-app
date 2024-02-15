@@ -47,6 +47,7 @@ import ProcessingModal from '../components/Modal.tsx';
 import {IFT0130, IFA0330, IFA0340} from '../utils/Api.tsx';
 import {getInstance} from '../utils/Realm.tsx'; // realm.jsから関数をインポート
 import {getCurrentDateTime} from '../utils/common.tsx';
+import {useButton} from '../hook/useButton.tsx';
 
 // WA1121 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1121'>;
@@ -73,6 +74,12 @@ const WA1121 = ({navigation}: Props) => {
   const [prevScreenId, setPrevScreenId] = useRecoilState(WA1120PrevScreenId); // Recoil 遷移元画面ID
   const [WA1121Data, setWA1121Data] = useRecoilState(WA1121DataState); // Recoil 画面作業情報
   const resetWA1121Data = useResetRecoilState(WA1121DataState); //Recoilリセット
+  const [isBtnEnabledUpd, toggleButtonUpd] = useButton(); //ボタン制御
+  const [isBtnEnabledTag, toggleButtonTag] = useButton(); //ボタン制御
+  const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledNxt, toggleButtonNxt] = useButton(); //ボタン制御
+  const [isBtnEnabledSnd, toggleButtonSnd] = useButton(); //ボタン制御
   const realm = getInstance();
   const {showAlert} = useAlert();
 
@@ -195,6 +202,12 @@ const WA1121 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledTag) {
+      return;
+    } else {
+      toggleButtonTag();
+    }
     await logUserAction('ボタン押下: WA1121 - タグ読込');
     //カメラ起動
     setShowScannerTag(true);
@@ -204,6 +217,12 @@ const WA1121 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDel) {
+      return;
+    } else {
+      toggleButtonDel();
+    }
     await logUserAction('ボタン押下: WA1121 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
@@ -218,6 +237,12 @@ const WA1121 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1121 - 戻る');
     const result = await showAlert('確認', messages.IA5014(), true);
     if (result) {
@@ -232,6 +257,12 @@ const WA1121 = ({navigation}: Props) => {
    * 送信ボタン処理
    ************************************************/
   const btnSend = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledSnd) {
+      return;
+    } else {
+      toggleButtonSnd();
+    }
     await logUserAction('ボタン押下: WA1121 - 送信');
     setModalVisible(true);
 
@@ -355,6 +386,12 @@ const WA1121 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledNxt) {
+      return;
+    } else {
+      toggleButtonNxt();
+    }
     await logUserAction('ボタン押下: WA1121 - 次へ');
 
     //[フレコン種別]＝"1:除去土壌"の場合
@@ -484,6 +521,12 @@ const WA1121 = ({navigation}: Props) => {
    * 設定ボタン処理
    ************************************************/
   const btnSetting = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledUpd) {
+      return;
+    } else {
+      toggleButtonUpd();
+    }
     await logUserAction('ボタン押下: WA1121 - 設定');
     if (!checkFormat(inputValue)) {
       await showAlert('通知', messages.EA5017(inputValue), false);
@@ -922,13 +965,13 @@ const WA1121 = ({navigation}: Props) => {
           </View>
           <View style={[styles.tableCell1]}>
             <TouchableOpacity
+              disabled={!isBtnEnabledUpd}
               style={[
                 styles.detailButtonNarrow,
                 styles.updateButton,
                 styles.labelTextNarrowMore,
               ]}
               onPress={async () => {
-                await logUserAction('ボタン押下: WA1121 - 設定');
                 await btnSetting();
               }}>
               <Text style={[styles.detailButtonText, styles.settingButtonText]}>
@@ -1037,7 +1080,7 @@ const WA1121 = ({navigation}: Props) => {
         </View>
         <View style={styles.bottomSection}>
           <TouchableOpacity
-            disabled={!isTagRead}
+            disabled={!isTagRead || !isBtnEnabledTag}
             style={getTagReadButtonStyle()}
             onPress={btnTagQr}>
             <Text style={styles.buttonTextNarrow}>タグ読込</Text>
@@ -1118,11 +1161,13 @@ const WA1121 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
@@ -1131,7 +1176,7 @@ const WA1121 = ({navigation}: Props) => {
             <TouchableOpacity
               style={getActionButtonStyle()}
               onPress={btnAppNext}
-              disabled={isDisabled}>
+              disabled={isDisabled || !isBtnEnabledNxt}>
               <Text style={styles.startButtonText}>次へ</Text>
             </TouchableOpacity>
           )}
@@ -1139,7 +1184,7 @@ const WA1121 = ({navigation}: Props) => {
             <TouchableOpacity
               style={getActionButtonStyle()}
               onPress={btnSend}
-              disabled={isDisabled}>
+              disabled={isDisabled || !isBtnEnabledSnd}>
               <Text style={styles.startButtonText}>送信</Text>
             </TouchableOpacity>
           )}

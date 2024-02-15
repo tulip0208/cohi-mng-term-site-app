@@ -34,6 +34,7 @@ import {Buffer} from 'buffer';
 import {getCurrentDateTime} from '../utils/common';
 import RNRestart from 'react-native-restart';
 import {NativeModules} from 'react-native';
+import {useButton} from '../hook/useButton';
 const {ApkInstaller} = NativeModules;
 // WA1030 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1030'>;
@@ -50,6 +51,10 @@ const WA1030 = ({navigation}: Props) => {
   const [wkplacId, setWkplacId] = useState<string>(''); // 作業場所種別ID
   const [wkplacTyp, setWkplacTyp] = useState<number>(); //作業場所種類
   const [fixPlacId, setFixPlacId] = useState<string | null>(null); // 定置場ID
+  const [isBtnEnabledUsr, toggleButtonUsr] = useButton(); //ボタン制御
+  const [isBtnEnabledWkp, toggleButtonWkp] = useButton(); //ボタン制御
+  const [isBtnEnabledEnd, toggleButtonEnd] = useButton(); //ボタン制御
+  const [isBtnEnabledStt, toggleButtonStt] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
 
   // useEffect フックを使用してステートが変更されるたびにチェック
@@ -242,12 +247,24 @@ const WA1030 = ({navigation}: Props) => {
 
   // ユーザQRコードスキャンボタン押下時の処理
   const btnUserQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledUsr) {
+      return;
+    } else {
+      toggleButtonUsr();
+    }
     await logUserAction('ボタン押下: WA1030 - QRコード読込(ユーザ)');
     setShowScannerUsr(true);
   };
 
   // 作業場所QRコードスキャンボタン押下時の処理
   const btnWkplac = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledWkp) {
+      return;
+    } else {
+      toggleButtonWkp();
+    }
     await logUserAction('ボタン押下: WA1030 - QRコード読込(作業場所)');
     setShowScannerWkplac(true);
   };
@@ -256,6 +273,12 @@ const WA1030 = ({navigation}: Props) => {
    * 終了ボタン押下時のポップアップ表示
    ************************************************/
   const btnAppClose = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledEnd) {
+      return;
+    } else {
+      toggleButtonEnd();
+    }
     await logUserAction('ボタン押下: WA1030 - 終了');
     const result = await showAlert('確認', messages.IA5001(), true);
     if (result) {
@@ -267,6 +290,12 @@ const WA1030 = ({navigation}: Props) => {
    * 利用開始ボタン押下時の処理
    ************************************************/
   const btnSend = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledStt) {
+      return;
+    } else {
+      toggleButtonStt();
+    }
     await logUserAction('ボタン押下: WA1030 - 利用開始');
     // モーダル表示
     setModalVisible(true);
@@ -452,7 +481,8 @@ const WA1030 = ({navigation}: Props) => {
         </Text>
         <TouchableOpacity
           style={[styles.button, styles.buttonRead]}
-          onPress={btnUserQr}>
+          onPress={btnUserQr}
+          disabled={!isBtnEnabledUsr}>
           <Text style={styles.buttonText}>利用者読込</Text>
         </TouchableOpacity>
         <Text
@@ -463,7 +493,8 @@ const WA1030 = ({navigation}: Props) => {
         </Text>
         <TouchableOpacity
           style={[styles.button, styles.buttonRead]}
-          onPress={btnWkplac}>
+          onPress={btnWkplac}
+          disabled={!isBtnEnabledWkp}>
           <Text style={styles.buttonText}>作業場所読込</Text>
         </TouchableOpacity>
       </View>
@@ -472,13 +503,13 @@ const WA1030 = ({navigation}: Props) => {
       <View style={styles.bottomSection}>
         <TouchableOpacity
           style={[styles.button, styles.endButton]}
-          onPress={btnAppClose}>
+          onPress={btnAppClose}
+          disabled={!isBtnEnabledEnd}>
           <Text style={styles.endButtonText}>終了</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle()}
-          //onPress={/* 送信処理 */}
-          disabled={!isReadyToSend} // 送信準備ができていなければ無効化
+          disabled={!isReadyToSend || !isBtnEnabledStt} // 送信準備ができていなければ無効化
           onPress={btnSend}>
           <Text style={styles.startButtonText}>利用開始</Text>
         </TouchableOpacity>

@@ -35,6 +35,7 @@ import {
   IFA0320Response,
   IFA0320ResponseDtl,
 } from '../types/type.tsx';
+import {useButton} from '../hook/useButton.tsx';
 // WA1091 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1091'>;
 interface Props {
@@ -49,6 +50,9 @@ const WA1091 = ({navigation}: Props) => {
   const setPrevScreenId = useSetRecoilState(WA1090PrevScreenId); // Recoil 遷移元画面ID
   const setBack = useSetRecoilState(WA1091BackState); // Recoil 戻る
   const setWA1091OldTagInfo = useSetRecoilState(WA1091OldTagInfoState); // Recoil 旧タグID情報
+  const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledNxt, toggleButtonNxt] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
 
   /************************************************
@@ -78,6 +82,12 @@ const WA1091 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDel) {
+      return;
+    } else {
+      toggleButtonDel();
+    }
     await logUserAction('ボタン押下: WA1091 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
@@ -92,6 +102,12 @@ const WA1091 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1091 - 戻る');
     const result = await showAlert('確認', messages.IA5014(), true);
     if (result) {
@@ -116,6 +132,12 @@ const WA1091 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledNxt) {
+      return;
+    } else {
+      toggleButtonNxt();
+    }
     await logUserAction('ボタン押下: WA1091 - 次へ');
     setModalVisible(true);
     // 通信を実施
@@ -219,11 +241,13 @@ const WA1091 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
@@ -231,7 +255,7 @@ const WA1091 = ({navigation}: Props) => {
           <TouchableOpacity
             style={getNextButtonStyle()}
             onPress={btnAppNext}
-            disabled={!isNext}>
+            disabled={!isNext || !isBtnEnabledNxt}>
             <Text style={styles.startButtonText}>次へ</Text>
           </TouchableOpacity>
         </View>

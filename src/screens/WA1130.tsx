@@ -38,6 +38,7 @@ import {
   WA1130PrevScreenId,
   IFT0640DataState,
 } from '../atom/atom.tsx';
+import {useButton} from '../hook/useButton.tsx';
 // WA1130 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1130'>;
 interface Props {
@@ -58,6 +59,9 @@ const WA1130 = ({navigation}: Props) => {
   const setPrevScreenId = useSetRecoilState(WA1130PrevScreenId); // Recoil 遷移元画面ID
   const setIFT0640Data = useSetRecoilState(IFT0640DataState); // Recoil IFT0640レスポンスデータ
   const resetWA1130Data = useResetRecoilState(WA1130DataState); //Recoilリセット
+  const [isBtnEnabledWkp, toggleButtonWkp] = useButton(); //ボタン制御
+  const [isBtnEnabledCrd, toggleButtonCrd] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
 
   /************************************************
@@ -178,6 +182,12 @@ const WA1130 = ({navigation}: Props) => {
 
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledWkp) {
+      return;
+    } else {
+      toggleButtonWkp();
+    }
     await logUserAction('ボタン押下: WA1130 - 作業場所読込');
     setShowScannerWkPlc(true);
   };
@@ -258,6 +268,12 @@ const WA1130 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTrpCrd = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledCrd) {
+      return;
+    } else {
+      toggleButtonCrd();
+    }
     await logUserAction('ボタン押下: WA1130 - 輸送カード読込');
     setShowScannerCard(true);
   };
@@ -266,6 +282,12 @@ const WA1130 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1130 - 戻る');
     if (!(await showAlert('確認', messages.IA5011(), true))) {
       return;
@@ -342,6 +364,7 @@ const WA1130 = ({navigation}: Props) => {
             {wkplc}
           </Text>
           <TouchableOpacity
+            disabled={!isBtnEnabledWkp}
             style={[styles.button, styles.buttonSmall, styles.centerButton]}
             onPress={btnWkPlcQr}>
             <Text style={styles.buttonText}>作業場所読込</Text>
@@ -355,7 +378,7 @@ const WA1130 = ({navigation}: Props) => {
           </Text>
           <TouchableOpacity
             style={getCardButtonStyle()}
-            disabled={!isCard}
+            disabled={!isCard || !isBtnEnabledCrd}
             onPress={btnTrpCrd}>
             <Text style={styles.buttonText}>輸送カード読込</Text>
           </TouchableOpacity>
@@ -365,6 +388,7 @@ const WA1130 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>

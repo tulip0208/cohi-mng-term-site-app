@@ -30,6 +30,7 @@ import {RootList} from '../navigation/AppNavigator';
 import {ApiResponse, IFA0330Response, IFA0330ResponseDtl} from '../types/type';
 import {useRecoilState, useResetRecoilState, useSetRecoilState} from 'recoil';
 import {WA1070DataState, WA1071BackState} from '../atom/atom.tsx';
+import {useButton} from '../hook/useButton.tsx';
 // WA1070 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1070'>;
 interface Props {
@@ -51,6 +52,9 @@ const WA1070 = ({navigation}: Props) => {
   const [WA1071back, setWA1071Back] = useRecoilState(WA1071BackState); // Recoil 戻る
   const setWA1070Data = useSetRecoilState(WA1070DataState); // Recoil 新タグID情報
   const reseWA1070Data = useResetRecoilState(WA1070DataState); //Recoilリセット
+  const [isBtnEnabledTag, toggleButtonTag] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledNxt, toggleButtonNxt] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定
@@ -237,6 +241,12 @@ const WA1070 = ({navigation}: Props) => {
   };
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledTag) {
+      return;
+    } else {
+      toggleButtonTag();
+    }
     await logUserAction('ボタン押下: WA1070 - タグ読込');
     setShowScannerTag(true);
   };
@@ -290,6 +300,12 @@ const WA1070 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1070 - 戻る');
     await logScreen('画面遷移: WA1070 → WA1040_メニュー');
     navigation.navigate('WA1040');
@@ -299,6 +315,12 @@ const WA1070 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledNxt) {
+      return;
+    } else {
+      toggleButtonNxt();
+    }
     await logUserAction('ボタン押下: WA1070 - 次へ');
     // モーダル表示
     setModalVisible(true);
@@ -390,6 +412,7 @@ const WA1070 = ({navigation}: Props) => {
             下記ボタンを押してフレコンに取り付けられたタグを読み込んで下さい。
           </Text>
           <TouchableOpacity
+            disabled={!isBtnEnabledTag}
             testID="tag-read-btn"
             style={[styles.button, styles.buttonSmall, styles.centerButton]}
             onPress={btnTagQr}>
@@ -430,6 +453,7 @@ const WA1070 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             testID="back-btn"
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
@@ -440,7 +464,7 @@ const WA1070 = ({navigation}: Props) => {
               testID="next-btn"
               style={getButtonStyle()}
               onPress={btnAppNext}
-              disabled={!isNext}>
+              disabled={!isNext || !isBtnEnabledNxt}>
               <Text style={styles.startButtonText}>次へ</Text>
             </TouchableOpacity>
           )}

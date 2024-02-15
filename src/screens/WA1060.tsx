@@ -46,6 +46,7 @@ import {
   WA1060KbnState,
 } from '../atom/atom.tsx';
 import {CT0007} from '../enum/enums.tsx';
+import {useButton} from '../hook/useButton.tsx';
 
 // WA1060 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1060'>;
@@ -84,6 +85,11 @@ const WA1060 = ({navigation}: Props) => {
   const resetWA1060WkPlac = useResetRecoilState(WA1060WkPlacState); //Recoilリセット
   const resetWA1063MemoAuto = useResetRecoilState(WA1063MemoAutoState); //Recoilリセット
   const resetWA1065Memo = useResetRecoilState(WA1065MemoState); //Recoilリセット
+  const [isBtnEnabledWkp, toggleButtonWkp] = useButton(); //ボタン制御
+  const [isBtnEnabledTag, toggleButtonTag] = useButton(); //ボタン制御
+  const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledNxt, toggleButtonNxt] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定
@@ -263,6 +269,12 @@ const WA1060 = ({navigation}: Props) => {
   };
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledWkp) {
+      return;
+    } else {
+      toggleButtonWkp();
+    }
     await logUserAction('ボタン押下: WA1060 - 作業場所読込');
     setShowScannerWkPlc(true);
   };
@@ -436,6 +448,12 @@ const WA1060 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledTag) {
+      return;
+    } else {
+      toggleButtonTag();
+    }
     await logUserAction('ボタン押下: WA1060 - タグ読込');
     setShowScannerTag(true);
   };
@@ -473,6 +491,12 @@ const WA1060 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDel) {
+      return;
+    } else {
+      toggleButtonDel();
+    }
     await logUserAction('ボタン押下: WA1060 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
@@ -488,6 +512,12 @@ const WA1060 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1060 - 戻る');
     const result = await showAlert('確認', messages.IA5011(), true);
     if (result) {
@@ -500,6 +530,12 @@ const WA1060 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledNxt) {
+      return;
+    } else {
+      toggleButtonNxt();
+    }
     await logUserAction('ボタン押下: WA1060 - 次へ');
     // モーダル表示
     setModalVisible(true);
@@ -597,6 +633,7 @@ const WA1060 = ({navigation}: Props) => {
             {wkplc}
           </Text>
           <TouchableOpacity
+            disabled={!isBtnEnabledWkp}
             style={[styles.button, styles.buttonSmall, styles.centerButton]}
             onPress={btnWkPlcQr}>
             <Text style={styles.buttonText}>作業場所読込</Text>
@@ -608,7 +645,10 @@ const WA1060 = ({navigation}: Props) => {
           <Text style={styles.labelText}>
             下記ボタンを押してフレコンに取り付けられたタグを読み込んで下さい。
           </Text>
-          <TouchableOpacity style={getTagReadButtonStyle()} onPress={btnTagQr}>
+          <TouchableOpacity
+            disabled={!isTagRead || !isBtnEnabledTag}
+            style={getTagReadButtonStyle()}
+            onPress={btnTagQr}>
             <Text style={styles.buttonText}>タグ読込</Text>
           </TouchableOpacity>
         </View>
@@ -639,11 +679,13 @@ const WA1060 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
@@ -652,7 +694,7 @@ const WA1060 = ({navigation}: Props) => {
             <TouchableOpacity
               style={getNextButtonStyle()}
               onPress={btnAppNext}
-              disabled={!isNext}>
+              disabled={!isNext || !isBtnEnabledNxt}>
               <Text style={styles.startButtonText}>次へ</Text>
             </TouchableOpacity>
           )}

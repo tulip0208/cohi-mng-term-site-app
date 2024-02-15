@@ -47,6 +47,7 @@ import {
 import {IFT0090} from '../utils/Api.tsx';
 import PopupDetail from '../components/PopupDetail';
 import {getCurrentDateTime} from '../utils/common.tsx';
+import {useButton} from '../hook/useButton.tsx';
 // WA1066 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1066'>;
 interface Props {
@@ -64,10 +65,16 @@ const WA1066 = ({navigation}: Props) => {
   const WA1065Memo = useRecoilValue(WA1065MemoState); // Recoil メモ
   const WA1060WkPlac = useRecoilValue(WA1060WkPlacState); // Recoil 作業場所情報
   const cmnTagFlg = useRecoilValue(WA1060CmnTagFlgState); //Recoil 共通タグフラグ
-  const kbn = useRecoilValue(WA1060KbnState);
+  const kbn = useRecoilValue(WA1060KbnState); //Recoil API通信用区分
   const [WA1060Data, setWA1060Data] = useRecoilState(WA1060DataState); //Recoil 新タグ情報
   const setPrevScreenId = useSetRecoilState(WA1060PrevScreenId); // Recoil 遷移元画面ID
   const setBack = useSetRecoilState(WA1061BackState); // Recoil 戻る
+  const [isBtnEnabledDtl, toggleButtonDtl] = useButton(); //ボタン制御
+  const [isBtnEnabledReq, toggleButtonReq] = useButton(); //ボタン制御
+  const [isBtnEnabledWds, toggleButtonWds] = useButton(); //ボタン制御
+  const [isBtnEnabledMem, toggleButtonMem] = useButton(); //ボタン制御
+  const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
+  const [isBtnEnabledSnd, toggleButtonSnd] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
 
   /************************************************
@@ -81,6 +88,12 @@ const WA1066 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDel) {
+      return;
+    } else {
+      toggleButtonDel();
+    }
     await logUserAction('ボタン押下: WA1066 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
@@ -95,6 +108,12 @@ const WA1066 = ({navigation}: Props) => {
    * 送信ボタン処理
    ************************************************/
   const btnAppSend = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledSnd) {
+      return;
+    } else {
+      toggleButtonSnd();
+    }
     await logUserAction('ボタン押下: WA1066 - 送信');
     setModalVisible(true);
     const dateStr = getCurrentDateTime();
@@ -137,6 +156,12 @@ const WA1066 = ({navigation}: Props) => {
    * 必須情報編集ボタン処理
    ************************************************/
   const btnEdtReq = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledReq) {
+      return;
+    } else {
+      toggleButtonReq();
+    }
     await logUserAction('ボタン押下: WA1066 - 必須情報編集');
     //遷移元画面IDを設定
     setPrevScreenId('WA1066');
@@ -148,6 +173,12 @@ const WA1066 = ({navigation}: Props) => {
    * 重量・線量編集ボタン処理
    ************************************************/
   const btnEdtWtDs = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledWds) {
+      return;
+    } else {
+      toggleButtonWds();
+    }
     await logUserAction('ボタン押下: WA1066 - 重量・線量編集');
     //遷移元画面IDを設定
     setPrevScreenId('WA1066');
@@ -159,6 +190,12 @@ const WA1066 = ({navigation}: Props) => {
    * メモ編集ボタン処理
    ************************************************/
   const btnEdtMemo = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledMem) {
+      return;
+    } else {
+      toggleButtonMem();
+    }
     await logUserAction('ボタン押下: WA1066 - メモ編集');
     //遷移元画面IDを設定
     setPrevScreenId('WA1066');
@@ -352,8 +389,15 @@ const WA1066 = ({navigation}: Props) => {
                 </View>
                 <View style={[styles.tableCell1]}>
                   <TouchableOpacity
+                    disabled={!isBtnEnabledDtl}
                     style={[styles.detailButton]}
                     onPress={async () => {
+                      //ボタン連続押下制御
+                      if (!isBtnEnabledDtl) {
+                        return;
+                      } else {
+                        toggleButtonDtl();
+                      }
                       setSelectedOldTagInfo(oldTagInfo);
                       setPopupVisible(true);
                       await logUserAction(
@@ -476,6 +520,7 @@ const WA1066 = ({navigation}: Props) => {
 
           <View style={[styles.center, styles.updownMargin]}>
             <TouchableOpacity
+              disabled={!isBtnEnabledReq}
               style={[styles.detailButton, styles.buttonHalf]}
               onPress={btnEdtReq}>
               <Text style={styles.detailButtonText}>必須情報編集</Text>
@@ -542,6 +587,7 @@ const WA1066 = ({navigation}: Props) => {
 
           <View style={[styles.center, styles.updownMargin]}>
             <TouchableOpacity
+              disabled={!isBtnEnabledWds}
               style={[styles.detailButton, styles.buttonHalf]}
               onPress={btnEdtWtDs}>
               <Text style={[styles.detailButtonText]}>重量・線量編集</Text>
@@ -567,6 +613,7 @@ const WA1066 = ({navigation}: Props) => {
 
           <View style={[styles.center, styles.updownMargin]}>
             <TouchableOpacity
+              disabled={!isBtnEnabledMem}
               style={[styles.detailButton, styles.buttonHalf]}
               onPress={btnEdtMemo}>
               <Text style={[styles.detailButtonText]}>メモ編集</Text>
@@ -576,11 +623,13 @@ const WA1066 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledSnd}
             style={[styles.button, styles.startButton, styles.buttonMaxHalf]}
             onPress={btnAppSend}>
             <Text style={styles.startButtonText}>送信</Text>

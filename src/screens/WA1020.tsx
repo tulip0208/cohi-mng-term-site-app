@@ -26,6 +26,7 @@ import {useAlert} from '../components/AlertContext';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootList} from '../navigation/AppNavigator';
 import {ActivationInfo, ApiResponse} from '../types/type';
+import {useButton} from '../hook/useButton.tsx';
 
 // WA1020 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1020'>;
@@ -43,6 +44,10 @@ const WA1020 = ({navigation}: Props) => {
     useState<boolean>(false); // カメラ表示用の状態
   const [isReadyToSend, setIsReadyToSend] = useState<boolean>(false); // 送信準備完了状態
   const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [isBtnEnabledUsr, toggleButtonUsr] = useButton(); //ボタン制御
+  const [isBtnEnabledAct, toggleButtonAct] = useButton(); //ボタン制御
+  const [isBtnEnabledEnd, toggleButtonEnd] = useButton(); //ボタン制御
+  const [isBtnEnabledSnd, toggleButtonSnd] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
 
   // useEffect フックを使用してステートが変更されるたびにチェック
@@ -173,6 +178,13 @@ const WA1020 = ({navigation}: Props) => {
 
   // ユーザQRコードスキャンボタン押下時の処理
   const btnUserQr = async (): Promise<void> => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledUsr) {
+      return;
+    } else {
+      toggleButtonUsr();
+    }
+
     await logUserAction('ボタン押下: WA1020 - QRコード読込(ユーザ)');
 
     setShowScannerUsr(true);
@@ -180,6 +192,13 @@ const WA1020 = ({navigation}: Props) => {
 
   // アクティベーションQRコードスキャンボタン押下時の処理
   const btnActQr = async (): Promise<void> => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledAct) {
+      return;
+    } else {
+      toggleButtonAct();
+    }
+
     await logUserAction(
       'ボタン押下: WA1020 - QRコード読込(アクティベーション)',
     );
@@ -190,6 +209,12 @@ const WA1020 = ({navigation}: Props) => {
    * 終了ボタン押下時のポップアップ表示
    ************************************************/
   const btnAppClose = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledEnd) {
+      return;
+    } else {
+      toggleButtonEnd();
+    }
     await logUserAction('ボタン押下: WA1020 - 終了');
     const result = await showAlert('確認', messages.IA5001(), true);
     if (result) {
@@ -201,6 +226,12 @@ const WA1020 = ({navigation}: Props) => {
    * 送信ボタン押下時の処理
    ************************************************/
   const btnSend = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledSnd) {
+      return;
+    } else {
+      toggleButtonSnd();
+    }
     await logUserAction('ボタン押下: WA1020 - 送信');
     // モーダル表示
     setModalVisible(true);
@@ -309,7 +340,8 @@ const WA1020 = ({navigation}: Props) => {
         </Text>
         <TouchableOpacity
           style={[styles.button, styles.buttonRead]}
-          onPress={btnUserQr}>
+          onPress={btnUserQr}
+          disabled={!isBtnEnabledUsr}>
           <Text style={styles.buttonText}>利用者読込</Text>
         </TouchableOpacity>
         <Text
@@ -321,7 +353,8 @@ const WA1020 = ({navigation}: Props) => {
         <TouchableOpacity
           style={[styles.button, styles.buttonRead]}
           onPress={btnActQr}
-          testID="act">
+          testID="act"
+          disabled={!isBtnEnabledAct}>
           <Text style={styles.buttonText}>アクティベーション</Text>
           <Text style={styles.buttonText}>コード読込</Text>
         </TouchableOpacity>
@@ -343,12 +376,13 @@ const WA1020 = ({navigation}: Props) => {
       <View style={styles.bottomSection}>
         <TouchableOpacity
           style={[styles.button, styles.endButton]}
-          onPress={btnAppClose}>
+          onPress={btnAppClose}
+          disabled={!isBtnEnabledEnd}>
           <Text style={styles.endButtonText}>終了</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle()}
-          disabled={!isReadyToSend}
+          disabled={!isReadyToSend || !isBtnEnabledSnd}
           onPress={btnSend}>
           <Text style={styles.startButtonText}>送信</Text>
         </TouchableOpacity>

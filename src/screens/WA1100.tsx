@@ -33,6 +33,7 @@ import {
 } from '../types/type.tsx';
 import {useRecoilState, useResetRecoilState, useSetRecoilState} from 'recoil';
 import {WA1100DataState, WA1101BackState} from '../atom/atom.tsx';
+import {useButton} from '../hook/useButton.tsx';
 // WA1100 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1100'>;
 interface Props {
@@ -54,6 +55,9 @@ const WA1100 = ({navigation}: Props) => {
   const [WA1101back, setWa1101Back] = useRecoilState(WA1101BackState); // Recoil 戻る
   const setWA1100Data = useSetRecoilState(WA1100DataState); // Recoil 新タグID情報
   const resetWA1100Data = useResetRecoilState(WA1100DataState); //Recoilリセット
+  const [isBtnEnabledTag, toggleButtonTag] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledNxt, toggleButtonNxt] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定
@@ -227,6 +231,12 @@ const WA1100 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledTag) {
+      return;
+    } else {
+      toggleButtonTag();
+    }
     await logUserAction('ボタン押下: WA1100 - タグ読込');
     setShowScannerTag(true);
   };
@@ -275,6 +285,12 @@ const WA1100 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1100 - 戻る');
     await logScreen('画面遷移: WA1100 → WA1040_メニュー');
     navigation.navigate('WA1040');
@@ -284,6 +300,12 @@ const WA1100 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledNxt) {
+      return;
+    } else {
+      toggleButtonNxt();
+    }
     await logUserAction('ボタン押下: WA1100 - 次へ');
     // モーダル表示
     setModalVisible(true);
@@ -375,6 +397,7 @@ const WA1100 = ({navigation}: Props) => {
             下記ボタンを押してフレコンに取り付けられたタグを読み込んで下さい。
           </Text>
           <TouchableOpacity
+            disabled={!isBtnEnabledTag}
             style={[styles.button, styles.buttonSmall, styles.centerButton]}
             onPress={btnTagQr}>
             <Text style={styles.buttonText}>タグ読込</Text>
@@ -412,6 +435,7 @@ const WA1100 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
@@ -420,7 +444,7 @@ const WA1100 = ({navigation}: Props) => {
             <TouchableOpacity
               style={getButtonStyle()}
               onPress={btnAppNext}
-              disabled={!isNext}>
+              disabled={!isNext || !isBtnEnabledNxt}>
               <Text style={styles.startButtonText}>次へ</Text>
             </TouchableOpacity>
           )}

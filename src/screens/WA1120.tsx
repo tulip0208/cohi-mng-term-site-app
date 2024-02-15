@@ -38,6 +38,7 @@ import {
 } from '../atom/atom.tsx';
 import {loadFromKeystore} from '../utils/KeyStore'; // KeyStoreの確認関数
 import {getCurrentDateTime} from '../utils/common.tsx';
+import {useButton} from '../hook/useButton.tsx';
 
 // WA1120 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1120'>;
@@ -69,6 +70,13 @@ const WA1120 = ({navigation}: Props) => {
   const resetWA1120CarState = useResetRecoilState(WA1120CarState); //Recoilリセット
   const resetWA1120DrvState = useResetRecoilState(WA1120DrvState); //Recoilリセット
   const resetWA1120DestState = useResetRecoilState(WA1120DestState); //Recoilリセット
+  const [isBtnEnabledWkp, toggleButtonWkp] = useButton(); //ボタン制御
+  const [isBtnEnabledCar, toggleButtonCar] = useButton(); //ボタン制御
+  const [isBtnEnabledDrv, toggleButtonDrv] = useButton(); //ボタン制御
+  const [isBtnEnabledDst, toggleButtonDst] = useButton(); //ボタン制御
+  const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledNxt, toggleButtonNxt] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
 
   /************************************************
@@ -184,6 +192,12 @@ const WA1120 = ({navigation}: Props) => {
 
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledWkp) {
+      return;
+    } else {
+      toggleButtonWkp();
+    }
     await logUserAction('ボタン押下: WA1120 - 作業場所読込');
     setShowScannerWkPlc(true);
   };
@@ -214,6 +228,12 @@ const WA1120 = ({navigation}: Props) => {
 
   // 車両コードスキャンボタン押下時の処理
   const btnCarQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledCar) {
+      return;
+    } else {
+      toggleButtonCar();
+    }
     await logUserAction('ボタン押下: WA1120 - 車両読込');
     setShowScannerCarQr(true);
   };
@@ -240,6 +260,12 @@ const WA1120 = ({navigation}: Props) => {
 
   // 運転手コードスキャンボタン押下時の処理
   const btnDrvQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDrv) {
+      return;
+    } else {
+      toggleButtonDrv();
+    }
     await logUserAction('ボタン押下: WA1120 - 運転手読込');
     setShowScannerDrvQr(true);
   };
@@ -271,6 +297,12 @@ const WA1120 = ({navigation}: Props) => {
 
   // 行先コードスキャンボタン押下時の処理
   const btnDestamQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDst) {
+      return;
+    } else {
+      toggleButtonDst();
+    }
     await logUserAction('ボタン押下: WA1120 - 行先読込');
     setShowScannerDestamQr(true);
   };
@@ -279,6 +311,12 @@ const WA1120 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDel) {
+      return;
+    } else {
+      toggleButtonDel();
+    }
     await logUserAction('ボタン押下: WA1120 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
@@ -294,6 +332,12 @@ const WA1120 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1120 - 戻る');
     const result = await showAlert('確認', messages.IA5011(), true);
     if (result) {
@@ -306,6 +350,12 @@ const WA1120 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledNxt) {
+      return;
+    } else {
+      toggleButtonNxt();
+    }
     await logUserAction('ボタン押下: WA1120 - 次へ');
     // モーダル表示
     setModalVisible(true);
@@ -429,6 +479,7 @@ const WA1120 = ({navigation}: Props) => {
             </View>
             <View style={[styles.narrow]}>
               <TouchableOpacity
+                disabled={!isBtnEnabledWkp}
                 style={[styles.button, styles.buttonSmall, styles.centerButton]}
                 onPress={btnWkPlcQr}>
                 <Text style={styles.buttonText}>作業場所読込</Text>
@@ -456,6 +507,7 @@ const WA1120 = ({navigation}: Props) => {
             </View>
             <View style={[styles.narrow]}>
               <TouchableOpacity
+                disabled={!isBtnEnabledCar}
                 style={[styles.button, styles.buttonSmall, styles.centerButton]}
                 onPress={btnCarQr}>
                 <Text style={styles.buttonText}>車両読込</Text>
@@ -483,6 +535,7 @@ const WA1120 = ({navigation}: Props) => {
             </View>
             <View style={[styles.narrow]}>
               <TouchableOpacity
+                disabled={!isBtnEnabledDrv}
                 style={[styles.button, styles.buttonSmall, styles.centerButton]}
                 onPress={btnDrvQr}>
                 <Text style={styles.buttonText}>運転手読込</Text>
@@ -510,6 +563,7 @@ const WA1120 = ({navigation}: Props) => {
             </View>
             <View style={[styles.narrow]}>
               <TouchableOpacity
+                disabled={!isBtnEnabledDst}
                 style={[styles.button, styles.buttonSmall, styles.centerButton]}
                 onPress={btnDestamQr}>
                 <Text style={styles.buttonText}>行先読込</Text>
@@ -522,11 +576,13 @@ const WA1120 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
@@ -534,7 +590,7 @@ const WA1120 = ({navigation}: Props) => {
           <TouchableOpacity
             style={getNextButtonStyle()}
             onPress={btnAppNext}
-            disabled={!isNext}>
+            disabled={!isNext || !isBtnEnabledNxt}>
             <Text style={styles.startButtonText}>次へ</Text>
           </TouchableOpacity>
         </View>

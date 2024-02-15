@@ -22,6 +22,7 @@ import {
   CT0011,
   CT0042,
 } from '../enum/enums.tsx';
+import {useButton} from '../hook/useButton.tsx';
 
 // WA1071 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1071'>;
@@ -31,6 +32,8 @@ interface Props {
 const WA1071 = ({navigation}: Props) => {
   const WA1070Data = useRecoilValue(WA1070DataState); // Recoil 新タグID情報
   const setBack = useSetRecoilState(WA1071BackState); // Recoil 戻る
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledMnu, toggleButtonMnu] = useButton(); //ボタン制御
 
   /************************************************
    * 初期表示設定
@@ -55,6 +58,12 @@ const WA1071 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1071 - 戻る');
     setBack(true);
     await logScreen('画面遷移: WA1071 → WA1070_新タグ参照(土壌)');
@@ -65,6 +74,12 @@ const WA1071 = ({navigation}: Props) => {
    * メニューボタン処理
    ************************************************/
   const btnMenu = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledMnu) {
+      return;
+    } else {
+      toggleButtonMnu();
+    }
     await logUserAction('ボタン押下: WA1071 - メニュー');
     await logScreen('画面遷移: WA1071 → WA1040_メニュー');
     navigation.navigate('WA1040');
@@ -256,12 +271,14 @@ const WA1071 = ({navigation}: Props) => {
       {/* 下段 */}
       <View style={[styles.bottomSection, styles.settingMain]}>
         <TouchableOpacity
+          disabled={!isBtnEnabledBck}
           testID="back-btn"
           style={[styles.button, styles.settingButton, styles.settingButton3]}
           onPress={btnAppBack}>
           <Text style={styles.endButtonText}>戻る</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          disabled={!isBtnEnabledMnu}
           testID="menu-btn"
           style={[styles.button, styles.settingButton, styles.settingButton]}
           onPress={btnMenu}>

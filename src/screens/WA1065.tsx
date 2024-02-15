@@ -31,6 +31,7 @@ import {useAlert} from '../components/AlertContext.tsx';
 import messages from '../utils/messages.tsx';
 import ProcessingModal from '../components/Modal.tsx';
 import {NativeModules} from 'react-native';
+import {useButton} from '../hook/useButton.tsx';
 const {JISInputFilter} = NativeModules;
 // WA1065 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1065'>;
@@ -47,6 +48,9 @@ const WA1065 = ({navigation}: Props) => {
   const [prevScreenId, setPrevScreenId] = useRecoilState(WA1060PrevScreenId); // Recoil 遷移元画面ID
   const [WA1065Memo, setWA1065Memo] = useRecoilState(WA1065MemoState); // Recoil メモ
   const setBack = useSetRecoilState(WA1061BackState); // Recoil 戻る
+  const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledNxt, toggleButtonNxt] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
 
   /************************************************
@@ -67,6 +71,12 @@ const WA1065 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDel) {
+      return;
+    } else {
+      toggleButtonDel();
+    }
     await logUserAction('ボタン押下: WA1065 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
@@ -81,6 +91,12 @@ const WA1065 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1065 - 戻る');
     if (prevScreenId === 'WA1066') {
       //遷移元画面IDを設定
@@ -104,6 +120,12 @@ const WA1065 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledNxt) {
+      return;
+    } else {
+      toggleButtonNxt();
+    }
     await logUserAction('ボタン押下: WA1065 - 次へ');
     // 一時領域に設定する
     setWA1065Memo(lnkNewTagDatMem); //メモ
@@ -209,16 +231,19 @@ const WA1065 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledNxt}
             style={[styles.button, styles.startButton]}
             onPress={btnAppNext}>
             <Text style={styles.startButtonText}>次へ</Text>
