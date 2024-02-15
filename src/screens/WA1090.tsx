@@ -42,6 +42,7 @@ import {
   WA1093MemoState,
   WA1090KbnState,
 } from '../atom/atom.tsx';
+import {useButton} from '../hook/useButton.tsx';
 
 // WA1090 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1090'>;
@@ -74,6 +75,11 @@ const WA1090 = ({navigation}: Props) => {
   const resetWA1091OldTagInfo = useResetRecoilState(WA1091OldTagInfoState); //Recoilリセット
   const resetWA1090WkPlac = useResetRecoilState(WA1090WkPlacState); //Recoilリセット
   const resetWA1093Memo = useResetRecoilState(WA1093MemoState); //Recoilリセット
+  const [isBtnEnabledWkp, toggleButtonWkp] = useButton(); //ボタン制御
+  const [isBtnEnabledTag, toggleButtonTag] = useButton(); //ボタン制御
+  const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledNxt, toggleButtonNxt] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定
@@ -108,7 +114,7 @@ const WA1090 = ({navigation}: Props) => {
           wkplacId: place.tmpPlacId as string, //作業場所ID
           wkplacNm: place.tmpPlacNm as string, //作業場所名
           delSrcTyp: place.delSrcTyp as string, //搬出元種別
-          wkplac: wkplcTyp, //作業場所
+          wkplac: '仮置場', //作業場所
         });
         setWkplc(place.tmpPlacNm as string);
         setIsTagRead(true);
@@ -226,7 +232,7 @@ const WA1090 = ({navigation}: Props) => {
       wkplacId: parts[1], //作業場所ID
       wkplacNm: parts[2], //作業場所名
       delSrcTyp: parts[3], //搬出元種別
-      wkplac: wkplcTyp,
+      wkplac: '仮置場',
     });
     setWkplc(parts[2]);
 
@@ -236,6 +242,12 @@ const WA1090 = ({navigation}: Props) => {
 
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledWkp) {
+      return;
+    } else {
+      toggleButtonWkp();
+    }
     await logUserAction('ボタン押下: WA1090 - 作業場所読込');
     setShowScannerWkPlc(true);
   };
@@ -290,6 +302,12 @@ const WA1090 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledTag) {
+      return;
+    } else {
+      toggleButtonTag();
+    }
     await logUserAction('ボタン押下: WA1090 - タグ読込');
     setShowScannerTag(true);
   };
@@ -323,6 +341,12 @@ const WA1090 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDel) {
+      return;
+    } else {
+      toggleButtonDel();
+    }
     await logUserAction('ボタン押下: WA1090 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
@@ -338,6 +362,12 @@ const WA1090 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1090 - 戻る');
     const result = await showAlert('確認', messages.IA5011(), true);
     if (result) {
@@ -350,6 +380,12 @@ const WA1090 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledNxt) {
+      return;
+    } else {
+      toggleButtonNxt();
+    }
     // モーダル表示
     setModalVisible(true);
     await logUserAction('ボタン押下: WA1090 - 次へ');
@@ -421,9 +457,24 @@ const WA1090 = ({navigation}: Props) => {
 
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText]}>作業場所：{wkplcTyp}</Text>
-          <Text style={[styles.labelText, styles.labelTextPlace]}>{wkplc}</Text>
+          <Text
+            style={[styles.labelText, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            作業場所：{wkplcTyp}
+          </Text>
+          <Text
+            style={[
+              styles.labelText,
+              styles.labelTextPlace,
+              styles.labelTextOver,
+            ]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {wkplc}
+          </Text>
           <TouchableOpacity
+            disabled={!isBtnEnabledWkp}
             style={[styles.button, styles.buttonSmall, styles.centerButton]}
             onPress={btnWkPlcQr}>
             <Text style={styles.buttonText}>作業場所読込</Text>
@@ -435,7 +486,10 @@ const WA1090 = ({navigation}: Props) => {
           <Text style={styles.labelText}>
             下記ボタンを押してフレコンに取り付けられたタグを読み込んで下さい。
           </Text>
-          <TouchableOpacity style={getTagReadButtonStyle()} onPress={btnTagQr}>
+          <TouchableOpacity
+            disabled={!isTagRead || !isBtnEnabledTag}
+            style={getTagReadButtonStyle()}
+            onPress={btnTagQr}>
             <Text style={styles.buttonText}>タグ読込</Text>
           </TouchableOpacity>
         </View>
@@ -466,11 +520,13 @@ const WA1090 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
@@ -479,7 +535,7 @@ const WA1090 = ({navigation}: Props) => {
             <TouchableOpacity
               style={getNextButtonStyle()}
               onPress={btnAppNext}
-              disabled={!isNext}>
+              disabled={!isNext || !isBtnEnabledNxt}>
               <Text style={styles.startButtonText}>次へ</Text>
             </TouchableOpacity>
           )}

@@ -33,6 +33,7 @@ import ProcessingModal from '../components/Modal.tsx';
 import {Picker} from '@react-native-picker/picker';
 import {getInstance} from '../utils/Realm'; // realm.jsから関数をインポート
 import {NativeModules} from 'react-native';
+import {useButton} from '../hook/useButton.tsx';
 
 const {JISInputFilter} = NativeModules;
 // WA1062 用の navigation 型
@@ -59,6 +60,8 @@ const WA1062 = ({navigation}: Props) => {
   ); //Recoil 旧タグ情報
   const setBack = useSetRecoilState(WA1061BackState); // Recoil 遷移前画面
   const setPrevScreenId = useSetRecoilState(WA1060PrevScreenId); // Recoil 戻る
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledUpd, toggleButtonUpd] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
 
   /************************************************
@@ -108,6 +111,12 @@ const WA1062 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1062 - 戻る');
     const result = await showAlert('確認', messages.IA5014(), true);
     if (result) {
@@ -121,6 +130,12 @@ const WA1062 = ({navigation}: Props) => {
    * 設定ボタン処理
    ************************************************/
   const btnSetting = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledUpd) {
+      return;
+    } else {
+      toggleButtonUpd();
+    }
     await logUserAction('ボタン押下: WA1062 - 設定');
     // 一時記憶領域の[旧タグ由来情報(配列)]の配列末尾[N]に追加する。
     setWA1060OldTagInfos([
@@ -377,10 +392,16 @@ const WA1062 = ({navigation}: Props) => {
 
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText, styles.bold]}>
+          <Text
+            style={[styles.labelText, styles.bold, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             新タグID：{newTagId}
           </Text>
-          <Text style={[styles.labelText, styles.bold]}>
+          <Text
+            style={[styles.labelText, styles.bold, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             {WA1061TagId[1] === 'dummyTag' ? 'ダミー' : '旧'}タグID：
             {WA1061TagId[0]}
           </Text>
@@ -453,11 +474,13 @@ const WA1062 = ({navigation}: Props) => {
 
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledUpd}
             style={[styles.button, styles.startButton]}
             onPress={btnSetting}>
             <Text style={styles.startButtonText}>設定</Text>

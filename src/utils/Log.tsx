@@ -133,13 +133,33 @@ export const initializeLogFile = async (): Promise<void> => {
   }
 
   // 新しいログファイルの作成
-  const newLogFileName = `${new Date().toISOString().split('T')[0]}_001.log`;
+  const newLogFileName = `${new Date()
+    .toISOString()
+    .split('T')[0]
+    .replace(/-/g, '')}_001.log`;
   const newLogFilePath = `${logDirectory}/${newLogFileName}`;
-
-  // ログファイルの作成
-  if (!(await RNFS.exists(newLogFilePath))) {
+  const logFileExists = await RNFS.exists(newLogFilePath);
+  if (!logFileExists) {
+    // ログファイルの作成
     await RNFS.writeFile(newLogFilePath, '', 'utf8');
+    return;
   }
+
+  // ファイル一覧を取得して最新の連番を決定するロジックを実装する
+  const files: ReadDirItem[] = await RNFS.readDir(logDirectory);
+  const datePrefix = new Date().toISOString().split('T')[0].replace(/-/g, '');
+  let maxSeq = 0;
+
+  files.forEach(file => {
+    const match = file.name.match(new RegExp(`^${datePrefix}_(\\d{3})\\.log$`));
+    if (match && parseInt(match[1], 10) > maxSeq) {
+      maxSeq = parseInt(match[1], 10);
+    }
+  });
+
+  const seq = (maxSeq + 1).toString().padStart(3, '0');
+  // ログファイルの作成
+  await RNFS.writeFile(`${logDirectory}/${datePrefix}_${seq}.log`, '', 'utf8');
 };
 
 /************************************************
@@ -148,7 +168,7 @@ export const initializeLogFile = async (): Promise<void> => {
  ************************************************/
 export const writeLog = async (logData: string): Promise<void> => {
   await rotateLogFile();
-  const logFilePath = `${logDirectory}/${getCurrentLogFileName()}`;
+  const logFilePath = `${logDirectory}/${await getCurrentLogFileName()}`;
   console.log(logData);
   await RNFS.appendFile(logFilePath, `${logData}\n`, 'utf8');
 };
@@ -169,7 +189,7 @@ export const getCurrentLogFileName = async (): Promise<string> => {
     }
   });
 
-  const seq = (maxSeq + 1).toString().padStart(3, '0');
+  const seq = maxSeq.toString().padStart(3, '0');
   return `${datePrefix}_${seq}.log`;
 };
 
@@ -223,7 +243,7 @@ export const rotateLogFile = async (): Promise<void> => {
  * @param {*} actionDescription
  ************************************************/
 export const logScreen = async (actionDescription: string): Promise<void> => {
-  const logEntry = `"VW", "${new Date().toISOString()}", "${actionDescription}"`;
+  const logEntry = `"OP", "${new Date().toISOString()}", "${actionDescription}"`;
   await writeLog(logEntry);
 };
 

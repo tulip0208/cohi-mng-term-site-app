@@ -34,6 +34,7 @@ import {
 } from '../types/type.tsx';
 import {useRecoilState, useResetRecoilState, useSetRecoilState} from 'recoil';
 import {WA1080DataState, WA1081BackState} from '../atom/atom.tsx';
+import {useButton} from '../hook/useButton.tsx';
 // WA1080 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1080'>;
 interface Props {
@@ -59,6 +60,10 @@ const WA1080 = ({navigation}: Props) => {
   const [WA1081back, setWa1081Back] = useRecoilState(WA1081BackState); // Recoil 戻る
   const setWA1080Data = useSetRecoilState(WA1080DataState); // Recoil 旧タグID情報
   const resetWA1080Data = useResetRecoilState(WA1080DataState); //Recoilリセット
+  const [isBtnEnabledWkp, toggleButtonWkp] = useButton(); //ボタン制御
+  const [isBtnEnabledTag, toggleButtonTag] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledNxt, toggleButtonNxt] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定
@@ -198,6 +203,12 @@ const WA1080 = ({navigation}: Props) => {
 
   // 作業場所コードスキャンボタン押下時の処理
   const btnWkPlcQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledWkp) {
+      return;
+    } else {
+      toggleButtonWkp();
+    }
     await logUserAction('ボタン押下: WA1080 - 作業場所読込');
     setShowScannerWkPlc(true);
   };
@@ -264,6 +275,12 @@ const WA1080 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledTag) {
+      return;
+    } else {
+      toggleButtonTag();
+    }
     await logUserAction('ボタン押下: WA1080 - タグ読込');
     setShowScannerTag(true);
   };
@@ -313,6 +330,12 @@ const WA1080 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1080 - 戻る');
     await logScreen('画面遷移: WA1080 → WA1040_メニュー');
     navigation.navigate('WA1040');
@@ -322,6 +345,12 @@ const WA1080 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledNxt) {
+      return;
+    } else {
+      toggleButtonNxt();
+    }
     await logUserAction('ボタン押下: WA1080 - 次へ');
     // モーダル表示
     setModalVisible(true);
@@ -389,9 +418,24 @@ const WA1080 = ({navigation}: Props) => {
 
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText]}>作業場所：{wkplcTyp}</Text>
-          <Text style={[styles.labelText, styles.labelTextPlace]}>{wkplc}</Text>
+          <Text
+            style={[styles.labelText, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            作業場所：{wkplcTyp}
+          </Text>
+          <Text
+            style={[
+              styles.labelText,
+              styles.labelTextPlace,
+              styles.labelTextOver,
+            ]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {wkplc}
+          </Text>
           <TouchableOpacity
+            disabled={!isBtnEnabledWkp}
             style={[styles.button, styles.buttonSmall, styles.centerButton]}
             onPress={btnWkPlcQr}>
             <Text style={styles.buttonText}>作業場所読込</Text>
@@ -405,7 +449,7 @@ const WA1080 = ({navigation}: Props) => {
           </Text>
           <TouchableOpacity
             style={getTagReadButtonStyle()}
-            disabled={!isTagRead}
+            disabled={!isTagRead || !isBtnEnabledTag}
             onPress={btnTagQr}>
             <Text style={styles.buttonText}>タグ読込</Text>
           </TouchableOpacity>
@@ -435,6 +479,7 @@ const WA1080 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
@@ -443,7 +488,7 @@ const WA1080 = ({navigation}: Props) => {
             <TouchableOpacity
               style={getNextButtonStyle()}
               onPress={btnAppNext}
-              disabled={!isNext}>
+              disabled={!isNext || !isBtnEnabledNxt}>
               <Text style={styles.startButtonText}>次へ</Text>
             </TouchableOpacity>
           )}

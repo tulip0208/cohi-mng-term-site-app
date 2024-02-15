@@ -22,6 +22,7 @@ import {
   CT0011_2,
   CT0008,
 } from '../enum/enums.tsx';
+import {useButton} from '../hook/useButton.tsx';
 
 // WA1081 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1081'>;
@@ -31,6 +32,8 @@ interface Props {
 const WA1081 = ({navigation}: Props) => {
   const WA1080Data = useRecoilValue(WA1080DataState); // Recoil 旧タグID情報
   const setBack = useSetRecoilState(WA1111BackState); // Recoil 戻る
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledMnu, toggleButtonMnu] = useButton(); //ボタン制御
 
   /************************************************
    * 初期表示設定
@@ -41,6 +44,12 @@ const WA1081 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1081 - 戻る');
     setBack(true);
     await logScreen('画面遷移: WA1081 → WA1080_旧タグ参照(土壌)');
@@ -51,6 +60,12 @@ const WA1081 = ({navigation}: Props) => {
    * メニューボタン処理
    ************************************************/
   const btnMenu = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledMnu) {
+      return;
+    } else {
+      toggleButtonMnu();
+    }
     await logUserAction('ボタン押下: WA1081 - メニュー');
     await logScreen('画面遷移: WA1081 → WA1040_メニュー');
     navigation.navigate('WA1040');
@@ -239,13 +254,26 @@ const WA1081 = ({navigation}: Props) => {
 
       {/* 上段 */}
       <View style={[styles.main]}>
-        <Text style={[styles.labelText]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           作業場所：{WA1080Data?.head.wkplcTyp}
         </Text>
-        <Text style={[styles.labelText, styles.labelTextPlace]}>
+        <Text
+          style={[
+            styles.labelText,
+            styles.labelTextPlace,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {WA1080Data?.head.wkplc}
         </Text>
-        <Text style={[styles.labelText]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           旧タグID：{WA1080Data?.head.oldTagId}
         </Text>
       </View>
@@ -264,11 +292,13 @@ const WA1081 = ({navigation}: Props) => {
       {/* 下段 */}
       <View style={[styles.bottomSection, styles.settingMain]}>
         <TouchableOpacity
+          disabled={!isBtnEnabledBck}
           style={[styles.button, styles.settingButton, styles.settingButton3]}
           onPress={btnAppBack}>
           <Text style={styles.endButtonText}>戻る</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          disabled={!isBtnEnabledMnu}
           style={[styles.button, styles.settingButton, styles.settingButton]}
           onPress={btnMenu}>
           <Text style={[styles.endButtonText, styles.settingButtonText1]}>

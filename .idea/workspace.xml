@@ -9,10 +9,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b37edecb-3b64-428d-be86-a45231324e27" name="変更" comment="">
+    <list default="true" id="b37edecb-3b64-428d-be86-a45231324e27" name="変更" comment="変更">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/WA1030.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/WA1030.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +43,7 @@
     "ScreenshotViewer.SavePath": "C:/willwave/ims資料/ss",
     "cidr.known.project.marker": "true",
     "com.android.tools.idea.streaming.emulator.frame.visible": "false",
-    "last_opened_file_path": "C:/willwave/cms_site",
+    "last_opened_file_path": "C:/willwave/cms_car",
     "project.structure.last.edited": "SDK Location",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.0",

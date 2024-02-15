@@ -35,6 +35,7 @@ import ProcessingModal from '../components/Modal.tsx';
 import {getCurrentDateTime} from '../utils/common.tsx';
 import {IFT0120, IFT0140FromWA1131} from '../utils/Api.tsx';
 import {ApiResponse} from '../types/type.tsx';
+import {useButton} from '../hook/useButton.tsx';
 // WA1131 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1131'>;
 interface Props {
@@ -54,6 +55,11 @@ const WA1131 = ({navigation}: Props) => {
   const [IFT0640Data, setIFT0640Data] = useRecoilState(IFT0640DataState); // Recoil IFT0640レスポンスデータ
   const setBack = useSetRecoilState(WA1131BackState); // Recoil 戻る
   const setPrevScreenId = useSetRecoilState(WA1130PrevScreenId); // Recoil 遷移元画面ID
+  const [isBtnEnabledTag, toggleButtonTag] = useButton(); //ボタン制御
+  const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledSnd, toggleButtonSnd] = useButton(); //ボタン制御
+  const [isBtnEnabledUpd, toggleButtonUpd] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
   const realm = getInstance();
 
@@ -133,6 +139,12 @@ const WA1131 = ({navigation}: Props) => {
   };
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledTag) {
+      return;
+    } else {
+      toggleButtonTag();
+    }
     await logUserAction('ボタン押下: WA1131 - タグ読込');
     setShowScannerTag(true);
   };
@@ -141,6 +153,12 @@ const WA1131 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDel) {
+      return;
+    } else {
+      toggleButtonDel();
+    }
     await logUserAction('ボタン押下: WA1131 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
@@ -155,6 +173,12 @@ const WA1131 = ({navigation}: Props) => {
    * 送信ボタン処理
    ************************************************/
   const btnAppSend = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledSnd) {
+      return;
+    } else {
+      toggleButtonSnd();
+    }
     await logUserAction('ボタン押下: WA1131 - 送信');
     setModalVisible(true);
     let tripStatusKbn = '';
@@ -242,6 +266,12 @@ const WA1131 = ({navigation}: Props) => {
    * 設定ボタン処理
    ************************************************/
   const btnAppSet = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledUpd) {
+      return;
+    } else {
+      toggleButtonUpd();
+    }
     await logUserAction('ボタン押下: WA1131 - 設定');
     if (!checkFormat(inputValue)) {
       await showAlert('通知', messages.EA5017(inputValue), false);
@@ -373,8 +403,20 @@ const WA1131 = ({navigation}: Props) => {
 
       {/* 上段 */}
       <View style={[styles.main]}>
-        <Text style={[styles.labelText]}>作業場所：{WA1130Data.wkplcTyp}</Text>
-        <Text style={[styles.labelTextNarrow, styles.labelTextPlace]}>
+        <Text
+          style={[styles.labelText, styles.labelTextOver]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          作業場所：{WA1130Data.wkplcTyp}
+        </Text>
+        <Text
+          style={[
+            styles.labelTextNarrow,
+            styles.labelTextPlace,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {WA1130Data.wkplc}
         </Text>
       </View>
@@ -389,7 +431,12 @@ const WA1131 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelTextNarrow}>{IFT0640Data.crdNo}</Text>
+              <Text
+                style={[styles.labelTextNarrow, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {IFT0640Data.crdNo}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -399,7 +446,12 @@ const WA1131 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelTextNarrow}>{IFT0640Data.vclNum}</Text>
+              <Text
+                style={[styles.labelTextNarrow, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {IFT0640Data.vclNum}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -409,11 +461,17 @@ const WA1131 = ({navigation}: Props) => {
               </Text>
             </View>
             <View style={styles.tableCell}>
-              <Text style={styles.labelTextNarrow}>{IFT0640Data.drvName}</Text>
+              <Text
+                style={[styles.labelTextNarrow, styles.labelTextOver]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {IFT0640Data.drvName}
+              </Text>
             </View>
           </View>
           <View style={[styles.main, styles.narrow]}>
             <TouchableOpacity
+              disabled={!isBtnEnabledTag}
               style={[styles.button, styles.buttonSmall, styles.centerButton]}
               onPress={btnTagQr}>
               <Text style={styles.buttonText}>タグ読込</Text>
@@ -444,13 +502,14 @@ const WA1131 = ({navigation}: Props) => {
       {/* 下段 */}
       <View style={[styles.bottomSection, styles.settingMain]}>
         <TouchableOpacity
+          disabled={!isBtnEnabledDel}
           style={[styles.button, styles.settingButton, styles.settingButton3]}
           onPress={btnAppDestroy}>
           <Text style={styles.endButtonText}>破棄</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle()}
-          disabled={isSendDisabled}
+          disabled={isSendDisabled || !isBtnEnabledSnd}
           onPress={btnAppSend}>
           <Text style={[styles.endButtonText, styles.settingButtonText1]}>
             送信
@@ -511,12 +570,19 @@ const WA1131 = ({navigation}: Props) => {
                 styles.justifyContentCenter,
               ]}>
               <TouchableOpacity
+                disabled={!isBtnEnabledBck}
                 style={[
                   styles.button,
                   styles.popupSettingButton,
                   styles.settingButton3,
                 ]}
                 onPress={() => {
+                  //ボタン連続押下制御
+                  if (!isBtnEnabledBck) {
+                    return;
+                  } else {
+                    toggleButtonBck();
+                  }
                   logUserAction('ボタン押下: WA1131 - 戻る');
                   setInputValue('');
                   setInputVisible(false);
@@ -524,6 +590,7 @@ const WA1131 = ({navigation}: Props) => {
                 <Text style={styles.endButtonText}>戻る</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                disabled={!isBtnEnabledUpd}
                 style={[
                   styles.button,
                   styles.popupSettingButton,

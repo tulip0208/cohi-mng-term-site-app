@@ -51,6 +51,7 @@ import PopupDetail from '../components/PopupDetail';
 import ProcessingModal from '../components/Modal.tsx';
 import {IFA0310} from '../utils/Api.tsx';
 import {loadFromKeystore} from '../utils/KeyStore';
+import {useButton} from '../hook/useButton.tsx';
 
 // WA1061 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1061'>;
@@ -73,6 +74,14 @@ const WA1061 = ({navigation}: Props) => {
   const setBack = useSetRecoilState(WA1061BackState); // Recoil 戻る
   const resetWA1060OldTagInfos = useResetRecoilState(WA1060OldTagInfosState); //Recoilリセット
   const setWA1061TagId = useSetRecoilState(WA1061TagIdState); //Recoil 旧タグ
+  const [isBtnEnabledDtl, toggleButtonDtl] = useButton(); //ボタン制御
+  const [isBtnEnabledUpd, toggleButtonUpd] = useButton(); //ボタン制御
+  const [isBtnEnabledTag, toggleButtonTag] = useButton(); //ボタン制御
+  const [isBtnEnabledDmy, toggleButtonDmy] = useButton(); //ボタン制御
+  const [isBtnEnabledAll, toggleButtonAll] = useButton(); //ボタン制御
+  const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledNxt, toggleButtonNxt] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
   /************************************************
    * 初期表示設定
@@ -164,6 +173,12 @@ const WA1061 = ({navigation}: Props) => {
 
   // タグコードスキャンボタン押下時の処理
   const btnTagQr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledTag) {
+      return;
+    } else {
+      toggleButtonTag();
+    }
     await logUserAction('ボタン押下: WA1061 - タグ読込');
     //旧タグ配列が9件の場合処理中止
     if (WA1060OldTagInfos.length >= 9) {
@@ -282,6 +297,12 @@ const WA1061 = ({navigation}: Props) => {
    * 設定ボタン処理
    ************************************************/
   const btnSetting = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledUpd) {
+      return;
+    } else {
+      toggleButtonUpd();
+    }
     await logUserAction('ボタン押下: WA1061 - 設定');
     setModalVisible(true);
     const result = await oldTagProc(inputValue);
@@ -299,6 +320,12 @@ const WA1061 = ({navigation}: Props) => {
    * ダミータグボタン処理
    ************************************************/
   const btnDummyTag = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDmy) {
+      return;
+    } else {
+      toggleButtonDmy();
+    }
     await logUserAction('ボタン押下: WA1061 - ダミータグ');
     //旧タグ配列が9件の場合処理中止
     if (WA1060OldTagInfos.length >= 9) {
@@ -323,6 +350,12 @@ const WA1061 = ({navigation}: Props) => {
    * 一括取消ボタン処理
    ************************************************/
   const btnOldTagClr = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledAll) {
+      return;
+    } else {
+      toggleButtonAll();
+    }
     await logUserAction('ボタン押下: WA1061 - 一括取消');
     const result = await showAlert('確認', messages.IA5013(), true);
     if (result) {
@@ -336,6 +369,12 @@ const WA1061 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDel) {
+      return;
+    } else {
+      toggleButtonDel();
+    }
     await logUserAction('ボタン押下: WA1061 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
@@ -350,6 +389,12 @@ const WA1061 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1061 - 戻る');
     const result = await showAlert('確認', messages.IA5014(), true);
     if (result) {
@@ -365,6 +410,12 @@ const WA1061 = ({navigation}: Props) => {
    * 次へボタン処理
    ************************************************/
   const btnAppNext = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledNxt) {
+      return;
+    } else {
+      toggleButtonNxt();
+    }
     await logUserAction('ボタン押下: WA1061 - 次へ');
     await logScreen('画面遷移: WA1061 → WA1063_必須情報設定(土壌)');
     navigation.navigate('WA1063');
@@ -419,12 +470,19 @@ const WA1061 = ({navigation}: Props) => {
         </View>
         <View style={[styles.tableCell1]}>
           <TouchableOpacity
+            disabled={!isBtnEnabledDtl}
             style={[styles.detailButton]}
             onPress={async () => {
+              //ボタン連続押下制御
+              if (!isBtnEnabledDtl) {
+                return;
+              } else {
+                toggleButtonDtl();
+              }
               setSelectedOldTagInfo(oldTagInfo);
               setPopupVisible(true);
               await logUserAction(
-                'ボタン押下: 詳細(' + oldTagInfo.oldTag + ')(WA1061)',
+                'ボタン押下: WA1061 - 詳細(' + oldTagInfo.oldTag + ')',
               );
             }}>
             <Text style={styles.detailButtonText}>詳細</Text>
@@ -450,9 +508,9 @@ const WA1061 = ({navigation}: Props) => {
           </View>
           <View style={[styles.tableCell1]}>
             <TouchableOpacity
+              disabled={!isBtnEnabledUpd}
               style={[styles.detailButton, styles.updateButton]}
               onPress={async () => {
-                await logUserAction('ボタン押下: WA1061 - 設定');
                 await btnSetting();
               }}>
               <Text style={[styles.detailButtonText, styles.settingButtonText]}>
@@ -587,7 +645,10 @@ const WA1061 = ({navigation}: Props) => {
 
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText, styles.bold]}>
+          <Text
+            style={[styles.labelText, styles.bold, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             新タグID：{newTagId}
           </Text>
           <Text style={[styles.labelTextNarrow, styles.center]}>
@@ -596,11 +657,13 @@ const WA1061 = ({navigation}: Props) => {
         </View>
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledTag}
             style={[styles.buttonNarrow, styles.centerButtonNarrow]}
             onPress={btnTagQr}>
             <Text style={styles.buttonText}>タグ読込</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledDmy}
             style={[
               styles.buttonNarrow,
               styles.centerButtonNarrow,
@@ -617,6 +680,7 @@ const WA1061 = ({navigation}: Props) => {
               旧タグ数：{WA1060OldTagInfos.length}
             </Text>
             <TouchableOpacity
+              disabled={!isBtnEnabledAll}
               style={[
                 styles.buttonMoreNarrow,
                 styles.centerButtonNarrow,
@@ -636,16 +700,19 @@ const WA1061 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledNxt}
             style={[styles.button, styles.startButton]}
             onPress={btnAppNext}>
             <Text style={styles.startButtonText}>次へ</Text>

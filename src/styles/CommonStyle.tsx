@@ -170,6 +170,9 @@ export const styles = StyleSheet.create({
   labelSmall: {
     fontSize: 10,
   },
+  labelSmall12: {
+    fontSize: 12,
+  },
   //--------------------
   //--------テキスト-------
   inputContainer: {
@@ -371,7 +374,7 @@ export const styles = StyleSheet.create({
     padding: 5,
     margin: 0,
     borderRadius: 10,
-    height: 40,
+    height: 50,
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
     width: windowWidth * 0.4,
@@ -707,11 +710,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 3,
     marginBottom: 3,
-    minHeight: 140,
+    minHeight: 160,
     maxHeight: 140,
   },
   scrollPushViewStyle: {
-    //★width: 'auto', // または必要な幅に設定
     maxWidth: windowWidth,
     minWidth: windowWidth * 0.9, // または必要な幅に設定
     borderWidth: 1, // 枠線の幅
@@ -1080,4 +1082,12 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
   },
   //--------------------
+  //--------見切れ対応--------
+  labelContainer: {
+    flexDirection: 'row', // 子要素を横並びに配置
+    overflow: 'hidden', // 親ビューの外側に出た内容を非表示にする
+  },
+  labelTextOver: {
+    flexShrink: 1, // 必要に応じてテキストを縮小して内容を収める
+  },
 });

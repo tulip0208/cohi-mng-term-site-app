@@ -11,6 +11,7 @@ import {getInstance} from '../utils/Realm'; // 適切なパスに修正してく
 import {useAlert} from '../components/AlertContext';
 import Header from '../components/Header'; // Headerコンポーネントのインポート
 import {logUserAction} from '../utils/Log';
+import {useButton} from '../hook/useButton';
 interface QRScannerProps {
   onScan: (data: string, type: string) => void;
   closeModal: () => void;
@@ -25,9 +26,10 @@ const QRScanner: React.FC<QRScannerProps> = ({
   errMsg,
 }) => {
   const [camTimeout, setCamTimeout] = useState<number | null>(null); // カメラのタイムアウト値を保存する状態
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [scanned, setScanned] = useState<boolean>(false);
-  const [isReadyToScan, setIsReadyToScan] = useState<boolean>(false);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null); //カメラ許可
+  const [scanned, setScanned] = useState<boolean>(false); //カメラ読込状態
+  const [isReadyToScan, setIsReadyToScan] = useState<boolean>(false); //カメラ読込開始
+  const [isBtnEnabledStp, toggleButtonStp] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
 
   /************************************************
@@ -102,6 +104,12 @@ const QRScanner: React.FC<QRScannerProps> = ({
    * 中断ボタン押下時の処理
    ************************************************/
   const btnAppClose = async (): Promise<void> => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledStp) {
+      return;
+    } else {
+      toggleButtonStp();
+    }
     await logUserAction('ボタン押下: 中断(QRScanner)');
     closeModal();
   };
@@ -125,6 +133,7 @@ const QRScanner: React.FC<QRScannerProps> = ({
       {/* 下段 */}
       <View style={styles.cameraBottomSection}>
         <TouchableOpacity
+          disabled={!isBtnEnabledStp}
           style={[styles.button, styles.endButtonSmall]}
           onPress={btnAppClose}>
           <Text style={styles.endButtonText}>中断</Text>

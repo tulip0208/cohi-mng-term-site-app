@@ -1,4 +1,4 @@
-package com.cms_site
+package com.tms_site
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule

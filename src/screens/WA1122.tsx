@@ -42,6 +42,7 @@ import {
   IFT0130ResponseDtl1,
   IFT0130ResponseDtl2,
 } from '../types/type';
+import {useButton} from '../hook/useButton.tsx';
 
 // WA1122 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1122'>;
@@ -73,6 +74,9 @@ const WA1122 = ({navigation}: Props) => {
   const WA1120TrpCardNo = useRecoilValue(WA1120TrpCardNoState); // Recoil 輸送カード番号
   const [WA1121Data, setWA1121Data] = useRecoilState(WA1121DataState); // Recoil 画面作業情報
   const setPrevScreenId = useSetRecoilState(WA1120PrevScreenId); //遷移元画面ID
+  const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
+  const [isBtnEnabledSnd, toggleButtonSnd] = useButton(); //ボタン制御
   const realm = getInstance();
   const settingsInfo = realm.objects('settings')[0];
   const {showAlert} = useAlert();
@@ -164,6 +168,12 @@ const WA1122 = ({navigation}: Props) => {
    * 破棄ボタン処理
    ************************************************/
   const btnAppDestroy = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDel) {
+      return;
+    } else {
+      toggleButtonDel();
+    }
     await logUserAction('ボタン押下: WA1122 - 破棄');
     const result = await showAlert('確認', messages.IA5012(), true);
     if (result) {
@@ -177,6 +187,12 @@ const WA1122 = ({navigation}: Props) => {
    * 戻るボタン処理
    ************************************************/
   const btnAppBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1122 - 戻る');
     const result = await showAlert('確認', messages.IA5014(), true);
     if (result) {
@@ -189,6 +205,12 @@ const WA1122 = ({navigation}: Props) => {
    * 送信ボタン処理
    ************************************************/
   const btnAppSend = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledSnd) {
+      return;
+    } else {
+      toggleButtonSnd();
+    }
     await logUserAction('ボタン押下: WA1122 - 送信');
 
     //線量_前、線量_左、線量_後、線量_右の値がいずれが[Realm].[設定ファイル].[荷台線量_上限閾値]を超える場合
@@ -458,10 +480,20 @@ const WA1122 = ({navigation}: Props) => {
 
         {/* 上段 */}
         <View style={[styles.main]}>
-          <Text style={[styles.labelText]}>
+          <Text
+            style={[styles.labelText, styles.labelTextOver]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             作業場所：{WA1120Data.wkplcTyp}
           </Text>
-          <Text style={[styles.labelTextNarrow, styles.labelTextPlace]}>
+          <Text
+            style={[
+              styles.labelTextNarrow,
+              styles.labelTextPlace,
+              styles.labelTextOver,
+            ]}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             {WA1120Data.wkplc}
           </Text>
         </View>
@@ -476,7 +508,12 @@ const WA1122 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={styles.tableCell}>
-                <Text style={styles.labelTextNarrow}>{WA1120Car.carNo}</Text>
+                <Text
+                  style={[styles.labelTextNarrow, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
+                  {WA1120Car.carNo}
+                </Text>
               </View>
             </View>
             <View style={styles.tableRow}>
@@ -486,7 +523,12 @@ const WA1122 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={styles.tableCell}>
-                <Text style={styles.labelTextNarrow}>{WA1120Drv.drvNm}</Text>
+                <Text
+                  style={[styles.labelTextNarrow, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
+                  {WA1120Drv.drvNm}
+                </Text>
               </View>
             </View>
             <View style={styles.tableRow}>
@@ -496,7 +538,10 @@ const WA1122 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={styles.tableCell}>
-                <Text style={styles.labelTextNarrow}>
+                <Text
+                  style={[styles.labelTextNarrow, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
                   {WA1120Dest.fixPlacNm}
                 </Text>
               </View>
@@ -508,7 +553,12 @@ const WA1122 = ({navigation}: Props) => {
                 </Text>
               </View>
               <View style={styles.tableCell}>
-                <Text style={styles.labelTextNarrow}>{WA1120TrpCardNo}</Text>
+                <Text
+                  style={[styles.labelTextNarrow, styles.labelTextOver]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
+                  {WA1120TrpCardNo}
+                </Text>
               </View>
             </View>
             <View style={[styles.tableRow, styles.center]}>
@@ -658,18 +708,20 @@ const WA1122 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
+            disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={getButtonStyle()}
-            disabled={!isSend}
+            disabled={!isSend || !isBtnEnabledSnd}
             onPress={btnAppSend}>
             <Text style={styles.startButtonText}>送信</Text>
           </TouchableOpacity>

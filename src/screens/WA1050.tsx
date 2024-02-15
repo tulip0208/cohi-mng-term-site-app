@@ -30,6 +30,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {RootList} from '../navigation/AppNavigator';
 import {RouteProp} from '@react-navigation/native';
 import {TrmId, ApiResponse} from '../types/type';
+import {useButton} from '../hook/useButton';
 
 const {SignalStrengthModule} = NativeModules;
 // WA1050 用の navigation 型
@@ -51,6 +52,9 @@ const WA1050 = ({route, navigation}: Props) => {
   const [logCap, setLogCap] = useState<number>(0); // ログ(MB)
   const [isDisabled, setIsDisabled] = useState<boolean>(true); // ログ消去・送信ボタン 活性・非活性
   const [modalVisible, setModalVisible] = useState<boolean>(false); //処理中モーダルの状態
+  const [isBtnEnabledSnd, toggleButtonSnd] = useButton(); //ボタン制御
+  const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
+  const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
   const {showAlert} = useAlert();
 
   /************************************************
@@ -90,6 +94,12 @@ const WA1050 = ({route, navigation}: Props) => {
    * ログ消去ボタン
    ************************************************/
   const btnDelLog = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledDel) {
+      return;
+    } else {
+      toggleButtonDel();
+    }
     await logUserAction('ボタン押下: WA1050 - ログ消去');
     const IA5010_choise = await showAlert('確認', messages.IA5010(), true);
     // ユーザーの選択に応じた処理
@@ -107,6 +117,12 @@ const WA1050 = ({route, navigation}: Props) => {
    * ログ送信ボタン
    ************************************************/
   const btnUpLog = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledSnd) {
+      return;
+    } else {
+      toggleButtonSnd();
+    }
     await logUserAction('ボタン押下: WA1050 - ログ送信');
     const IA5006_choise = await showAlert('確認', messages.IA5006(), true);
     // ユーザーの選択に応じた処理
@@ -142,6 +158,12 @@ const WA1050 = ({route, navigation}: Props) => {
    * 戻るボタン
    ************************************************/
   const btnBack = async () => {
+    //ボタン連続押下制御
+    if (!isBtnEnabledBck) {
+      return;
+    } else {
+      toggleButtonBck();
+    }
     await logUserAction('ボタン押下: WA1050 - 戻る');
     await logScreen(`画面遷移: WA1050 → ${sourceScreenId}`);
     navigation.navigate(sourceScreenId as 'WA1030' | 'WA1040');
@@ -226,13 +248,34 @@ const WA1050 = ({route, navigation}: Props) => {
       {/* 中段 */}
       <View style={[styles.main, styles.topContent]}>
         <Text style={styles.labelTextSetting}>[アプリ情報]</Text>
-        <Text style={[styles.labelTextSetting, styles.labelTextSettingDtl]}>
+        <Text
+          style={[
+            styles.labelTextSetting,
+            styles.labelTextSettingDtl,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           アプリバージョン：{versionTt}
         </Text>
-        <Text style={[styles.labelTextSetting, styles.labelTextSettingDtl]}>
+        <Text
+          style={[
+            styles.labelTextSetting,
+            styles.labelTextSettingDtl,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           ビルドバージョン：{buildVersion}
         </Text>
-        <Text style={[styles.labelTextSetting, styles.labelTextSettingDtl]}>
+        <Text
+          style={[
+            styles.labelTextSetting,
+            styles.labelTextSettingDtl,
+            styles.labelTextOver,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           端末ID：{revision}
         </Text>
         <Text style={styles.labelTextSetting}>[通信状態]</Text>
@@ -266,21 +309,22 @@ const WA1050 = ({route, navigation}: Props) => {
         <TouchableOpacity
           style={getButtonStyle(1)}
           onPress={btnDelLog}
-          disabled={isDisabled}
+          disabled={isDisabled || !isBtnEnabledDel}
           testID="logDelete">
           <Text style={getTextStyle()}>ログ消去</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle(2)}
           onPress={btnUpLog}
-          disabled={isDisabled}>
+          disabled={isDisabled || !isBtnEnabledSnd}>
           <Text style={[styles.endButtonText, styles.settingButtonText1]}>
             ログ送信
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, styles.settingButton, styles.settingButton3]}
-          onPress={btnBack}>
+          onPress={btnBack}
+          disabled={!isBtnEnabledBck}>
           <Text style={styles.endButtonText}>戻る</Text>
         </TouchableOpacity>
       </View>
