@@ -122,4 +122,62 @@ describe('WA1100 Screen', () => {
     expect(findByText('次へ')).toBeTruthy();
   });
 
+  // 戻るボタンタップ時
+  it('戻るボタンタップ時には以下の制御を行う。', async () => {
+    const {getAllByText, findByText} = render(
+      <RecoilRoot
+        initializeState={(snap: any) => {
+          snap.set(WA1100DataState, mockWA1100Data);
+          snap.set(WA1101BackState, mockWA1101Back);
+        }}>
+        <WA1100 navigation={mockNavigation} />
+      </RecoilRoot>,
+    );
+
+    const triggerButton = getAllByText(/戻る/)[0];
+    await act(async () => {
+      fireEvent.press(triggerButton);
+    });
+
+    // 新タグ参照画面コール
+    await waitFor(async () => {
+      expect(mockNavigate).toHaveBeenCalledWith('WA1100');
+    });
+  });
+
+  // メニューボタンタップ時
+  it('メニューボタンタップ時には以下の制御を行う。', async () => {
+    const {getAllByText, findByText} = render(
+      <RecoilRoot
+        initializeState={(snap: any) => {
+          snap.set(WA1100DataState, mockWA1100Data);
+          snap.set(WA1101BackState, mockWA1101Back);
+        }}>
+        <WA1100 navigation={mockNavigation} />
+      </RecoilRoot>,
+    );
+
+    const triggerButton = getAllByText(/メニュー/)[0];
+    await act(async () => {
+      fireEvent.press(triggerButton);
+    });
+
+    // メニュー画面コール
+    await waitFor(async () => {
+      expect(mockNavigate).toHaveBeenCalledWith('WA1040');
+    });
+  });
+
+//タグ用QRコードスキャナー 
+  it('タグ用QRコードスキャナー', async () => {
+    const {getAllByText, findByText} = render(
+      <RecoilRoot
+        initializeState={(snap: any) => {
+          snap.set(WA1100DataState, mockWA1100Data);
+          snap.set(WA1101BackState, mockWA1101Back);
+        }}>
+        <WA1100 navigation={mockNavigation} />
+      </RecoilRoot>,
+    );
+  });
   });
