@@ -6,7 +6,7 @@ import React from 'react';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootList} from '../src/navigation/AppNavigator';
-import {RecoilRoot, useRecoilValue} from 'recoil';
+import {RecoilRoot} from 'recoil';
 import {act} from '@testing-library/react-native';
 import WA1071 from '../src/screens/WA1071';
 import {
@@ -113,7 +113,6 @@ describe('WA1071 Screen', () => {
       </RecoilRoot>,
     );
 
-    await waitFor(() => {});
     // 作業場所
     expect(
       findByText(`作業場所：${mockWA1070Data?.head.wkplcTyp}`),
