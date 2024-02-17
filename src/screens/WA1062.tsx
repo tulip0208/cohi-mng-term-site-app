@@ -331,6 +331,7 @@ const WA1062 = ({navigation}: Props) => {
     };
     return (
       <Picker
+        testID="rm-sol-type-select"
         selectedValue={selectRmSolType}
         onValueChange={itemValue => setSelectRmSolType(itemValue)}
         style={[styles.pickerStyle]}>
@@ -342,6 +343,7 @@ const WA1062 = ({navigation}: Props) => {
   const makePickerUsgAluBg = () => {
     return (
       <Picker
+        testID="usg-alu-bg-select"
         selectedValue={selectUsgAluBg}
         onValueChange={itemValue => setSelectUsgAluBg(itemValue)}
         style={[styles.pickerStyle]}>
@@ -360,6 +362,7 @@ const WA1062 = ({navigation}: Props) => {
     reasonAry.push('その他');
     return (
       <Picker
+        testID="lnk-new-tag-dat-mem"
         selectedValue={selectLnkNewTagDatMem}
         onValueChange={itemValue => {
           setSelectLnkNewTagDatMem(itemValue);
@@ -457,6 +460,7 @@ const WA1062 = ({navigation}: Props) => {
               contentContainerStyle={[styles.inputReasonScrollViewStyle]}
               showsVerticalScrollIndicator={true}>
               <TextInput
+                testID="new-tag-data-mem-input"
                 multiline={true}
                 onChangeText={handleInputChange}
                 onBlur={filterText}

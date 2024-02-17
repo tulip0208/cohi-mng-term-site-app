@@ -292,13 +292,13 @@ const WA1081 = ({navigation}: Props) => {
       {/* 下段 */}
       <View style={[styles.bottomSection, styles.settingMain]}>
         <TouchableOpacity
-          disabled={!isBtnEnabledBck}
+          // disabled={!isBtnEnabledBck}
           style={[styles.button, styles.settingButton, styles.settingButton3]}
           onPress={btnAppBack}>
           <Text style={styles.endButtonText}>戻る</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          disabled={!isBtnEnabledMnu}
+          // disabled={!isBtnEnabledMnu}
           style={[styles.button, styles.settingButton, styles.settingButton]}
           onPress={btnMenu}>
           <Text style={[styles.endButtonText, styles.settingButtonText1]}>

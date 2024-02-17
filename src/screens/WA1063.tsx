@@ -315,7 +315,7 @@ const WA1063 = ({navigation}: Props) => {
     return (
       <Picker
         selectedValue={selectRmSolType}
-        onValueChange={itemValue => setSelectRmSolType(itemValue)}
+        // onValueChange={itemValue => setSelectRmSolType(itemValue)}
         style={[styles.pickerStyle]}>
         {makeList()}
       </Picker>
@@ -326,7 +326,7 @@ const WA1063 = ({navigation}: Props) => {
     return (
       <Picker
         selectedValue={selectPkTyp}
-        onValueChange={itemValue => setSelectPkTyp(itemValue)}
+        // onValueChange={itemValue => setSelectPkTyp(itemValue)}
         style={[styles.pickerStyle]}>
         <Picker.Item key="" label="未選択" value="" />
         <Picker.Item key="1" label="耐候性大型" value="1" />
@@ -346,7 +346,7 @@ const WA1063 = ({navigation}: Props) => {
     return (
       <Picker
         selectedValue={selectUsgInnBg}
-        onValueChange={itemValue => setSelectUsgInnBg(itemValue)}
+        // onValueChange={itemValue => setSelectUsgInnBg(itemValue)}
         style={[styles.pickerStyle]}>
         <Picker.Item key="" label="未選択" value="" />
         <Picker.Item key="1" label="内袋なし" value="1" />
@@ -374,7 +374,7 @@ const WA1063 = ({navigation}: Props) => {
     return (
       <Picker
         selectedValue={selectTsuInd}
-        onValueChange={itemValue => setSelectTsuInd(itemValue)}
+        // onValueChange={itemValue => setSelectTsuInd(itemValue)}
         style={[styles.pickerStyle]}>
         <Picker.Item key="" label="未選択" value="" />
         <Picker.Item key="1" label="津波浸水域由来" value="1" />
@@ -387,7 +387,7 @@ const WA1063 = ({navigation}: Props) => {
     return (
       <Picker
         selectedValue={selectSplFac}
-        onValueChange={itemValue => setSelectSplFac(itemValue)}
+        // onValueChange={itemValue => setSelectSplFac(itemValue)}
         style={[styles.pickerStyle]}>
         <Picker.Item key="" label="未選択" value="" />
         <Picker.Item key="1" label="特定施設由来" value="1" />
@@ -400,7 +400,7 @@ const WA1063 = ({navigation}: Props) => {
     return (
       <Picker
         selectedValue={selectUsgAluBg}
-        onValueChange={itemValue => setSelectUsgAluBg(itemValue)}
+        // onValueChange={itemValue => setSelectUsgAluBg(itemValue)}
         style={[styles.pickerStyle]}>
         <Picker.Item key="" label="未選択" value="" />
         <Picker.Item key="1" label="利用あり" value="1" />
@@ -498,6 +498,7 @@ const WA1063 = ({navigation}: Props) => {
             <View style={[styles.tableCell, styles.checkboxContainer]}>
               <Text style={[styles.pickerLabelText]}>オーバーパック有無：</Text>
               <CheckBox
+                testID='checkbox1'
                 disabled={isCheckable}
                 value={checkYesNoOP}
                 onValueChange={check => setCheckYesNoOP(check)}
@@ -516,19 +517,19 @@ const WA1063 = ({navigation}: Props) => {
       {/* 下段 */}
       <View style={styles.bottomSection}>
         <TouchableOpacity
-          disabled={!isBtnEnabledDel}
+          // disabled={!isBtnEnabledDel}
           style={[styles.button, styles.destroyButton]}
           onPress={btnAppDestroy}>
           <Text style={styles.endButtonText}>破棄</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          disabled={!isBtnEnabledBck}
+          // disabled={!isBtnEnabledBck}
           style={[styles.button, styles.endButton]}
           onPress={btnAppBack}>
           <Text style={styles.endButtonText}>戻る</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          disabled={!isBtnEnabledNxt}
+          // disabled={!isBtnEnabledNxt}
           style={[styles.button, styles.startButton]}
           onPress={btnAppNext}>
           <Text style={styles.startButtonText}>次へ</Text>
