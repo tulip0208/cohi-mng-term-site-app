@@ -458,6 +458,7 @@ const WA1080 = ({navigation}: Props) => {
         {/* 中段2 */}
         <View style={[styles.main, styles.center, styles.zIndex]}>
           <TouchableWithoutFeedback
+            testID="info-msg"
             onPressIn={() => onPressIn()}
             onPressOut={onPressOut}>
             <Text style={styles.labelText}>{getInfoMsg()}</Text>
@@ -465,6 +466,7 @@ const WA1080 = ({navigation}: Props) => {
           {inputVisible && (
             <View style={[styles.inputContainer]}>
               <TextInput
+                testID="text-input"
                 style={getTextInputStyle()}
                 onChangeText={handleInputChange}
                 onBlur={handleInputBlur}

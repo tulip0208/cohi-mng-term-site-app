@@ -31,7 +31,6 @@ let mockApiPromise: () => Promise<
   ApiResponse<IFA0320Response<IFA0330ResponseDtl>>
 >;
 let mockQRScan: (onScan: (data: string, type: string) => void) => void;
-let mockComIdQr: string;
 let mockWkplaceTypeQr: number;
 let mockRealmWrite: (callback: () => void) => void;
 
@@ -87,14 +86,6 @@ jest.mock('../src/components/AlertContext', () => ({
     showAlert: mockShowAlert,
     // 他の必要な関数やプロパティがあればここに追加
   }),
-}));
-
-jest.mock('../src/utils/KeyStore', () => ({
-  saveToKeystore: jest.fn(),
-  loadFromKeystore: () => ({comId: mockComIdQr}),
-  clearKeyStore: jest.fn(),
-  getEncryptionKeyFromKeystore: jest.fn().mockResolvedValue(new Uint8Array(10)),
-  // 他の関数もモック
 }));
 
 // Api.jsのIFA0330関数をモック化
@@ -158,7 +149,6 @@ describe('WA1060 Screen', () => {
         },
         error: '',
       });
-    mockComIdQr = '1';
     mockWkplaceTypeQr = 4;
     mockRealmWrite = (callback: () => void) => {
       callback();
@@ -234,6 +224,8 @@ describe('WA1060 Screen', () => {
         <WA1060 navigation={mockNavigation} />
       </RecoilRoot>,
     );
+
+    jest.advanceTimersByTime(1005);
   });
 
   it('成功 作業場所種類(4)', async () => {
