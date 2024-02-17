@@ -106,12 +106,12 @@ const WA1020 = ({navigation}: Props) => {
         setShowScannerUsr(false);
       } else {
         // ID種別が1ではない場合のエラーハンドリング
-        await showAlert('通知', messages.EA5002('利用者'), false);
         setShowScannerUsr(false);
+        await showAlert('通知', messages.EA5002('利用者'), false);
       }
     } else {
-      await showAlert('通知', messages.EA5002('利用者'), false);
       setShowScannerUsr(false);
+      await showAlert('通知', messages.EA5002('利用者'), false);
       // CSVデータが正しいフォーマットでない場合のエラーハンドリング
     }
   };
@@ -156,22 +156,22 @@ const WA1020 = ({navigation}: Props) => {
         setShowScannerActivate(false);
       } else {
         // ID種別が1ではない場合のエラーハンドリング
+        setShowScannerActivate(false);
         await showAlert('通知', messages.EA5002('アクティベーション'), false);
         setActReadFlg('未');
         //アクティベーション情報のクリア
         if (await loadFromKeystore('activationInfo')) {
           await clearKeyStore('activationInfo');
         }
-        setShowScannerActivate(false);
       }
     } else {
+      setShowScannerActivate(false);
       await showAlert('通知', messages.EA5002('アクティベーション'), false);
       setActReadFlg('未');
       //アクティベーション情報のクリア
       if (await loadFromKeystore('activationInfo')) {
         await clearKeyStore('activationInfo');
       }
-      setShowScannerActivate(false);
       // CSVデータが正しいフォーマットでない場合のエラーハンドリング
     }
   };

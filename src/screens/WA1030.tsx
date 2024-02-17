@@ -128,14 +128,14 @@ const WA1030 = ({navigation}: Props) => {
         }
       } else {
         // ID種別が1ではない場合のエラーハンドリング
+        setShowScannerUsr(false);
         await showAlert('通知', messages.EA5002('利用者'), false);
         await deleteRealm('user');
-        setShowScannerUsr(false);
       }
     } else {
+      setShowScannerUsr(false);
       await showAlert('通知', messages.EA5002('利用者'), false);
       await deleteRealm('user');
-      setShowScannerUsr(false);
       // CSVデータが正しいフォーマットでない場合のエラーハンドリング
     }
   };
