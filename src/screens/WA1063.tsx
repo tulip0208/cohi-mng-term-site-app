@@ -498,6 +498,7 @@ const WA1063 = ({navigation}: Props) => {
             <View style={[styles.tableCell, styles.checkboxContainer]}>
               <Text style={[styles.pickerLabelText]}>オーバーパック有無：</Text>
               <CheckBox
+                testID="checkbox1"
                 disabled={isCheckable}
                 value={checkYesNoOP}
                 onValueChange={check => setCheckYesNoOP(check)}
