@@ -20,24 +20,24 @@ const mockNavigation = {
 } as unknown as StackNavigationProp<RootList, 'WA1101'>; // 型アサーション
 
 let mockWA1100Data = {
-    head: {
+  head: {
     wkplcTyp: '仮置場',
     wkplc: '大阪',
     newTagId: 'a929091111111111a',
   },
   data: {
-    newTagId: "a929091111111111a",
-    oldTagId: "000-23-451",
-    tmpLocId: "string",
-    tmpLocNm: "飯館仮置場",
-    tyRegDt: "string",
+    newTagId: 'a929091111111111a',
+    oldTagId: '000-23-451',
+    tmpLocId: 'string',
+    tmpLocNm: '飯館仮置場',
+    tyRegDt: 'string',
     lnkNewTagDatMem: '',
     ashTyp: 1,
     meaRa: 123456789,
     surDsRt: 123456.78,
     surDsDt: '',
     surDsWt: 123456,
-    sndId: ''
+    sndId: '',
   },
 };
 
@@ -102,9 +102,7 @@ describe('WA1101 Screen', () => {
 
     await waitFor(() => {});
     // 仮置場
-    expect(
-      findByText(`仮置場：${mockWA1100Data?.data.tmpLocNm}`),
-    ).toBeTruthy();
+    expect(findByText(`仮置場：${mockWA1100Data?.data.tmpLocNm}`)).toBeTruthy();
     expect(findByText('飯館仮置場')).toBeTruthy();
 
     // 新タグ
@@ -118,9 +116,7 @@ describe('WA1101 Screen', () => {
     ).toBeTruthy();
 
     expect(
-      findByText(
-        `重量(Kg)：${mockWA1100Data?.data.surDsWt}`,
-      ),
+      findByText(`重量(Kg)：${mockWA1100Data?.data.surDsWt}`),
     ).toBeTruthy();
     expect(
       findByText(`線量(μSv/h)：${mockWA1100Data?.data.surDsRt}`),
@@ -130,15 +126,12 @@ describe('WA1101 Screen', () => {
       findByText(`測定放射能濃度：${mockWA1100Data?.data.meaRa}`),
     ).toBeTruthy();
 
-    expect(
-      findByText(`(Bq/Kg)　`),
-    ).toBeTruthy();
+    expect(findByText(`(Bq/Kg)　`)).toBeTruthy();
 
     expect(
       findByText(`メモ：${mockWA1100Data?.data.lnkNewTagDatMem}`),
     ).toBeTruthy();
 
-    
     // 戻る、メニュー
     expect(findByText('戻る')).toBeTruthy();
     expect(findByText('メニュー')).toBeTruthy();
@@ -189,4 +182,4 @@ describe('WA1101 Screen', () => {
       expect(mockNavigate).toHaveBeenCalledWith('WA1040');
     });
   });
-  });
+});

@@ -33,7 +33,6 @@ let mockWA1110Data = {
     surDsDt: 1, // 表面線量率測定日（焼却時）、日付（オプショナル）
     surDsWt: 1, // 表面線量率測定時重量（焼却時）、半角数値（オプショナル）
   },
-
 };
 
 let mockWA1111Back = false;
@@ -114,10 +113,8 @@ describe('WA1111 Screen', () => {
     expect(
       findByText(`測定放射能濃度：${mockWA1110Data?.data.meaRa}`),
     ).toBeTruthy();
-    expect(
-      findByText(`(Bq/Kg)　`),
-    ).toBeTruthy();
-    
+    expect(findByText(`(Bq/Kg)　`)).toBeTruthy();
+
     // 戻る、メニュー
     expect(findByText('戻る')).toBeTruthy();
     expect(findByText('メニュー')).toBeTruthy();
@@ -167,4 +164,4 @@ describe('WA1111 Screen', () => {
       expect(mockNavigate).toHaveBeenCalledWith('WA1040');
     });
   });
-  });
+});

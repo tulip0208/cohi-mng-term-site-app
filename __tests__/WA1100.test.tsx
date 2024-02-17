@@ -20,24 +20,24 @@ const mockNavigation = {
 } as unknown as StackNavigationProp<RootList, 'WA1100'>; // 型アサーション
 
 let mockWA1100Data = {
-    head: {
+  head: {
     wkplcTyp: '仮置場',
     wkplc: '大阪',
     newTagId: 'a929091111111111a',
   },
   data: {
-    newTagId: "a929091111111111a",
-    oldTagId: "000-23-451",
-    tmpLocId: "string",
-    tmpLocNm: "飯館仮置場",
-    tyRegDt: "string",
+    newTagId: 'a929091111111111a',
+    oldTagId: '000-23-451',
+    tmpLocId: 'string',
+    tmpLocNm: '飯館仮置場',
+    tyRegDt: 'string',
     lnkNewTagDatMem: '',
     ashTyp: 1,
     meaRa: 123456789,
     surDsRt: 123456.78,
     surDsDt: '',
     surDsWt: 123456,
-    sndId: ''
+    sndId: '',
   },
 };
 
@@ -102,20 +102,18 @@ describe('WA1100 Screen', () => {
 
     await waitFor(() => {});
     // 仮置場
-    expect(
-      findByText(`作業場所：${mockWA1100Data?.head.wkplc}`),
-    ).toBeTruthy();
+    expect(findByText(`作業場所：${mockWA1100Data?.head.wkplc}`)).toBeTruthy();
     expect(findByText('大阪')).toBeTruthy();
 
     // 新タグ
     expect(
-      findByText(`下記ボタンを押してフレコンに取り付けられたタグを読み込んで下さい。`),
+      findByText(
+        `下記ボタンを押してフレコンに取り付けられたタグを読み込んで下さい。`,
+      ),
     ).toBeTruthy();
 
     //タグID
-    expect(
-      findByText(`タグ読込`),
-    ).toBeTruthy();
+    expect(findByText(`タグ読込`)).toBeTruthy();
 
     // 戻る、次へ
     expect(findByText('戻る')).toBeTruthy();
@@ -168,7 +166,7 @@ describe('WA1100 Screen', () => {
     });
   });
 
-//タグ用QRコードスキャナー 
+  //タグ用QRコードスキャナー
   it('タグ用QRコードスキャナー', async () => {
     const {getAllByText, findByText} = render(
       <RecoilRoot
@@ -180,4 +178,4 @@ describe('WA1100 Screen', () => {
       </RecoilRoot>,
     );
   });
-  });
+});
