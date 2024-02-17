@@ -128,6 +128,7 @@ const WA1060 = ({navigation}: Props) => {
           delSrcTyp: place.delSrcTyp as string, //搬出元種別
           wkplac: '仮置場', //作業場所
         });
+        setIsWkPlcRead(true);
         setWkplc(place.tmpPlacNm as string);
         setDelSrcTyp(place.delSrcTyp as number);
         setIsTagRead(true);
@@ -334,6 +335,11 @@ const WA1060 = ({navigation}: Props) => {
 
     // 新タグID参照処理実施(QR・バーコード)
     const retScreen = await procBarCode(code);
+    if (retScreen === '') {
+      setModalVisible(false);
+      setShowScannerTag(false);
+      return;
+    }
     if (retScreen === 'WA1066') {
       // QR・バーコード両方
       setModalVisible(false);

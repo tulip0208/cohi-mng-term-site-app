@@ -93,6 +93,7 @@ const WA1080 = ({navigation}: Props) => {
       case 4:
         place = realm.objects('temporary_places')[0];
         setWkplcTyp('仮置場');
+        setIsWkPlcRead(true);
         setWkPlcId(place.tmpPlacId as string);
         setWkplc(place.tmpPlacNm as string);
         setIsTagRead(true);

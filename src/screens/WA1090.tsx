@@ -116,6 +116,7 @@ const WA1090 = ({navigation}: Props) => {
           delSrcTyp: place.delSrcTyp as string, //搬出元種別
           wkplac: '仮置場', //作業場所
         });
+        setIsWkPlcRead(true);
         setWkplc(place.tmpPlacNm as string);
         setIsTagRead(true);
         break;
