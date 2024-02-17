@@ -193,6 +193,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
   },
   input: {
+    color: 'black',
     fontSize: 14,
     borderWidth: 1, // 枠線の幅
     borderColor: 'black', // 枠線の色
