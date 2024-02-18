@@ -1164,7 +1164,7 @@ export const sendToServer = async <TRequest, TResponse>(
       : error.message;
     // エラー時にログ記録
     await logCommunication('ERROR', URI, null, errorMessage);
-    if (error.code === 'ECONNABORTED') {
+    if (error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK') {
       // タイムアウト処理
       console.log('Communication timed out', error);
       throw new CustomError('timeout', null, null, msg);
@@ -1290,7 +1290,7 @@ export const sendFileToServer = async <TRequest, TResponse>(
       : error.message;
     // エラー時にログ記録
     await logCommunication('ERROR', URI, null, errorMessage);
-    if (error.code === 'ECONNABORTED') {
+    if (error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK') {
       // タイムアウト処理
       console.log('Communication timed out', errorMessage);
       throw new CustomError('timeout', null, null, msg);
