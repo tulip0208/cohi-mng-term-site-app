@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-identical-title */
 import React from 'react';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
