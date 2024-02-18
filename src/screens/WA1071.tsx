@@ -142,7 +142,15 @@ const WA1071 = ({navigation}: Props) => {
             <Text style={styles.labelText}>推定濃度：</Text>
           </View>
           <View style={styles.tableCell2}>
-            <Text style={styles.labelText}>{WA1070Data?.data.estRa}</Text>
+            <Text
+              style={[
+                styles.labelText,
+                WA1070Data?.data.estRa && Number(WA1070Data?.data.estRa) > 8000
+                  ? styles.red
+                  : '',
+              ]}>
+              {WA1070Data?.data.estRa}
+            </Text>
           </View>
         </View>
         <View style={styles.tableRow}>
