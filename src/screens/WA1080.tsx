@@ -515,7 +515,7 @@ const WA1080 = ({navigation}: Props) => {
             <QRScanner
               onScan={handleCodeScannedForWkPlc}
               closeModal={() => setShowScannerWkPlc(false)}
-              isActive={showScannerTag}
+              isActive={showScannerWkPlc}
               errMsg={'作業場所QRコード'}
             />
           </Modal>
