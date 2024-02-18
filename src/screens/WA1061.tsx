@@ -241,7 +241,7 @@ const WA1061 = ({navigation}: Props) => {
    * 旧タグ設定処理
    ************************************************/
   const oldTagProc = async (tagId: string): Promise<string> => {
-    // 旧タグ情報照会(除去土壌)
+    // 旧タグ情報照会(除染土壌)
     const responseIFA0310 = await IFA0310(tagId, WA1060WkPlac.wkplacId);
     const result = await apiIsError(responseIFA0310);
     if (result === 'zero') {
