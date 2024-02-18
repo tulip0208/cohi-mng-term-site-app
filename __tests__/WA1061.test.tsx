@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-identical-title */
 import React, {useEffect} from 'react';
 import {render, waitFor, act, fireEvent} from '@testing-library/react-native';
 import WA1061 from '../src/screens/WA1061';

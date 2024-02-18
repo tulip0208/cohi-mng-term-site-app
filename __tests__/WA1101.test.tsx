@@ -6,12 +6,11 @@ import React from 'react';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootList} from '../src/navigation/AppNavigator.tsx';
-import {RecoilRoot, useRecoilValue} from 'recoil';
+import {RecoilRoot} from 'recoil';
 import {act} from '@testing-library/react-native';
 import WA1101 from '../src/screens/WA1101.tsx';
 import {WA1100DataState, WA1101BackState} from '../src/atom/atom.tsx';
 import bundledSettingsPath from '../assets/data/settings.json';
-import {CT0054} from '../src/enum/enums.tsx';
 
 const mockNavigate = jest.fn();
 // navigationオブジェクトのモック
@@ -139,7 +138,7 @@ describe('WA1101 Screen', () => {
 
   // 戻るボタンタップ時
   it('戻るボタンタップ時には以下の制御を行う。', async () => {
-    const {getAllByText, findByText} = render(
+    const {getAllByText} = render(
       <RecoilRoot
         initializeState={(snap: any) => {
           snap.set(WA1100DataState, mockWA1100Data);
@@ -162,7 +161,7 @@ describe('WA1101 Screen', () => {
 
   // メニューボタンタップ時
   it('メニューボタンタップ時には以下の制御を行う。', async () => {
-    const {getAllByText, findByText} = render(
+    const {getAllByText} = render(
       <RecoilRoot
         initializeState={(snap: any) => {
           snap.set(WA1100DataState, mockWA1100Data);

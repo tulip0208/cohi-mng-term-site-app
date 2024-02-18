@@ -18,7 +18,6 @@ import {
 import WA1080 from '../src/screens/WA1080';
 import bundledSettingsPath from '../assets/data/settings.json';
 import {WA1081BackState} from '../src/atom/atom';
-import WA1060 from '../src/screens/WA1060';
 
 const mockNavigate = jest.fn();
 // navigationオブジェクトのモック

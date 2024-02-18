@@ -34,7 +34,7 @@ jest.mock('../src/utils/Api', () => ({
 describe('WA1091 レンダリング', () => {
   //最初のレンダリング
   it('最初のレンダリング', async () => {
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot>
         <WA1091 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -48,7 +48,7 @@ describe('WA1091 レンダリング', () => {
 
   //破棄ボタンをクリックしたとき -> navigation: WA1090
   it('破棄ボタンをクリックしたとき -> navigation: WA1090', async () => {
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot>
         <WA1091 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -63,7 +63,7 @@ describe('WA1091 レンダリング', () => {
   });
   //破棄ボタンをクリックしたとき(isBtnEnabledDel: false) -> 次の状態に移行しません
   it('破棄ボタンをクリックしたとき(isBtnEnabledDel: false) -> 次の状態に移行しません', async () => {
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot>
         <WA1091 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -82,7 +82,7 @@ describe('WA1091 レンダリング', () => {
   });
   //戻るボタンをクリックしたとき -> navigation: WA1090
   it('戻るボタンをクリックしたとき -> navigation: WA1090', async () => {
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot>
         <WA1091 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -97,7 +97,7 @@ describe('WA1091 レンダリング', () => {
   });
   //戻るボタンをクリックしたとき(isBtnEnabledBck: false) -> 次の状態に移行しません
   it('戻るボタンをクリックしたとき(isBtnEnabledBck: false) -> 次の状態に移行しません', async () => {
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot>
         <WA1091 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -138,7 +138,7 @@ describe('WA1091 レンダリング', () => {
       });
     });
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText, getByTestId} = render(
       <RecoilRoot>
         <WA1091 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -178,7 +178,7 @@ describe('WA1091 レンダリング', () => {
         },
       });
     });
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText, getByTestId} = render(
       <RecoilRoot>
         <WA1091 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -209,7 +209,7 @@ describe('WA1091 レンダリング', () => {
       });
     });
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText, getByTestId} = render(
       <RecoilRoot>
         <WA1091 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -237,7 +237,7 @@ describe('WA1091 レンダリング', () => {
       });
     });
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText, getByTestId} = render(
       <RecoilRoot>
         <WA1091 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -265,7 +265,7 @@ describe('WA1091 レンダリング', () => {
       });
     });
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText, getByTestId} = render(
       <RecoilRoot>
         <WA1091 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -293,7 +293,7 @@ describe('WA1091 レンダリング', () => {
       });
     });
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText, getByTestId} = render(
       <RecoilRoot>
         <WA1091 navigation={mockNavigation} />
       </RecoilRoot>,

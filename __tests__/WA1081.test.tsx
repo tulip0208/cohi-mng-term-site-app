@@ -1,10 +1,9 @@
 import React from 'react';
-import {render, fireEvent, waitFor, act} from '@testing-library/react-native';
+import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RecoilRoot} from 'recoil';
 import {RootList} from '../src/navigation/AppNavigator';
 import WA1081 from '../src/screens/WA1081';
-import {useButton} from '../src/hook/useButton';
 
 const mockNavigate = jest.fn();
 const mockNavigation = {
@@ -27,7 +26,7 @@ describe('WA1081 テスト', () => {
   });
   //
   it('戻るボタンをクリックしたとき-> navigation: WA1080', async () => {
-    const {getByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot>
         <WA1081 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -44,7 +43,7 @@ describe('WA1081 テスト', () => {
   });
   //
   it('戻るボタンをクリックしたとき(isBtnEnabledBck が null の場合)-> 次の状態に移行しません', async () => {
-    const {getByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot>
         <WA1081 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -65,7 +64,7 @@ describe('WA1081 テスト', () => {
   });
   //
   it('メニューボタンをクリックしたとき-> navigation: WA1040', async () => {
-    const {getByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot>
         <WA1081 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -82,7 +81,7 @@ describe('WA1081 テスト', () => {
   });
   //
   it('メニューボタンをクリックしたとき(isBtnEnabledMnu が null の場合)-> 次の状態に移行しません', async () => {
-    const {getByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot>
         <WA1081 navigation={mockNavigation} />
       </RecoilRoot>,

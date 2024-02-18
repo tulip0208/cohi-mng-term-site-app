@@ -1,70 +1,13 @@
 import React from 'react';
-import {render, fireEvent, waitFor, act} from '@testing-library/react-native';
+import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RecoilRoot} from 'recoil';
 import {RootList} from '../src/navigation/AppNavigator';
 import WA1064 from '../src/screens/WA1064';
-import {
-  WA1091BackState,
-  WA1092WtDsState,
-  WA1091OldTagInfoState,
-  WA1093MemoState,
-  WA1060DataState,
-} from '../src/atom/atom';
-import {atom, atomFamily} from 'recoil';
-import {IFT0420} from '../src/utils/Api';
+import {WA1060DataState} from '../src/atom/atom';
+import {atom} from 'recoil';
 import bundledSettingsPath from '../assets/data/settings.json';
-import {
-  AxiosResponse,
-  ApiResponse,
-  IFA0030Response,
-  IFA0110Response,
-  IFA0310Response,
-  IFA0310ResponseDtl,
-  IFA0320Response,
-  IFA0320ResponseDtl,
-  IFA0330Response,
-  IFA0330ResponseDtl,
-  IFA0340Response,
-  IFA0340ResponseDtl,
-  IFT0090Response,
-  IFT0090ResponseDtl,
-  IFT0120Response,
-  IFT0120ResponseDtl1,
-  IFT0120ResponseDtl2,
-  IFT0130Response,
-  IFT0130ResponseDtl1,
-  IFT0130ResponseDtl2,
-  IFT0140Response,
-  IFT0140ResponseDtl,
-  IFT0210Response,
-  IFT0210ResponseDtl,
-  IFT0420Response,
-  IFT0420ResponseDtl,
-  IFT0640Response,
-  IFT0640ResponseDtl,
-  IFT0640ResponseDtlDtl,
-  IFT0640ResponseDtlDtlCheck,
-  ActivationInfo,
-  ComId,
-  TrmId,
-  ApiKey,
-  TrmKey,
-  WA1060WkPlacConst,
-  WA1060OldTagInfoConst,
-  WA1060Const,
-  WA1091OldTagInfoConst,
-  WA1092WtDsConst,
-  WA1120WkPlacConst,
-  WA1120CarConst,
-  WA1120DrvConst,
-  WA1120DestConst,
-  WA1121DataConst,
-  WA1121NewTagConst,
-  caLgSdBgDsInfoConst,
-  WA1130Const,
-  WA1140Const,
-} from '../src/types/type';
+import {WA1060Const} from '../src/types/type';
 const mockNavigate = jest.fn();
 const mockNavigation = {
   navigate: mockNavigate,
@@ -139,7 +82,7 @@ jest.mock('../src/utils/Realm', () => {
 describe('WA1064 レンダリング', () => {
   //最初のレンダリング
   it('最初のレンダリング', async () => {
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot>
         <WA1064 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -179,7 +122,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -220,7 +163,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -262,7 +205,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText, getByTestId} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -307,7 +250,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -349,7 +292,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -398,7 +341,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -443,7 +386,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -484,7 +427,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -537,7 +480,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -583,7 +526,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -624,7 +567,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -672,7 +615,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -718,7 +661,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />
@@ -765,7 +708,7 @@ describe('WA1064 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByText, getByTestId} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1064 navigation={mockNavigation} />

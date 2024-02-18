@@ -6,7 +6,7 @@ import React from 'react';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootList} from '../src/navigation/AppNavigator.tsx';
-import {RecoilRoot, useRecoilValue} from 'recoil';
+import {RecoilRoot} from 'recoil';
 import {act} from '@testing-library/react-native';
 import WA1111 from '../src/screens/WA1111.tsx';
 import {WA1110DataState, WA1111BackState} from '../src/atom/atom.tsx';
@@ -122,7 +122,7 @@ describe('WA1111 Screen', () => {
 
   // 戻るボタンタップ時
   it('戻るボタンタップ時には以下の制御を行う。', async () => {
-    const {getAllByText, findByText} = render(
+    const {getAllByText} = render(
       <RecoilRoot
         initializeState={(snap: any) => {
           snap.set(WA1110DataState, mockWA1110Data);
@@ -144,7 +144,7 @@ describe('WA1111 Screen', () => {
 
   // メニューボタンタップ時
   it('メニューボタンタップ時には以下の制御を行う。', async () => {
-    const {getAllByText, findByText} = render(
+    const {getAllByText} = render(
       <RecoilRoot
         initializeState={(snap: any) => {
           snap.set(WA1110DataState, mockWA1110Data);

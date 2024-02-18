@@ -1,16 +1,9 @@
 import React from 'react';
-import {
-  render,
-  fireEvent,
-  waitFor,
-  act,
-  userEvent,
-} from '@testing-library/react-native';
+import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RecoilRoot, atom} from 'recoil';
 import {RootList} from '../src/navigation/AppNavigator';
 import WA1063 from '../src/screens/WA1063';
-import {IFA0320} from '../src/utils/Api';
 import {
   ApiResponse,
   IFA0320Response,
@@ -76,7 +69,7 @@ jest.mock('../src/utils/Realm', () => {
 describe('WA1063 レンダリング', () => {
   //最初のレンダリング
   it('最初のレンダリング', async () => {
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot>
         <WA1063 navigation={mockNavigation} />
       </RecoilRoot>,
@@ -114,7 +107,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -145,7 +138,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -176,7 +169,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -207,7 +200,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -238,7 +231,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -269,7 +262,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -354,7 +347,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -427,7 +420,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByTestId} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -510,7 +503,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText, getByTestId} = render(
+    const {getByTestId} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -553,7 +546,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -598,7 +591,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -655,7 +648,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -700,7 +693,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -760,7 +753,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -810,7 +803,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -859,7 +852,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
@@ -904,7 +897,7 @@ describe('WA1063 レンダリング', () => {
       }),
     };
 
-    const {getByText, findByText} = render(
+    const {getByText} = render(
       <RecoilRoot
         initializeState={snapshot => snapshot.set(mockState, mockedState)}>
         <WA1063 navigation={mockNavigation} />
