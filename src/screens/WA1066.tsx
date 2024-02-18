@@ -143,6 +143,9 @@ const WA1066 = ({navigation}: Props) => {
     const result = await apiIsError(responseIFA0310);
     if (result) {
       await showAlert('通知', messages.IA5005('新タグの紐付'), false);
+    } else {
+      setModalVisible(false);
+      return;
     }
 
     setModalVisible(false);
