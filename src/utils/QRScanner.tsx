@@ -69,9 +69,9 @@ const QRScanner: React.FC<QRScannerProps> = ({
 
     if (isActive && camTimeout) {
       timeout = setTimeout(async () => {
+        closeModal(); // カメラを閉じる処理
         await showAlert('通知', messages.EA5001(errMsg), false);
         await logUserAction('カメラ読込: 読込タイムアウト');
-        closeModal(); // カメラを閉じる処理
       }, camTimeout * 1000);
     }
 
