@@ -84,10 +84,10 @@ const WA1030 = ({navigation}: Props) => {
       // ID種別が1かどうかを確認
       const idType = parts[0];
       if (idType === '1') {
-        const comIdQr = parts[1];
-        const comNameQr = parts[2];
-        const userIdQr = parts[3];
-        const userNameQr = parts[4];
+        const comNameQr = parts[1];
+        const comIdQr = parts[2];
+        const userNameQr = parts[3];
+        const userIdQr = parts[4];
 
         const comIdKeyStore = (await loadFromKeystore('comId')) as ComId; //keyStoreから事業者IDを取得
         if (comIdKeyStore.comId !== comIdQr) {
