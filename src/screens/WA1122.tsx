@@ -591,6 +591,7 @@ const WA1122 = ({navigation}: Props) => {
                   />
                   <Text style={styles.dotStyle}>.</Text>
                   <TextInput
+                   testID='radiation_forward2'
                     keyboardType="numeric"
                     value={frCaLgSdBgDsDec}
                     style={styles.inputIntDecNarrow}
@@ -624,6 +625,7 @@ const WA1122 = ({navigation}: Props) => {
                   />
                   <Text style={styles.dotStyle}>.</Text>
                   <TextInput
+                    testID='radiation_left2'
                     keyboardType="numeric"
                     value={leCaLgSdBgDsDec}
                     style={styles.inputIntDecNarrow}
@@ -657,6 +659,7 @@ const WA1122 = ({navigation}: Props) => {
                   />
                   <Text style={styles.dotStyle}>.</Text>
                   <TextInput
+                    testID='radiation_back2'
                     keyboardType="numeric"
                     value={baCaLgSdBgDsDec}
                     style={styles.inputIntDecNarrow}
@@ -690,6 +693,7 @@ const WA1122 = ({navigation}: Props) => {
                   />
                   <Text style={styles.dotStyle}>.</Text>
                   <TextInput
+                    testID='radiation_right2'
                     keyboardType="numeric"
                     value={riCaLgSdBgDsDec}
                     style={styles.inputIntDecNarrow}
