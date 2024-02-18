@@ -475,7 +475,7 @@ const WA1060 = ({navigation}: Props) => {
     }
     const data = responseIFA0330.data as IFA0330Response<IFA0330ResponseDtl>;
     //レスポンス1件(共通)
-    if (data.dtl.length === 1) {
+    if (data.cnt === 1) {
       const result = await showAlert('確認', messages.IA5017(), true);
       if (result) {
         return 'WA1066';
