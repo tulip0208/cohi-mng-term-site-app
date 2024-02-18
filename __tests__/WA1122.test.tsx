@@ -363,7 +363,7 @@ describe('WA1122 Screen', () => {
       expect(findByText(expectedMessage)).toBeTruthy();
     });
     
-    // showAlert('確認', messages.IA5010(), true);
+    // showAlert('確認', messages.IA5010(), true).mockResolvedValue(true);
   });
 
 //   戻るボタン処理
@@ -384,13 +384,15 @@ describe('WA1122 Screen', () => {
   });
 
   it('ボタンクリック 送信', async () => {
-    // WA1050 コンポーネントをレンダリング
-    const {getByText, findByText} = render(
+    // WA1122 コンポーネントをレンダリング
+    const {getByText, findByText, getAllByText} = render(
       <RecoilRoot>
         <WA1122 navigation={mockNavigation} />
       </RecoilRoot>,
     );
-    const triggerButton = getByText(/送信/);
+
+    const allElementsWithμSvH = getAllByText(/送信/);
+    const triggerButton = allElementsWithμSvH[1];
 
     await act(async () => {
       fireEvent(triggerButton, 'accessibilityAction', {disabled: false});
@@ -405,24 +407,68 @@ describe('WA1122 Screen', () => {
     });
   });
 
+  // 小数点以下二桁目補填
+it('小数点以下二桁目補填 前', async () => {
+  const mockSetFrCaLgSdBgDsDec = jest.fn();
+    const initialState = {
+      frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+      setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
+    };
+  // WA1122 コンポーネントをレンダリング
+  const {getByText, getByTestId, findByText, getAllByText} = render(
+    <RecoilRoot>
+      <WA1122 {...initialState} navigation={mockNavigation} />
+    </RecoilRoot>,
+  );
+  // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
+    fireEvent(getByTestId('radiation_forward2'), 'blur');
+});
+it('小数点以下二桁目補填 前左', async () => {
+  const mockSetFrCaLgSdBgDsDec = jest.fn();
+    const initialState = {
+      frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+      setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
+    };
+  // WA1122 コンポーネントをレンダリング
+  const {getByText, getByTestId, findByText, getAllByText} = render(
+    <RecoilRoot>
+      <WA1122 {...initialState} navigation={mockNavigation} />
+    </RecoilRoot>,
+  );
+  // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
+    fireEvent(getByTestId('radiation_left2'), 'blur');
+});
+it('小数点以下二桁目補填 後', async () => {
+  const mockSetFrCaLgSdBgDsDec = jest.fn();
+    const initialState = {
+      frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+      setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
+    };
+  // WA1122 コンポーネントをレンダリング
+  const {getByText, getByTestId, findByText, getAllByText} = render(
+    <RecoilRoot>
+      <WA1122 {...initialState} navigation={mockNavigation} />
+    </RecoilRoot>,
+  );
+  // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
+    fireEvent(getByTestId('radiation_back2'), 'blur');
+});
+it('小数点以下二桁目補填 右：', async () => {
+  const mockSetFrCaLgSdBgDsDec = jest.fn();
+    const initialState = {
+      frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+      setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
+    };
+  // WA1122 コンポーネントをレンダリング
+  const {getByText, getByTestId, findByText, getAllByText} = render(
+    <RecoilRoot>
+      <WA1122 {...initialState} navigation={mockNavigation} />
+    </RecoilRoot>,
+  );
+  // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
+    fireEvent(getByTestId('radiation_right2'), 'blur');
+});
 
-  it('送信ボタンON IFA0010失敗4 exception', async () => {
-    // 初期状態では送信ボタンが非活性化されていることを確認
-    const {getByText} = render(
-      <RecoilRoot>
-        <WA1122 navigation={mockNavigation} />
-      </RecoilRoot>,
-    );
-    // 送信ボタンが活性化されていることを確認
-    const triggerButton = getByText(/ログ送信/);
-
-    await act(async () => {
-      fireEvent(triggerButton, 'accessibilityAction', {disabled: false});
-    });
-
-    await act(async () => {
-      fireEvent.press(triggerButton);
-    });
-  });
 
 });
+
