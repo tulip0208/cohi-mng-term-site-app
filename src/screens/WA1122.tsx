@@ -454,9 +454,6 @@ const WA1122 = ({navigation}: Props) => {
         case 'timeout':
           await showAlert('通知', messages.EA5003(), false);
           break;
-        case 'zero': //取得件数0件の場合
-          await showAlert('通知', messages.IA5015(), false);
-          return 'zero';
       }
       return 'error';
     } else {

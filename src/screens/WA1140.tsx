@@ -462,7 +462,7 @@ const WA1140 = ({navigation}: Props) => {
           await showAlert('通知', messages.EA5003(), false);
           break;
         case 'zero': //取得件数0件の場合
-          await showAlert('通知', messages.IA5015(), false);
+          await showAlert('通知', messages.EA5013(), false);
           break;
       }
       return true;
