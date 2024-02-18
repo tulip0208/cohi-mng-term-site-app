@@ -566,7 +566,13 @@ const WA1066 = ({navigation}: Props) => {
               </View>
               <View style={[styles.tableCell]}>
                 <Text
-                  style={[styles.pickerLabelText, styles.labelTextOver]}
+                  style={[
+                    styles.pickerLabelText,
+                    styles.labelTextOver,
+                    WA1060Data.estRa && Number(WA1060Data.estRa) > 8000
+                      ? styles.red
+                      : '',
+                  ]}
                   numberOfLines={1}
                   ellipsizeMode="tail">
                   {WA1060Data.estRa}
