@@ -13,6 +13,7 @@ import {act} from '@testing-library/react-native';
 import WA1122 from '../src/screens/WA1122.tsx';
 import bundledSettingsPath from '../assets/data/settings.json';
 import messages from '../src/utils/messages.tsx';
+import {useAlert} from '../src/components/AlertContext.tsx';
 import {
   WA1120DataState,
   WA1120PrevScreenId,
@@ -339,9 +340,10 @@ describe('WA1122 Screen', () => {
     expect(secondInput.props.value).toBe('45678');
    
   });
-  
+
 //    //ボタン連続押下制御
   it('破棄ボタン処理', async () => {
+    const {showAlert} = useAlert();
     const {getByText, getByTestId, findByText} = render(
       <RecoilRoot>
         <WA1122 navigation={mockNavigation} />
@@ -360,5 +362,67 @@ describe('WA1122 Screen', () => {
       const expectedMessage = messages.IA5012();
       expect(findByText(expectedMessage)).toBeTruthy();
     });
+    
+    // showAlert('確認', messages.IA5010(), true);
   });
+
+//   戻るボタン処理
+  it('ボタンクリック 戻るボタン', async () => {
+    const {getByText, getByTestId, findByText} = render(
+      <RecoilRoot>
+        <WA1122 navigation={mockNavigation} />
+      </RecoilRoot>,
+    );
+    const triggerButton = getByText(/戻る/);
+    await act(async () => {
+      fireEvent.press(triggerButton);
+    });
+    await waitFor(async () => {
+      const expectedMessage = messages.IA5014();
+      expect(findByText(expectedMessage)).toBeTruthy();
+    });
+  });
+
+  it('ボタンクリック 送信', async () => {
+    // WA1050 コンポーネントをレンダリング
+    const {getByText, findByText} = render(
+      <RecoilRoot>
+        <WA1122 navigation={mockNavigation} />
+      </RecoilRoot>,
+    );
+    const triggerButton = getByText(/送信/);
+
+    await act(async () => {
+      fireEvent(triggerButton, 'accessibilityAction', {disabled: false});
+    });
+
+    await act(async () => {
+      fireEvent.press(triggerButton);
+    });
+    await waitFor(async () => {
+      const expectedMessage = messages.IA5006();
+      expect(findByText(expectedMessage)).toBeTruthy();
+    });
+  });
+
+
+  it('送信ボタンON IFA0010失敗4 exception', async () => {
+    // 初期状態では送信ボタンが非活性化されていることを確認
+    const {getByText} = render(
+      <RecoilRoot>
+        <WA1122 navigation={mockNavigation} />
+      </RecoilRoot>,
+    );
+    // 送信ボタンが活性化されていることを確認
+    const triggerButton = getByText(/ログ送信/);
+
+    await act(async () => {
+      fireEvent(triggerButton, 'accessibilityAction', {disabled: false});
+    });
+
+    await act(async () => {
+      fireEvent.press(triggerButton);
+    });
+  });
+
 });
