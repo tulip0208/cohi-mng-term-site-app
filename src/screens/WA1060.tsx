@@ -448,6 +448,7 @@ const WA1060 = ({navigation}: Props) => {
     // モーダル非表示
     setModalVisible(false);
     setKbn('I');
+    console.log(prevScreenId);
     await logScreen('画面遷移: WA1060 → WA1065_メモ入力(土壌)');
     navigation.navigate('WA1065');
   };
