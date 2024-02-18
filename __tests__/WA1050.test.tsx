@@ -152,7 +152,7 @@ jest.mock('../src/utils/Log', () => ({
   logUserAction: jest.fn(),
   checkLogFile: jest.fn(() => 2),
   calculateTotalLogSize: jest.fn(),
-  deleteLogs: jest.fn(),
+  deleteLogs: jest.fn(callback => callback(jest.fn())),
   compressLogFiles: jest.fn(),
   deleteLogFile: jest.fn(),
 }));
