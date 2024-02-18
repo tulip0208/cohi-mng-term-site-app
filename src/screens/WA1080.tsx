@@ -256,7 +256,7 @@ const WA1080 = ({navigation}: Props) => {
       });
       await logScreen('画面遷移: WA1080 → WA1081_旧タグ参照(土壌)');
       navigation.navigate('WA1081');
-    } else if (parts.length !== 1 && parts[0] !== 'CM') {
+    } else if (parts.length === 1 || parts[0] !== 'CM') {
       // --QRコード(CM以外)--
       // モーダル表示
       setModalVisible(true);
