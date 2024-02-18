@@ -472,7 +472,7 @@ export const IFA0330 = async (
     const res = await sendToServer(
       requestData,
       'IFA0110',
-      '新タグ情報照会(除去土壌)',
+      '新タグ情報照会(除去土壌等)',
     );
     const response = res as AxiosResponse<
       IFA0110Response<IFA0330Response<IFA0330ResponseDtl>>
