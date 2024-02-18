@@ -198,7 +198,6 @@ const WA1062 = ({navigation}: Props) => {
     } catch (error) {
       console.error(error);
     }
-    setLnkNewTagDatMemInp(newText);
   };
 
   // 入力がフォーカスアウトされたときのハンドラー
