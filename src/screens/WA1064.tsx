@@ -295,7 +295,7 @@ const WA1064 = ({navigation}: Props) => {
                     styles.decimalInputContainer,
                   ]}>
                   <TextInput
-                    testID='input_text1'
+                    testID="input_text1"
                     keyboardType="numeric"
                     value={caLgSdBgWt}
                     style={styles.inputWt}
@@ -331,7 +331,7 @@ const WA1064 = ({navigation}: Props) => {
                   />
                   <Text style={styles.dotStyle}>.</Text>
                   <TextInput
-                  testID='input_text0'
+                    testID="input_text0"
                     keyboardType="numeric"
                     value={caLgSdBgDsDec}
                     style={styles.inputDs}
@@ -386,7 +386,7 @@ const WA1064 = ({navigation}: Props) => {
             style={getButtonStyle()}
             onPress={btnAppNext}
             // disabled={!isNext || !isBtnEnabledNxt}
-            >
+          >
             <Text style={styles.startButtonText}>次へ</Text>
           </TouchableOpacity>
         </View>
