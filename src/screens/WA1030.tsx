@@ -15,7 +15,7 @@ import QRScanner from '../utils/QRScanner';
 import ProcessingModal from '../components/Modal';
 import {saveToKeystore, loadFromKeystore} from '../utils/KeyStore';
 import {IFA0030, IFA0040, IFA0050, IFA0051} from '../utils/Api';
-import {initializeLogFile, logUserAction, logScreen} from '../utils/Log';
+import {logUserAction, logScreen} from '../utils/Log';
 import {watchLocation} from '../utils/Location';
 import RNFS from 'react-native-fs';
 import {useAlert} from '../components/AlertContext';
@@ -59,7 +59,6 @@ const WA1030 = ({navigation}: Props) => {
 
   // useEffect フックを使用してステートが変更されるたびにチェック
   useEffect(() => {
-    initializeLogFile();
     if (userName !== '' && wkplac !== '') {
       setIsReadyToSend(true); // 送信ボタンを活性化
     }

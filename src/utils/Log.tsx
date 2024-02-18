@@ -89,7 +89,7 @@ export const deleteLogs = async (
     await showAlertCallback('通知', messages.IA5005('ログの削除'), false);
 
     // ステップ2.4: 削除操作のログを記録
-    initializeLogFile();
+    remakeLogFile();
     logUserAction('ログファイル初期化');
   } catch (error) {
     console.error('Failed to delete logs:', error);
@@ -126,6 +126,30 @@ export const calculateTotalLogSize = async (): Promise<number> => {
  * ログファイルの初期化
  ************************************************/
 export const initializeLogFile = async (): Promise<void> => {
+  // ログディレクトリの存在確認
+  const directoryExists = await RNFS.exists(logDirectory);
+  if (!directoryExists) {
+    await RNFS.mkdir(logDirectory);
+  }
+
+  // 新しいログファイルの作成
+  const newLogFileName = `${new Date()
+    .toISOString()
+    .split('T')[0]
+    .replace(/-/g, '')}_001.log`;
+  const newLogFilePath = `${logDirectory}/${newLogFileName}`;
+  const logFileExists = await RNFS.exists(newLogFilePath);
+  if (!logFileExists) {
+    // ログファイルの作成
+    await RNFS.writeFile(newLogFilePath, '', 'utf8');
+    return;
+  }
+};
+
+/************************************************
+ * ログファイルの再作成
+ ************************************************/
+export const remakeLogFile = async (): Promise<void> => {
   // ログディレクトリの存在確認
   const directoryExists = await RNFS.exists(logDirectory);
   if (!directoryExists) {
@@ -204,7 +228,7 @@ export const rotateLogFile = async (): Promise<void> => {
     // ファイルの存在を確認
     const fileExists = await RNFS.exists(currentLogFilePath);
     if (!fileExists) {
-      await initializeLogFile();
+      await remakeLogFile();
       return;
     }
 
@@ -217,7 +241,7 @@ export const rotateLogFile = async (): Promise<void> => {
       fileStats.size >= maxLogFileSize ||
       new Date().getDate() !== new Date(fileStats.ctime).getDate()
     ) {
-      await initializeLogFile();
+      await remakeLogFile();
     }
 
     const retentionPeriod = settingsInfo.logTerm as number;
