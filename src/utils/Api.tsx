@@ -1199,12 +1199,21 @@ export const sendToServer = async <TRequest, TResponse>(
       response.status,
       endpoint + ' : ' + JSON.stringify(response.data),
     );
-    throw new CustomError(
-      'codeRsps01',
-      response.status,
-      response.data.sttCd,
-      msg,
-    );
+    if (response.data.gyDt && response.data.gyDt.errCd) {
+      throw new CustomError(
+        'codeRsps01',
+        response.status,
+        response.data.gyDt.errCd,
+        msg,
+      );
+    } else {
+      throw new CustomError(
+        'codeRsps01',
+        response.status,
+        response.data.errCd,
+        msg,
+      );
+    }
   }
 
   // 応答受信後にログ記録
@@ -1316,12 +1325,21 @@ export const sendFileToServer = async <TRequest, TResponse>(
       response.status,
       endpoint + ' : ' + JSON.stringify(response.data),
     );
-    throw new CustomError(
-      'codeRsps01',
-      response.status,
-      response.data.sttCd,
-      msg,
-    );
+    if (response.data.gyDt && response.data.gyDt.errCd) {
+      throw new CustomError(
+        'codeRsps01',
+        response.status,
+        response.data.gyDt.errCd,
+        msg,
+      );
+    } else {
+      throw new CustomError(
+        'codeRsps01',
+        response.status,
+        response.data.errCd,
+        msg,
+      );
+    }
   }
 
   // 応答受信後にログ記録
