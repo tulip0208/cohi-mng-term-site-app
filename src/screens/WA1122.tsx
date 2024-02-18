@@ -579,6 +579,7 @@ const WA1122 = ({navigation}: Props) => {
                     前：
                   </Text>
                   <TextInput
+                    testID='radiation_forward'
                     keyboardType="numeric"
                     value={frCaLgSdBgDsInt}
                     style={styles.inputIntDecNarrow}
@@ -611,6 +612,7 @@ const WA1122 = ({navigation}: Props) => {
                     左：
                   </Text>
                   <TextInput
+                    testID='radiation_left'
                     keyboardType="numeric"
                     value={leCaLgSdBgDsInt}
                     style={styles.inputIntDecNarrow}
@@ -643,6 +645,7 @@ const WA1122 = ({navigation}: Props) => {
                     後：
                   </Text>
                   <TextInput
+                    testID='radiation_back'
                     keyboardType="numeric"
                     value={baCaLgSdBgDsInt}
                     style={styles.inputIntDecNarrow}
@@ -675,6 +678,7 @@ const WA1122 = ({navigation}: Props) => {
                     右：
                   </Text>
                   <TextInput
+                    testID='radiation_right'
                     keyboardType="numeric"
                     value={riCaLgSdBgDsInt}
                     style={styles.inputIntDecNarrow}
