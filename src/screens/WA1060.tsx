@@ -346,6 +346,7 @@ const WA1060 = ({navigation}: Props) => {
       setKbn('U');
       await logScreen('画面遷移: WA1060 → WA1066_登録内容確認(土壌)');
       navigation.navigate('WA1066');
+      return;
     } else if (
       type !== RNCamera.Constants.BarCodeType.qr &&
       retScreen === 'WA1063'
@@ -355,6 +356,7 @@ const WA1060 = ({navigation}: Props) => {
       setKbn('U');
       await logScreen('画面遷移: WA1060 → WA1063_必須情報設定(土壌)');
       navigation.navigate('WA1066');
+      return;
     } else if (
       type !== RNCamera.Constants.BarCodeType.qr &&
       retScreen === 'WA1061'
@@ -364,6 +366,7 @@ const WA1060 = ({navigation}: Props) => {
       setKbn('I');
       await logScreen('画面遷移: WA1060 → WA1061_旧タグ読込(土壌)');
       navigation.navigate('WA1061');
+      return;
     } else if (type !== RNCamera.Constants.BarCodeType.qr) {
       // バーコードのみ 終了処理
       // モーダル非表示
