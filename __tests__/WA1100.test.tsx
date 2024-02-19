@@ -157,12 +157,11 @@ describe('WA1100 Screen', () => {
       </RecoilRoot>,
     );
 
-    const triggerButton = getAllByText(/メニュー/)[0];
+    const triggerButton = getAllByText(/次へ/)[0];
     await act(async () => {
       fireEvent.press(triggerButton);
     });
-
-    // メニュー画面コール
+    
     await waitFor(async () => {
       expect(mockNavigate).toHaveBeenCalledWith('WA1040');
     });
