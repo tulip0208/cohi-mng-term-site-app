@@ -158,7 +158,7 @@ describe('WA1100 Screen', () => {
     await act(async () => {
       fireEvent.press(triggerButton);
     });
-    
+
     await waitFor(async () => {
       expect(mockNavigate).toHaveBeenCalledWith('WA1040');
     });

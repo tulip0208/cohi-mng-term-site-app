@@ -37,9 +37,9 @@ let mockWA1120Data = {
   wkplcTyp: '仮置場',
   wkplc: '大熊2期1工区東大和久一時保管場 (TD)',
 };
-let mockWA1120DataState='';
-let mockWA1120PrevScreenId='';
-let mockWA1120Car={
+let mockWA1120DataState = '';
+let mockWA1120PrevScreenId = '';
+let mockWA1120Car = {
   idTyp: '', //ID種別
   carId: '', //車両ID
   carNm: '', //車両名称
@@ -48,12 +48,12 @@ let mockWA1120Car={
   carWt: '', //車両重量
   empCarWt: '', //空車重量
 };
-let mockWA1120Drv={
+let mockWA1120Drv = {
   idTyp: '', //ID種別
   drvId: '', //運転手ID
   drvNm: '', //運転手名
 };
-let mockWA1120Dest={
+let mockWA1120Dest = {
   idTyp: '', //ID種別
   storPlacId: '', //保管場ID
   fixPlacId: '', //定置場ID
@@ -61,9 +61,8 @@ let mockWA1120Dest={
   facTyp: '', //施設区分
   raKbn: '', //濃度区分
 };
-let mockWA1120TrpCardNo='';
-let mockWA1121Data='';
-
+let mockWA1120TrpCardNo = '';
+let mockWA1121Data = '';
 
 let mockWA1123Back = false;
 
@@ -135,39 +134,21 @@ describe('WA1123 Screen', () => {
 
     await waitFor(() => {});
     // 仮置場
-    expect(
-      findByText(`作業場所：${mockWA1120Data?.wkplcTyp}`),
-    ).toBeTruthy();
-    expect(
-      findByText(`${mockWA1120Data?.wkplc}`),
-    ).toBeTruthy();
-  
+    expect(findByText(`作業場所：${mockWA1120Data?.wkplcTyp}`)).toBeTruthy();
+    expect(findByText(`${mockWA1120Data?.wkplc}`)).toBeTruthy();
+
     // 輸送
-    expect(
-      findByText(`輸送車両：${mockWA1120Car?.carNo}`),
-    ).toBeTruthy();
+    expect(findByText(`輸送車両：${mockWA1120Car?.carNo}`)).toBeTruthy();
 
-    expect(
-      findByText(`運転手：${mockWA1120Drv?.drvNm}`),
-    ).toBeTruthy();
+    expect(findByText(`運転手：${mockWA1120Drv?.drvNm}`)).toBeTruthy();
 
-    expect(
-      findByText(
-        `行先名：${mockWA1120Dest?.fixPlacNm}`,
-      ),
-    ).toBeTruthy();
-    expect(
-      findByText(`輸送カード番号：${mockWA1120TrpCardNo}`),
-    ).toBeTruthy();
+    expect(findByText(`行先名：${mockWA1120Dest?.fixPlacNm}`)).toBeTruthy();
+    expect(findByText(`輸送カード番号：${mockWA1120TrpCardNo}`)).toBeTruthy();
 
-    expect(
-      findByText(`申請状況：${mockWA1120TrpCardNo}`),
-    ).toBeTruthy();
-
+    expect(findByText(`申請状況：${mockWA1120TrpCardNo}`)).toBeTruthy();
   });
 
- 
-//  輸送カード申請
+  //  輸送カード申請
   it('輸送カード申請', async () => {
     const {showAlert} = useAlert();
     const {getByText, getByTestId, findByText} = render(
@@ -188,20 +169,18 @@ describe('WA1123 Screen', () => {
       const expectedMessage = messages.IA5022();
       expect(findByText(expectedMessage)).toBeTruthy();
     });
-    
+
     await waitFor(async () => {
       const btnAppBack = getByText('輸送カード申請');
-      fireEvent.press(btnAppBack)
+      fireEvent.press(btnAppBack);
 
       await waitFor(async () => {
-
-          fireEvent.press(getByText(/更新/))
-          await waitFor(() => {
-            const expectedMessage = messages.IA5022();
-            expect(findByText(expectedMessage)).toBeTruthy();
-          })
-      })
-    })
-    
+        fireEvent.press(getByText(/更新/));
+        await waitFor(() => {
+          const expectedMessage = messages.IA5022();
+          expect(findByText(expectedMessage)).toBeTruthy();
+        });
+      });
+    });
   });
-})
+});
