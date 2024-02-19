@@ -366,7 +366,7 @@ export const IFA0310 = async (
     const res = await sendToServer(
       requestData,
       'IFA0110',
-      '旧タグ情報照会(除去土壌)',
+      '旧タグ情報照会(除染土壌)',
     );
     const response = res as AxiosResponse<
       IFA0110Response<IFA0310Response<IFA0310ResponseDtl>>
@@ -422,7 +422,7 @@ export const IFA0320 = async (
     const res = await sendToServer(
       requestData,
       'IFA0110',
-      '旧タグ情報照会(除去土壌)',
+      '旧タグ情報照会(焼却灰)',
     );
     const response = res as AxiosResponse<
       IFA0110Response<IFA0320Response<IFA0320ResponseDtl>>
@@ -472,7 +472,7 @@ export const IFA0330 = async (
     const res = await sendToServer(
       requestData,
       'IFA0110',
-      '新タグ情報照会(除去土壌)',
+      '新タグ情報照会(除去土壌等)',
     );
     const response = res as AxiosResponse<
       IFA0110Response<IFA0330Response<IFA0330ResponseDtl>>
@@ -1164,7 +1164,7 @@ export const sendToServer = async <TRequest, TResponse>(
       : error.message;
     // エラー時にログ記録
     await logCommunication('ERROR', URI, null, errorMessage);
-    if (error.code === 'ECONNABORTED') {
+    if (error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK') {
       // タイムアウト処理
       console.log('Communication timed out', error);
       throw new CustomError('timeout', null, null, msg);
@@ -1199,12 +1199,21 @@ export const sendToServer = async <TRequest, TResponse>(
       response.status,
       endpoint + ' : ' + JSON.stringify(response.data),
     );
-    throw new CustomError(
-      'codeRsps01',
-      response.status,
-      response.data.sttCd,
-      msg,
-    );
+    if (response.data.gyDt && response.data.gyDt.errCd) {
+      throw new CustomError(
+        'codeRsps01',
+        response.status,
+        response.data.gyDt.errCd,
+        msg,
+      );
+    } else {
+      throw new CustomError(
+        'codeRsps01',
+        response.status,
+        response.data.errCd,
+        msg,
+      );
+    }
   }
 
   // 応答受信後にログ記録
@@ -1281,7 +1290,7 @@ export const sendFileToServer = async <TRequest, TResponse>(
       : error.message;
     // エラー時にログ記録
     await logCommunication('ERROR', URI, null, errorMessage);
-    if (error.code === 'ECONNABORTED') {
+    if (error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK') {
       // タイムアウト処理
       console.log('Communication timed out', errorMessage);
       throw new CustomError('timeout', null, null, msg);
@@ -1316,12 +1325,21 @@ export const sendFileToServer = async <TRequest, TResponse>(
       response.status,
       endpoint + ' : ' + JSON.stringify(response.data),
     );
-    throw new CustomError(
-      'codeRsps01',
-      response.status,
-      response.data.sttCd,
-      msg,
-    );
+    if (response.data.gyDt && response.data.gyDt.errCd) {
+      throw new CustomError(
+        'codeRsps01',
+        response.status,
+        response.data.gyDt.errCd,
+        msg,
+      );
+    } else {
+      throw new CustomError(
+        'codeRsps01',
+        response.status,
+        response.data.errCd,
+        msg,
+      );
+    }
   }
 
   // 応答受信後にログ記録

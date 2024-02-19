@@ -77,10 +77,10 @@ const WA1020 = ({navigation}: Props) => {
       // ID種別が1かどうかを確認
       const idType = parts[0];
       if (idType === '1') {
-        const comIdQr = parts[1];
-        const comNameQr = parts[2];
-        const userIdQr = parts[3];
-        const userNameQr = parts[4];
+        const comNameQr = parts[1];
+        const comIdQr = parts[2];
+        const userNameQr = parts[3];
+        const userIdQr = parts[4];
 
         const realm = getInstance();
         //realmへ保存
@@ -106,12 +106,12 @@ const WA1020 = ({navigation}: Props) => {
         setShowScannerUsr(false);
       } else {
         // ID種別が1ではない場合のエラーハンドリング
-        await showAlert('通知', messages.EA5002('利用者'), false);
         setShowScannerUsr(false);
+        await showAlert('通知', messages.EA5002('利用者'), false);
       }
     } else {
-      await showAlert('通知', messages.EA5002('利用者'), false);
       setShowScannerUsr(false);
+      await showAlert('通知', messages.EA5002('利用者'), false);
       // CSVデータが正しいフォーマットでない場合のエラーハンドリング
     }
   };
@@ -125,7 +125,7 @@ const WA1020 = ({navigation}: Props) => {
     setTrmId('');
     const parts = scannedData.split(',');
     // CSVデータのフォーマットを確認（5つの部分があるか）
-    if (parts.length === 5) {
+    if (parts.length === 4) {
       // ID種別が1かどうかを確認
       const comIdQr = parts[0]; //事業者ID
       if (comIdQr.startsWith('J')) {
@@ -133,7 +133,6 @@ const WA1020 = ({navigation}: Props) => {
         const trmIdQr = parts[1]; //端末ID
         const apiKeyQr = parts[2]; //端末APIキー
         const actKeyQr = parts[3]; //アクティベーションキー
-        const actExpDtQr = parts[4]; //アクティベーション有効期限
 
         //キーを取得
         const key = await getEncryptionKeyFromKeystore();
@@ -146,7 +145,6 @@ const WA1020 = ({navigation}: Props) => {
           trmId: trmIdQr,
           apiKey: apiKey256,
           actKey: actKeyQr,
-          actExpDt: actExpDtQr,
           actFin: 0, //未
         });
         // 別途保存しているユーザー名ステートがある場合はその更新も行う
@@ -156,22 +154,22 @@ const WA1020 = ({navigation}: Props) => {
         setShowScannerActivate(false);
       } else {
         // ID種別が1ではない場合のエラーハンドリング
+        setShowScannerActivate(false);
         await showAlert('通知', messages.EA5002('アクティベーション'), false);
         setActReadFlg('未');
         //アクティベーション情報のクリア
         if (await loadFromKeystore('activationInfo')) {
           await clearKeyStore('activationInfo');
         }
-        setShowScannerActivate(false);
       }
     } else {
+      setShowScannerActivate(false);
       await showAlert('通知', messages.EA5002('アクティベーション'), false);
       setActReadFlg('未');
       //アクティベーション情報のクリア
       if (await loadFromKeystore('activationInfo')) {
         await clearKeyStore('activationInfo');
       }
-      setShowScannerActivate(false);
       // CSVデータが正しいフォーマットでない場合のエラーハンドリング
     }
   };
@@ -264,7 +262,6 @@ const WA1020 = ({navigation}: Props) => {
         trmId: activationInfo.trmId,
         apiKey: activationInfo.apiKey,
         actKey: activationInfo.actKey,
-        actExpDt: activationInfo.actExpDt,
         actFin: 1, //済へ変更
       });
       // 事業者IDをKeyStoreに保存

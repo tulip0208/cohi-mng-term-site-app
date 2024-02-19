@@ -15,7 +15,7 @@ import QRScanner from '../utils/QRScanner';
 import ProcessingModal from '../components/Modal';
 import {saveToKeystore, loadFromKeystore} from '../utils/KeyStore';
 import {IFA0030, IFA0040, IFA0050, IFA0051} from '../utils/Api';
-import {initializeLogFile, logUserAction, logScreen} from '../utils/Log';
+import {logUserAction, logScreen} from '../utils/Log';
 import {watchLocation} from '../utils/Location';
 import RNFS from 'react-native-fs';
 import {useAlert} from '../components/AlertContext';
@@ -59,7 +59,6 @@ const WA1030 = ({navigation}: Props) => {
 
   // useEffect フックを使用してステートが変更されるたびにチェック
   useEffect(() => {
-    initializeLogFile();
     if (userName !== '' && wkplac !== '') {
       setIsReadyToSend(true); // 送信ボタンを活性化
     }
@@ -85,17 +84,17 @@ const WA1030 = ({navigation}: Props) => {
       // ID種別が1かどうかを確認
       const idType = parts[0];
       if (idType === '1') {
-        const comIdQr = parts[1];
-        const comNameQr = parts[2];
-        const userIdQr = parts[3];
-        const userNameQr = parts[4];
+        const comNameQr = parts[1];
+        const comIdQr = parts[2];
+        const userNameQr = parts[3];
+        const userIdQr = parts[4];
 
         const comIdKeyStore = (await loadFromKeystore('comId')) as ComId; //keyStoreから事業者IDを取得
         if (comIdKeyStore.comId !== comIdQr) {
           console.log(comIdKeyStore.comId, comIdQr);
           // ID種別が1ではない場合のエラーハンドリング
-          await showAlert('通知', messages.EA5006('利用者'), false);
           setShowScannerUsr(false);
+          await showAlert('通知', messages.EA5006('利用者'), false);
         } else {
           const realm = getInstance();
           //realmへ保存
@@ -114,10 +113,7 @@ const WA1030 = ({navigation}: Props) => {
                 Realm.UpdateMode.Modified,
               ); // Modified は既存のデータがあれば更新、なければ作成
             });
-            console.log(
-              'save realm : user => ',
-              await realm.objects('user')[0],
-            );
+            console.log('save realm : user => ', realm.objects('user')[0]);
             // 別途保存しているユーザー名ステートがある場合はその更新も行う
             setUserName(userNameQr);
           } catch (error) {
@@ -128,14 +124,14 @@ const WA1030 = ({navigation}: Props) => {
         }
       } else {
         // ID種別が1ではない場合のエラーハンドリング
+        setShowScannerUsr(false);
         await showAlert('通知', messages.EA5002('利用者'), false);
         await deleteRealm('user');
-        setShowScannerUsr(false);
       }
     } else {
+      setShowScannerUsr(false);
       await showAlert('通知', messages.EA5002('利用者'), false);
       await deleteRealm('user');
-      setShowScannerUsr(false);
       // CSVデータが正しいフォーマットでない場合のエラーハンドリング
     }
   };
@@ -221,27 +217,27 @@ const WA1030 = ({navigation}: Props) => {
           setShowScannerWkplac(false);
         } else {
           // ID種別が1ではない場合のエラーハンドリング
+          setShowScannerWkplac(false);
           await showAlert('通知', messages.EA5002('作業場所'), false);
           await deleteRealm('temporary_places');
           await deleteRealm('storage_places');
           await deleteRealm('fixed_places');
-          setShowScannerWkplac(false);
         }
       } catch (error) {
         // CSVデータが正しいフォーマットでない場合のエラーハンドリング
+        setShowScannerWkplac(false);
         await showAlert('通知', messages.EA5002('作業場所'), false);
         await deleteRealm('temporary_places');
         await deleteRealm('storage_places');
         await deleteRealm('fixed_places');
-        setShowScannerWkplac(false);
       }
     } else {
       // CSVデータが正しいフォーマットでない場合のエラーハンドリング
+      setShowScannerWkplac(false);
       await showAlert('通知', messages.EA5002('作業場所'), false);
       await deleteRealm('temporary_places');
       await deleteRealm('storage_places');
       await deleteRealm('fixed_places');
-      setShowScannerWkplac(false);
     }
   };
 

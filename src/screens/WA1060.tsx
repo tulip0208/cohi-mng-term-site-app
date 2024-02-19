@@ -128,6 +128,7 @@ const WA1060 = ({navigation}: Props) => {
           delSrcTyp: place.delSrcTyp as string, //搬出元種別
           wkplac: '仮置場', //作業場所
         });
+        setIsWkPlcRead(true);
         setWkplc(place.tmpPlacNm as string);
         setDelSrcTyp(place.delSrcTyp as number);
         setIsTagRead(true);
@@ -334,12 +335,18 @@ const WA1060 = ({navigation}: Props) => {
 
     // 新タグID参照処理実施(QR・バーコード)
     const retScreen = await procBarCode(code);
+    if (retScreen === '') {
+      setModalVisible(false);
+      setShowScannerTag(false);
+      return;
+    }
     if (retScreen === 'WA1066') {
       // QR・バーコード両方
       setModalVisible(false);
       setKbn('U');
       await logScreen('画面遷移: WA1060 → WA1066_登録内容確認(土壌)');
       navigation.navigate('WA1066');
+      return;
     } else if (
       type !== RNCamera.Constants.BarCodeType.qr &&
       retScreen === 'WA1063'
@@ -349,6 +356,7 @@ const WA1060 = ({navigation}: Props) => {
       setKbn('U');
       await logScreen('画面遷移: WA1060 → WA1063_必須情報設定(土壌)');
       navigation.navigate('WA1066');
+      return;
     } else if (
       type !== RNCamera.Constants.BarCodeType.qr &&
       retScreen === 'WA1061'
@@ -358,6 +366,7 @@ const WA1060 = ({navigation}: Props) => {
       setKbn('I');
       await logScreen('画面遷移: WA1060 → WA1061_旧タグ読込(土壌)');
       navigation.navigate('WA1061');
+      return;
     } else if (type !== RNCamera.Constants.BarCodeType.qr) {
       // バーコードのみ 終了処理
       // モーダル非表示
@@ -469,7 +478,7 @@ const WA1060 = ({navigation}: Props) => {
     }
     const data = responseIFA0330.data as IFA0330Response<IFA0330ResponseDtl>;
     //レスポンス1件(共通)
-    if (data.dtl.length === 1) {
+    if (data.cnt === 1) {
       const result = await showAlert('確認', messages.IA5017(), true);
       if (result) {
         return 'WA1066';
@@ -590,9 +599,6 @@ const WA1060 = ({navigation}: Props) => {
         case 'timeout':
           await showAlert('通知', messages.EA5003(), false);
           break;
-        case 'zero': //取得件数0件の場合
-          await showAlert('通知', messages.IA5015(), false);
-          break;
       }
       return true;
     } else {
@@ -656,6 +662,7 @@ const WA1060 = ({navigation}: Props) => {
         {/* 中段2 */}
         <View style={[styles.main, styles.center, styles.zIndex]}>
           <TouchableWithoutFeedback
+            testID="info-msg"
             onPressIn={() => onPressIn()}
             onPressOut={onPressOut}>
             <Text style={styles.labelText}>{getInfoMsg()}</Text>
@@ -664,6 +671,7 @@ const WA1060 = ({navigation}: Props) => {
             <View style={[styles.inputContainer]}>
               <Text style={styles.inputWithText}>a</Text>
               <TextInput
+                testID="text-input"
                 style={getTextInputStyle()}
                 onChangeText={handleInputChange}
                 onBlur={handleInputBlur}

@@ -142,9 +142,10 @@ const WA1066 = ({navigation}: Props) => {
     );
     const result = await apiIsError(responseIFA0310);
     if (result) {
-      await showAlert('通知', messages.IA5005('新タグの紐付'), false);
+      setModalVisible(false);
+      return;
     }
-
+    await showAlert('通知', messages.IA5005('新タグの紐付'), false);
     setModalVisible(false);
     //遷移元画面IDを設定
     setPrevScreenId('WA1040');
@@ -566,7 +567,13 @@ const WA1066 = ({navigation}: Props) => {
               </View>
               <View style={[styles.tableCell]}>
                 <Text
-                  style={[styles.pickerLabelText, styles.labelTextOver]}
+                  style={[
+                    styles.pickerLabelText,
+                    styles.labelTextOver,
+                    WA1060Data.estRa && Number(WA1060Data.estRa) > 8000
+                      ? styles.red
+                      : '',
+                  ]}
                   numberOfLines={1}
                   ellipsizeMode="tail">
                   {WA1060Data.estRa}

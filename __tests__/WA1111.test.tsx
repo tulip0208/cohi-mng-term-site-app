@@ -6,7 +6,7 @@ import React from 'react';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootList} from '../src/navigation/AppNavigator.tsx';
-import {RecoilRoot, useRecoilValue} from 'recoil';
+import {RecoilRoot} from 'recoil';
 import {act} from '@testing-library/react-native';
 import WA1111 from '../src/screens/WA1111.tsx';
 import {WA1110DataState, WA1111BackState} from '../src/atom/atom.tsx';
@@ -33,7 +33,6 @@ let mockWA1110Data = {
     surDsDt: 1, // 表面線量率測定日（焼却時）、日付（オプショナル）
     surDsWt: 1, // 表面線量率測定時重量（焼却時）、半角数値（オプショナル）
   },
-
 };
 
 let mockWA1111Back = false;
@@ -114,10 +113,8 @@ describe('WA1111 Screen', () => {
     expect(
       findByText(`測定放射能濃度：${mockWA1110Data?.data.meaRa}`),
     ).toBeTruthy();
-    expect(
-      findByText(`(Bq/Kg)　`),
-    ).toBeTruthy();
-    
+    expect(findByText(`(Bq/Kg)　`)).toBeTruthy();
+
     // 戻る、メニュー
     expect(findByText('戻る')).toBeTruthy();
     expect(findByText('メニュー')).toBeTruthy();
@@ -125,7 +122,7 @@ describe('WA1111 Screen', () => {
 
   // 戻るボタンタップ時
   it('戻るボタンタップ時には以下の制御を行う。', async () => {
-    const {getAllByText, findByText} = render(
+    const {getAllByText} = render(
       <RecoilRoot
         initializeState={(snap: any) => {
           snap.set(WA1110DataState, mockWA1110Data);
@@ -147,7 +144,7 @@ describe('WA1111 Screen', () => {
 
   // メニューボタンタップ時
   it('メニューボタンタップ時には以下の制御を行う。', async () => {
-    const {getAllByText, findByText} = render(
+    const {getAllByText} = render(
       <RecoilRoot
         initializeState={(snap: any) => {
           snap.set(WA1110DataState, mockWA1110Data);
@@ -167,4 +164,4 @@ describe('WA1111 Screen', () => {
       expect(mockNavigate).toHaveBeenCalledWith('WA1040');
     });
   });
-  });
+});

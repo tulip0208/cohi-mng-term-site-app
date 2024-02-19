@@ -93,6 +93,7 @@ const WA1080 = ({navigation}: Props) => {
       case 4:
         place = realm.objects('temporary_places')[0];
         setWkplcTyp('仮置場');
+        setIsWkPlcRead(true);
         setWkPlcId(place.tmpPlacId as string);
         setWkplc(place.tmpPlacNm as string);
         setIsTagRead(true);
@@ -255,7 +256,7 @@ const WA1080 = ({navigation}: Props) => {
       });
       await logScreen('画面遷移: WA1080 → WA1081_旧タグ参照(土壌)');
       navigation.navigate('WA1081');
-    } else if (parts.length !== 1 && parts[0] !== 'CM') {
+    } else if (parts.length === 1 || parts[0] !== 'CM') {
       // --QRコード(CM以外)--
       // モーダル表示
       setModalVisible(true);
@@ -393,7 +394,7 @@ const WA1080 = ({navigation}: Props) => {
           await showAlert('通知', messages.EA5003(), false);
           break;
         case 'zero': //取得件数0件の場合
-          await showAlert('通知', messages.IA5015(), false);
+          await showAlert('通知', messages.EA5013(), false);
           break;
       }
       return true;
@@ -458,6 +459,7 @@ const WA1080 = ({navigation}: Props) => {
         {/* 中段2 */}
         <View style={[styles.main, styles.center, styles.zIndex]}>
           <TouchableWithoutFeedback
+            testID="info-msg"
             onPressIn={() => onPressIn()}
             onPressOut={onPressOut}>
             <Text style={styles.labelText}>{getInfoMsg()}</Text>
@@ -465,6 +467,7 @@ const WA1080 = ({navigation}: Props) => {
           {inputVisible && (
             <View style={[styles.inputContainer]}>
               <TextInput
+                testID="text-input"
                 style={getTextInputStyle()}
                 onChangeText={handleInputChange}
                 onBlur={handleInputBlur}
@@ -512,7 +515,7 @@ const WA1080 = ({navigation}: Props) => {
             <QRScanner
               onScan={handleCodeScannedForWkPlc}
               closeModal={() => setShowScannerWkPlc(false)}
-              isActive={showScannerTag}
+              isActive={showScannerWkPlc}
               errMsg={'作業場所QRコード'}
             />
           </Modal>

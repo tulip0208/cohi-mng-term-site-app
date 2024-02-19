@@ -6,12 +6,11 @@ import React from 'react';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootList} from '../src/navigation/AppNavigator.tsx';
-import {RecoilRoot, useRecoilValue} from 'recoil';
+import {RecoilRoot} from 'recoil';
 import {act} from '@testing-library/react-native';
 import WA1101 from '../src/screens/WA1101.tsx';
 import {WA1100DataState, WA1101BackState} from '../src/atom/atom.tsx';
 import bundledSettingsPath from '../assets/data/settings.json';
-import {CT0054} from '../src/enum/enums.tsx';
 
 const mockNavigate = jest.fn();
 // navigationオブジェクトのモック
@@ -20,24 +19,24 @@ const mockNavigation = {
 } as unknown as StackNavigationProp<RootList, 'WA1101'>; // 型アサーション
 
 let mockWA1100Data = {
-    head: {
+  head: {
     wkplcTyp: '仮置場',
     wkplc: '大阪',
     newTagId: 'a929091111111111a',
   },
   data: {
-    newTagId: "a929091111111111a",
-    oldTagId: "000-23-451",
-    tmpLocId: "string",
-    tmpLocNm: "飯館仮置場",
-    tyRegDt: "string",
+    newTagId: 'a929091111111111a',
+    oldTagId: '000-23-451',
+    tmpLocId: 'string',
+    tmpLocNm: '飯館仮置場',
+    tyRegDt: 'string',
     lnkNewTagDatMem: '',
     ashTyp: 1,
     meaRa: 123456789,
     surDsRt: 123456.78,
     surDsDt: '',
     surDsWt: 123456,
-    sndId: ''
+    sndId: '',
   },
 };
 
@@ -102,9 +101,7 @@ describe('WA1101 Screen', () => {
 
     await waitFor(() => {});
     // 仮置場
-    expect(
-      findByText(`仮置場：${mockWA1100Data?.data.tmpLocNm}`),
-    ).toBeTruthy();
+    expect(findByText(`仮置場：${mockWA1100Data?.data.tmpLocNm}`)).toBeTruthy();
     expect(findByText('飯館仮置場')).toBeTruthy();
 
     // 新タグ
@@ -118,9 +115,7 @@ describe('WA1101 Screen', () => {
     ).toBeTruthy();
 
     expect(
-      findByText(
-        `重量(Kg)：${mockWA1100Data?.data.surDsWt}`,
-      ),
+      findByText(`重量(Kg)：${mockWA1100Data?.data.surDsWt}`),
     ).toBeTruthy();
     expect(
       findByText(`線量(μSv/h)：${mockWA1100Data?.data.surDsRt}`),
@@ -130,15 +125,12 @@ describe('WA1101 Screen', () => {
       findByText(`測定放射能濃度：${mockWA1100Data?.data.meaRa}`),
     ).toBeTruthy();
 
-    expect(
-      findByText(`(Bq/Kg)　`),
-    ).toBeTruthy();
+    expect(findByText(`(Bq/Kg)　`)).toBeTruthy();
 
     expect(
       findByText(`メモ：${mockWA1100Data?.data.lnkNewTagDatMem}`),
     ).toBeTruthy();
 
-    
     // 戻る、メニュー
     expect(findByText('戻る')).toBeTruthy();
     expect(findByText('メニュー')).toBeTruthy();
@@ -146,7 +138,7 @@ describe('WA1101 Screen', () => {
 
   // 戻るボタンタップ時
   it('戻るボタンタップ時には以下の制御を行う。', async () => {
-    const {getAllByText, findByText} = render(
+    const {getAllByText} = render(
       <RecoilRoot
         initializeState={(snap: any) => {
           snap.set(WA1100DataState, mockWA1100Data);
@@ -169,7 +161,7 @@ describe('WA1101 Screen', () => {
 
   // メニューボタンタップ時
   it('メニューボタンタップ時には以下の制御を行う。', async () => {
-    const {getAllByText, findByText} = render(
+    const {getAllByText} = render(
       <RecoilRoot
         initializeState={(snap: any) => {
           snap.set(WA1100DataState, mockWA1100Data);
@@ -189,4 +181,4 @@ describe('WA1101 Screen', () => {
       expect(mockNavigate).toHaveBeenCalledWith('WA1040');
     });
   });
-  });
+});

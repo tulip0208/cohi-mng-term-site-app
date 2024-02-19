@@ -241,7 +241,7 @@ const WA1061 = ({navigation}: Props) => {
    * 旧タグ設定処理
    ************************************************/
   const oldTagProc = async (tagId: string): Promise<string> => {
-    // 旧タグ情報照会(除去土壌)
+    // 旧タグ情報照会(除染土壌)
     const responseIFA0310 = await IFA0310(tagId, WA1060WkPlac.wkplacId);
     const result = await apiIsError(responseIFA0310);
     if (result === 'zero') {
@@ -380,8 +380,8 @@ const WA1061 = ({navigation}: Props) => {
     if (result) {
       //遷移元画面セット
       setPrevScreenId('WA1040');
-      await logScreen('画面遷移: WA1061 → WA1061_旧タグ読込(土壌)');
-      navigation.navigate('WA1061');
+      await logScreen('画面遷移: WA1061 → WA1060_旧タグ読込(土壌)');
+      navigation.navigate('WA1060');
     }
   };
 
@@ -447,7 +447,6 @@ const WA1061 = ({navigation}: Props) => {
           await showAlert('通知', messages.EA5003(), false);
           break;
         case 'zero': //取得件数0件の場合
-          await showAlert('通知', messages.IA5015(), false);
           return 'zero';
       }
       return 'error';

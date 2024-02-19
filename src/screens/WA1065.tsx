@@ -103,6 +103,11 @@ const WA1065 = ({navigation}: Props) => {
       setPrevScreenId('WA1065');
       await logScreen('画面遷移: WA1065 → WA1066_登録内容確認(土壌)');
       navigation.navigate('WA1066');
+    } else if (prevScreenId === 'WA1060') {
+      //遷移元画面IDを設定
+      setPrevScreenId('WA1065');
+      await logScreen('画面遷移: WA1065 → WA1060_新タグ読込(土壌)');
+      navigation.navigate('WA1060');
     } else {
       const result = await showAlert('確認', messages.IA5014(), true);
       if (result) {

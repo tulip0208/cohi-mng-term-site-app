@@ -138,6 +138,7 @@ const WA1050 = ({route, navigation}: Props) => {
       // ログファイルアップロード通信を実施
       const responseIFA0020 = await IFA0020(filePath);
       if (await apiIsError(responseIFA0020)) {
+        setModalVisible(false);
         return;
       }
 
