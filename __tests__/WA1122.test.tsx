@@ -411,7 +411,7 @@ describe('WA1122 Screen', () => {
   it('小数点以下二桁目補填 前', async () => {
     const mockSetFrCaLgSdBgDsDec = jest.fn();
       const initialState = {
-        frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+        frCaLgSdBgDsDec: '1', 
         setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
       };
     // WA1122 コンポーネントをレンダリング
@@ -426,7 +426,7 @@ describe('WA1122 Screen', () => {
   it('小数点以下二桁目補填 前左', async () => {
     const mockSetFrCaLgSdBgDsDec = jest.fn();
       const initialState = {
-        frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+        frCaLgSdBgDsDec: '1', 
         setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
       };
     // WA1122 コンポーネントをレンダリング
@@ -441,7 +441,7 @@ describe('WA1122 Screen', () => {
   it('小数点以下二桁目補填 後', async () => {
     const mockSetFrCaLgSdBgDsDec = jest.fn();
       const initialState = {
-        frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+        frCaLgSdBgDsDec: '1',
         setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
       };
     // WA1122 コンポーネントをレンダリング
@@ -456,7 +456,7 @@ describe('WA1122 Screen', () => {
   it('小数点以下二桁目補填 右：', async () => {
     const mockSetFrCaLgSdBgDsDec = jest.fn();
       const initialState = {
-        frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+        frCaLgSdBgDsDec: '1',
         setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
       };
     // WA1122 コンポーネントをレンダリング
