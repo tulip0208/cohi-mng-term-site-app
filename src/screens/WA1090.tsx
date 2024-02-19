@@ -5,8 +5,8 @@
  * ---------------------------------------------*/
 import FunctionHeader from '../components/FunctionHeader.tsx'; // Headerコンポーネントのインポート
 import Footer from '../components/Footer.tsx'; // Footerコンポーネントのインポート
-import {styles} from '../styles/CommonStyle.tsx'; // 共通スタイル
-import React, {useState, useEffect} from 'react';
+import { styles } from '../styles/CommonStyle.tsx'; // 共通スタイル
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -17,21 +17,21 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import {getInstance} from '../utils/Realm.tsx'; // realm.jsから関数をインポート
+import { getInstance } from '../utils/Realm.tsx'; // realm.jsから関数をインポート
 import messages from '../utils/messages.tsx';
 import QRScanner from '../utils/QRScanner.tsx';
 import ProcessingModal from '../components/Modal.tsx';
-import {logUserAction, logScreen} from '../utils/Log.tsx';
-import {useAlert} from '../components/AlertContext.tsx';
-import {IFA0340} from '../utils/Api.tsx';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootList} from '../navigation/AppNavigator.tsx';
+import { logUserAction, logScreen } from '../utils/Log.tsx';
+import { useAlert } from '../components/AlertContext.tsx';
+import { IFA0340 } from '../utils/Api.tsx';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootList } from '../navigation/AppNavigator.tsx';
 import {
   ApiResponse,
   IFA0340Response,
   IFA0340ResponseDtl,
 } from '../types/type.tsx';
-import {useRecoilState, useResetRecoilState, useSetRecoilState} from 'recoil';
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
 import {
   WA1090PrevScreenId,
   WA1092WtDsState,
@@ -42,14 +42,14 @@ import {
   WA1093MemoState,
   WA1090KbnState,
 } from '../atom/atom.tsx';
-import {useButton} from '../hook/useButton.tsx';
+import { useButton } from '../hook/useButton.tsx';
 
 // WA1090 用の navigation 型
 type NavigationProp = StackNavigationProp<RootList, 'WA1090'>;
 interface Props {
   navigation: NavigationProp;
 }
-const WA1090 = ({navigation}: Props) => {
+const WA1090 = ({ navigation }: Props) => {
   const [wkplcTyp, setWkplcTyp] = useState<string>(''); //作業場所種類
   const [wkplc, setWkplc] = useState<string>(''); // 作業場所
   const [inputValue, setInputValue] = useState<string>(''); //新タグID入力値
@@ -80,7 +80,7 @@ const WA1090 = ({navigation}: Props) => {
   const [isBtnEnabledDel, toggleButtonDel] = useButton(); //ボタン制御
   const [isBtnEnabledBck, toggleButtonBck] = useButton(); //ボタン制御
   const [isBtnEnabledNxt, toggleButtonNxt] = useButton(); //ボタン制御
-  const {showAlert} = useAlert();
+  const { showAlert } = useAlert();
   /************************************************
    * 初期表示設定
    ************************************************/
@@ -178,11 +178,11 @@ const WA1090 = ({navigation}: Props) => {
     return isTagRead
       ? [styles.button, styles.buttonSmall, styles.centerButton]
       : [
-          styles.button,
-          styles.buttonSmall,
-          styles.centerButton,
-          styles.disabledButton,
-        ];
+        styles.button,
+        styles.buttonSmall,
+        styles.centerButton,
+        styles.disabledButton,
+      ];
   };
 
   // テキストボックスのスタイルを動的に変更するための関数
@@ -474,7 +474,8 @@ const WA1090 = ({navigation}: Props) => {
             {wkplc}
           </Text>
           <TouchableOpacity
-            disabled={!isBtnEnabledWkp}
+            testID='act2'
+            // disabled={!isBtnEnabledWkp}
             style={[styles.button, styles.buttonSmall, styles.centerButton]}
             onPress={btnWkPlcQr}>
             <Text style={styles.buttonText}>作業場所読込</Text>
@@ -487,7 +488,7 @@ const WA1090 = ({navigation}: Props) => {
             下記ボタンを押してフレコンに取り付けられたタグを読み込んで下さい。
           </Text>
           <TouchableOpacity
-            disabled={!isTagRead || !isBtnEnabledTag}
+            // disabled={!isTagRead || !isBtnEnabledTag}
             style={getTagReadButtonStyle()}
             onPress={btnTagQr}>
             <Text style={styles.buttonText}>タグ読込</Text>
@@ -497,6 +498,7 @@ const WA1090 = ({navigation}: Props) => {
         {/* 中段2 */}
         <View style={[styles.main, styles.center, styles.zIndex]}>
           <TouchableWithoutFeedback
+            testID='act0'
             onPressIn={() => onPressIn()}
             onPressOut={onPressOut}>
             <Text style={styles.labelText}>{getInfoMsg()}</Text>
@@ -505,11 +507,12 @@ const WA1090 = ({navigation}: Props) => {
             <View style={[styles.inputContainer]}>
               <Text style={styles.inputWithText}>a</Text>
               <TextInput
+                testID='act1'
                 style={getTextInputStyle()}
                 onChangeText={handleInputChange}
                 onBlur={handleInputBlur}
                 value={inputValue}
-                editable={isWkPlcRead}
+                // editable={isWkPlcRead}
                 maxLength={15}
               />
               <Text style={styles.inputWithText}>a</Text>
@@ -520,13 +523,13 @@ const WA1090 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
-            disabled={!isBtnEnabledDel}
+            // disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            disabled={!isBtnEnabledBck}
+            // disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
@@ -535,7 +538,8 @@ const WA1090 = ({navigation}: Props) => {
             <TouchableOpacity
               style={getNextButtonStyle()}
               onPress={btnAppNext}
-              disabled={!isNext || !isBtnEnabledNxt}>
+            // disabled={!isNext || !isBtnEnabledNxt}
+            >
               <Text style={styles.startButtonText}>次へ</Text>
             </TouchableOpacity>
           )}
@@ -554,6 +558,7 @@ const WA1090 = ({navigation}: Props) => {
         {/* 作業場所用QRコードスキャナー */}
         {showScannerWkPlc && (
           <Modal
+            testID='act4'
             visible={showScannerWkPlc}
             onRequestClose={() => setShowScannerWkPlc(false)}>
             <QRScanner
@@ -568,6 +573,7 @@ const WA1090 = ({navigation}: Props) => {
         {/* タグ用QRコードスキャナー */}
         {showScannerTag && (
           <Modal
+            testID='act4'
             visible={showScannerTag}
             onRequestClose={() => setShowScannerTag(false)}>
             <QRScanner
