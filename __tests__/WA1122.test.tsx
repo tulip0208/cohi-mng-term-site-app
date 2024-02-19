@@ -408,67 +408,65 @@ describe('WA1122 Screen', () => {
   });
 
   // 小数点以下二桁目補填
-it('小数点以下二桁目補填 前', async () => {
-  const mockSetFrCaLgSdBgDsDec = jest.fn();
-    const initialState = {
-      frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
-      setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
-    };
-  // WA1122 コンポーネントをレンダリング
-  const {getByText, getByTestId, findByText, getAllByText} = render(
-    <RecoilRoot>
-      <WA1122 {...initialState} navigation={mockNavigation} />
-    </RecoilRoot>,
-  );
-  // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
-    fireEvent(getByTestId('radiation_forward2'), 'blur');
-});
-it('小数点以下二桁目補填 前左', async () => {
-  const mockSetFrCaLgSdBgDsDec = jest.fn();
-    const initialState = {
-      frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
-      setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
-    };
-  // WA1122 コンポーネントをレンダリング
-  const {getByText, getByTestId, findByText, getAllByText} = render(
-    <RecoilRoot>
-      <WA1122 {...initialState} navigation={mockNavigation} />
-    </RecoilRoot>,
-  );
-  // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
-    fireEvent(getByTestId('radiation_left2'), 'blur');
-});
-it('小数点以下二桁目補填 後', async () => {
-  const mockSetFrCaLgSdBgDsDec = jest.fn();
-    const initialState = {
-      frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
-      setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
-    };
-  // WA1122 コンポーネントをレンダリング
-  const {getByText, getByTestId, findByText, getAllByText} = render(
-    <RecoilRoot>
-      <WA1122 {...initialState} navigation={mockNavigation} />
-    </RecoilRoot>,
-  );
-  // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
-    fireEvent(getByTestId('radiation_back2'), 'blur');
-});
-it('小数点以下二桁目補填 右：', async () => {
-  const mockSetFrCaLgSdBgDsDec = jest.fn();
-    const initialState = {
-      frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
-      setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
-    };
-  // WA1122 コンポーネントをレンダリング
-  const {getByText, getByTestId, findByText, getAllByText} = render(
-    <RecoilRoot>
-      <WA1122 {...initialState} navigation={mockNavigation} />
-    </RecoilRoot>,
-  );
-  // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
-    fireEvent(getByTestId('radiation_right2'), 'blur');
-});
-
-
+  it('小数点以下二桁目補填 前', async () => {
+    const mockSetFrCaLgSdBgDsDec = jest.fn();
+      const initialState = {
+        frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+        setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
+      };
+    // WA1122 コンポーネントをレンダリング
+    const {getByText, getByTestId, findByText, getAllByText} = render(
+      <RecoilRoot>
+        <WA1122 {...initialState} navigation={mockNavigation} />
+      </RecoilRoot>,
+    );
+    // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
+      fireEvent(getByTestId('radiation_forward2'), 'blur');
+  });
+  it('小数点以下二桁目補填 前左', async () => {
+    const mockSetFrCaLgSdBgDsDec = jest.fn();
+      const initialState = {
+        frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+        setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
+      };
+    // WA1122 コンポーネントをレンダリング
+    const {getByText, getByTestId, findByText, getAllByText} = render(
+      <RecoilRoot>
+        <WA1122 {...initialState} navigation={mockNavigation} />
+      </RecoilRoot>,
+    );
+    // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
+      fireEvent(getByTestId('radiation_left2'), 'blur');
+  });
+  it('小数点以下二桁目補填 後', async () => {
+    const mockSetFrCaLgSdBgDsDec = jest.fn();
+      const initialState = {
+        frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+        setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
+      };
+    // WA1122 コンポーネントをレンダリング
+    const {getByText, getByTestId, findByText, getAllByText} = render(
+      <RecoilRoot>
+        <WA1122 {...initialState} navigation={mockNavigation} />
+      </RecoilRoot>,
+    );
+    // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
+      fireEvent(getByTestId('radiation_back2'), 'blur');
+  });
+  it('小数点以下二桁目補填 右：', async () => {
+    const mockSetFrCaLgSdBgDsDec = jest.fn();
+      const initialState = {
+        frCaLgSdBgDsDec: '1', // Initial value less than 2 characters
+        setFrCaLgSdBgDsDec: mockSetFrCaLgSdBgDsDec,
+      };
+    // WA1122 コンポーネントをレンダリング
+    const {getByText, getByTestId, findByText, getAllByText} = render(
+      <RecoilRoot>
+        <WA1122 {...initialState} navigation={mockNavigation} />
+      </RecoilRoot>,
+    );
+    // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
+      fireEvent(getByTestId('radiation_right2'), 'blur');
+  });
 });
 
