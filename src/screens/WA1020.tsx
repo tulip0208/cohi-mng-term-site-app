@@ -125,7 +125,7 @@ const WA1020 = ({navigation}: Props) => {
     setTrmId('');
     const parts = scannedData.split(',');
     // CSVデータのフォーマットを確認（5つの部分があるか）
-    if (parts.length === 5) {
+    if (parts.length === 4) {
       // ID種別が1かどうかを確認
       const comIdQr = parts[0]; //事業者ID
       if (comIdQr.startsWith('J')) {
@@ -133,7 +133,6 @@ const WA1020 = ({navigation}: Props) => {
         const trmIdQr = parts[1]; //端末ID
         const apiKeyQr = parts[2]; //端末APIキー
         const actKeyQr = parts[3]; //アクティベーションキー
-        const actExpDtQr = parts[4]; //アクティベーション有効期限
 
         //キーを取得
         const key = await getEncryptionKeyFromKeystore();
@@ -146,7 +145,6 @@ const WA1020 = ({navigation}: Props) => {
           trmId: trmIdQr,
           apiKey: apiKey256,
           actKey: actKeyQr,
-          actExpDt: actExpDtQr,
           actFin: 0, //未
         });
         // 別途保存しているユーザー名ステートがある場合はその更新も行う
@@ -264,7 +262,6 @@ const WA1020 = ({navigation}: Props) => {
         trmId: activationInfo.trmId,
         apiKey: activationInfo.apiKey,
         actKey: activationInfo.actKey,
-        actExpDt: activationInfo.actExpDt,
         actFin: 1, //済へ変更
       });
       // 事業者IDをKeyStoreに保存
