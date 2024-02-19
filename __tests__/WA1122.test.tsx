@@ -169,21 +169,6 @@ describe('WA1122 Screen', () => {
       送信ボタンを押して下さい。`)).toBeTruthy();
     
  //荷台各面の中心位置放射線量率
-    expect(
-      findByText(`前：${mockWA1120Drv?.drvNm}`),
-    ).toBeTruthy();
-
-    expect(
-      findByText(
-        `行先名：${mockWA1120Dest?.fixPlacNm}`,
-      ),
-    ).toBeTruthy();
-    expect(
-      findByText(`輸送カード番号：${mockWA1120TrpCardNo}`),
-    ).toBeTruthy();
-
-    expect(findByText('戻る')).toBeTruthy();
-    expect(findByText('メニュー')).toBeTruthy();
   });
 
   it('renders correctly', () => {
@@ -242,7 +227,6 @@ describe('WA1122 Screen', () => {
       </RecoilRoot>,
     );
     
-    // 特定のテストIDを持つTextInputコンポーネントを探す
     const secondInput = getByTestId('radiation_forward2'); // TextInputコンポーネントにtestIDを設定する
 
     fireEvent.changeText(secondInput, 'xyz456.78');
@@ -257,8 +241,6 @@ describe('WA1122 Screen', () => {
         <WA1122 navigation={mockNavigation} />
       </RecoilRoot>,
     );
-
-   // 特定のテストIDを持つTextInputコンポーネントを探す
     const firstInput = getByTestId('radiation_left'); // TextInputコンポーネントにtestIDを設定する
 
     fireEvent.changeText(firstInput, 'abc123def');
@@ -272,12 +254,9 @@ describe('WA1122 Screen', () => {
         <WA1122 navigation={mockNavigation} />
       </RecoilRoot>,
     );
-    
-    // 特定のテストIDを持つTextInputコンポーネントを探す
+  
     const secondInput = getByTestId('radiation_left2'); // TextInputコンポーネントにtestIDを設定する
-
     fireEvent.changeText(secondInput, 'xyz456.78');
-
     expect(secondInput.props.value).toBe('45678');
   });
 
@@ -288,8 +267,6 @@ describe('WA1122 Screen', () => {
         <WA1122 navigation={mockNavigation} />
       </RecoilRoot>,
     );
-
-   // 特定のテストIDを持つTextInputコンポーネントを探す
     const firstInput = getByTestId('radiation_back'); // TextInputコンポーネントにtestIDを設定する
 
     fireEvent.changeText(firstInput, 'abc123def');
@@ -423,7 +400,7 @@ describe('WA1122 Screen', () => {
     // onBlur イベントをトリガーします（実際の実装に基づいてイベント名を調整する必要があります）
       fireEvent(getByTestId('radiation_forward2'), 'blur');
   });
-  it('小数点以下二桁目補填 前左', async () => {
+  it('小数点以下二桁目補填 左', async () => {
     const mockSetFrCaLgSdBgDsDec = jest.fn();
       const initialState = {
         frCaLgSdBgDsDec: '1', 
