@@ -167,7 +167,7 @@ export const IFA0030 = async (): Promise<ApiResponse<IFA0030Response>> => {
       trmKey: decryptWithAES256CBC(trmKey.trmKey, secretKey), // 復号化
       appTyp: 1,
       appVer: settingsInfo.appVer,
-      setdt: settingsInfo.settingFileDt,
+      setDt: settingsInfo.settingFileDt,
     };
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
