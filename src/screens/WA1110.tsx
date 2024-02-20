@@ -138,8 +138,8 @@ const WA1110 = ({navigation}: Props) => {
       await showAlert('通知', messages.EA5007(), false);
       return;
     }
-    setWkPlcId(parts[1]);
-    setWkplc(parts[2]);
+    setWkPlcId(parts[2]);
+    setWkplc(parts[1]);
     setWkplcTyp('仮置場');
     setIsWkPlcRead(true);
   };

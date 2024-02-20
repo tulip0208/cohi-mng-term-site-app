@@ -159,8 +159,8 @@ const WA1030 = ({navigation}: Props) => {
               schema = 'temporary_places';
               db = {
                 id: uuid,
-                tmpPlacId: parts[1], //場所ID
-                tmpPlacNm: parts[2], //名前
+                tmpPlacId: parts[2], //場所ID
+                tmpPlacNm: parts[1], //名前
                 delSrcTyp: Number(parts[3]),
               };
               setWkplacId(parts[1]);
