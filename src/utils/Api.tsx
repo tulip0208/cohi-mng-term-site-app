@@ -528,17 +528,6 @@ export const IFA0340 = async (
       IFA0110Response<IFA0340Response<IFA0340ResponseDtl>>
     >;
 
-    //0件の場合
-    if (response.data && response.data.sttCd && response.data.gyDt.cnt === 0) {
-      return {
-        success: false,
-        error: 'zero',
-        status: null,
-        code: null,
-        api: null,
-        data: null,
-      };
-    }
     return {success: true, data: response.data.gyDt};
   } catch (error) {
     const e = error as CustomError;
