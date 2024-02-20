@@ -3,7 +3,7 @@
  * utils/Security.tsx
  * ---------------------------------------------*/
 import {Buffer} from 'buffer';
-import {sha256} from 'react-native-sha256';
+import {sha1} from 'react-native-sha1';
 import CryptoJS from 'react-native-crypto-js';
 import DeviceInfo from 'react-native-device-info';
 import base64, {encode} from 'react-native-base64';
@@ -232,6 +232,6 @@ export const generateDeviceUniqueKey = async (): Promise<string> => {
     .replace(/[^0-9]/g, '')
     .slice(0, 14); // yyyyMMddhhmmss形式
   const combinedString = `${deviceId}${currentDateTime}`;
-  const hashedKey = await sha256(combinedString); // SHA256でハッシュ化
+  const hashedKey = await sha1(combinedString); // SHA256でハッシュ化
   return hashedKey;
 };
