@@ -551,16 +551,16 @@ export const styles = StyleSheet.create({
     flexDirection: 'row', // 子要素を横並びにする
     flexWrap: 'wrap', // 子要素が親要素の幅を超えたら折り返す
     justifyContent: 'flex-start', // 子要素を親要素の左端に揃える
+    alignItems: 'center', // 子要素を水平方向に中央揃え
     paddingTop: 10,
-    paddingLeft: 40,
-    paddingRight: 40,
+    paddingLeft: windowWidth * 0.15,
   },
   menuButton: {
-    width: windowWidth * 0.3,
+    width: windowWidth * 0.28,
     height: windowHeight * 0.12,
     backgroundColor: '#548236', // パステルな水色
     marginBottom: 2,
-    padding: 15,
+    padding: 10,
     borderRadius: 15,
     justifyContent: 'center', // 子要素を垂直方向に中央揃え
     alignItems: 'center', // 子要素を水平方向に中央揃え
@@ -615,7 +615,7 @@ export const styles = StyleSheet.create({
     paddingRight: 5,
   },
   settingButton: {
-    width: windowWidth * 0.4, // 画面幅の半分のサイズ
+    width: windowWidth * 0.36, // 画面幅の半分のサイズ
     height: 60,
     //★marginRight: 'auto', // 右のマージンを自動調整
     //marginLeft: 'auto', // 左のマージンを自動調整  },
