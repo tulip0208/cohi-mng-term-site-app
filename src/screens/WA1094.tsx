@@ -140,7 +140,7 @@ const WA1094 = ({navigation}: Props) => {
     //遷移元画面IDを設定
     setPrevScreenId('WA1094');
     await logScreen('画面遷移: WA1094 → WA1092_重量・線量(灰)');
-    navigation.navigate('WA1094');
+    navigation.navigate('WA1092');
   };
 
   /************************************************
