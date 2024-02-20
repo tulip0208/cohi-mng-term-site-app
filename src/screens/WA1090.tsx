@@ -325,7 +325,7 @@ const WA1090 = ({navigation}: Props) => {
     const data = responseIFA0340.data as IFA0340Response<IFA0340ResponseDtl>;
     setNewTagId(txtNewTagId);
     //レスポンス1件(共通)
-    if (data.dtl.length === 1) {
+    if (data.cnt === 1) {
       const result = await showAlert('確認', messages.IA5017(), true);
       if (result) {
         return 'WA1094';
