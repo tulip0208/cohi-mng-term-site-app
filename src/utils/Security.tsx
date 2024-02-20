@@ -3,7 +3,7 @@
  * utils/Security.tsx
  * ---------------------------------------------*/
 import {Buffer} from 'buffer';
-import {sha1} from 'react-native-sha1';
+import {sha1} from 'react-native-sha256';
 import CryptoJS from 'react-native-crypto-js';
 import DeviceInfo from 'react-native-device-info';
 import base64, {encode} from 'react-native-base64';
