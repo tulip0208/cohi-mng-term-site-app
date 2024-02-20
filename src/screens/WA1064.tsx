@@ -237,7 +237,7 @@ const WA1064 = ({navigation}: Props) => {
           : '', //線量
       estRa: String(estRa), //推定放射能濃度
     });
-    if (prevScreenId === '') {
+    if (prevScreenId === 'WA1066') {
       //遷移元画面IDを設定
       setPrevScreenId('WA1064');
       await logScreen('画面遷移: WA1064 → WA1066_登録内容確認(土壌)');
@@ -371,13 +371,13 @@ const WA1064 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
-            // disabled={!isBtnEnabledDel}
+            disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            // disabled={!isBtnEnabledBck}
+            disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
@@ -385,8 +385,7 @@ const WA1064 = ({navigation}: Props) => {
           <TouchableOpacity
             style={getButtonStyle()}
             onPress={btnAppNext}
-            // disabled={!isNext || !isBtnEnabledNxt}
-          >
+            disabled={!isNext || !isBtnEnabledNxt}>
             <Text style={styles.startButtonText}>次へ</Text>
           </TouchableOpacity>
         </View>

@@ -234,10 +234,10 @@ const WA1140 = ({navigation}: Props) => {
     }
 
     setStorPlacId(parts[1]); //保管場ID
-    setFixPlacId(parts[2]); //定置場ID
+    setFixPlacId(parts[3]); //定置場ID
 
     setWkplcTyp('定置場');
-    setWkplc(parts[3]);
+    setWkplc(parts[2]);
     setWA1140Data({
       ...WA1140Data,
       storPlacId: storPlacId as string,

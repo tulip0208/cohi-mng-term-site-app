@@ -158,7 +158,7 @@ const WA1130 = ({navigation}: Props) => {
     }
 
     setStorPlacId(parts[1]); //保管場ID
-    setFixPlacId(parts[2]); //定置場ID
+    setFixPlacId(parts[3]); //定置場ID
     setFacTyp(parts[4]); //施設区分
 
     if (parts[4] === '0') {

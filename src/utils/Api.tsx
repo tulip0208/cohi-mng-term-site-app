@@ -82,7 +82,7 @@ export const IFA0010 = async (
     // サーバー通信用のデータを準備
     const requestData = {
       comId: userInfo.comId,
-      usrId: userInfo.usrId,
+      usrId: userInfo.userId,
       trmId: activationInfo.trmId,
       apiKey: decryptWithAES256CBC(activationInfo.apiKey, secretKey), // 復号化
       actKey: activationInfo.actKey,
@@ -167,7 +167,7 @@ export const IFA0030 = async (): Promise<ApiResponse<IFA0030Response>> => {
       trmKey: decryptWithAES256CBC(trmKey.trmKey, secretKey), // 復号化
       appTyp: 1,
       appVer: settingsInfo.appVer,
-      setdt: settingsInfo.settingFileDt,
+      setDt: settingsInfo.settingFileDt,
     };
 
     // サーバー通信処理（Api.js内の関数を呼び出し）
@@ -528,17 +528,6 @@ export const IFA0340 = async (
       IFA0110Response<IFA0340Response<IFA0340ResponseDtl>>
     >;
 
-    //0件の場合
-    if (response.data && response.data.sttCd && response.data.gyDt.cnt === 0) {
-      return {
-        success: false,
-        error: 'zero',
-        status: null,
-        code: null,
-        api: null,
-        data: null,
-      };
-    }
     return {success: true, data: response.data.gyDt};
   } catch (error) {
     const e = error as CustomError;

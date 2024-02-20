@@ -257,12 +257,12 @@ const WA1060 = ({navigation}: Props) => {
     setWkplcTyp('仮置場');
     setWA1060WkPlac({
       idTyp: parts[0], //ID種別
-      wkplacId: parts[1], //作業場所ID
-      wkplacNm: parts[2], //作業場所名
+      wkplacId: parts[2], //作業場所ID
+      wkplacNm: parts[1], //作業場所名
       delSrcTyp: parts[3], //搬出元種別
       wkplac: wkplcTyp,
     });
-    setWkplc(parts[2]);
+    setWkplc(parts[1]);
     setDelSrcTyp(Number(parts[3]));
 
     setIsTagRead(true);
