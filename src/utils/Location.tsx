@@ -64,6 +64,9 @@ export const watchLocation = async (): Promise<void> => {
         global.locationErrored = false;
       }
       const {latitude, longitude} = position.coords;
+      // 緯度と経度を小数点以下6桁に修正
+      const latitudeFixed = parseFloat(latitude.toFixed(6));
+      const longitudeFixed = parseFloat(longitude.toFixed(6));
       const timestampDate = new Date(position.timestamp);
       const location = realm.objects('location')[0] || null;
       let getLocation = false;
@@ -85,8 +88,8 @@ export const watchLocation = async (): Promise<void> => {
               id: uuid, //ID UUID
               schDt: new Date(), //取得日時 YYYY/MM/DD hh:mm:ss
               locDt: timestampDate.getTime(), //測位日時 Timestampデータ
-              latitude: `${latitude}`, //緯度
-              longitude: `${longitude}`, //経度
+              latitude: `${latitudeFixed}`, //緯度
+              longitude: `${longitudeFixed}`, //経度
               sndFlg: 1, //送信フラグ
               sndJsoIFA0110: '',
               sndJsonIFT0150: '',
