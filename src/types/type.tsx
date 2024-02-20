@@ -137,7 +137,6 @@ export interface ActivationInfo {
   trmId: string;
   apiKey: string;
   actKey: string;
-  actExpDt: string;
   actFin: number;
 }
 //事業者ID
