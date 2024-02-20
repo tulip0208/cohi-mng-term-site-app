@@ -211,6 +211,7 @@ const WA1093 = ({navigation}: Props) => {
                 contentContainerStyle={[styles.inputReasonScrollViewStyle]}
                 showsVerticalScrollIndicator={true}>
                 <TextInput
+                  testID='act0'
                   multiline={true}
                   onChangeText={handleInputChange}
                   onBlur={filterText}
@@ -225,19 +226,19 @@ const WA1093 = ({navigation}: Props) => {
         {/* 下段 */}
         <View style={styles.bottomSection}>
           <TouchableOpacity
-            disabled={!isBtnEnabledDel}
+            // disabled={!isBtnEnabledDel}
             style={[styles.button, styles.destroyButton]}
             onPress={btnAppDestroy}>
             <Text style={styles.endButtonText}>破棄</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            disabled={!isBtnEnabledBck}
+            // disabled={!isBtnEnabledBck}
             style={[styles.button, styles.endButton]}
             onPress={btnAppBack}>
             <Text style={styles.endButtonText}>戻る</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            disabled={!isBtnEnabledNxt}
+            // disabled={!isBtnEnabledNxt}
             style={[styles.button, styles.startButton]}
             onPress={btnAppNext}>
             <Text style={styles.startButtonText}>次へ</Text>
