@@ -82,7 +82,7 @@ export const IFA0010 = async (
     // サーバー通信用のデータを準備
     const requestData = {
       comId: userInfo.comId,
-      usrId: userInfo.usrId,
+      usrId: userInfo.userId,
       trmId: activationInfo.trmId,
       apiKey: decryptWithAES256CBC(activationInfo.apiKey, secretKey), // 復号化
       actKey: activationInfo.actKey,
